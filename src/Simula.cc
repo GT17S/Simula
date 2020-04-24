@@ -1,9 +1,8 @@
 #include <iostream>
-
-int main(int argc,  char ** argv)
+#include "../include/logiqueReseau/Noeud.hh"
+int main()
 {
  std::cout << "Hello world"<<std::endl;
- std::cout << "Hello world2"<<std::endl;
 
  return 0;
 }	

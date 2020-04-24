@@ -51,7 +51,7 @@ link_directories(/usr/lib)
 file(
         GLOB_RECURSE
         HEADERS
-        "include/*.h"
+        "include/*.hh"
 )
 file(	
 	GLOB_RECURSE

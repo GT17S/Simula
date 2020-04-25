@@ -2,7 +2,7 @@
 #define NOEUD_H
 
 /*!
- * \file Noeud.h
+ * \file Noeud.hh
  * \brief Noeud (Station, Hub, Switch, Routeur)
  * \author medish
  * \version 0.1
@@ -103,7 +103,7 @@ public:
      * \brief envoyerMessage
      * Méthode qui permet d'envoyer un message à un noeud
      * ( Redéfinie dans la classe dérivée)
-     * \param nRecepteur : le noeud recepteur
+     * \param nRecepteur : pointeur sur le noeud recepteur
      * \param data : le message à envoyer de type Data
      */
     virtual  void envoyerMessage(Noeud * nRecepteur, std::string data)=0;

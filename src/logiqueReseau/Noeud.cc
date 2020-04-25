@@ -1,5 +1,13 @@
 #include "../include/logiqueReseau/Noeud.hh"
 
+Noeud::Noeud(){
+
+}
+
+Noeud::Noeud(std::string _nom, int _idNoeud, int _nbPort){
+
+}
+
 void Noeud::setNom(std::string _nom){
 
 }

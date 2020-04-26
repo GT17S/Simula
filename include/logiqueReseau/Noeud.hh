@@ -2,14 +2,19 @@
 #define NOEUD_H
 
 /*!
- * \file Noeud.h
+ * \file Noeud.hh
  * \brief Noeud (Station, Hub, Switch, Routeur)
  * \author medish
  * \version 0.1
  */
 
+#include <algorithm>
 #include <string>
 #include <vector>
+
+
+using std::string;
+using std::vector;
 
 /*!
  * \class Noeud
@@ -18,95 +23,103 @@
 
 class Noeud {
 protected:
+  static vector<int> idsNoeuds; /*!< Liste des identificateurs */
 
-  std::string nom; /*!< Nom du noeud */
+  string nom; /*!< Nom du noeud */
   int idNoeud;  /*< Identificateur du noeud */
   int nbPort; /*< Nombre de ports du noeud */
-  std::vector<std::string> fileDattente; /*< File d'attente des données */
+  vector<string> fileDattente; /*< File d'attente des données */
 public:
     /*!
      * \brief Construceur
      *  Constructeur de la classe Noeud
-     * \param nom : nom du noeud
-     * \param idNoeud : identificateur du noeud
-     * \param nbPort : nombre de ports du noeud
+     *  Initialise une liste vide de file d'attente des données #fileDattente.
+     * \param nom : voir #nom
+     * \param idNoeud : voir #idNoeud
+     * \param nbPort : voir #nbPort
      */
-    Noeud(std::string nom, int idNoeud, int nbPort);
+    Noeud(string nom, int idNoeud, int nbPort);
 
     /*!
      * \brief Constructeur par défaut
      * Constructeur par défaut de la classe Noeud
+     * Initialise #idNoeud automatiquement.
+     * Initialise #nbPort à 1 #nbPort.
+     * Initialise une liste vide de file d'attente des données #fileDattente.
      */
     Noeud();
 
     /*!
      * \brief Destructeur
      * Destructeur de la classe noeud
+     * Supprime #idNoeud de la liste des identificateurs.
      */
     virtual ~Noeud();
 
     /*!
      * \brief getNom
-     * \return Le nom du noeud (string)
+     * \return voir #nom
      */
-    std::string getNom(){return nom;}
+    string getNom(){return nom;}
     /*!
      * \brief getIdNoeud
-     * \return Identificateur du noeud (int)
+     * \return voir #idNoeud
      */
     int getIdNoeud(){return idNoeud;}
     /*!
      * \brief getNbPort
-     * \return Nombre de ports du noeud (int)
+     * \return voir #nbPort
      */
     int getNbPort(){return nbPort;}
     /*!
      * \brief getFileDattente
-     * \return File d'attente des données du noeud (vector)
+     * \return voir #fileDattente
      */
-    std::vector<std::string> getFileDattente(){return fileDattente;}
+    vector<string> getFileDattente(){return fileDattente;}
     /*!
      * \brief setNom
-     * Modifier le nom du noeud
-     * Vérifier si le nom est unique.
-     * \param nom : nom du noeud (string) doit être unique
+     * Modifier le nom du noeud, #nom
+     * \param nom : nom du noeud (string)
      */
-    void setNom(std::string nom);
+    void setNom(string nom);
     /*!
      * \brief setIdNoeud
-     * Modifier l'identificateur du noeud
+     * Modifier l'identificateur du noeud, #idNoeud
      * Vérifier si id du noeud est unique.
+     * Sinon attribuer automatiquement un ID unique.
      * \param idNoeud : id du noeud (int) doit être unique.
      */
     void setIdNoeud(int idNoeud);
     /*!
      * \brief setNbPort
-     * Modifier le nombre de ports du noeud
+     * Modifier le nombre de ports du noeud, #nbPort
+     * Vérifier si entier positive.
      * \param int nbPort : nombre de ports du noeud (int)
      */
     void setNbPort(int nbPort);
     /*!
      * \brief setFileDattente
-     * Modifier la file d'attente des données
-     * Ajouter à la fin de la file une données.
+     * Modifier la file d'attente des données, #fileDattente
+     * Verifier si la donnée existe déja.
+     * Ajouter à la fin de la file une donnée.
      * \param data : la donnée à ajouter.
      */
-    void setFileDattente(std::string data);
+    void setFileDattente(string data);
     /*!
      * \brief setFileDattente
-     * Modifier la file d'attente des données déja existante
+     * Modifier la file d'attente des données déja existante, #fileDattente
      * \param file : File d'attente des données
      */
-    void setFileDattente(std::vector<std::string> file);
+    void setFileDattente(vector<string> file);
 
     /*!
      * \brief envoyerMessage
      * Méthode qui permet d'envoyer un message à un noeud
      * ( Redéfinie dans la classe dérivée)
-     * \param nRecepteur : le noeud recepteur
+     * \param nRecepteur : pointeur sur le noeud recepteur
      * \param data : le message à envoyer de type Data
      */
-    virtual  void envoyerMessage(Noeud * nRecepteur, std::string data)=0;
+    virtual  void envoyerMessage(Noeud * nRecepteur, string data)=0;
 };
 
 #endif

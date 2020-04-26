@@ -1,5 +1,4 @@
 #include "../include/logiqueReseau/Noeud.hh"
-
 void Noeud::setNom(std::string _nom){
 
 }
@@ -19,3 +18,6 @@ void Noeud::setFileDattente(std::vector<std::string> _file){
 void Noeud::setFileDattente(std::string _data){
 
 }
+Noeud::Noeud(){}
+Noeud::Noeud(std::string nom, int idNoeud, int nbPort){}
+Noeud:: ~Noeud(){}

@@ -10,6 +10,7 @@
 
 #include <string>
 #include <vector>
+#include <typeinfo>
 
 /*!
  * \class Noeud

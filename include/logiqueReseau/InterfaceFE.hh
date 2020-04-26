@@ -56,6 +56,7 @@ private :
     string adresseRes; /*<! adresse réseau */
     string masque; /*<! masque réseau */
     string adresseMac; /*<! adresse MAC*/
+    bool connexion; /*<! Interface connectée à un cable*/
     /*!
      * \brief ipValide
      * Vérifier si une adresse IP est bien configuré
@@ -110,6 +111,11 @@ public :
     string getAdresseIP(){return adresseMac;}
 
     /*!
+     * \brief getConnexion
+     * \return voir #connexion
+     */
+    bool getConnexion(){return connexion;}
+    /*!
      * \brief setNomInterface
      * Modifier le nom de l'nterface, #nomInterface
      * \param nomInterface
@@ -148,6 +154,13 @@ public :
      */
     void setAdresseMac(string adresseMac);
 
+    /*!
+     * \brief setConnexion
+     * Modifier l'état de l'interface, #connexion
+     * Si l'interface est connextée à un cable
+     * \param connexion
+     */
+    void setConnexion(bool connexion);
     /*!
      * \brief regexValide
      * Vérifier si l'adresse IP en entrée est valide.

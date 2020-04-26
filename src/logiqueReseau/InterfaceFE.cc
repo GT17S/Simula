@@ -9,6 +9,7 @@ InterfaceFE::InterfaceFE(string _nomInterface, string _adresseIP,
                          string _adresseRes, string _masque, string _adresseMac){
 
     nomInterface = _nomInterface;
+    connexion = false;
     setAdresseIP(_adresseIP);
     setAdresseRes(_adresseRes);
     setMasque(_masque);
@@ -48,6 +49,10 @@ void InterfaceFE::setAdresseMac(string _adresseMac){
         adresseMac = _adresseMac;
     else
         adresseMac = DEFAULT_MAC;
+}
+
+void InterfaceFE::setConnexion(bool _connexion){
+    connexion = _connexion;
 }
 
 bool InterfaceFE::regexValide(string adresse, string _regex){

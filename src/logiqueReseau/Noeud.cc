@@ -70,3 +70,6 @@ void Noeud::setFileDattente(string _data){
 
     fileDattente.push_back(_data);
 }
+Noeud::Noeud(){}
+Noeud::Noeud(std::string nom, int idNoeud, int nbPort){}
+Noeud:: ~Noeud(){}

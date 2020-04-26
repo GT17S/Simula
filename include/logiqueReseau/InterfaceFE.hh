@@ -56,15 +56,6 @@ private :
     string adresseRes; /*<! adresse réseau */
     string masque; /*<! masque réseau */
     string adresseMac; /*<! adresse MAC*/
-
-    /*!
-     * \brief regexValide
-     * Vérifier si l'adresse IP en entrée est valide.
-     * \param adresse : adresse IP
-     * \param regex : expression réguliere #IP_REGEX
-     * \return vrai si adresse valide, faux sinon.
-     */
-    bool regexValide(string adresse, string regex);
     /*!
      * \brief ipValide
      * Vérifier si une adresse IP est bien configuré
@@ -156,6 +147,15 @@ public :
      * \param adresseMac
      */
     void setAdresseMac(string adresseMac);
+
+    /*!
+     * \brief regexValide
+     * Vérifier si l'adresse IP en entrée est valide.
+     * \param adresse : adresse IP
+     * \param regex : expression réguliere #IP_REGEX
+     * \return vrai si adresse valide, faux sinon.
+     */
+    static bool regexValide(string adresse, string regex);
 
 };
 

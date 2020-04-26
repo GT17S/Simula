@@ -34,37 +34,45 @@ public:
     /*!
      * \brief Constructeur par défaut
      * Constructeur par défaut de la classe Station
+     * Initialise un noeud #Noeud()
+     * Initialise une interface #InterfaceFE()
+     * Génére un #nom automatiquement ( "Station + #idNoeud")
+     * Initialise #adressePasserelle à #DEFAULT_IP
+     * Initialise #numSegmentsEnvoye vide
+     *
      */
     Station();
     /*!
      * \brief Constructeur
-     * Constructeur de la classe Station, qui permet d'initialiser une station
-     * \param nom : nom de la station (string)
-     * \param idNoeud : id de la station (int)
-     * \param nbPort : nombre de ports de la station (par défaut = 1)
-     * \param adressePasserelle : adresse de passerelle de la station
-     * \param interfacePc : interface réseau de la station
+     * Constructeur de la classe Station,
+     * qui permet d'initialiser une station avec les paramètres en entrée.
+     * \param nom : voir #nom
+     * \param idNoeud : voir #idNoeud
+     * \param nbPort : voir #nbPort
+     * \param adressePasserelle : voir #adressePasserelle
+     * \param interfacePc : voir #interfacePc
      */
     Station(string nom,int idNoeud,int nbPort,
-            string adressePasserelle, InterfaceFE interfacePc);
+            string adressePasserelle, InterfaceFE interfacePc );
     /*!
-      * \brief Destructeur de la classe Station
+      * \brief Destructeur
+      * Destructeur de la classe Station
       */
     ~Station(){}
 
     /*!
      * \brief getInterfacePc
-     * \return interface réseau de la station
+     * \return voir #interfacePc
      */
     InterfaceFE getInterfacePc(){return interfacePc;}
     /*!
      * \brief getPasserelle
-     * \return adresse de passerelle de la station
+     * \return voir #adressePasserelle
      */
     string getPasserelle(){return adressePasserelle;}
     /*!
      * \brief getNumSegmentsEnvoye
-     * \return les numeros de séquences des segments envoyés
+     * \return voir #numSegmentsEnvoye
      */
     vector<int> getNumSegmentsEnvoye(){return numSegmentsEnvoye;}
 
@@ -76,13 +84,14 @@ public:
     void setInterfacePc(InterfaceFE interfacePc);
     /*!
      * \brief setPasserelle
-     * Modifier l'adresse de passerelle de la station
-     * \param adressePasserelle : adresse de passerelle de la station
+     * Modifier l'adresse de passerelle de la station, #adressePasserelle
+     * \param adressePasserelle : adresse IP
      */
     void setPasserelle(string adressePasserelle);
     /*!
      * \brief setNumSegmentsEnvoye
-     *  Modifier le tableau des numeros des segments envoyés
+     *  Modifier le tableau des numeros des segments envoyés, #numSegmentsEnvoye
+     *  Vérifier si nSegment n'existe pas déja0
      *  Ajouter à la fin, un numero de séquence de segment
      * \param nSegment : numero de séquence de segment envoyé
      */
@@ -91,6 +100,7 @@ public:
     /*!
      * \brief setNumSegmentsEnvoye
      * Modifier un tableau des numeros des séquences de segments envoyés qui est déja existant.
+     * #numSegmentsEnvoye
      * \param numSegmentsEnvoye : liste des numéros de séquences de segments envoyés.
      */
     void setNumSegmentsEnvoye(vector<int> numSegmentsEnvoye);

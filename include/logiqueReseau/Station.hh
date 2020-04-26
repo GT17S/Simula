@@ -13,6 +13,13 @@
 #include "Noeud.hh"
 #include "InterfaceFE.hh"
 
+
+using std::string;
+using std::vector;
+
+class InterfaceFE;
+class Noeud;
+
 /*!
  * \class Station
  * \brief La classe Station représentant une station (machine).
@@ -20,8 +27,8 @@
 class Station : public Noeud {
   private:
     InterfaceFE interfacePc; /*!< interface réseau de la station */
-    std::string adressePasserelle; /*!< adresse de passerelle de la station*/
-    std::vector<int> numSegmentsEnvoye; /*!< liste des numeros de séquences des segments envoyés */
+    string adressePasserelle; /*!< adresse de passerelle de la station*/
+    vector<int> numSegmentsEnvoye; /*!< liste des numeros de séquences des segments envoyés */
     //Congestion controleur;
 public:
     /*!
@@ -38,12 +45,12 @@ public:
      * \param adressePasserelle : adresse de passerelle de la station
      * \param interfacePc : interface réseau de la station
      */
-    Station(std::string nom,int idNoeud,int nbPort = 1,
-            std::string adressePasserelle, InterfaceFE interfacePc);
+    Station(string nom,int idNoeud,int nbPort,
+            string adressePasserelle, InterfaceFE interfacePc);
     /*!
       * \brief Destructeur de la classe Station
       */
-    ~Station();
+    ~Station(){}
 
     /*!
      * \brief getInterfacePc
@@ -54,12 +61,12 @@ public:
      * \brief getPasserelle
      * \return adresse de passerelle de la station
      */
-    std::string getPasserelle(){return adressePasserelle;}
+    string getPasserelle(){return adressePasserelle;}
     /*!
      * \brief getNumSegmentsEnvoye
      * \return les numeros de séquences des segments envoyés
      */
-    std::vector<int> getNumSegmentsEnvoye(){return numSegmentsEnvoye;}
+    vector<int> getNumSegmentsEnvoye(){return numSegmentsEnvoye;}
 
     /*!
      * \brief setInterfacePc
@@ -72,7 +79,7 @@ public:
      * Modifier l'adresse de passerelle de la station
      * \param adressePasserelle : adresse de passerelle de la station
      */
-    void setPasserelle(std::string adressePasserelle);
+    void setPasserelle(string adressePasserelle);
     /*!
      * \brief setNumSegmentsEnvoye
      *  Modifier le tableau des numeros des segments envoyés
@@ -86,7 +93,7 @@ public:
      * Modifier un tableau des numeros des séquences de segments envoyés qui est déja existant.
      * \param numSegmentsEnvoye : liste des numéros de séquences de segments envoyés.
      */
-    void setNumSegmentsEnvoye(std::vector<int> numSegmentsEnvoye);
+    void setNumSegmentsEnvoye(vector<int> numSegmentsEnvoye);
 
     /*!
      * \brief envoyerMessage
@@ -94,7 +101,7 @@ public:
      * \param nRecepteur : pointeur sur le noeud recepteur
      * \param data : le message à envoyer de type Data
      */
-    void envoyerMessage(Noeud * Nrecepteur, Data message);
+    void envoyerMessage(Noeud * Nrecepteur, string message);
 };
 
 #endif

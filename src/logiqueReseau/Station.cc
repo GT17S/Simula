@@ -1,11 +1,12 @@
 #include "../include/logiqueReseau/Station.hh"
 
 
-Station::Station(){
+Station::Station() : Noeud(){
 
 }
 
-Station::Station(std::string nom, int idNoeud, int nbPort, std::string adressePasserelle, InterfaceFE interfacePc){
+Station::Station(string nom, int idNoeud, int nbPort, string adressePasserelle, InterfaceFE interfacePc):
+                 Noeud(nom, idNoeud, nbPort){
 
 }
 
@@ -13,7 +14,7 @@ void Station::setInterfacePc(InterfaceFE interfacePc){
 
 }
 
-void Station::setPasserelle(std::string adressePasserelle){
+void Station::setPasserelle(string adressePasserelle){
 
 }
 
@@ -21,10 +22,10 @@ void Station::setNumSegmentsEnvoye(int nSegment){
 
 }
 
-void Station::setNumSegmentsEnvoye(std::vector<int> numSegmentsEnvoye){
+void Station::setNumSegmentsEnvoye(vector<int> numSegmentsEnvoye){
 
 }
 
-void Station::envoyerMessage(Noeud *Nrecepteur, Data message){
+void Station::envoyerMessage(Noeud *Nrecepteur, string message){
 
 }

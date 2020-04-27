@@ -1,4 +1,4 @@
-#include "../include/logiqueReseau/Hub.hh"
+#include "../../include/logiqueReseau/Hub.hh"
 using namespace std;
 
 Hub::Hub(string nom,int idNoeud,int nbPort)

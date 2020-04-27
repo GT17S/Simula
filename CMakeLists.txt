@@ -15,7 +15,7 @@ add_compile_options(
 
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt5Xml REQUIRED)
-find_package(Boost 1.40.0 REQUIRED)
+find_package(Boost 1.67.0 REQUIRED)
 
 #Générateur de documentation
 # first we can indicate the documentation build as an option and set it to ON by default
@@ -44,7 +44,7 @@ endif (DOXYGEN_FOUND)
 endif()
 
 #Mettre à jour en fonction des nouveaux modules ajoutés
-include_directories( ${Qt5Widgets_INCLUDES} include/ /usr/include ${Boost_INCLUDE_DIR})
+include_directories( ${Qt5Widgets_INCLUDES} include/  /usr/include ${Boost_INCLUDE_DIR})
 link_directories(/usr/lib)
 
 #Selection les fichiers à compiler
@@ -63,4 +63,4 @@ add_executable (Simula ${SOURCES} ${HEADERS})
 target_link_libraries(Simula ${Qt5Widgets_LIBRARIES} Qt5::Xml ${Boost_LIBRARIES})	
 
 ADD_CUSTOM_TARGET(run COMMAND cd bin/Debug && ./Simula)
-ADD_CUSTOM_TARGET(doc COMMAND doxygen docs/Doxyfile)
+ADD_CUSTOM_TARGET(doc COMMAND doxygen doc/Doxyfile)

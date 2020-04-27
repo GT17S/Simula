@@ -308,6 +308,9 @@ PublishScripts/
 csx/
 *.build.csdef
 
+doc/latex/*
+
+
 # Microsoft Azure Emulator
 ecf/
 rcf/

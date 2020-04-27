@@ -10,7 +10,7 @@
  */
 
 
-#include "../include/logiqueReseau/Noeud.hh"
+#include "../../include/logiqueReseau/Noeud.hh"
 #include<string>
 
 /*!

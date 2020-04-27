@@ -1,4 +1,4 @@
-#include "../include/logiqueReseau/Cable.hh"
+#include "../../include/logiqueReseau/Cable.hh"
 
 #include "typeinfo"
 using namespace std;

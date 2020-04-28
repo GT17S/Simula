@@ -9,12 +9,17 @@ InterfaceFE::InterfaceFE(string _nomInterface, string _adresseIP,
                          string _adresseRes, string _masque, string _adresseMac){
 
     nomInterface = _nomInterface;
-    connexion = false;
+    cable = nullptr;
     setAdresseIP(_adresseIP);
     setAdresseRes(_adresseRes);
     setMasque(_masque);
     setAdresseMac(_adresseMac);
+}
 
+InterfaceFE::~InterfaceFE(){
+    // Destruction du cable lié
+    if(cable)
+        delete cable;
 }
 
 void InterfaceFE::setNomInterface(string _nomInterface){
@@ -51,8 +56,8 @@ void InterfaceFE::setAdresseMac(string _adresseMac){
         adresseMac = DEFAULT_MAC;
 }
 
-void InterfaceFE::setConnexion(bool _connexion){
-    connexion = _connexion;
+void InterfaceFE::setCable(Cable * _cable){
+    cable = _cable;
 }
 
 bool InterfaceFE::regexValide(string adresse, string _regex){

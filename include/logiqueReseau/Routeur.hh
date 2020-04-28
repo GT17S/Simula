@@ -9,51 +9,40 @@
  */
 
 
-#ifndef ROUTE_H
-#define ROUTE_H
-struct Route {
-    std::string adresseReseau;
-    std::string masque;
-    std::string passerelle;
-};
-#endif
 
 
 #include <string>
 #include <vector>
 #include "Noeud.hh"
-#include "InterfaceFE.hh"
-
 using std::string;
 using std::vector;
 
 
+#ifndef ROUTE_H
+#define ROUTE_H
+struct Route {
+    string adresseReseau;
+    string masque;
+    string passerelle;
+};
+#endif
 
-class InterfaceFE;
+
 class Noeud;
 
 class Routeur : public Noeud{
 private:
-  vector<Noeud*> tableNoeuds /*!< Liste des noeuds connectés*/;
   vector<Route*> tableRoutage; /*!< Table de routage */
-  vector<InterfaceFE*> tableInterfaces; /*!< Liste des interfaces réseaux*/
-
 
 public:
     Routeur();
-    Routeur(String nom,int idNoeud,int nbPort,vector<InterfaceFE*>);
+    Routeur(string nom,int idNoeud,int nbPort);
     ~Routeur();
 
-    vector<Noeud*>  getTableNoeuds(){return tableNoeuds;}
     vector<Route*>  getTableRoutage(){return tableRoutage;}
-    vector<InterfaceFE*>  getTableInterface(){return tableInterfaces;}
 
-    void setTableNoeuds(vector<Noeud*>);
-    void setTableNoeuds(Noeud*);
     void setTableRoutage(vector<Route*>);
     void setTableRoutage(Route*);
-    void setTableInterface(vector<InterfaceFE*>);
-    void setTableInterface(InterfaceFE*);
     void envoyerMessage(Noeud * Nrecepteur , string message);
 };
 

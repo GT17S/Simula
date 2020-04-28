@@ -8,15 +8,11 @@ Routeur::Routeur() : Noeud(){
 
 }
 
-Routeur::Routeur(String nom, int idNoeud, int nbPort, vector<InterfaceFE *>){
+Routeur::Routeur(string _nom, int _idNoeud, int _nbPort){
 
 }
 
-void Routeur::setTableNoeuds(Noeud *){
-
-}
-
-void Routeur::setTableNoeuds(vector<Noeud *>){
+Routeur::~Routeur(){
 
 }
 
@@ -25,14 +21,6 @@ void Routeur::setTableRoutage(Route *){
 }
 
 void Routeur::setTableRoutage(vector<Route *>){
-
-}
-
-void Routeur::setTableInterface(InterfaceFE *){
-
-}
-
-void Routeur::setTableInterface(vector<InterfaceFE *>){
 
 }
 

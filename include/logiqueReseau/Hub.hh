@@ -8,10 +8,10 @@
  * \version 0.1
  */
 
-#include "../include/logiqueReseau/Noeud.hh"
-#include<string>
-#include <vector>
+#include <string>
+#include "Noeud.hh"
 
+using std::string;
 
 /*!
  * \class Hub
@@ -19,8 +19,7 @@
  */
 
 class Hub: public Noeud{
-private:
-std::vector<Noeud*> tableNoeuds; /*!< Les noeuds connecte au hub*/
+
 public:
    /*!
    * \brief Construceur
@@ -29,7 +28,7 @@ public:
    * \param idNoeud : identificateur du hub
    * \param nbPort : nombre de ports du hub
    */
-    Hub(std::string nom,int idNoeud,int nbPort);
+    Hub(string nom,int idNoeud,int nbPort);
 
     /*!
      * \brief Constructeur par défaut
@@ -44,25 +43,11 @@ public:
     ~Hub();
 
     /*!
-     * \brief getTableNoeuds
-     * \return Les noeuds connecte au hub (vector<Noeud*>)
+     * \brief envoyerMessage
+     * \param nRecepteur
+     * \param message
      */
-    std::vector<Noeud*>  getTableNoeuds(){return tableNoeuds;}
-
-    /*!
-     * \brief setTableNoeuds
-     * Modifier Les noeuds connecte au hub
-     * \param noeuds : Les noeuds (std::vector<Noeud*>)
-     */
-    void setTableNoeuds(std::vector<Noeud*> noeuds);
-
-    /*!
-     * \brief setTableNoeuds
-     * Modifier Les noeuds connecte au hub
-     * \param noeuds : Le noeud (Noeud)
-     */
-    void setTableNoeuds(Noeud* noeud);
-    void envoyerMessage(Noeud *nRecepteur, std::string message);
+    void envoyerMessage(Noeud *nRecepteur, string message);
 
 
     /*!
@@ -71,7 +56,7 @@ public:
      * \param message : le message à envoyer de type message
      * change string vers data
      */
-    void envoyerBroadCast(std::string message);
+    void envoyerBroadCast(string message);
 
 
 };

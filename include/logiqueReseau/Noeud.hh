@@ -12,11 +12,14 @@
 #include <string>
 #include <vector>
 #include <typeinfo>
-
+#include "InterfaceFE.hh"
+#include "Cable.hh"
 
 using std::string;
 using std::vector;
 
+class InterfaceFE;
+class Cable;
 /*!
  * \class Noeud
  * \brief La classe Noeud représentant un noeud.
@@ -29,12 +32,17 @@ protected:
   string nom; /*!< Nom du noeud */
   int idNoeud;  /*< Identificateur du noeud */
   int nbPort; /*< Nombre de ports du noeud */
+  vector<InterfaceFE*> interfaces; /*< Liste des interfaces réseaux du noeud*/
   vector<string> fileDattente; /*< File d'attente des données */
+
+
+
 public:
     /*!
      * \brief Construceur
      *  Constructeur de la classe Noeud
-     *  Initialise une liste vide de file d'attente des données #fileDattente.
+     *  Initialise les #interfaces selon le nombre de ports #nbPort.
+     *  Initialise la file d'attente des données #fileDattente.
      * \param nom : voir #nom
      * \param idNoeud : voir #idNoeud
      * \param nbPort : voir #nbPort
@@ -46,7 +54,8 @@ public:
      * Constructeur par défaut de la classe Noeud
      * Initialise #idNoeud automatiquement.
      * Initialise #nbPort à 1 #nbPort.
-     * Initialise une liste vide de file d'attente des données #fileDattente.
+     * Initialise une interface réseau
+     * Initialise la file d'attente des données #fileDattente.
      */
     Noeud();
 
@@ -54,6 +63,8 @@ public:
      * \brief Destructeur
      * Destructeur de la classe noeud
      * Supprime #idNoeud de la liste des identificateurs.
+     * Destruction des #interfaces
+     * Destruction de la file d'attente (#fileDattente).
      */
     virtual ~Noeud();
 
@@ -78,6 +89,19 @@ public:
      */
     vector<string> getFileDattente(){return fileDattente;}
     /*!
+     * \brief getInterfaces
+     * \return voir #interfaces
+     */
+    vector<InterfaceFE*> getInterfaces(){return interfaces;}
+    /*!
+     * \brief getInterface
+     * Retourne un pointeur sur l'interface dans #interfaces,
+     *  sinon retourne pointeur null
+     * \param id : Numero de l'interface dans #interfaces
+     * \return pointeur sur #InterfaceFE
+     */
+    InterfaceFE * getInterface(int id);
+    /*!
      * \brief setNom
      * Modifier le nom du noeud, #nom
      * \param nom : nom du noeud (string)
@@ -86,15 +110,16 @@ public:
     /*!
      * \brief setIdNoeud
      * Modifier l'identificateur du noeud, #idNoeud
-     * Vérifier si id du noeud est unique.
+     * Vérifier si #idNoeud est unique dans #idsNoeuds.
      * Sinon attribuer automatiquement un ID unique.
-     * \param idNoeud : id du noeud (int) doit être unique.
+     * \param idNoeud : id noeud.
      */
     void setIdNoeud(int idNoeud);
     /*!
      * \brief setNbPort
      * Modifier le nombre de ports du noeud, #nbPort
-     * Vérifier si entier positive.
+     * Vérifier l'état des #interfaces.
+     * Initialisation des #interfaces si besoin.
      * \param int nbPort : nombre de ports du noeud (int)
      */
     void setNbPort(int nbPort);
@@ -112,6 +137,28 @@ public:
      * \param file : File d'attente des données
      */
     void setFileDattente(vector<string> file);
+
+    /*!
+     * \brief setInterfaces
+     * Modifier les #interfaces
+     * \param interfaces
+     */
+    void setInterfaces(vector<InterfaceFE*> interfaces);
+    /*!
+     * \brief setInterfaces
+     * \param interface
+     * \deprecated N'est pas utilisée.
+     */
+    void setInterfaces(InterfaceFE* interface);
+
+    /*!
+     * \brief acceptCable
+     * Vérifie si le #Noeud peut être lié à un #Cable
+     * \param cable : pointeur sur le cable à lié.
+     * \param idInterface : numero de port de l'interface dans le noeud.
+     * \return vrai si cable lié, faux sinon.
+     */
+    bool acceptCable(Cable * cable, int idInterface);
 
     /*!
      * \brief envoyerMessage

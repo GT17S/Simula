@@ -9,57 +9,54 @@
  * \version 0.1
  */
 
+#include "Noeud.hh"
 
-#include "../../include/logiqueReseau/Noeud.hh"
 #include<string>
 
+
+#ifndef CABLET_H
+#define CABLET_H
 /*!
  * \enum cableT
  * \brief Type du cable
  */
 
 typedef enum {
-  DROIT =0,
-  CROISE
+  DROIT =0, /*!< Cable droit */
+  CROISE /*!< Cable croisé */
 } cableT;
 
+#endif
 /*!
  * \class Cable
  * \brief La classe Cable représentant un Cable.
  */
 
+class Noeud;
+
 class Cable{
 private:
   static int nbCables; /*!< Nombre de cables */
-  int id;/*!< Identificateur du cable */
-  int debitMax;/*!< Débit maximum sur un câble */
-  float debitAcc;/*!< Débit actuel sur un câble */
-  float latence;/*!< Latence sur un cable */ //refrence to congestion
-  static int i;//augmenter l'id
-  cableT type;/*!< Type du cable */
-  Noeud* ext1;/*!< Le premier Noeud a l'extremitie */
-  Noeud* ext2;/*!< Le deuxième Noeud a l'extremitie */
+  static int i; /*!< Générateur des ID */
+
+  int id; /*!< Identificateur du cable */
+  int debitMax; /*!< Débit maximum du câble */
+  float debitAcc; /*!< Débit actuel du câble */
+  float latence; /*!< Latence du cable */ //refrence to congestion
+  int MTU; /*! < Taille maximale du paquet transmis */
+  cableT type; /*!< Type du cable */
+  Noeud* ext1; /*!< Le Noeud à l'extremitie 1 */
+  Noeud* ext2; /*!< Le Noeud à l'extremitie 2*/
 public:
+
   /*!
-   * Constructeur par défaut de la classe Cable
-   * \brief Constructeur par défaut
-   */
-  Cable();
-  /*!
-   *  Constructeur de la classe Cable
+   *
    * \brief Construceur
-   * \param type : Type du cable
-   * \param debitMax : Débit maximum du câble
-   * \param ext1 : Le premier Noeud a l'extremitie
-   * \param ext2 : Le deuxième Noeud a l'extremitie
+   * Constructeur de la classe Cable
+   * \param type : voir #type
+   * \param debitMax : voir #debitMax
    */
-  Cable(cableT type,int debitMax,Noeud* ext1, Noeud* ext2);
-  /*!
-   *  Constructeur par copie de la classe Cable
-   * \brief Construceur
-   * \param c : Cable
-   */
-  Cable(Cable& c);
+  Cable(cableT type = DROIT, int debitMax = 100, int MTU = 1500);
 
   /*!
    * \brief Destructeur
@@ -83,30 +80,31 @@ public:
    */
   float getLatence() const;
   /*!
-   * \brief getType
-   * \return Le type du cable (cableT)
-   */
-  cableT getType() const{return type;}
-  /*!
    * \brief getDebitAcc
    * \return Le débit actuel (float)
    */
   float getDebitAcc() const{ return debitAcc;}
   /*!
-   * \brief getNbCables
-   * \return Le nombre du cables (int)
+   * \brief getMTU
+   * \return voir #MTU
    */
-  static int getNbCables(){return nbCables;}
+  int getMTU(){return MTU;}
+  /*!
+   * \brief getType
+   * \return Le type du cable (cableT)
+   */
+  cableT getType() const{return type;}
+
   /*!
    * \brief getExt1
    * \return Le premier Noeud a l'extremitie (Noeud)
    */
-  Noeud *getExt1() const{return ext1;}
+  Noeud * getExt1() const{return ext1;}
   /*!
    * \brief getExt2
    * \return Le deuxième Noeud a l'extremitie (Noeud)
    */
-  Noeud *getExt2() const{return ext2;}
+  Noeud * getExt2() const{return ext2;}
 
 
   /*!
@@ -146,6 +144,12 @@ public:
    */
   void setType(const cableT &type);
   /*!
+   * \brief setMTU
+   * Modifier la taille maximale du paquet transmis par le cable, #MTU
+   * \param MTU
+   */
+  void setMTU(int MTU);
+  /*!
    * \brief setExt1
    * Modifier le noeud a l'extremitie
    * \param noeud1 : noeud (Noeud).
@@ -160,10 +164,19 @@ public:
 
   /*!
    * \brief estBienConnecte
-   * Méthode qui permet de vérifier c'est deux noeud sont bien connectés
-   * \return bool
+   * Méthode qui permet de vérifier si les deux noeuds sont bien connectés
+   * \return vrai si bien connécté, faux sinon.
    */
-  bool estBienConnecte() const;
-
+  bool estBienConnecte();
+  /*!
+   * \brief connexionNoeuds
+   * Etablir une connexion entre, deux noeuds avec le cable
+   * \param N1 : voir #ext1
+   * \param interface1 : numero de l'interface dans N1
+   * \param N2 : voir #ext2
+   * \param interface2 : numero de l'interface dans N2
+   * \return vrai si la connexion est établie, faux sinon (Destruction du cable)
+   */
+  bool connexionNoeuds(Noeud * N1, int interface1, Noeud * N2, int interface2);
 };
 #endif

@@ -1,7 +1,7 @@
 #include "../../include/logiqueReseau/Station.hh"
 
 
-Station::Station() : Noeud(), interfacePc(), numSegmentsEnvoye(){
+Station::Station() : Noeud(), numSegmentsEnvoye(){
     // ID automatique
     // nb port =1
     // filedattente vide
@@ -10,17 +10,13 @@ Station::Station() : Noeud(), interfacePc(), numSegmentsEnvoye(){
 
 }
 
-Station::Station(string _nom, int _idNoeud, int _nbPort, string _adressePasserelle, InterfaceFE _interfacePc):
+Station::Station(string _nom, int _idNoeud, int _nbPort, string _adressePasserelle):
                  Noeud(_nom, _idNoeud, _nbPort), numSegmentsEnvoye(){
     // file dattente vide
     setPasserelle(_adressePasserelle);
-    interfacePc = _interfacePc;
 
 }
 
-void Station::setInterfacePc(InterfaceFE _interfacePc){
-   interfacePc = _interfacePc;
-}
 
 void Station::setPasserelle(string _adresseIP){
     if(InterfaceFE::regexValide(_adresseIP, DEFAULT_IP))

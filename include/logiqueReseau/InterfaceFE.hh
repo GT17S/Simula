@@ -11,11 +11,13 @@
 #include <string>
 #include <regex>
 #include <boost/algorithm/string.hpp>
+#include "Cable.hh"
 
 
 using std::string;
 using std::vector;
 
+class Cable;
 
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
@@ -56,6 +58,7 @@ private :
     string adresseRes; /*<! adresse réseau */
     string masque; /*<! masque réseau */
     string adresseMac; /*<! adresse MAC*/
+    Cable * cable; /*<! Cable lié à l'interface */
     /*!
      * \brief ipValide
      * Vérifier si une adresse IP est bien configuré
@@ -80,8 +83,9 @@ public :
     /*!
      * \brief Destructeur
      * Destructeur de la classe InterfaceFE
+     * Destruction du cable lié.
      */
-    ~InterfaceFE(){}
+    ~InterfaceFE();
 
     /*!
      * \brief getNomInterface
@@ -89,10 +93,10 @@ public :
      */
     string getNomInterface(){return nomInterface;}
     /*!
-     * \brief getAdresseMac
-     * \return voir #adresseIP
+     * \brief getAdresseIP
+     * \return voir #adresseMac
      */
-    string getAdresseMac(){return adresseIP;}
+    string getAdresseIP(){return adresseIP;}
     /*!
      * \brief getAdresseRes
      * \return voir #adresseRes
@@ -103,11 +107,18 @@ public :
      * \return voir #masque
      */
     string getMasque(){return masque;}
+
     /*!
-     * \brief getAdresseIP
-     * \return voir #adresseMac
+     * \brief getAdresseMac
+     * \return voir #adresseIP
      */
-    string getAdresseIP(){return adresseMac;}
+    string getAdresseMac(){return adresseIP;}
+
+    /*!
+     * \brief getCable
+     * \return voir #cable
+     */
+    Cable * getCable(){return cable;}
 
     /*!
      * \brief setNomInterface
@@ -147,6 +158,14 @@ public :
      * \param adresseMac
      */
     void setAdresseMac(string adresseMac);
+
+    /*!
+     * \brief setCable
+     * Modifier le cable lié à l'interface.
+     * \param cable
+     */
+    void setCable(Cable * cable);
+
 
     /*!
      * \brief regexValide

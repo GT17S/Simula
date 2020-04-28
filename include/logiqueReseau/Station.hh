@@ -17,7 +17,6 @@
 using std::string;
 using std::vector;
 
-class InterfaceFE;
 class Noeud;
 
 /*!
@@ -26,7 +25,6 @@ class Noeud;
  */
 class Station : public Noeud {
   private:
-    InterfaceFE interfacePc; /*!< interface réseau de la station */
     string adressePasserelle; /*!< adresse de passerelle de la station*/
     vector<int> numSegmentsEnvoye; /*!< liste des numeros de séquences des segments envoyés */
     //Congestion controleur;
@@ -35,7 +33,6 @@ public:
      * \brief Constructeur par défaut
      * Constructeur par défaut de la classe Station
      * Initialise un noeud #Noeud()
-     * Initialise une interface #InterfaceFE()
      * Génére un #nom automatiquement ( "Station + #idNoeud")
      * Initialise #adressePasserelle à #DEFAULT_IP
      * Initialise #numSegmentsEnvoye vide
@@ -50,21 +47,16 @@ public:
      * \param idNoeud : voir #idNoeud
      * \param nbPort : voir #nbPort
      * \param adressePasserelle : voir #adressePasserelle
-     * \param interfacePc : voir #interfacePc
      */
     Station(string nom,int idNoeud,int nbPort,
-            string adressePasserelle, InterfaceFE interfacePc );
+            string adressePasserelle);
     /*!
       * \brief Destructeur
       * Destructeur de la classe Station
       */
     ~Station(){}
 
-    /*!
-     * \brief getInterfacePc
-     * \return voir #interfacePc
-     */
-    InterfaceFE getInterfacePc(){return interfacePc;}
+
     /*!
      * \brief getPasserelle
      * \return voir #adressePasserelle
@@ -76,12 +68,7 @@ public:
      */
     vector<int> getNumSegmentsEnvoye(){return numSegmentsEnvoye;}
 
-    /*!
-     * \brief setInterfacePc
-     * Modifier l'interface réseau de la station
-     * \param interfacePc : interface réseau
-     */
-    void setInterfacePc(InterfaceFE interfacePc);
+
     /*!
      * \brief setPasserelle
      * Modifier l'adresse de passerelle de la station, #adressePasserelle

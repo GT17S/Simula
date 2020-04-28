@@ -1,80 +1,82 @@
-#include "../../include/logiqueReseau/Cable.hh"
-
+#include "../include/logiqueReseau/Cable.hh"
 #include "typeinfo"
-using namespace std;
 
 
-Cable::Cable(){
-    this->id=i;
-    this->nbCables=nbCables+1;
+int Cable::nbCables = 0;
+int Cable::i = 0;
+
+
+Cable::Cable(cableT _type, int _debitMax, int _MTU){
+    type = _type;
+    debitMax = _debitMax;
+    MTU = _MTU;
+
+    // ID cable
+    nbCables = nbCables+1;
+    id = i;
     i++;
 }
 
-Cable::Cable(cableT type,int debitMax,Noeud* ext1, Noeud* ext2){
-    this->type=type;
-    this->debitMax=debitMax;
-    this->ext1=ext1;
-    this->ext2=ext2;
-    this->nbCables=nbCables+1;
-    this->id=i;
-    i++;
+Cable::~Cable(){
+
+    nbCables = nbCables-1;
 }
 
-Cable::Cable(Cable& c){
-    this->type=c.type;
-    this->debitMax=c.debitMax;
-    this->ext1=c.ext1;
-    this->ext2=c.ext2;
-    this->nbCables=nbCables+1;
-    this->id=i;
-    i++;
-}
-
-Cable::~Cable(){this->nbCables=nbCables-1;}
 
 
+void Cable::setId(int _idCable){ id = _idCable;}
 
-void Cable::setId(int idCable){ this->id = idCable;}
+void Cable::setDebitMax(int _debitMax){debitMax = _debitMax;}
 
+void Cable::setDebitAcc(float _debitAcc){debitAcc = _debitAcc;}
 
+void Cable::setLatence(float _latence){latence = _latence;}
 
-void Cable::setDebitMax(int debitMax){this->debitMax = debitMax;}
+void Cable::setMTU(int _MTU){ MTU = _MTU;}
 
+void Cable::setType(const cableT & _type){type = _type;}
 
+void Cable::setExt1(Noeud * _noeud1){ext1 = _noeud1;}
 
-void Cable::setDebitAcc(float debitAcc){this->debitAcc = debitAcc;}
+void Cable::setExt2(Noeud * _noeud2){ext2 = _noeud2;}
 
+bool  Cable::estBienConnecte(){
 
+    string typeNoeud1;
+    string typeNoeud2;
 
-void Cable::setLatence(float latence){this->latence = latence;}
+    typeNoeud1 = typeid(ext1).name();
+    typeNoeud2 = typeid(ext2).name();
 
-
-void Cable::setType(const cableT &type){this->type = type;}
-
-
-void Cable::setNbCables(int nbCable){nbCables = nbCable;}
-
-void Cable::setExt1(Noeud *noeud1){this->ext1 = noeud1;}
-
-
-void Cable::setExt2(Noeud *noeud2){this->ext2 = noeud2;}
-bool  Cable::estBienConnecte() const{
-    string classType1;
-    string classType2;
-    classType1=typeid(ext1).name();
-    classType2=typeid(ext2).name();
-    if(classType1==classType2){
-        if(type==1){
+    // Meme type, cable croisé
+    if(typeNoeud1 == typeNoeud2){
+        if(type == 1)
             return true;
-        }else return false;
-    }else if ((classType1=="3hub" ||classType2=="3hub") && (classType1=="6Switch" ||classType2=="6Switch")){
-        if(type==1){
+        else
+            return false;
+    // Switch & Hub, cable croisé
+    }else if ((typeNoeud1 == "3Hub" ||typeNoeud2 == "3Hub") && (typeNoeud1 == "6Switch" ||typeNoeud2 == "6Switch")){
+        if(type == 1)
             return true;
-        }else return false;
-    }else{
-        if(type==0) return true;
-        else return false;
+        else
+            return false;
+
+    // Sinon cable droit
+    }else if(type == 0)
+        return true;
+    else
+        return false;
+}
+
+bool Cable::connexionNoeuds(Noeud * N1, int interface1, Noeud * N2, int interface2){
+    if(N1->acceptCable(this, interface1) && N2->acceptCable(this, interface2)){
+        setExt1(N1);
+        setExt2(N2);
+        return true;
     }
+
+    // Sinon destruction du cable!
+    delete this;
+    return false;
+
 }
-int Cable::nbCables=0;
-int Cable::i=0;

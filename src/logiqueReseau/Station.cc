@@ -1,4 +1,4 @@
-#include "../include/logiqueReseau/Station.hh"
+#include "../../include/logiqueReseau/Station.hh"
 
 
 Station::Station() : Noeud(), numSegmentsEnvoye(){

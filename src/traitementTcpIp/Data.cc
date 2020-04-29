@@ -1,15 +1,15 @@
 #include "../../include/traitementTcpIp/Data.hh"
 
 Data::Data(std::string message){
-	//convertir en binaire str -> str
-	seq = new boost::dynamic_bitset<>(message.size());
+	std::string binstr = strtobinary(message);
+	seq = new boost::dynamic_bitset<>(message.size()*8);
 	//std::cout << message << std::endl;
 	assert(seq);
 	for (int i = message.size(); i >= 0; i--){
-		if(message[i] == '1'){
+		if(binstr[i] == '1'){
 			seq->set(i);
 		}
-		if(message[i] == '0'){
+		if(binstr[i] == '0'){
 			seq->set(i,false);
 		}
 	}
@@ -51,3 +51,10 @@ std::ostream& operator<<(std::ostream &os, Data& d){
 	return os;
 }
 
+std::string Data::strtobinary(std::string msg){
+	std::string binaryString = "";
+    for (char& _char : msg) {
+        binaryString += std::bitset<8>(_char).to_string();
+    }
+    return binaryString;
+}

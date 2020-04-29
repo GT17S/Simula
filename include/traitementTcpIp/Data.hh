@@ -3,6 +3,7 @@
 
 #include <assert.h>
 #include <iostream>
+#include <bitset>
 #include <boost/dynamic_bitset.hpp>
 
 enum data_t
@@ -17,6 +18,10 @@ class Data {
 private:
 	boost::dynamic_bitset<>* seq;
 	data_t type;
+
+	std::string strtobinary(std::string msg);
+
+
 public:
 	Data(std::string message);
 	Data(boost::dynamic_bitset<>* seq, data_t type = DATA_SEGMENT);

@@ -4,7 +4,7 @@
 
 int main()
 {
-	Data d("01001101");
+	Data d("Z");
 	std::cout << d[2];
 
  	return 0;

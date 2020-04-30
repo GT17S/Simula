@@ -1,7 +1,10 @@
 #include <iostream>
+#include <vector>
 
-int main(int argc, char ** argv)
+using std::vector;
+int main()
 {
 
- 	return 0;
-}	
+    return 0;
+}
+

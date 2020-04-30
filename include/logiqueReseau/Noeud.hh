@@ -18,6 +18,16 @@
 using std::string;
 using std::vector;
 
+
+#ifndef ROUTE_H
+#define ROUTE_H
+struct Route {
+    string adresseReseau;
+    string masque;
+    string passerelle;
+};
+#endif
+
 class InterfaceFE;
 class Cable;
 /*!
@@ -34,7 +44,7 @@ protected:
   int nbPort; /*< Nombre de ports du noeud */
   vector<InterfaceFE*> interfaces; /*< Liste des interfaces réseaux du noeud*/
   vector<string> fileDattente; /*< File d'attente des données */
-
+  vector<Route*> tableRoutage; /*!< Table de routage */
 
 
 public:
@@ -102,6 +112,16 @@ public:
      */
     InterfaceFE * getInterface(int id);
     /*!
+     * \brief getInterface
+     * \param cable : cable lié à l'interface
+     * \return L'interface lié à le cable en entrée
+     */
+    InterfaceFE * getInterface(Cable * cable);
+
+
+    vector<Route*>  getTableRoutage(){return tableRoutage;}
+
+    /*!
      * \brief setNom
      * Modifier le nom du noeud, #nom
      * \param nom : nom du noeud (string)
@@ -150,6 +170,11 @@ public:
      * \deprecated N'est pas utilisée.
      */
     void setInterfaces(InterfaceFE* interface);
+
+
+    void setTableRoutage(vector<Route*>);
+    void setTableRoutage(Route*);
+
 
     /*!
      * \brief acceptCable

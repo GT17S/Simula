@@ -23,6 +23,16 @@ Cable::~Cable(){
 }
 
 
+Noeud * Cable::getExt(Noeud * ext){
+    if(ext == ext1)
+            return ext2;
+
+    else if(ext == ext2)
+            return ext1;
+
+    else
+            return nullptr;
+}
 
 void Cable::setId(int _idCable){ id = _idCable;}
 
@@ -80,3 +90,5 @@ bool Cable::connexionNoeuds(Noeud * N1, int interface1, Noeud * N2, int interfac
     return false;
 
 }
+
+

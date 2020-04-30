@@ -48,6 +48,17 @@ InterfaceFE * Noeud::getInterface(int id){
     return nullptr;
 }
 
+InterfaceFE * Noeud::getInterface(Cable * _cable){
+    if(_cable){
+        for( InterfaceFE * i : interfaces){
+            if(i->getCable() == _cable)
+                return i;
+        }
+    }
+
+    return nullptr;
+}
+
 
 void Noeud::setNom(string _nom){
     nom = _nom;
@@ -81,6 +92,8 @@ void Noeud::setIdNoeud(int _idNoeud){
 }
 
 
+
+
 void Noeud::setNbPort(int _nbPort){
     // nbport par défaut = 1
 
@@ -101,6 +114,7 @@ void Noeud::setNbPort(int _nbPort){
         }
         // Possibilité d'ecraser des interfaces
         if(cpt <= _nbPort){
+
             // Ecraser les interfaces non liées ( connexion = false )
             for (auto i = interfaces.rbegin(); i != interfaces.rend(); i++){
                 if(nbPort == _nbPort)
@@ -112,6 +126,7 @@ void Noeud::setNbPort(int _nbPort){
                     nbPort--;
                 }
             }
+
             interfaces.erase(std::remove(interfaces.begin(), interfaces.end(), nullptr), interfaces.end());
 
             nbPort = _nbPort;
@@ -153,4 +168,6 @@ bool Noeud::acceptCable(Cable * _cable, int _idInterface){
         }
     return false;
 }
+
+
 

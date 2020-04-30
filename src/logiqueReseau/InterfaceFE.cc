@@ -1,4 +1,5 @@
 #include "../include/logiqueReseau/InterfaceFE.hh"
+#include <iostream>
 
 const string IP_REGEX = "^(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$";
 const string MAC_REGEX = "^([0-9A-Fa-f]{2}[:]){5}([0-9A-Fa-f]{2})$";
@@ -17,43 +18,31 @@ InterfaceFE::InterfaceFE(string _nomInterface, string _adresseIP,
 }
 
 InterfaceFE::~InterfaceFE(){
+    std::cout << "Destruction" << std::endl;
     // Destruction du cable lié
     if(cable)
         delete cable;
 }
+
 
 void InterfaceFE::setNomInterface(string _nomInterface){
     nomInterface = _nomInterface;
 }
 
 void InterfaceFE::setAdresseIP(string _adresseIP){
-    if(regexValide(_adresseIP, IP_REGEX))
-        adresseIP = _adresseIP;
-    else
-        adresseIP = DEFAULT_IP;
-
+     adresseIP = checkAdresse(_adresseIP, IP_REGEX, DEFAULT_IP);
 }
 
 void InterfaceFE::setAdresseRes(string _adresseRes){
-    if(regexValide(_adresseRes, IP_REGEX))
-        adresseRes = _adresseRes;
-    else
-        adresseRes = DEFAULT_IP;
-
+     adresseRes = checkAdresse(_adresseRes, IP_REGEX, DEFAULT_IP);
 }
 
 void InterfaceFE::setMasque(string _masque){
-    if(regexValide(_masque, IP_REGEX))
-        masque = _masque;
-    else
-        masque = DEFAULT_IP;
+    masque = checkAdresse(_masque, IP_REGEX, DEFAULT_IP);
 }
 
 void InterfaceFE::setAdresseMac(string _adresseMac){
-    if(regexValide(_adresseMac, MAC_REGEX))
-        adresseMac = _adresseMac;
-    else
-        adresseMac = DEFAULT_MAC;
+     adresseMac = checkAdresse(_adresseMac, MAC_REGEX, DEFAULT_MAC);
 }
 
 void InterfaceFE::setCable(Cable * _cable){
@@ -67,6 +56,13 @@ bool InterfaceFE::regexValide(string adresse, string _regex){
         return true;
 
     return false;
+}
+
+string InterfaceFE::checkAdresse(std::string _adresse, std::string _regex, std::string _defaut){
+    if(regexValide(_adresse, _regex))
+        return _adresse;
+    else
+        return _defaut;
 }
 
 bool InterfaceFE::ipValide(){

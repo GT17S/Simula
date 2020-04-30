@@ -5,8 +5,9 @@
 
 int main(int argc, char ** argv)
 {
-	Data d("S");
+	std::string s("Test");
+	Data d(s);
 	std::cout << d << std::endl;
-	
+
  	return 0;
 }	

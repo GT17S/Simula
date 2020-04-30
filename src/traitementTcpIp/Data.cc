@@ -2,27 +2,15 @@
 
 Data::Data(std::string message){
 	std::cout << "Message: " <<  message << std::endl;
-	std::string binstr = strtobinary(message);
-	//Penser à en allouer plus pour pouvoir contenir toutes les infos d'un paquet
-	seq = new boost::dynamic_bitset<>();
+	std::reverse(std::begin(message), std::end(message));
+	std::cout << "Message: " <<  message << std::endl;
+	seq = new boost::dynamic_bitset<unsigned char>(std::begin(message),std::end(message));
 	assert(seq);
-	for (int i = (int)binstr.size(); i >= 0; i--){
-		//std::cout << binstr[i];
-		if(binstr[i] == '1'){
-			//seq->set(i, true);
-			seq->push_back(1);
-		}
-		if(binstr[i] == '0'){
-			seq->push_back(0);
-		}
-	}
 
-
-	//seq->flip();
 	type = DATA_TOTAL;
 }
 
-Data::Data(boost::dynamic_bitset<>* seq, data_t type){
+Data::Data(boost::dynamic_bitset<unsigned char>* seq, data_t type){
 	setType(type);
 	setSeq(seq);
 }
@@ -36,7 +24,7 @@ void Data::setType(data_t _type){
 	this->type = _type;
 }
 
-void Data::setSeq(boost::dynamic_bitset<>* _seq){
+void Data::setSeq(boost::dynamic_bitset<unsigned char>* _seq){
 	assert(_seq);
 	//Maybe a deep copy
 	this->seq = _seq;
@@ -44,17 +32,14 @@ void Data::setSeq(boost::dynamic_bitset<>* _seq){
 
 
 int Data::operator[](int index){
-	assert(index > 0 && index < (int)seq->capacity());
+	assert(index >= 0 && index < (int)seq->capacity());
 	boost::dynamic_bitset<>::size_type i = index;
 	return (int)seq[i].to_ulong();
 }
 
 std::ostream& operator<<(std::ostream &os, Data& d){	
-	for (int i = 0; i < (int)d.getSeq()->size(); ++i)
-	{
-		os << d.getSeq()[i] ;
-	}
-	os << std::endl;
+	
+	os << "Contenu" << *d.getSeq() << std::endl;
 	os << "Type: " << d.getType() << std::endl;
 	return os;
 }

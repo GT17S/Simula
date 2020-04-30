@@ -5,9 +5,8 @@
 
 int main(int argc, char ** argv)
 {
-	Data d("Z");
-	std::cout << d[2];
-
-
+	Data d("S");
+	std::cout << d << std::endl;
+	
  	return 0;
 }	

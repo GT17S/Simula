@@ -1,20 +1,24 @@
 #include "../../include/traitementTcpIp/Data.hh"
 
 Data::Data(std::string message){
+	std::cout << "Message: " <<  message << std::endl;
 	std::string binstr = strtobinary(message);
-	seq = new boost::dynamic_bitset<>(message.size()*8);
-	//std::cout << message << std::endl;
+	//Penser à en allouer plus pour pouvoir contenir toutes les infos d'un paquet
+	seq = new boost::dynamic_bitset<>();
 	assert(seq);
-	for (int i = message.size(); i >= 0; i--){
+	for (int i = (int)binstr.size(); i >= 0; i--){
+		//std::cout << binstr[i];
 		if(binstr[i] == '1'){
-			seq->set(i);
+			//seq->set(i, true);
+			seq->push_back(1);
 		}
 		if(binstr[i] == '0'){
-			seq->set(i,false);
+			seq->push_back(0);
 		}
 	}
 
-	seq->flip();
+
+	//seq->flip();
 	type = DATA_TOTAL;
 }
 
@@ -46,7 +50,11 @@ int Data::operator[](int index){
 }
 
 std::ostream& operator<<(std::ostream &os, Data& d){	
-	os << "Contenu: " << *d.getSeq() << std::endl;
+	for (int i = 0; i < (int)d.getSeq()->size(); ++i)
+	{
+		os << d.getSeq()[i] ;
+	}
+	os << std::endl;
 	os << "Type: " << d.getType() << std::endl;
 	return os;
 }
@@ -56,5 +64,6 @@ std::string Data::strtobinary(std::string msg){
     for (char& _char : msg) {
         binaryString += std::bitset<8>(_char).to_string();
     }
+    std::cout << "Binary: " <<  binaryString << std::endl;
     return binaryString;
 }

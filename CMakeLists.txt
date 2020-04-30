@@ -44,7 +44,7 @@ endif (DOXYGEN_FOUND)
 endif()
 
 #Mettre à jour en fonction des nouveaux modules ajoutés
-include_directories( ${Qt5Widgets_INCLUDES} include/  /usr/include ${Boost_INCLUDE_DIR})
+include_directories( ${Qt5Widgets_INCLUDES} include/ /usr/include ${Boost_INCLUDE_DIR})
 link_directories(/usr/lib)
 
 #Selection les fichiers à compiler

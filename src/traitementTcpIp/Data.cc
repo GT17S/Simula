@@ -1,12 +1,12 @@
 #include "../../include/traitementTcpIp/Data.hh"
 
 Data::Data(std::string message){
-	std::cout << "Message: " <<  message << std::endl;
+	//std::cout << "Message: " <<  message << std::endl;
 	std::reverse(std::begin(message), std::end(message));
-	std::cout << "Message: " <<  message << std::endl;
+	//std::cout << "Message: " <<  message << std::endl;
 	seq = new boost::dynamic_bitset<unsigned char>(std::begin(message),std::end(message));
 	assert(seq);
-
+	
 	type = DATA_TOTAL;
 }
 
@@ -26,7 +26,6 @@ void Data::setType(data_t _type){
 
 void Data::setSeq(boost::dynamic_bitset<unsigned char>* _seq){
 	assert(_seq);
-	//Maybe a deep copy
 	this->seq = _seq;
 }
 
@@ -49,6 +48,6 @@ std::string Data::strtobinary(std::string msg){
     for (char& _char : msg) {
         binaryString += std::bitset<8>(_char).to_string();
     }
-    std::cout << "Binary: " <<  binaryString << std::endl;
+    //std::cout << "Binary: " <<  binaryString << std::endl;
     return binaryString;
 }

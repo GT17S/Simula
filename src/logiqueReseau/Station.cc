@@ -18,11 +18,8 @@ Station::Station(string _nom, int _idNoeud, int _nbPort, string _adressePasserel
 }
 
 
-void Station::setPasserelle(string _adresseIP){
-    if(InterfaceFE::regexValide(_adresseIP, DEFAULT_IP))
-        adressePasserelle = _adresseIP;
-    else
-        adressePasserelle = DEFAULT_IP;
+void Station::setPasserelle(string _adresse){
+     adressePasserelle = InterfaceFE::checkAdresse(_adresse, IP_REGEX, DEFAULT_IP);
 
 }
 

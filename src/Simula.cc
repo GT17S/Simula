@@ -1,13 +1,7 @@
 #include <iostream>
+using  namespace  std;
 
-#include "../../include/traitementTcpIp/Data.hh"
-#include "../../include/traitementTcpIp/DataOutils.hh"
-
-int main(int argc, char ** argv)
+int main()
 {
-	Data d("Z");
-	std::cout << d[2];
-
-
- 	return 0;
-}	
+    return 0;
+}

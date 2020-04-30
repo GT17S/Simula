@@ -9,11 +9,10 @@
  */
 
 
-
-
 #include <string>
 #include <vector>
 #include "Noeud.hh"
+
 using std::string;
 using std::vector;
 
@@ -43,6 +42,7 @@ public:
 
     void setTableRoutage(vector<Route*>);
     void setTableRoutage(Route*);
+
     void envoyerMessage(Noeud * Nrecepteur , string message);
 };
 

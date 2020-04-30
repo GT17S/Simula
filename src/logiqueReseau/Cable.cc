@@ -1,9 +1,9 @@
 #include "../include/logiqueReseau/Cable.hh"
 #include "typeinfo"
-
+#include <iostream>
 
 int Cable::nbCables = 0;
-int Cable::i = 0;
+int Cable::i = 1;
 
 
 Cable::Cable(cableT _type, int _debitMax, int _MTU){
@@ -18,7 +18,9 @@ Cable::Cable(cableT _type, int _debitMax, int _MTU){
 }
 
 Cable::~Cable(){
-
+    std::cout << "Desutruction cable "<<id <<std::endl;
+    getExt1()->getInterface(this)->setCable(nullptr);
+    getExt2()->getInterface(this)->setCable(nullptr);
     nbCables = nbCables-1;
 }
 
@@ -87,6 +89,7 @@ bool Cable::connexionNoeuds(Noeud * N1, int interface1, Noeud * N2, int interfac
 
     // Sinon destruction du cable!
     delete this;
+    //this = NULL;
     return false;
 
 }

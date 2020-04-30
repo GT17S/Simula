@@ -18,10 +18,12 @@ InterfaceFE::InterfaceFE(string _nomInterface, string _adresseIP,
 }
 
 InterfaceFE::~InterfaceFE(){
-    std::cout << "Destruction" << std::endl;
+    std::cout << "Destruction de l'interfac" << std::endl;
     // Destruction du cable lié
-    if(cable)
+   // if(cable){
         delete cable;
+        cable = nullptr;
+    //}
 }
 
 

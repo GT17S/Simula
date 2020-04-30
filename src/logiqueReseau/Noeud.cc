@@ -1,5 +1,5 @@
 #include "../include/logiqueReseau/Noeud.hh"
-
+#include <iostream>
 vector<int> Noeud::idsNoeuds;
 
 Noeud::Noeud() : nbPort(1), interfaces(), fileDattente(){
@@ -22,18 +22,22 @@ Noeud::Noeud(string _nom, int _idNoeud, int _nbPort) :
 }
 
 Noeud::~Noeud(){
+
+    std::cout << "Desutruction noeud "<< idNoeud<<std::endl;
     // Supprimer ID du noeud de la liste
     idsNoeuds.erase(std::remove(idsNoeuds.begin(), idsNoeuds.end(), idNoeud), idsNoeuds.end());
 
     // Destruction des interfaces
     for (auto i : interfaces) {
         delete i;
+        i = nullptr;
     }
     interfaces.clear();
 
     // Destruction de la file d'attente
     /*for(auto d : fileDattente){
         delete d;
+        d = nullptr;
     }
     */
     fileDattente.clear();

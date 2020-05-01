@@ -122,7 +122,10 @@ public:
      */
     InterfaceFE * getInterface(Cable * cable);
 
-
+    /*!
+     * \brief getTableRoutage
+     * \return  #voir tableRoutage
+     */
     vector<Route*>  getTableRoutage(){return tableRoutage;}
 
     /*!

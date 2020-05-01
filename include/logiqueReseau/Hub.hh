@@ -14,26 +14,30 @@
 
 using std::string;
 
+class Noeud;
+
 /*!
  * \class Hub
- * \brief La classe Hub hérite de la classe Noeud .
+ * \brief La classe Hub dérivée de la classe Noeud .
  */
 
 class Hub: public Noeud{
 
 public:
-   /*!
-   * \brief Construceur
-   *  Constructeur de la classe Noeud
-   * \param nom : nom du hub
-   * \param idNoeud : identificateur du hub
-   * \param nbPort : nombre de ports du hub
-   */
+    /*!
+     * \brief Constructeur
+     * Constructeur de la classe HUB,
+     * qui permet d'initialiser un Hub avec les paramètres en entrée.
+     * \param nom : voir #nom
+     * \param idNoeud : voir #idNoeud
+     * \param nbPort : voir #nbPort
+     */
     Hub(string nom,int idNoeud,int nbPort);
 
     /*!
      * \brief Constructeur par défaut
-     * Constructeur par défaut de la classe Hub
+     * Initialise un noeud #Noeud()
+     * Génére un #nom automatiquement ( "Hub + #idNoeud")
      */
     Hub();
 

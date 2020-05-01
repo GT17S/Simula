@@ -1,4 +1,5 @@
 #include "../include/logiqueReseau/Cable.hh"
+#include "../include/logiqueReseau/Graphe.hh"
 #include "typeinfo"
 #include <iostream>
 
@@ -19,6 +20,8 @@ Cable::Cable(cableT _type, int _debitMax, int _MTU){
 
 Cable::~Cable(){
     std::cout << "Desutruction cable "<<id <<std::endl;
+    Graphe::supprimerCableMatrice(this);
+
     getExt1()->getInterface(this)->setCable(nullptr);
     getExt2()->getInterface(this)->setCable(nullptr);
     nbCables = nbCables-1;
@@ -84,14 +87,15 @@ bool Cable::connexionNoeuds(Noeud * N1, int interface1, Noeud * N2, int interfac
     if(N1->acceptCable(this, interface1) && N2->acceptCable(this, interface2)){
         setExt1(N1);
         setExt2(N2);
+        Graphe::ajoutCableMatrice(this);
         return true;
+
     }
 
     // Sinon destruction du cable!
     delete this;
     //this = NULL;
     return false;
-
 }
 
 

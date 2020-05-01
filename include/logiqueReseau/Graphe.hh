@@ -46,9 +46,9 @@ class Graphe{
 
 private:
 
-    vector<Noeud*> sommets;/*!< Liste des sommets du Graphe */
-    vector<vector<Cable*>> matrice; /*!< Matrice d'adjacences du Graphe */
-    vector<vector<Chemin>> table;/*!< Table de chemins du Graphe */
+    static vector<Noeud*> sommets;/*!< Liste des sommets du Graphe */
+    static vector<vector<Cable*>> matrice; /*!< Matrice d'adjacences du Graphe */
+    static vector<vector<Chemin>> table;/*!< Table de chemins du Graphe */
 
 public:
 
@@ -140,10 +140,10 @@ public:
 
 
 
-    void ajoutNoeudMatrice(Noeud * n);
-    void ajoutCableMatrice(Cable *C);
-    void supprimerNoeudMatrice(Noeud * n);
-    void supprimerCableMatrice(Cable* c);
+    static void ajoutNoeudMatrice(Noeud * n);
+    static void ajoutCableMatrice(Cable *C);
+    static void supprimerNoeudMatrice(Noeud * n);
+    static void supprimerCableMatrice(Cable* c);
 
 
 };

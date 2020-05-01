@@ -1,7 +1,9 @@
 #include "../include/logiqueReseau/Graphe.hh"
-
 #include <iostream>
 
+vector<Noeud*> Graphe::sommets;/*!< Liste des sommets du Graphe */
+vector<vector<Cable*>> Graphe::matrice; /*!< Matrice d'adjacences du Graphe */
+vector<vector<Chemin>> Graphe::table;/*!< Table de chemins du Graphe */
 
 Graphe::Graphe(){
 
@@ -9,9 +11,9 @@ Graphe::Graphe(){
 
 Graphe::Graphe(Graphe & g)
 {
-    this->sommets=g.sommets;
-    this->matrice=g.matrice;
-    this->table=g.table;
+    sommets=g.sommets;
+    matrice=g.matrice;
+    table=g.table;
 }
 
 
@@ -19,11 +21,16 @@ Graphe::~Graphe()
 {
     //cout<<"destruction sommets"<<endl;
      // Destruction des noeuds
-     for (auto s : sommets) {
-         delete s;
-         s = nullptr;
-     }
-     sommets.clear();
+
+
+    for(auto i = sommets.begin(); i!= sommets.end() ;){
+
+        //std::cout << "Supprimer " << (*i)->getNom() <<std::endl;
+        delete *i;
+        //*i = nullptr;
+    }
+
+    sommets.clear();
 
      // Destruction de la matrice
      matrice.clear();
@@ -35,7 +42,7 @@ Graphe::~Graphe()
 
 void Graphe::setSommet(Noeud* N)
 {
-    for(Noeud * n : this->sommets){
+    for(Noeud * n : sommets){
         if(n == N)
             return;
     }
@@ -45,17 +52,17 @@ void Graphe::setSommet(Noeud* N)
 
 void Graphe::setSommets(vector<Noeud*> s)
 {
-    this->sommets = s;
+    sommets = s;
 }
 
 void Graphe::setTable(vector<vector<Chemin>> t)
 {
-    this->table=t;
+    table=t;
 }
 
 void Graphe::setMatrice(vector<vector<Cable *>>m)
 {
-    this->matrice=m;
+    matrice=m;
 }
 
 bool Graphe::verfierCoherence(Noeud *N1, Noeud *N2)
@@ -76,7 +83,13 @@ void Graphe::genererTableChemin()
 void Graphe::ajoutNoeudMatrice(Noeud* n)
 {
 
-    setSommet(n);
+    //setSommet(n);
+    for(Noeud * N : sommets){
+        if(n == N)
+            return;
+    }
+
+    sommets.push_back(n);
 
     int taille_s = sommets.size();
 
@@ -93,55 +106,59 @@ void Graphe::ajoutNoeudMatrice(Noeud* n)
 void Graphe::ajoutCableMatrice(Cable * c)
 {
 
-    int size_s = this->sommets.size();
+    int size_s = sommets.size();
     int i_N1, i_N2;
     Noeud * N1 = c->getExt1() , * N2 = c->getExt2();
     for (int i = 0; i < size_s; i++) {
-        if(this->sommets[i] == N1) i_N1 = i;
-        if(this->sommets[i] == N2) i_N2 = i;
+        if(sommets[i] == N1) i_N1 = i;
+        if(sommets[i] == N2) i_N2 = i;
     }
 
 
-    this->matrice[i_N1][i_N2] = c;
-    this->matrice[i_N2][i_N1] = c;
+    matrice[i_N1][i_N2] = c;
+    matrice[i_N2][i_N1] = c;
 }
 
 void Graphe::supprimerNoeudMatrice(Noeud * n)
 {
     int indice = 0;
 
-    for(auto i = this->sommets.begin(); i != this->sommets.end(); i++)
+    for(auto i = sommets.begin(); i != sommets.end(); i++)
         {
             if ( *i == n){
-                delete *i;
                 *i = nullptr;
+                delete *i;
                 sommets.erase(i);
+                //if( i < sommets.end())
+                indice = i - sommets.begin();
                 break;
             }
-            indice++;
+
     }
 
-    for ( auto i = this->matrice.begin(); i != this->matrice.end() ; i++){
+    for ( auto i = matrice.begin(); i != matrice.end() ; i++){
         (*i).erase( (*i).begin()+indice);
     }
-    this->matrice.erase(this->matrice.begin()+indice);
+
+    matrice.erase(matrice.begin()+indice);
 
 }
 
 void Graphe::supprimerCableMatrice(Cable * c)
 {
-    int size_s = this->sommets.size();
+    int size_s = sommets.size();
     int i_N1, i_N2;
     Noeud * N1 = c->getExt1(), * N2 = c->getExt2();
     for (int i = 0; i < size_s; i++) {
-        if(this->sommets[i] == N1) i_N1 = i;
-        if(this->sommets[i] == N2) i_N2 = i;
+        if(sommets[i] == N1) i_N1 = i;
+        if(sommets[i] == N2) i_N2 = i;
     }
 
-    delete c;
+    //delete c;
+    //c = nullptr;
 
-    this->matrice[i_N1][i_N2] = nullptr;
-    this->matrice[i_N2][i_N1] = nullptr;
+    matrice[i_N1][i_N2] = nullptr;
+    matrice[i_N2][i_N1] = nullptr;
 
 }
 

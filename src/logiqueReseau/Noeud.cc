@@ -1,4 +1,6 @@
 #include "../include/logiqueReseau/Noeud.hh"
+#include "../include/logiqueReseau/Graphe.hh"
+
 #include <iostream>
 vector<int> Noeud::idsNoeuds;
 
@@ -7,6 +9,7 @@ Noeud::Noeud() : nbPort(1), interfaces(), fileDattente(){
     setIdNoeud(1);
     // Initialisation d'une seule interface
     interfaces.push_back(new InterfaceFE());
+    Graphe::ajoutNoeudMatrice(this);
 }
 
 Noeud::Noeud(string _nom, int _idNoeud, int _nbPort) :
@@ -19,6 +22,7 @@ Noeud::Noeud(string _nom, int _idNoeud, int _nbPort) :
     for (int i = 0; i < nbPort; i++) {
         interfaces.push_back(new InterfaceFE());
     }
+    Graphe::ajoutNoeudMatrice(this);
 }
 
 Noeud::~Noeud(){
@@ -41,6 +45,8 @@ Noeud::~Noeud(){
     }
     */
     fileDattente.clear();
+
+    Graphe::supprimerNoeudMatrice(this);
 
 }
 

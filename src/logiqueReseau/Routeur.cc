@@ -8,7 +8,8 @@ Routeur::Routeur() : Noeud(){
 
 }
 
-Routeur::Routeur(string _nom, int _idNoeud, int _nbPort){
+Routeur::Routeur(string _nom, int _idNoeud, int _nbPort) :
+           Noeud(_nom, _idNoeud, _nbPort){
 
 }
 

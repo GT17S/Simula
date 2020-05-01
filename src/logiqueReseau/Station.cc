@@ -1,7 +1,7 @@
 #include "../../include/logiqueReseau/Station.hh"
 
 
-Station::Station() : Noeud(), numSegmentsEnvoye(){
+Station::Station() : Noeud(){
     // ID automatique
     // nb port =1
     // filedattente vide
@@ -11,7 +11,7 @@ Station::Station() : Noeud(), numSegmentsEnvoye(){
 }
 
 Station::Station(string _nom, int _idNoeud, int _nbPort, string _adressePasserelle):
-                 Noeud(_nom, _idNoeud, _nbPort), numSegmentsEnvoye(){
+                 Noeud(_nom, _idNoeud, _nbPort){
     // file dattente vide
     setPasserelle(_adressePasserelle);
 

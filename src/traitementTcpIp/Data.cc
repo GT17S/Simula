@@ -1,24 +1,16 @@
 #include "../../include/traitementTcpIp/Data.hh"
 
 Data::Data(std::string message){
-	std::string binstr = strtobinary(message);
-	seq = new boost::dynamic_bitset<>(message.size()*8);
-	//std::cout << message << std::endl;
+	//std::cout << "Message: " <<  message << std::endl;
+	std::reverse(std::begin(message), std::end(message));
+	//std::cout << "Message: " <<  message << std::endl;
+	seq = new boost::dynamic_bitset<unsigned char>(std::begin(message),std::end(message));
 	assert(seq);
-	for (int i = message.size(); i >= 0; i--){
-		if(binstr[i] == '1'){
-			seq->set(i);
-		}
-		if(binstr[i] == '0'){
-			seq->set(i,false);
-		}
-	}
-
-	seq->flip();
+	
 	type = DATA_TOTAL;
 }
 
-Data::Data(boost::dynamic_bitset<>* seq, data_t type){
+Data::Data(boost::dynamic_bitset<unsigned char>* seq, data_t type){
 	setType(type);
 	setSeq(seq);
 }
@@ -32,21 +24,21 @@ void Data::setType(data_t _type){
 	this->type = _type;
 }
 
-void Data::setSeq(boost::dynamic_bitset<>* _seq){
+void Data::setSeq(boost::dynamic_bitset<unsigned char>* _seq){
 	assert(_seq);
-	//Maybe a deep copy
 	this->seq = _seq;
 }
 
 
 int Data::operator[](int index){
-	assert(index > 0 && index < (int)seq->capacity());
+	assert(index >= 0 && index < (int)seq->capacity());
 	boost::dynamic_bitset<>::size_type i = index;
 	return (int)seq[i].to_ulong();
 }
 
 std::ostream& operator<<(std::ostream &os, Data& d){	
-	os << "Contenu: " << *d.getSeq() << std::endl;
+	
+	os << "Contenu" << *d.getSeq() << std::endl;
 	os << "Type: " << d.getType() << std::endl;
 	return os;
 }
@@ -56,5 +48,6 @@ std::string Data::strtobinary(std::string msg){
     for (char& _char : msg) {
         binaryString += std::bitset<8>(_char).to_string();
     }
+    //std::cout << "Binary: " <<  binaryString << std::endl;
     return binaryString;
 }

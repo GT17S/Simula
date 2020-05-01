@@ -171,10 +171,20 @@ public :
      * \brief regexValide
      * Vérifier si l'adresse IP en entrée est valide.
      * \param adresse : adresse IP
-     * \param regex : expression réguliere #IP_REGEX
+     * \param regex : expression réguliere #IP_REGEX , #MAC_REGEX
      * \return vrai si adresse valide, faux sinon.
      */
     static bool regexValide(string adresse, string regex);
+
+    /*!
+     * \brief checkAdresse
+     * Fait appel à regexValide()
+     * \param adresse : adresse à vérifiée
+     * \param regex : expression réguliere #IP_REGEX , #MAC_REGEX
+     * \param defaut : adresse par défaut
+     * \return Si adresse valide retourne l'adresse, sinon retourner adresse par défaut.
+     */
+    static string checkAdresse(string adresse, string regex,string defaut);
 
 };
 

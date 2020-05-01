@@ -8,19 +8,12 @@ Routeur::Routeur() : Noeud(){
 
 }
 
-Routeur::Routeur(string _nom, int _idNoeud, int _nbPort){
+Routeur::Routeur(string _nom, int _idNoeud, int _nbPort) :
+           Noeud(_nom, _idNoeud, _nbPort){
 
 }
 
 Routeur::~Routeur(){
-
-}
-
-void Routeur::setTableRoutage(Route *){
-
-}
-
-void Routeur::setTableRoutage(vector<Route *>){
 
 }
 

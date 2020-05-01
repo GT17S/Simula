@@ -18,6 +18,20 @@
 using std::string;
 using std::vector;
 
+
+#ifndef ROUTE_H
+#define ROUTE_H
+/*!
+ * \struct Route
+ *  Struct qui représente une ligne dans la table de routage
+ */
+struct Route {
+    string adresseReseau; /*!< Adresse sous réseau */
+    string masque;  /*!< masque sous réseau*/
+    string passerelle; /*!< adresse de passerelle*/
+};
+#endif
+
 class InterfaceFE;
 class Cable;
 /*!
@@ -34,7 +48,7 @@ protected:
   int nbPort; /*< Nombre de ports du noeud */
   vector<InterfaceFE*> interfaces; /*< Liste des interfaces réseaux du noeud*/
   vector<string> fileDattente; /*< File d'attente des données */
-
+  vector<Route*> tableRoutage; /*!< Table de routage */
 
 
 public:
@@ -102,6 +116,19 @@ public:
      */
     InterfaceFE * getInterface(int id);
     /*!
+     * \brief getInterface
+     * \param cable : cable lié à l'interface
+     * \return L'interface lié à le cable en entrée
+     */
+    InterfaceFE * getInterface(Cable * cable);
+
+    /*!
+     * \brief getTableRoutage
+     * \return  #voir tableRoutage
+     */
+    vector<Route*>  getTableRoutage(){return tableRoutage;}
+
+    /*!
      * \brief setNom
      * Modifier le nom du noeud, #nom
      * \param nom : nom du noeud (string)
@@ -150,6 +177,40 @@ public:
      * \deprecated N'est pas utilisée.
      */
     void setInterfaces(InterfaceFE* interface);
+
+    /*!
+     * \brief setTableRoutage
+     * Modifier la table de routage
+     * \param tableRoutage : voir #tableRoutage
+     */
+    void setTableRoutage(vector<Route*> tableRoutage);
+    /*!
+     * \brief setTableRoutage
+     * Ajouter une route dans la table de routage
+     * \param route : voir #Route
+     */
+    void setTableRoutage(Route* route);
+
+    /*!
+     * \brief getPasserelleTableRoutage
+     * Retourner l'adresse de passerelle d'une adresse réseau dans la table de routage
+     * \param _adresseReseau : voir ::adresseReseau
+     * \return voir ::passerelle
+     */
+    string getPasserelleTableRoutage(string _adresseReseau);
+    /*!
+     * \brief supprimerRoute
+     * Supprimer une route depuis la table de routage
+     * \param id : indice de la #Route dans la table de routage
+     */
+    void supprimerRoute(int id);
+    /*!
+     * \brief modifierRoute
+     * Modifier une route déja existante
+     * \param id : indice de la #Route dans la table de routage
+     * \param route : voir #Route
+     */
+    void modifierRoute(int id, Route * route);
 
     /*!
      * \brief acceptCable

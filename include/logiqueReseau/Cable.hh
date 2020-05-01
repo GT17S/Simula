@@ -68,7 +68,7 @@ public:
    * \brief getId
    * \return Identificateur du cable (int)
    */
-  int getId() const{ return id;}
+  int getId() { return id;}
   /*!
    * \brief getDebitMax
    * \return Débit maximum du câble (int)
@@ -78,12 +78,12 @@ public:
    * \brief getLatence
    * \return La latence sur un cable (float)
    */
-  float getLatence() const;
+  float getLatence() {return latence;}
   /*!
    * \brief getDebitAcc
    * \return Le débit actuel (float)
    */
-  float getDebitAcc() const{ return debitAcc;}
+  float getDebitAcc() { return debitAcc;}
   /*!
    * \brief getMTU
    * \return voir #MTU
@@ -93,18 +93,24 @@ public:
    * \brief getType
    * \return Le type du cable (cableT)
    */
-  cableT getType() const{return type;}
+  cableT getType() {return type;}
 
   /*!
    * \brief getExt1
    * \return Le premier Noeud a l'extremitie (Noeud)
    */
-  Noeud * getExt1() const{return ext1;}
+  Noeud * getExt1() {return ext1;}
   /*!
    * \brief getExt2
    * \return Le deuxième Noeud a l'extremitie (Noeud)
    */
-  Noeud * getExt2() const{return ext2;}
+  Noeud * getExt2() {return ext2;}
+  /*!
+   * \brief getExt
+   * \param ext : Le noeud en extrimité 1
+   * \return : Le noeud en extrimité 2
+   */
+  Noeud* getExt(Noeud * ext);
 
 
   /*!

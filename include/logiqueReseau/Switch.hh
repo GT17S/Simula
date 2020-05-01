@@ -2,7 +2,7 @@
 #define SWITCH_H
 
 /*!
- * \file Switch.h
+ * \file Switch.hh
  * \brief Switch
  * \author Nadjibian
  * \version 0.1
@@ -13,28 +13,29 @@
 
 using std::string;
 
+class Hub;
+
 /*!
  * \class Switch
- * \brief La classe Switch hérite de la classe Hub.
+ * \brief La classe Switch dérivée de la classe Hub.
  */
 
 
-
-class Switch:public Hub
-{
+class Switch : public Hub {
 public:
-
     /*!
-    * \brief Construceur
-    *  Constructeur de la classe Switch
-    * \param nom : nom du Switch
-    * \param idNoeud : identificateur du Switch
-    * \param nbPort : nombre de ports du Switch
-    */
+     * \brief Constructeur
+     * Constructeur de la classe Switch,
+     * qui permet d'initialiser un switch avec les paramètres en entrée.
+     * \param nom : voir #nom
+     * \param idNoeud : voir #idNoeud
+     * \param nbPort : voir #nbPort
+     */
     Switch(string nom,int idNoeud,int nbPort);
     /*!
      * \brief Constructeur par défaut
-     * Constructeur par défaut de la classe Switch
+     * Initialise un noeud #Hub()
+     * Génére un #nom automatiquement ( "Switch + #idNoeud")
      */
     Switch();
 

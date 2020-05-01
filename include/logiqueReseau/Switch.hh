@@ -19,7 +19,6 @@ using std::string;
  */
 
 
-
 class Switch:public Hub
 {
 public:

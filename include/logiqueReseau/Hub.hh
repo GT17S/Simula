@@ -2,7 +2,7 @@
 #define HUB_H
 
 /*!
- * \file Hub.h
+ * \file Hub.hh
  * \brief Hub
  * \author Nadjibian
  * \version 0.1

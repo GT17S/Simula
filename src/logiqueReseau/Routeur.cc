@@ -16,14 +16,6 @@ Routeur::~Routeur(){
 
 }
 
-void Routeur::setTableRoutage(Route *){
-
-}
-
-void Routeur::setTableRoutage(vector<Route *>){
-
-}
-
 void Routeur::envoyerMessage(Noeud *Nrecepteur, std::string message){
 
 }

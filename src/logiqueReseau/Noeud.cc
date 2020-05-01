@@ -163,6 +163,76 @@ void Noeud::setInterfaces(InterfaceFE * _interface){
     interfaces.push_back(_interface);
 }
 
+
+void Noeud::setTableRoutage(Route * route){
+    // Ajouter un route
+    Route * n_Route = new Route();
+
+    n_Route->adresseReseau = InterfaceFE::checkAdresse(route->adresseReseau, IP_REGEX, DEFAULT_IP);
+    n_Route->masque        = InterfaceFE::checkAdresse(route->masque       , IP_REGEX, DEFAULT_IP);
+    n_Route->passerelle    = InterfaceFE::checkAdresse(route->passerelle   , IP_REGEX, DEFAULT_IP);
+
+    // Interdiction d'ajout d'une ligne non valide
+    if(n_Route->masque == DEFAULT_IP || n_Route->passerelle == DEFAULT_IP)
+        return;
+    //
+    for(Route *r : tableRoutage){
+        // Sous réseau existe déja
+        if(r->adresseReseau == n_Route ->adresseReseau)
+            return;
+    }
+
+    tableRoutage.push_back(n_Route);
+    // Pour vérfier plustard que la route à été ajoutée,
+    // il suffit juste de vérifier que la table de routage à un élement de plus.
+}
+
+string Noeud::getPasserelleTableRoutage(string _adresseReseau){
+    string p = DEFAULT_IP;
+
+    for( Route * r: tableRoutage){
+        // Sous réseau trouvé
+        if(r->adresseReseau == _adresseReseau){
+            p = r->passerelle;
+            return p;
+        }
+        // Adresse par défaut trouvé
+        if(r->adresseReseau == DEFAULT_IP)
+            p = r->passerelle;
+    }
+
+    return p;
+}
+
+void Noeud::supprimerRoute(int id){
+    if(id < (int)tableRoutage.size()){
+        // Libérer mémoire
+        vector<Route*>::iterator i =  tableRoutage.begin() + id;
+
+        delete *i;
+        *i = nullptr;
+
+        tableRoutage.erase(i);
+    }
+}
+
+void Noeud::modifierRoute(int id, Route * route){
+    size_t size_table = tableRoutage.size();
+    // Ajouter
+    setTableRoutage(route);
+
+    // Modifier la route
+    if(size_table < tableRoutage.size()){
+        supprimerRoute(id);
+        tableRoutage.insert (tableRoutage.begin()+ id , *(tableRoutage.end()) );
+        tableRoutage.pop_back();
+    }
+}
+
+void Noeud::setTableRoutage(vector<Route *> _tableRoutage){
+    tableRoutage = _tableRoutage;
+}
+
 bool Noeud::acceptCable(Cable * _cable, int _idInterface){
     InterfaceFE * i = getInterface(_idInterface);
     if(i)

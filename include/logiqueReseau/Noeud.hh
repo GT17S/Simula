@@ -21,10 +21,14 @@ using std::vector;
 
 #ifndef ROUTE_H
 #define ROUTE_H
+/*!
+ * \struct Route
+ *  Struct qui représente une ligne dans la table de routage
+ */
 struct Route {
-    string adresseReseau;
-    string masque;
-    string passerelle;
+    string adresseReseau; /*!< Adresse sous réseau */
+    string masque;  /*!< masque sous réseau*/
+    string passerelle; /*!< adresse de passerelle*/
 };
 #endif
 
@@ -171,10 +175,39 @@ public:
      */
     void setInterfaces(InterfaceFE* interface);
 
+    /*!
+     * \brief setTableRoutage
+     * Modifier la table de routage
+     * \param tableRoutage : voir #tableRoutage
+     */
+    void setTableRoutage(vector<Route*> tableRoutage);
+    /*!
+     * \brief setTableRoutage
+     * Ajouter une route dans la table de routage
+     * \param route : voir #Route
+     */
+    void setTableRoutage(Route* route);
 
-    void setTableRoutage(vector<Route*>);
-    void setTableRoutage(Route*);
-
+    /*!
+     * \brief getPasserelleTableRoutage
+     * Retourner l'adresse de passerelle d'une adresse réseau dans la table de routage
+     * \param _adresseReseau : voir ::adresseReseau
+     * \return voir ::passerelle
+     */
+    string getPasserelleTableRoutage(string _adresseReseau);
+    /*!
+     * \brief supprimerRoute
+     * Supprimer une route depuis la table de routage
+     * \param id : indice de la #Route dans la table de routage
+     */
+    void supprimerRoute(int id);
+    /*!
+     * \brief modifierRoute
+     * Modifier une route déja existante
+     * \param id : indice de la #Route dans la table de routage
+     * \param route : voir #Route
+     */
+    void modifierRoute(int id, Route * route);
 
     /*!
      * \brief acceptCable

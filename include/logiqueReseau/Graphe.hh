@@ -2,7 +2,7 @@
 #define GRAPHE_H
 
 /*!
- * \file Graphe.h
+ * \file Graphe.hh
  * \brief Graphe
  * \author GT17S
  * \version 0.1
@@ -17,14 +17,15 @@
 using std::vector;
 
 
+
 /*!
  * \enum Chemin
  * \brief plus court chemin entre deux noeuds et son cout.
  */
 struct Chemin
 {
-    vector<int> tab;
-    int couts;
+    vector<int> tab; /*!< Le chmemin*/
+    int couts; /*!< Coût du chemin*/
 };
 
 

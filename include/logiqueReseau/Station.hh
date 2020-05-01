@@ -2,7 +2,7 @@
 #define STATION_H
 
 /*!
- * \file Noeud.hh
+ * \file Station.hh
  * \brief Station
  * \author medish
  * \version 0.1

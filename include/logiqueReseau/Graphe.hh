@@ -8,10 +8,15 @@
  * \version 0.1
  */
 
-#include "../include/logiqueReseau/Cable.hh"
-#include "../include/logiqueReseau/Noeud.hh"
+#include "Cable.hh"
+#include "Noeud.hh"
+#include "Routeur.hh"
+#include "Station.hh"
+#include "Hub.hh"
+#include "Switch.hh"
+#include "InterfaceFE.hh"
 #include <vector>
-#include <QEvent>
+#include <string>
 
 
 using std::vector;
@@ -134,9 +139,9 @@ public:
 
     void setMatrice(vector<vector<Cable*>> m);
 
-    bool verfierCoherence(Noeud* N1, Noeud* N2);
-    void miseAjourDeMatrice(QEvent* event );
-    void genererTableChemin();
+    static std::string verifierCoherence(Noeud* n1, Noeud* n2);
+//    void miseAjourDeMatrice(QEvent* event );
+    static void genererTableChemin();
 
 
 

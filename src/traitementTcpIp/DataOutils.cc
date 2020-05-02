@@ -1,4 +1,4 @@
-#include "../../include/traitementTcpIp/DataOutils.hh"
+#include "DataOutils.hh"
 
 
 void ecrire_bits(boost::dynamic_bitset<> * sbe, boost::dynamic_bitset<> se, int pos, int taille){

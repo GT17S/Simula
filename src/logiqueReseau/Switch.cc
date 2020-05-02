@@ -1,4 +1,4 @@
-#include "../include/logiqueReseau/Switch.hh"
+#include "Switch.hh"
 
 Switch::Switch(std::string  _nom,int _idNoeud,int _nbPort) :
     Hub(_nom, _idNoeud, _nbPort)

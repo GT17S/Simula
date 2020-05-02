@@ -4,7 +4,8 @@
 #include <cmath>
 
 #include "Congestion.hh"
-#include "../traitementTcpIp/Data.hh"
+#include "Data.hh"
+#include "Graphe.hh"
 
 const float baseRTT = 200.0f;
 const float alpha = 0.125f;

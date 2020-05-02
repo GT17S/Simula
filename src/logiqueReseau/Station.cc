@@ -1,4 +1,4 @@
-#include "../../include/logiqueReseau/Station.hh"
+#include "Station.hh"
 
 
 Station::Station() : Noeud(){

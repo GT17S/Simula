@@ -1,4 +1,4 @@
-#include "../../include/traitementTcpIp/Data.hh"
+#include "Data.hh"
 
 Data::Data(std::string message){
 	//std::cout << "Message: " <<  message << std::endl;

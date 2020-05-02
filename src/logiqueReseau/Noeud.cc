@@ -1,5 +1,5 @@
-#include "../include/logiqueReseau/Noeud.hh"
-#include "../include/logiqueReseau/Graphe.hh"
+#include "Noeud.hh"
+#include "Graphe.hh"
 
 #include <iostream>
 vector<int> Noeud::idsNoeuds;

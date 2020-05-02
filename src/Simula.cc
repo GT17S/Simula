@@ -1,9 +1,10 @@
 #include <iostream>
-#include "../include/logiqueReseau/Cable.hh"
-#include "../include/logiqueReseau/Noeud.hh"
-#include "../include/logiqueReseau/Routeur.hh"
-#include "../include/logiqueReseau/Graphe.hh"
-#include "../include/logiqueReseau/Station.hh"
+#include "Cable.hh"
+#include "Noeud.hh"
+#include "Routeur.hh"
+#include "Graphe.hh"
+
+
 using  namespace  std;
 
 int main()	{
@@ -56,17 +57,7 @@ int main()	{
 		std::cout <<std::endl;
 	}
 
-	graphe->genererTableChemin ();
 
-	for (unsigned int i = 0; i < graphe->getTable().size(); i++)	{
-		std::cout << "Pour aller de : " << graphe->getSommets()[i]->getNom() << std::endl;
-		for (unsigned int j = 0; j < graphe->getTable()[i].size(); j++)	{
-			std::cout << "vers " << graphe->getSommets()[j]->getNom() << std::endl;
-			for (unsigned int k = 0; k < graphe->getTable()[i][j].tab.size(); k++)	{
-				std::cout << "\t" << graphe->getTable()[i][j].tab[i] << std::endl;
-			}
-		}
-	}
     delete graphe;
     return 0;
 }

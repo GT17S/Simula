@@ -31,8 +31,8 @@ public:
 	~Data();
 
 
-	data_t getType(void) const {return this->type;};
-	boost::dynamic_bitset<unsigned char>* getSeq(void) const {return this->seq;};
+    data_t getType(void) const {return this->type;}
+    boost::dynamic_bitset<unsigned char>* getSeq(void) const {return this->seq;}
 
 	void setType (data_t _type);
 	void setSeq (boost::dynamic_bitset<unsigned char>* _seq);

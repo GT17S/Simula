@@ -1,5 +1,5 @@
-#include "../include/logiqueReseau/Cable.hh"
-#include "../include/logiqueReseau/Graphe.hh"
+#include "Cable.hh"
+#include "Graphe.hh"
 #include "typeinfo"
 #include <iostream>
 

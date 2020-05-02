@@ -1,4 +1,4 @@
-#include "../../include/gCongestion/congestionOutil.hh"
+#include "congestionOutil.hh"
 
 float CalculRTT(Congestion *g){
 	if(g->getCwnd() == 1)

@@ -8,13 +8,13 @@
  * \version 0.1
  */
 
-#include "../include/logiqueReseau/Cable.hh"
-#include "../include/logiqueReseau/Noeud.hh"
-#include "../include/logiqueReseau/Routeur.hh"
-#include "../include/logiqueReseau/Station.hh"
-#include "../include/logiqueReseau/Hub.hh"
-#include "../include/logiqueReseau/Switch.hh"
-#include "../include/logiqueReseau/InterfaceFE.hh"
+#include "Cable.hh"
+#include "Noeud.hh"
+#include "Routeur.hh"
+#include "Station.hh"
+#include "Hub.hh"
+#include "Switch.hh"
+#include "InterfaceFE.hh"
 #include <vector>
 #include <string>
 

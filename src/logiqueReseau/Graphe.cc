@@ -1,4 +1,4 @@
-#include "../include/logiqueReseau/Graphe.hh"
+#include "Graphe.hh"
 #include <iostream>
 
 vector<Noeud*> Graphe::sommets;/*!< Liste des sommets du Graphe */

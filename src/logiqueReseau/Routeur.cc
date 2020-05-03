@@ -1,4 +1,4 @@
-#include "../include/logiqueReseau/Routeur.hh"
+#include "Routeur.hh"
 
 Routeur::Routeur() : Noeud(){
     // ID automatique

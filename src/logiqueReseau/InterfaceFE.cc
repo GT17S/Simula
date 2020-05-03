@@ -1,4 +1,4 @@
-#include "../include/logiqueReseau/InterfaceFE.hh"
+#include "InterfaceFE.hh"
 #include <iostream>
 
 const string IP_REGEX = "^(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$";
@@ -18,7 +18,7 @@ InterfaceFE::InterfaceFE(string _nomInterface, string _adresseIP,
 }
 
 InterfaceFE::~InterfaceFE(){
-    std::cout << "Destruction de l'interfac" << std::endl;
+//    std::cout << "Destruction de l'interfac" << std::endl;
     // Destruction du cable lié
    // if(cable){
         delete cable;

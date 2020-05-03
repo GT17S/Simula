@@ -1,13 +1,14 @@
-#include "../include/logiqueReseau/Hub.hh"
+#include "Hub.hh"
 using namespace std;
 
 Hub::Hub(string _nom,int _idNoeud,int _nbPort)
     : Noeud(_nom, _idNoeud, _nbPort){}
 
-Hub::Hub() : Noeud(){}
+Hub::Hub() : Noeud(){
+	nom = "Hub"+std::to_string(idNoeud);	
+}
 
 Hub::~Hub(){
-     nom = "Hub"+std::to_string(idNoeud);
 }
 
 void Hub::envoyerBroadCast(string message){

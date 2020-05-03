@@ -1,5 +1,5 @@
-#include "../include/logiqueReseau/Cable.hh"
-#include "../include/logiqueReseau/Graphe.hh"
+#include "Cable.hh"
+#include "Graphe.hh"
 #include "typeinfo"
 #include <iostream>
 
@@ -19,7 +19,7 @@ Cable::Cable(cableT _type, int _debitMax, int _MTU){
 }
 
 Cable::~Cable(){
-    std::cout << "Desutruction cable "<<id <<std::endl;
+//    std::cout << "Desutruction cable "<<id <<std::endl;
     Graphe::supprimerCableMatrice(this);
 
     getExt1()->getInterface(this)->setCable(nullptr);

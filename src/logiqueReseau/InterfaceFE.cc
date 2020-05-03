@@ -18,7 +18,7 @@ InterfaceFE::InterfaceFE(string _nomInterface, string _adresseIP,
 }
 
 InterfaceFE::~InterfaceFE(){
-    std::cout << "Destruction de l'interfac" << std::endl;
+//    std::cout << "Destruction de l'interfac" << std::endl;
     // Destruction du cable lié
    // if(cable){
         delete cable;

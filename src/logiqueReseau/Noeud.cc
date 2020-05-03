@@ -27,7 +27,7 @@ Noeud::Noeud(string _nom, int _idNoeud, int _nbPort) :
 
 Noeud::~Noeud(){
 
-    std::cout << "Desutruction noeud "<< idNoeud<<std::endl;
+//    std::cout << "Desutruction noeud "<< idNoeud<<std::endl;
     // Supprimer ID du noeud de la liste
     idsNoeuds.erase(std::remove(idsNoeuds.begin(), idsNoeuds.end(), idNoeud), idsNoeuds.end());
 
@@ -179,8 +179,8 @@ void Noeud::setTableRoutage(Route * route){
     n_Route->passerelle    = InterfaceFE::checkAdresse(route->passerelle   , IP_REGEX, DEFAULT_IP);
 
     // Interdiction d'ajout d'une ligne non valide
-    if(n_Route->masque == DEFAULT_IP || n_Route->passerelle == DEFAULT_IP)
-        return;
+//    if( n_Route->masque == DEFAULT_IP && n_Route->passerelle == DEFAULT_IP)
+//        return;
     //
     for(Route *r : tableRoutage){
         // Sous réseau existe déja

@@ -67,53 +67,33 @@ void Graphe::setMatrice(vector<vector<Cable *>>m)
 
 std::string Graphe::verifierCoherence(Noeud * n1, Noeud * n2)
 {
-    /*
-    Station * S1 = dynamic_cast <Station *> n1;
-    Routeur * R1 = dynamic_cast <Routeur *> n1;
-
-    Station * S2 = dynamic_cast <Station *> n2;
-    Routeur * R2 = dynamic_cast <Routeur *> n2;
-    */
-
     int i,j;
     int sizeInterfaceI=n1->getInterfaces().size();
     int sizeInterfaceJ=n2->getInterfaces().size();
     int sizeTableRoutage1=n1->getTableRoutage().size();
-                    for( i=0;i < sizeInterfaceI;i++)
-                    {
-                        for( j=0;j<sizeInterfaceJ;j++)
-                        {
-                            if (n1->getInterfaces()[i]->getAdresseRes() == n2->getInterfaces()[j]->getAdresseRes())
-                            {
-                                return n2->getInterfaces()[j]->getAdresseIP();
-                            }
-                        }
-                    }
 
-                    for( i=0;i < sizeTableRoutage1;i++)
-                    {
-                        for ( j = 0; j < sizeInterfaceJ; ++j)
-                            {
-                                if (n1->getTableRoutage()[i]->adresseReseau==n2->getInterfaces()[j]->getAdresseRes())
-                                    {
-                                        n1->getTableRoutage()[i]->passerelle;
-                                    }
-                            }
-                    }
-
-                    for ( i = 0; i < sizeTableRoutage1; ++i)
-                    {
-                        if (n1->getTableRoutage()[i]->adresseReseau== DEFAULT_IP)
-                        {
-                            return n1->getTableRoutage()[i]->passerelle;
-                        }
-                    }
-
-                    return DEFAULT_IP ;
-
+	for( i=0;i < sizeInterfaceI;i++)
+		for( j=0;j<sizeInterfaceJ;j++)
+			if (n1->getInterfaces()[i]->getAdresseRes() == n2->getInterfaces()[j]->getAdresseRes())	{
+				return n2->getInterfaces()[j]->getAdresseIP();
+			}
+	for( i=0;i < sizeTableRoutage1;i++)
+		for ( j = 0; j < sizeInterfaceJ; ++j)
+				if (n1->getTableRoutage()[i]->adresseReseau==n2->getInterfaces()[j]->getAdresseRes())	{
+						return n1->getTableRoutage()[i]->passerelle;
+				}
+	for ( i = 0; i < sizeTableRoutage1; ++i)
+		if (n1->getTableRoutage()[i]->adresseReseau== DEFAULT_IP)	{
+			return n1->getTableRoutage()[i]->passerelle;
+		}
+/*    Station * S1 = dynamic_cast <Station *> (n1);
+		if ( S1)	{
+			return S1->getPasserelle();
+		}
+*/	return DEFAULT_IP;
 }
 
-std::vector<int> rechercheVoisins ( std::vector<std::vector < Cable * >> matrice, int s)	{
+std::vector<int> rechercherVoisins ( std::vector<std::vector < Cable * >> matrice, int s)	{
 	std::vector<int> v;
 	for (unsigned int i = 0; i < matrice[s].size(); i++)	{
 		if ( matrice[s][i] != nullptr)
@@ -122,81 +102,111 @@ std::vector<int> rechercheVoisins ( std::vector<std::vector < Cable * >> matrice
 	return v;
 }
 
-std::vector<int> parcoursLargeur ( std::vector<std::vector < Cable * >> matrice, int src, int dest)	{
-	std::vector <int> p;
-	std::vector <int> file;
-	unsigned int size = matrice.size();
-	bool found = true; 
+std::vector<int> initParcoursLargeur ( std::vector<int> * f, unsigned int size, int src)	{
+	std::vector<int> p;
 	p.resize( size);
-	for (unsigned int i = 0; i < size; i++)	{
+	for (unsigned int i = 0; i < size; i++)
 		p[i] = -2;
-	}
-	file.push_back ( src);
-	p[src] = -1;
+	f->push_back ( src);
+	p[src] = -1;	
+	return p;
+}
+
+std::vector<int> parcoursLargeur ( std::vector<std::vector < Cable * >> matrice, int src, int dest)	{
+	bool found = true; 
+	std::vector <int> file;
+	std::vector <int> p = initParcoursLargeur ( &file,  matrice.size(), src);
 	while ( file.size() > 0 && found)	{
-		int n_tmp = file[0];
-		file.erase ( file.begin());
-		std::vector<int> v = rechercheVoisins ( matrice, n_tmp);
+		std::vector<int> v = rechercherVoisins ( matrice, file[0]);
 		for ( unsigned int i = 0; i < v.size(); i++)	{
-			if ( p[v[i]] != -2)	{
+			if ( p[v[i]] == -2)	{
 				file.push_back ( v[i]);
-				p[i] = n_tmp;
+				p[v[i]] = file[0];
 			}
 			if ( v[i] == dest) found = false;
-		} 
+		}
+		file.erase ( file.begin());
 	}
 	return p;	
 }
 
-void Graphe::genererTableChemin()	{
-	for (unsigned int i = 0; i < matrice.size(); i++)	{
-		std::cout << "Pour aller de : " << sommets[i]->getNom() << std::endl;
-		for (unsigned int j = 0; j < matrice[i].size(); j++)	{
-			if ( i != j)	{
-				std::cout << "\tvers " << sommets[j]->getNom() << std::endl;
-				int path = i, o_path = i;
-				Switch	* sw_src 	= dynamic_cast < Switch *> 	(sommets[path]),
-						* sw_dest 	= dynamic_cast < Switch *> 	(sommets[j]);
-				Hub 	* h_src 	= dynamic_cast < Hub *> 	(sommets[path]),
-						* h_dest 	= dynamic_cast < Hub *> 	(sommets[j]);
-				if ( !( sw_src || sw_dest || h_src || h_dest))	{
-					std::cout << "\tNi Switch ni routeur" << std::endl;
-					while ( (unsigned int)path != j)	{
-						std::cout << "\tPasse par : " << path << std::endl;
-						o_path = path;
-						Station * s_src 	= dynamic_cast < Station *> (sommets[path]),
-								* s_dest	= dynamic_cast < Station *> (sommets[j]);
-						Routeur * r_src		= dynamic_cast < Routeur *> (sommets[path]),
-								* r_dest 	= dynamic_cast < Routeur *> (sommets[j]);					
-						std::string s;
-						if ( (s_src && s_dest) || (r_src && r_dest) || (s_src && r_dest) || (r_src && s_dest) )	{
-							s = verifierCoherence ( sommets[i], sommets[j]);
-							// Par defaut
-							bool loop = true;
-							for ( unsigned int k = 0; k < sommets.size() && loop; k++)	{
-								std::vector<InterfaceFE*> tmp = sommets[k]->getInterfaces();
-								for (unsigned int l = 0; l < tmp.size(); l++)	{
-									if ( tmp[l]->getAdresseIP() == s)	{
-										path = k;
-										loop = false;
-									}
-								}
-							}
-							std::vector<int> v_src = rechercheVoisins ( matrice, o_path);
-							for (unsigned int k = 0; k < v_src.size() && !loop; k++)	{
-								if ( v_src[k] == path)	{
-									table[i][j].tab.push_back(path);
-									loop = true;
-								}
-							}
-							std::cout << "\t\t" << table[i][j].tab[i] << std::endl;
-						}
-					}
-				}
-			}
-		}	
+int rechercherNoeudsIntermediaires ( std::vector < Noeud *> sommets, std::string s)	{
+
+	for ( unsigned int i = 0; i < sommets.size(); i++)	{
+		std::vector<InterfaceFE*> tmp = sommets[i]->getInterfaces();
+		for (unsigned int j = 0; j < tmp.size(); j++)
+			if ( tmp[j]->getAdresseIP() == s)
+				return i;
+	}
+	return -1;
+}
+
+std::vector<int> reconstituerChemin ( std::vector<std::vector < Cable * >> matrice, int o_path, int path) {
+	std::vector <int> p = parcoursLargeur ( matrice, o_path, path);
+	std::vector <int> route;
+	int pred = path;
+	while ( p[pred] != o_path)	{
+		route.push_back (p[pred]);
+		pred = p[pred];
+	}
+	return route;	
+}
+
+void ajouterChemin ( Chemin * c, std::vector <int> route, int path)	{
+	for (int i = (int)route.size()-1; i >= 0 ; i--)
+		c->tab.push_back(route[i]);
+	c->tab.push_back(path);
+	return;
+}
+
+bool trouverChemin ( std::vector<std::vector < Cable * >> matrice, std::vector < Noeud *> sommets, Chemin * c, std::string s, int * path, int o_path)	{
+	
+	if ( s == DEFAULT_IP)	return false;
+	*path = rechercherNoeudsIntermediaires ( sommets, s);
+	if ( *path == -1) return false;
+	std::vector <int> route = reconstituerChemin ( matrice, o_path, *path);
+	ajouterChemin ( c, route, *path);
+	return true;	
+}
+
+void Graphe::rechercherChemin ( Chemin * c, int src, int dest)	{
+	int path = src, o_path = src;
+	bool way = true;
+	while ( path != dest && way)	{
+		o_path = path;
+		Station * s_src 	= dynamic_cast < Station *> (sommets[path]);
+		Routeur * r_src		= dynamic_cast < Routeur *> (sommets[path]);
+		if ( (s_src != nullptr) ^ (r_src != nullptr))	{
+			std::string s = verifierCoherence ( sommets[path], sommets[dest]);
+			way = trouverChemin (matrice, sommets, c, s, &path, o_path);
+		}
+	}
+	return;
+}
+
+void Graphe::remplirChemins ( int src) {	
+	if ( dynamic_cast < Switch *> 	(sommets[src]) || dynamic_cast < Hub *> 	(sommets[src]))
+		return;
+	for (unsigned int i = 0; i < sommets.size(); i++)	{
+		Chemin c;
+		if ( (unsigned int) src != i)	{
+			Switch	* sw_dest 	= dynamic_cast < Switch *> 	(sommets[i]);
+			Hub		* h_dest 	= dynamic_cast < Hub *> 	(sommets[i]);
+			if ( !( sw_dest || h_dest))
+				rechercherChemin( &c, src, i);
+		}
+		table[src].push_back(c);
 	}
 }
+
+void Graphe::genererTableChemin()	{
+	for (unsigned int i = 0; i < sommets.size(); i++)	{
+		std::vector<Chemin> vc;
+		table.push_back(vc);
+		remplirChemins ( i);
+	}
+}
+
 
 void Graphe::ajoutNoeudMatrice(Noeud* n)
 {

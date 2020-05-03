@@ -17,6 +17,7 @@
 #include "InterfaceFE.hh"
 #include <vector>
 #include <string>
+//#include <QEvent>
 
 
 using std::vector;
@@ -54,7 +55,8 @@ private:
     static vector<Noeud*> sommets;/*!< Liste des sommets du Graphe */
     static vector<vector<Cable*>> matrice; /*!< Matrice d'adjacences du Graphe */
     static vector<vector<Chemin>> table;/*!< Table de chemins du Graphe */
-
+    static void rechercherChemin ( Chemin * c, int src, int dest);
+	static void remplirChemins ( int src);    
 public:
 
 
@@ -141,6 +143,7 @@ public:
 
     static std::string verifierCoherence(Noeud* n1, Noeud* n2);
 //    void miseAjourDeMatrice(QEvent* event );
+
     static void genererTableChemin();
 
 

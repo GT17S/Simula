@@ -19,7 +19,7 @@ Cable::Cable(cableT _type, int _debitMax, int _MTU){
 }
 
 Cable::~Cable(){
-    std::cout << "Desutruction cable "<<id <<std::endl;
+//    std::cout << "Desutruction cable "<<id <<std::endl;
     Graphe::supprimerCableMatrice(this);
 
     getExt1()->getInterface(this)->setCable(nullptr);

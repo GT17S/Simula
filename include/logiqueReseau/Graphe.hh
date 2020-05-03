@@ -8,15 +8,16 @@
  * \version 0.1
  */
 
-#include "../include/logiqueReseau/Cable.hh"
-#include "../include/logiqueReseau/Noeud.hh"
-#include "../include/logiqueReseau/Routeur.hh"
-#include "../include/logiqueReseau/Station.hh"
-#include "../include/logiqueReseau/Hub.hh"
-#include "../include/logiqueReseau/Switch.hh"
-#include "../include/logiqueReseau/InterfaceFE.hh"
+#include "Cable.hh"
+#include "Noeud.hh"
+#include "Routeur.hh"
+#include "Station.hh"
+#include "Hub.hh"
+#include "Switch.hh"
+#include "InterfaceFE.hh"
 #include <vector>
 #include <string>
+//#include <QEvent>
 
 
 using std::vector;
@@ -54,7 +55,8 @@ private:
     static vector<Noeud*> sommets;/*!< Liste des sommets du Graphe */
     static vector<vector<Cable*>> matrice; /*!< Matrice d'adjacences du Graphe */
     static vector<vector<Chemin>> table;/*!< Table de chemins du Graphe */
-
+    static void rechercherChemin ( Chemin * c, int src, int dest);
+	static void remplirChemins ( int src);    
 public:
 
 
@@ -141,6 +143,7 @@ public:
 
     static std::string verifierCoherence(Noeud* n1, Noeud* n2);
 //    void miseAjourDeMatrice(QEvent* event );
+
     static void genererTableChemin();
 
 

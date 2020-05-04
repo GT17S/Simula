@@ -1,9 +1,18 @@
-#include "Data.hh"
+#include "../include/traitementTcpIp/Data.hh"
 
 Data::Data(std::string message){
+/*
+	orignalstring.assign(message);
+	ossize = orignalstring.size();
+	//std::cout << "Message: " <<  message << std::endl;
+	std::reverse(std::begin(message), std::end(message));
+	//std::cout << "Message: " <<  message << std::endl;
+	seq = new boost::dynamic_bitset<unsigned char>(std::begin(message),std::end(message));
+*/
 //	std::reverse(std::begin(message), std::end(message));
 	std::string s = this->strtobinary ( message);
 	seq = new boost::dynamic_bitset<>( s);
+
 	assert(seq);
 	type = DATA_TOTAL;
 }

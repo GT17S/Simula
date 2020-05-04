@@ -1,21 +1,25 @@
 #include "Graphe.hh"
 #include <iostream>
 
+
 vector<Noeud*> Graphe::sommets;/*!< Liste des sommets du Graphe */
 vector<vector<Cable*>> Graphe::matrice; /*!< Matrice d'adjacences du Graphe */
 vector<vector<Chemin>> Graphe::table;/*!< Table de chemins du Graphe */
 
+Graphe *Graphe::singlPtr = nullptr;
+
+
 Graphe::Graphe(){
 
 }
-
+/*
 Graphe::Graphe(Graphe & g)
 {
     sommets=g.sommets;
     matrice=g.matrice;
     table=g.table;
 }
-
+*/
 
 Graphe::~Graphe()
 {

@@ -27,7 +27,7 @@ Noeud::Noeud(string _nom, int _idNoeud, int _nbPort) :
 
 Noeud::~Noeud(){
 
-//    std::cout << "Desutruction noeud "<< idNoeud<<std::endl;
+    // std::cout << "Desutruction noeud "<< nom <<" "<<idNoeud<<std::endl;
     // Supprimer ID du noeud de la liste
     idsNoeuds.erase(std::remove(idsNoeuds.begin(), idsNoeuds.end(), idNoeud), idsNoeuds.end());
 
@@ -46,8 +46,14 @@ Noeud::~Noeud(){
     */
     fileDattente.clear();
 
-    Graphe::supprimerNoeudMatrice(this);
+    for(Route * r : tableRoutage){
+       // std::cout << "Desutruction route "<<std::endl;
+        delete r;
+        r = nullptr;
+    }
+    tableRoutage.clear();
 
+    Graphe::supprimerNoeudMatrice(this);
 }
 
 

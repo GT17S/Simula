@@ -8,7 +8,7 @@
  * \version 0.1
  */
 
-#include "../include/logiqueReseau/Hub.hh"
+#include "Hub.hh"
 
 
 using std::string;

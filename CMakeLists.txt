@@ -43,8 +43,24 @@ else (DOXYGEN_FOUND)
 endif (DOXYGEN_FOUND)
 endif()
 
+# Headers, absolute path
+MACRO(HEADER_DIRECTORIES return_list)
+    FILE(GLOB_RECURSE new_list *.hh)
+    SET(dir_list "")
+    FOREACH(file_path ${new_list})
+        GET_FILENAME_COMPONENT(dir_path ${file_path} PATH)
+        SET(dir_list ${dir_list} ${dir_path})
+    ENDFOREACH()
+    LIST(REMOVE_DUPLICATES dir_list)
+    SET(${return_list} ${dir_list})
+ENDMACRO()
+
+HEADER_DIRECTORIES(header_list)
+
+
 #Mettre à jour en fonction des nouveaux modules ajoutés
-include_directories( ${Qt5Widgets_INCLUDES} include/ /usr/include ${Boost_INCLUDE_DIR})
+include_directories( ${Qt5Widgets_INCLUDES} include/ /usr/include ${Boost_INCLUDE_DIR}
+					${header_list})
 link_directories(/usr/lib)
 
 #Selection les fichiers à compiler

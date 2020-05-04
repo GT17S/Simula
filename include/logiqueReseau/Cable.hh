@@ -10,8 +10,7 @@
  */
 
 #include "Noeud.hh"
-
-#include<string>
+#include <string>
 
 
 #ifndef CABLET_H

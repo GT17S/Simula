@@ -11,7 +11,7 @@
 #include <string>
 #include <vector>
 #include "Noeud.hh"
-#include "../../include/logiqueReseau/InterfaceFE.hh"
+#include "InterfaceFE.hh"
 
 
 using std::string;

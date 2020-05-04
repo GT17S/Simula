@@ -20,20 +20,22 @@ Cable::Cable(cableT _type, int _debitMax, int _MTU){
     ext1 = new extremite();
     ext2 = new extremite();
 
+
 }
 
 Cable::~Cable(){
    // std::cout << "Desutruction cable "<<id <<std::endl;
-    Graphe::supprimerCableMatrice(this);
+    if(ext1->noeud&& ext2->noeud){
+        Graphe::supprimerCableMatrice(this);
 
     ext1->noeud->getInterface(ext1->interface)->setCable(nullptr);
     ext2->noeud->getInterface(ext2->interface)->setCable(nullptr);
 
+    }
     //std::cout << "Desutruction ext1 "<<id <<std::endl;
     delete ext1;
     //std::cout << "Desutruction ext2 "<<id <<std::endl;
     delete ext2;
-
     nbCables = nbCables-1;
 }
 
@@ -94,6 +96,7 @@ bool  Cable::estBienConnecte(){
 }
 
 bool Cable::connexionNoeuds(Noeud * N1, int interface1, Noeud * N2, int interface2){
+    std::cout << N1->getNom()<<" "<<interface1<<" "<<N2->getNom()<<" "<<interface2<<std::endl;
     if(N1->acceptCable(this, interface1) && N2->acceptCable(this, interface2)){
 
         ext1->noeud = N1;

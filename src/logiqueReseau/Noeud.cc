@@ -2,9 +2,8 @@
 #include "Graphe.hh"
 
 #include <iostream>
-vector<int> Noeud::idsNoeuds;
 
-Noeud::Noeud() : nbPort(1), interfaces(), fileDattente(){
+Noeud::Noeud() : nbPort(1){
     // Générer automatiquement un ID
     //setIdNoeud(1);
     // Initialisation d'une seule interface
@@ -12,8 +11,7 @@ Noeud::Noeud() : nbPort(1), interfaces(), fileDattente(){
     Graphe::ajoutNoeudMatrice(this);
 }
 
-Noeud::Noeud(string _nom, int _idNoeud, int _nbPort) :
-    idNoeud(0), interfaces(), fileDattente(){
+Noeud::Noeud(string _nom, int _idNoeud, int _nbPort){
 
     nom = _nom;
     //setIdNoeud(_idNoeud);
@@ -27,9 +25,9 @@ Noeud::Noeud(string _nom, int _idNoeud, int _nbPort) :
 
 Noeud::~Noeud(){
 
-   //  std::cout << "Desutruction noeud "<< nom <<" "<<idNoeud<<std::endl;
+    //std::cout << "Desutruction noeud "<< nom <<" "<<idNoeud<<std::endl;
     // Supprimer ID du noeud de la liste
-    idsNoeuds.erase(std::remove(idsNoeuds.begin(), idsNoeuds.end(), idNoeud), idsNoeuds.end());
+    //idsNoeuds.erase(std::remove(idsNoeuds.begin(), idsNoeuds.end(), idNoeud), idsNoeuds.end());
 
     // Destruction des interfaces
     for (auto i : interfaces) {
@@ -82,30 +80,8 @@ void Noeud::setNom(string _nom){
 }
 
 void Noeud::setIdNoeud(int _idNoeud){
-    // Liste vide
-    if(idsNoeuds.empty()){
-        idNoeud = _idNoeud;
-        idsNoeuds.push_back(idNoeud);
-    }
-    // Liste n'est pas vide
-    else {
-        // Supprimer ancien ID
-        if(idNoeud != 0)
-            idsNoeuds.erase(std::remove(idsNoeuds.begin(), idsNoeuds.end(), idNoeud), idsNoeuds.end());
-
-        for (int id : idsNoeuds) {
-            // ID existe déja
-            if(id == _idNoeud){
-                idNoeud = *max_element(idsNoeuds.begin(), idsNoeuds.end()) + 1;
-                idsNoeuds.push_back(idNoeud);
-                return;
-            }
-        }
-
-        // ID n'existe pas
-        idNoeud = _idNoeud;
-        idsNoeuds.push_back(idNoeud);
-    }
+   //
+   idNoeud = _idNoeud;
 }
 
 

@@ -41,7 +41,7 @@ class Cable;
 
 class Noeud {
 protected:
-  static vector<int> idsNoeuds; /*!< Liste des identificateurs */
+  //static vector<int> idsNoeuds; /*!< Liste des identificateurs */
 
   string nom; /*!< Nom du noeud */
   int idNoeud;  /*< Identificateur du noeud */

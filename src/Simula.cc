@@ -11,8 +11,7 @@
 using  namespace  std;
 
 int main()	{
-
-
+/*
 Cable *A, *A1,*A2 , *A3 ,*A4,*A5 ,*A6 , *A7, *A8, *A9;
 
     A = new Cable();
@@ -178,7 +177,7 @@ Cable *A, *A1,*A2 , *A3 ,*A4,*A5 ,*A6 , *A7, *A8, *A9;
     Rs5->passerelle = "192.168.10.129";
 
     s5->setTableRoutage(Rs5);
-   s5->setPasserelle ("192.168.10.129");
+    s5->setPasserelle ("192.168.10.129");
 
     s6->getInterface( 0)->setAdresseIP( "192.168.10.131");
     s6->getInterface( 0)->setAdresseRes ("192.168.10.128");
@@ -191,12 +190,14 @@ Cable *A, *A1,*A2 , *A3 ,*A4,*A5 ,*A6 , *A7, *A8, *A9;
 
     s6->setTableRoutage(Rs6);
    s6->setPasserelle ("192.168.10.129");
+*/
+    Graphe * graphe = new Graphe();
+    lireXml("test.xml", graphe);
 
-
-int size_m = graphe->getMatrice().size();
-       for (int i = 0; i < size_m; ++i) {
-           std::cout << graphe->getSommets()[i]->getNom() << ' ';
-           for (int j = 0; j < size_m; ++j) {
+    int size_m = graphe->getMatrice().size();
+       for (int i =1; i < size_m; ++i) {
+           //std::cout <<"ID =" <<graphe->getSommets()[i]->getIdNoeud()<<" --";
+           for (int j = 0; j < i; ++j) {
                if(graphe->getMatrice()[i][j]){
                    int id = graphe->getMatrice()[i][j]->getId();
                     std::cout << id << " ";
@@ -206,7 +207,9 @@ int size_m = graphe->getMatrice().size();
            std::cout <<std::endl;
        }
 
-   // ecrireXml("test.xml", graphe);
+
+
+    //ecrireXml("test.xml", graphe);
     delete graphe;
     return 0;
 }

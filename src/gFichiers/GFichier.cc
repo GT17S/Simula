@@ -15,7 +15,7 @@ QFile * ouvrirlXml(QString nomFichier, QIODevice::OpenMode mode){
     return fichier;
 }
 
-void lireXml(QString nomFichier){
+void lireXml(QString nomFichier, Graphe * graphe){
 
     QFile * fichier = ouvrirlXml(nomFichier, QIODevice::ReadOnly);
     if(!fichier){
@@ -45,10 +45,10 @@ void lireXml(QString nomFichier){
                 n = new Station();
         else if(type.compare("Routeur", Qt::CaseInsensitive))
                 n = new Routeur();
-        else if(type.compare("Hub", Qt::CaseInsensitive))
-                n = new Hub();
         else if(type.compare("Switch", Qt::CaseInsensitive))
                 n = new Switch();
+        else if(type.compare("Hub", Qt::CaseInsensitive))
+                n = new Hub();
 
         n->setIdNoeud(ne.attribute("id").toInt());
         n->setNbPort(ne.attribute("nbPort").toInt());
@@ -88,14 +88,36 @@ void lireXml(QString nomFichier){
         }
         noeud = noeud.nextSibling();
     }
-    /*
+
     QDomNode cables = noeuds.nextSibling();
     QDomNode cable = cables.firstChild();
     while(!cable.isNull()){
+        Cable * c = new Cable();
+
+        c->setId(cable.toElement().attribute("id").toInt());
+        cableT type = static_cast<cableT>(cable.toElement().attribute("type").toInt());
+        c->setType(type);
+        QDomElement element = cable.firstChild().toElement(); // debitMax
+        c->setDebitMax(element.text().toInt());
+        element = element.nextSiblingElement(); // debitAcc
+        c->setDebitAcc(element.text().toFloat());
+        element = element.nextSiblingElement(); // latence
+        c->setLatence(element.text().toFloat());
+        element = element.nextSiblingElement(); // MTU
+        c->setMTU(element.text().toInt());
+        element = element.nextSiblingElement(); // Noeud A
+        int interface1 = element.attribute("interface").toInt();
+        Noeud * noeudA = graphe->getSommets()[interface1];
+
+        element = element.nextSiblingElement(); // Noeud B
+        int interface2 = element.attribute("interface").toInt();
+        Noeud * noeudB = graphe->getSommets()[interface2];
+
+        //c->connexionNoeuds(noeudA, interface1, noeudB, interface2);
 
         cable = cable.nextSibling();
     }
-    */
+
     fichier->close();
 
 }
@@ -122,9 +144,24 @@ void ecrireXml(QString nomFichier, Graphe *graphe){
         QDomElement noeud = document.createElement("Noeud");
         noeuds.appendChild(noeud);
 
-        noeud.setAttribute("id", n->getIdNoeud());
+        // Type
+        Station * st_n = dynamic_cast<Station*>(n);
+        Routeur * r_n = dynamic_cast<Routeur*>(n);
+        Hub * h_n = dynamic_cast<Hub*>(n);
+        Switch * sw_n = dynamic_cast<Switch*>(n);
 
-       // noeud.setAttribute("type", "TYPPPPE");
+        QString typeNoeud;
+        if(st_n)
+            typeNoeud = "Station";
+        else if(r_n)
+            typeNoeud = "Routeur";
+        else if(sw_n)
+            typeNoeud = "Switch";
+        else if(h_n)
+            typeNoeud = "Hub";
+
+        noeud.setAttribute("type", typeNoeud);
+        noeud.setAttribute("id", n->getIdNoeud());
         noeud.setAttribute("nbPort", n->getNbPort());
 
         QDomElement nom = document.createElement("nom");
@@ -219,7 +256,7 @@ void ecrireXml(QString nomFichier, Graphe *graphe){
                 noeudA.appendChild(document.createTextNode(QString::number(c->getExt1()->noeud->getIdNoeud())));
                 cable.appendChild(noeudA);
 
-                QDomElement noeudB = document.createElement("noeudB");
+                QDomElement noeudB = document.createElement("NoeudB");
                 noeudB.setAttribute("interface", c->getExt2()->interface);
                 noeudB.appendChild(document.createTextNode(QString::number(c->getExt2()->noeud->getIdNoeud())));
                 cable.appendChild(noeudB);

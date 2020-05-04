@@ -101,6 +101,7 @@ void Graphe::ajoutNoeudMatrice(Noeud* n)
         if(n == N)
             return;
     }
+
     n->setIdNoeud(sommets.size());
     sommets.push_back(n);
 
@@ -119,14 +120,17 @@ void Graphe::ajoutNoeudMatrice(Noeud* n)
 void Graphe::ajoutCableMatrice(Cable * c)
 {
 
-    int size_s = sommets.size();
-    int i_N1, i_N2;
+    //int size_s = sommets.size();
+    //int i_N1, i_N2;
     Noeud * N1 = c->getExt1()->noeud , * N2 = c->getExt2()->noeud;
 
+    int i_N1 = N1->getIdNoeud();
+    int i_N2 = N2->getIdNoeud();
+    /*
     for (int i = 0; i < size_s; i++) {
         if(sommets[i] == N1) i_N1 = i;
         if(sommets[i] == N2) i_N2 = i;
-    }
+    }*/
 
 
     matrice[i_N1][i_N2] = c;
@@ -135,8 +139,8 @@ void Graphe::ajoutCableMatrice(Cable * c)
 
 void Graphe::supprimerNoeudMatrice(Noeud * n)
 {
-    int indice = 0;
-
+    int indice = n->getIdNoeud();
+/*
     for(auto i = sommets.begin(); i != sommets.end(); i++)
         {
             if ( *i == n){
@@ -148,6 +152,16 @@ void Graphe::supprimerNoeudMatrice(Noeud * n)
                 break;
             }
     }
+*/
+    n = nullptr;
+    delete n;
+    sommets.erase(sommets.begin() + indice);
+
+
+    for (unsigned int i = indice; i < sommets.size(); i++) {
+        sommets[i]->setIdNoeud(i);
+    }
+
     for ( auto i = matrice.begin(); i != matrice.end() ; i++){
         (*i).erase( (*i).begin()+indice);
     }
@@ -158,13 +172,17 @@ void Graphe::supprimerNoeudMatrice(Noeud * n)
 
 void Graphe::supprimerCableMatrice(Cable * c)
 {
-    int size_s = sommets.size();
-    int i_N1, i_N2;
+    //int size_s = sommets.size();
+
     Noeud * N1 = c->getExt1()->noeud, * N2 = c->getExt2()->noeud;
+
+    int i_N1 = N1->getIdNoeud();
+    int i_N2 = N2->getIdNoeud();
+    /*
     for (int i = 0; i < size_s; i++) {
         if(sommets[i] == N1) i_N1 = i;
         if(sommets[i] == N2) i_N2 = i;
-    }
+    }*/
 
     //delete c;
     //c = nullptr;

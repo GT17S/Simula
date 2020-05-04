@@ -1,4 +1,5 @@
-#include "congestionOutil.hh"
+#include "../include/gCongestion/congestionOutil.hh"
+#include "../include/logiqueReseau/Graphe.hh"
 
 float CalculRTT(Congestion *g){
 	if(g->getCwnd() == 1)
@@ -21,3 +22,4 @@ float CalculLatenceDynamique(Graphe *graphe,Congestion *congestion,Data *data, i
 
 	return latency;
 }
+

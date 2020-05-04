@@ -42,7 +42,7 @@ public:
 
 	void setType (data_t _type);
 
-	void setSeq (boost::dynamic_bitset<unsigned char>* _seq);
+	//void setSeq (boost::dynamic_bitset<unsigned char>* _seq);
 
 	void setSeq (boost::dynamic_bitset<>* _seq);
 

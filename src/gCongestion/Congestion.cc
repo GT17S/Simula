@@ -1,10 +1,7 @@
 
 
 #include "../include/gCongestion/Congestion.hh"
-#include "../include/logiqueReseau/Graphe.hh"
-#include "../include/traitementTcpIp/Data.hh"
 
-#include "string"
 using namespace std;
 
 int Congestion::getIndiceEnv() const
@@ -38,12 +35,13 @@ void Congestion::setCountSegment(int value)
 }
 
 
-void Congestion::setSegRecu(const std::vector<Data *> value)
+void Congestion::setSegRecu(const std::vector<Data *> _segRecu)
 {
-    segRecu = value;
-}
+    segRecu = _segRecu;
+}   
 
 
+void setSegRecu(Data* _segRecu){}
 
 void Congestion::setSegAE(const std::vector<Data *> &value)
 {
@@ -150,7 +148,7 @@ Congestion::Congestion(Congestion &c){
     }
 
     void Congestion::verifieNumAck(Data *ack , std::vector<int> num_seq,Station *stSrc){//la station qui va verfie d'aqq(emet)
-        nbrAcksRecu++;
+     /*   nbrAcksRecu++;
         boost::dynamic_bitset<unsigned char> test;
 
         test= lire_bits (*ack->getSeq(),64,32);
@@ -174,9 +172,10 @@ Congestion::Congestion(Congestion &c){
                  //fastRetransmission(Station::getDataEnv(),numAckRecu);
              }
         }
+        */
     }
     void Congestion::verifieNumSegment(Data *segment,Station *stDes){//la station qui va verfie le num segment(recpt)
-        string ip,ip2,numSeg;
+     /*   string ip,ip2,numSeg;
         boost::dynamic_bitset<unsigned char>test,test1,test2,unBit;
         test= lire_bits (*segment->getSeq(),32,32);//num seg
         dernierNumSegment=test.to_ulong();
@@ -231,10 +230,11 @@ Congestion::Congestion(Congestion &c){
                         ecrire_bits(segment->getSeq(),segToBin,24,8);
                         stDes->envoyerMessage(stSrc,segment);
 
-    }}
+    }
+    }*/
 
-    void  Congestion::verifieNbrSegment(Station *stSrc){
-
+ //  void  Congestion::verifieNbrSegment(Station *stSrc){
+/*
         int i,j;
       i=0;j=0;
         for (i;i<cwnd;i++){
@@ -262,10 +262,11 @@ Congestion::Congestion(Congestion &c){
                        ecrire_bits(segment->getSeq(),unBit,106,6);//flag
                         stDes->envoyerMessage(stSrc,segment);
 
-    }}
+    }
+    */}
 
     void  Congestion::verifieNbrSegment(Station *stSrc){
-
+/*
         int i,j;
       i=0;j=0;
         for (i;i<cwnd;i++){
@@ -287,7 +288,8 @@ Congestion::Congestion(Congestion &c){
                 }
         indiceEnv =j+1;
 
-    }}
+    }
+    */}
 
 
     void Congestion::fastRetransmission(std::vector<Data> messages, int num){

@@ -35,7 +35,7 @@ if (DOXYGEN_FOUND)
     # note the option ALL which allows to build the docs together with the application
     add_custom_target( doc_doxygen ALL
         COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
-        WORKING_DIRECTORY ../Simula
+        WORKING_DIRECTORY ../Simula/doc/
         COMMENT "Generating API documentation with Doxygen"
         VERBATIM )
 else (DOXYGEN_FOUND)
@@ -79,5 +79,5 @@ add_executable (Simula ${SOURCES} ${HEADERS})
 target_link_libraries(Simula ${Qt5Widgets_LIBRARIES} Qt5::Xml ${Boost_LIBRARIES})	
 
 ADD_CUSTOM_TARGET(run COMMAND cd bin/Debug && ./Simula)
-ADD_CUSTOM_TARGET(doc COMMAND doxygen doc/Doxyfile)
+ADD_CUSTOM_TARGET(doc COMMAND doxygen doc/Doxyfile.in)
 ADD_CUSTOM_TARGET(sup COMMAND rm -rf bin/ doc/)

@@ -12,7 +12,9 @@
 #include"vector"
 #include "../include/traitementTcpIp/Data.hh"
 #include "../../include/traitementTcpIp/DataOutils.hh"
-
+#include "../include/logiqueReseau/Graphe.hh"
+#include "../include/traitementTcpIp/Data.hh"
+#include "../include/logiqueReseau/Station.hh"
 #include "../../include/logiqueReseau/Station.hh"
 
 /*!
@@ -297,7 +299,8 @@ public:
      * \param stSrc : la station émettrice des datas;
      */
     void verifieNbrSegment(Station *stSrc);
-    //friend float CalculLatenceDynamique(Graph *,Congestion *,Data *);
+         
+    friend float CalculLatenceDynamique(Graphe *,Congestion *,Data *);
 
 
 

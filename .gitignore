@@ -308,7 +308,7 @@ PublishScripts/
 csx/
 *.build.csdef
 
-doc/latex/*
+
 
 
 # Microsoft Azure Emulator
@@ -756,9 +756,8 @@ bin/
 # QtCreator CMake
 CMakeLists.txt.user*
 CMakeDoxygen*
-docs/html/*
-*.in
-doc/html
+
+
 # QtCreator 4.8< compilation database 
 compile_commands.json
 

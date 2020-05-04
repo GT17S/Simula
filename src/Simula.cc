@@ -1,72 +1,69 @@
 #include <iostream>
-#include "../include/logiqueReseau/Cable.hh"
-#include "../include/logiqueReseau/Noeud.hh"
-#include "../include/logiqueReseau/Routeur.hh"
-#include "../include/logiqueReseau/Graphe.hh"
-#include "../include/logiqueReseau/Station.hh"
-using  namespace  std;
+#include <string>
+#include "Hub.hh"
+#include "Data.hh"
+#include "Cable.hh"
+#include "Noeud.hh"
+#include "Graphe.hh"
+#include "Routeur.hh"
+#include "Station.hh"
+#include "DataOutils.hh"
+using namespace  std;
+using namespace boost;
 
-int main()	{
-
-
-    Cable * A, *A1;//,*A2,*A3, ;
-    A = new Cable();
-    A1= new Cable();
-//    A2= new Cable();
-//    A3= new Cable();
-
-    Graphe  *  graphe = new Graphe();
-
-    Station * s1, * s2;
-    s1 = new Station();
-    s2 = new Station();
-	Routeur * r1;
-	r1 = new Routeur();
-
-    r1->setNbPort(3);
-
-    A->connexionNoeuds( s1, 0, r1, 0);
-    A1->connexionNoeuds(s2, 0, r1, 1);
-
-	s1->getInterface( 0)->setAdresseIP( "192.168.10.1");
-	s1->getInterface( 0)->setAdresseRes ("192.168.10.0");
-	s1->getInterface( 0)->setMasque ("255.255.255.0");
+int main( int argc, char ** argv)	{
 	
-	s2->getInterface( 0)->setAdresseIP( "192.168.10.2");
-	s2->getInterface( 0)->setAdresseRes ("192.168.10.0");
-	s2->getInterface( 0)->setMasque ("255.255.255.0");
+	Data d ( argv[1]);
+	int p_src = 0xF00F, p_dest = 15, n_seq = 15, n_ack = 15, n_flag = 15, n_fen =15;
+	
+	dynamic_bitset<> port_src(16, p_src);
+	dynamic_bitset<> port_dest(16,p_dest);
+	dynamic_bitset<> num_seq(32, n_seq);
+	dynamic_bitset<> num_ack(32, n_ack);
+	dynamic_bitset<> flag(6, n_flag);
+	dynamic_bitset<> fen(16, n_fen);
+	
+	
+	std::cout << d << std::endl;
+	
+	encapsule_donnee ( port_src, port_dest, num_seq, num_ack, flag, fen, &d);
 
-	r1->getInterface( 0)->setAdresseIP( "192.168.10.3");
-	r1->getInterface( 0)->setAdresseRes ("192.168.10.0");
-	r1->getInterface( 0)->setMasque ("255.255.255.0");
+	std::cout << d << std::endl;
+	
+	boost::dynamic_bitset<> ip_id (16, 0b1010101010101010);
+	boost::dynamic_bitset<> p_flag ( 3, 0b111);
+	boost::dynamic_bitset<> offset ( 13, 0b0001111111000);
+	boost::dynamic_bitset<> ttl ( 8, 11000011);
+	encapsule_segment ( nullptr, nullptr, ip_id, p_flag, offset, ttl, &d);
 
-	r1->getInterface( 1)->setAdresseIP( "192.168.10.4");
-	r1->getInterface( 1)->setAdresseRes ("192.168.10.0");
-	r1->getInterface( 1)->setMasque ("255.255.255.0");
+	std::cout << d << std::endl;
 
-    int size_m = graphe->getMatrice().size();
-    for (int i = 0; i < size_m; ++i) {
-		for (int j = 0; j < size_m; ++j) {
-			if(graphe->getMatrice()[i][j]){
-				int id = graphe->getMatrice()[i][j]->getId();
-				 std::cout << id << " ";
-			}
-			else std::cout << "0" << " ";
-		}
-		std::cout <<std::endl;
+	encapsule_paquet ( nullptr, nullptr, &d);
+
+	std::cout << d << std::endl;
+	
+	desencapsule_trame ( &d);
+
+	std::cout << d << std::endl;
+
+	desencapsule_paquet ( &d);
+
+	std::cout << d << std::endl;
+
+	desencapsule_segment ( &d);
+
+	std::cout << d << std::endl;
+
+	
+	boost::dynamic_bitset<> tmp = *d.getSeq();
+	std::string res = "";
+	for (int i = 0; i < (int)tmp.size(); i+=8)	{
+		char c = (char)0;
+		for ( int j = i%8; j < 8; j++)	
+			if ( tmp[i+j])
+				c = c | ( 1<<(7-j));
+		res += c;
 	}
-
-	graphe->genererTableChemin ();
-
-	for (unsigned int i = 0; i < graphe->getTable().size(); i++)	{
-		std::cout << "Pour aller de : " << graphe->getSommets()[i]->getNom() << std::endl;
-		for (unsigned int j = 0; j < graphe->getTable()[i].size(); j++)	{
-			std::cout << "vers " << graphe->getSommets()[j]->getNom() << std::endl;
-			for (unsigned int k = 0; k < graphe->getTable()[i][j].tab.size(); k++)	{
-				std::cout << "\t" << graphe->getTable()[i][j].tab[i] << std::endl;
-			}
-		}
-	}
-    delete graphe;
+	std::cout << "Message original : " << res << std::endl;
     return 0;
 }

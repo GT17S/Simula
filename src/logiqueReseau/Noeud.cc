@@ -6,7 +6,7 @@ vector<int> Noeud::idsNoeuds;
 
 Noeud::Noeud() : nbPort(1), interfaces(), fileDattente(){
     // Générer automatiquement un ID
-    setIdNoeud(1);
+    //setIdNoeud(1);
     // Initialisation d'une seule interface
     interfaces.push_back(new InterfaceFE());
     Graphe::ajoutNoeudMatrice(this);
@@ -16,7 +16,7 @@ Noeud::Noeud(string _nom, int _idNoeud, int _nbPort) :
     idNoeud(0), interfaces(), fileDattente(){
 
     nom = _nom;
-    setIdNoeud(_idNoeud);
+    //setIdNoeud(_idNoeud);
     nbPort = _nbPort;
     // Initialisation des interfaces
     for (int i = 0; i < nbPort; i++) {
@@ -27,7 +27,7 @@ Noeud::Noeud(string _nom, int _idNoeud, int _nbPort) :
 
 Noeud::~Noeud(){
 
-     std::cout << "Desutruction noeud "<< nom <<" "<<idNoeud<<std::endl;
+   //  std::cout << "Desutruction noeud "<< nom <<" "<<idNoeud<<std::endl;
     // Supprimer ID du noeud de la liste
     idsNoeuds.erase(std::remove(idsNoeuds.begin(), idsNoeuds.end(), idNoeud), idsNoeuds.end());
 

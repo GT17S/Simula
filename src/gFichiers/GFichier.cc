@@ -123,6 +123,7 @@ void ecrireXml(QString nomFichier, Graphe *graphe){
         noeuds.appendChild(noeud);
 
         noeud.setAttribute("id", n->getIdNoeud());
+
        // noeud.setAttribute("type", "TYPPPPE");
         noeud.setAttribute("nbPort", n->getNbPort());
 
@@ -213,6 +214,15 @@ void ecrireXml(QString nomFichier, Graphe *graphe){
                 MTU.appendChild(document.createTextNode(QString::number(c->getMTU())));
                 cable.appendChild(MTU);
 
+                QDomElement noeudA = document.createElement("NoeudA");
+                noeudA.setAttribute("interface", c->getExt1()->interface);
+                noeudA.appendChild(document.createTextNode(QString::number(c->getExt1()->noeud->getIdNoeud())));
+                cable.appendChild(noeudA);
+
+                QDomElement noeudB = document.createElement("noeudB");
+                noeudB.setAttribute("interface", c->getExt2()->interface);
+                noeudB.appendChild(document.createTextNode(QString::number(c->getExt2()->noeud->getIdNoeud())));
+                cable.appendChild(noeudB);
             }
         }
     }

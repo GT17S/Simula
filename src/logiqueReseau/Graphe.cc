@@ -101,7 +101,7 @@ void Graphe::ajoutNoeudMatrice(Noeud* n)
         if(n == N)
             return;
     }
-
+    n->setIdNoeud(sommets.size());
     sommets.push_back(n);
 
     int taille_s = sommets.size();

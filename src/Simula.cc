@@ -6,6 +6,8 @@
 #include "Routeur.hh"
 #include "Graphe.hh"
 #include "Station.hh"
+#include "GFichier.hh"
+
 using  namespace  std;
 
 int main()	{
@@ -204,6 +206,7 @@ int size_m = graphe->getMatrice().size();
            std::cout <<std::endl;
        }
 
+   // ecrireXml("test.xml", graphe);
     delete graphe;
     return 0;
 }

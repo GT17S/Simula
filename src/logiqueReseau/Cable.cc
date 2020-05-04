@@ -23,15 +23,15 @@ Cable::Cable(cableT _type, int _debitMax, int _MTU){
 }
 
 Cable::~Cable(){
-    std::cout << "Desutruction cable "<<id <<std::endl;
+   // std::cout << "Desutruction cable "<<id <<std::endl;
     Graphe::supprimerCableMatrice(this);
 
     ext1->noeud->getInterface(ext1->interface)->setCable(nullptr);
     ext2->noeud->getInterface(ext2->interface)->setCable(nullptr);
 
-    std::cout << "Desutruction ext1 "<<id <<std::endl;
+    //std::cout << "Desutruction ext1 "<<id <<std::endl;
     delete ext1;
-    std::cout << "Desutruction ext2 "<<id <<std::endl;
+    //std::cout << "Desutruction ext2 "<<id <<std::endl;
     delete ext2;
 
     nbCables = nbCables-1;
@@ -70,8 +70,8 @@ bool  Cable::estBienConnecte(){
     string typeNoeud1;
     string typeNoeud2;
 
-    typeNoeud1 = typeid(ext1).name();
-    typeNoeud2 = typeid(ext2).name();
+    typeNoeud1 = typeid(ext1->noeud).name();
+    typeNoeud2 = typeid(ext2->noeud).name();
 
     // Meme type, cable croisé
     if(typeNoeud1 == typeNoeud2){

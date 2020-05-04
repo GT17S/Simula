@@ -16,23 +16,35 @@ Cable::Cable(cableT _type, int _debitMax, int _MTU){
     nbCables = nbCables+1;
     id = i;
     i++;
+
+    ext1 = new extremite();
+    ext2 = new extremite();
+
+
 }
 
 Cable::~Cable(){
-//    std::cout << "Desutruction cable "<<id <<std::endl;
-    Graphe::supprimerCableMatrice(this);
+   // std::cout << "Desutruction cable "<<id <<std::endl;
+    if(ext1->noeud&& ext2->noeud){
+        Graphe::supprimerCableMatrice(this);
 
-    getExt1()->getInterface(this)->setCable(nullptr);
-    getExt2()->getInterface(this)->setCable(nullptr);
+    ext1->noeud->getInterface(ext1->interface)->setCable(nullptr);
+    ext2->noeud->getInterface(ext2->interface)->setCable(nullptr);
+
+    }
+    //std::cout << "Desutruction ext1 "<<id <<std::endl;
+    delete ext1;
+    //std::cout << "Desutruction ext2 "<<id <<std::endl;
+    delete ext2;
     nbCables = nbCables-1;
 }
 
 
-Noeud * Cable::getExt(Noeud * ext){
-    if(ext == ext1)
+extremite * Cable::getExt(Noeud * ext){
+    if(ext == ext1->noeud)
             return ext2;
 
-    else if(ext == ext2)
+    else if(ext == ext2->noeud)
             return ext1;
 
     else
@@ -51,17 +63,17 @@ void Cable::setMTU(int _MTU){ MTU = _MTU;}
 
 void Cable::setType(const cableT & _type){type = _type;}
 
-void Cable::setExt1(Noeud * _noeud1){ext1 = _noeud1;}
+void Cable::setExt1(extremite * _noeud1){ext1 = _noeud1;}
 
-void Cable::setExt2(Noeud * _noeud2){ext2 = _noeud2;}
+void Cable::setExt2(extremite * _noeud2){ext2 = _noeud2;}
 
 bool  Cable::estBienConnecte(){
 
     string typeNoeud1;
     string typeNoeud2;
 
-    typeNoeud1 = typeid(ext1).name();
-    typeNoeud2 = typeid(ext2).name();
+    typeNoeud1 = typeid(ext1->noeud).name();
+    typeNoeud2 = typeid(ext2->noeud).name();
 
     // Meme type, cable croisé
     if(typeNoeud1 == typeNoeud2){
@@ -79,14 +91,19 @@ bool  Cable::estBienConnecte(){
     // Sinon cable droit
     }else if(type == 0)
         return true;
-    else
+     else
         return false;
 }
 
 bool Cable::connexionNoeuds(Noeud * N1, int interface1, Noeud * N2, int interface2){
     if(N1->acceptCable(this, interface1) && N2->acceptCable(this, interface2)){
-        setExt1(N1);
-        setExt2(N2);
+
+        ext1->noeud = N1;
+        ext1->interface = interface1;
+
+        ext2->noeud = N2;
+        ext2->interface = interface2;
+
         Graphe::ajoutCableMatrice(this);
         return true;
 
@@ -97,5 +114,6 @@ bool Cable::connexionNoeuds(Noeud * N1, int interface1, Noeud * N2, int interfac
     //this = NULL;
     return false;
 }
+
 
 

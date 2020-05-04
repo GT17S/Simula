@@ -1,6 +1,8 @@
 #include "../../include/traitementTcpIp/Data.hh"
 
 Data::Data(std::string message){
+	orignalstring.assign(message);
+	ossize = orignalstring.size();
 	//std::cout << "Message: " <<  message << std::endl;
 	std::reverse(std::begin(message), std::end(message));
 	//std::cout << "Message: " <<  message << std::endl;

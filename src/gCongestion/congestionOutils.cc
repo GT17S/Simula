@@ -9,11 +9,15 @@ float CalculRTT(Congestion *g){
 
 float CalculLatenceDynamique(Graphe *graphe,Congestion *congestion,Data *data, int id1, int id2){
 	float latency = 0.0f;
-	latency += 2*congestion->getBaseRtt() + (gr)
+	float sr = (1500 / graphe->getMatrice()[id1][id2]->getDebitAcc());
+	float Or = (data->getOriginialStringSize()/graphe->getMatrice()[id1][id2]->getDebitAcc());
+	float rtt2 = 2*congestion->getBaseRtt();
+	latency += rtt2 + Or;
 
-	for (int i = 0; i < count; ++i)
+	for (int i = 0; i < congestion->getCpt(); ++i)
 	{
-		/* code */
+		latency += ( sr + rtt2 - (pow(2.0, congestion->getCpt()-1) * sr));
 	}
 
+	return latency;
 }

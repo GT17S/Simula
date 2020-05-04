@@ -50,7 +50,7 @@ private:
     vector<vector<Cable*>> matrice; /*!< Matrice d'adjacences du Graphe */
     vector<vector<Chemin>> table;/*!< Table de chemins du Graphe */
 
-public:
+    static Graphe* singlPtr; //Pointeur unique
 
 
     /*!
@@ -59,6 +59,11 @@ public:
          */
 
     Graphe();
+    Graphe(const Graphe&) = delete;
+    Graphe & operator=(const Graphe&) = delete;
+
+public:
+
 
     /*!
          * \brief Construceur de copie
@@ -67,7 +72,6 @@ public:
          * \param g : voir #Graphe
          */
 
-    Graphe(Graphe& g);
 
     /*!
          * \brief Destructeur
@@ -75,6 +79,15 @@ public:
          */
 
     ~Graphe();
+
+
+
+
+    static Graphe *get() { // pour obtenir le singleton
+      if (!singlPtr) // voir plus haut
+         singlPtr = new Graphe;
+      return singlPtr;
+   }
 
 
     /*!

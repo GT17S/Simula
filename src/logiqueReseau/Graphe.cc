@@ -2,18 +2,19 @@
 
 #include <iostream>
 
+Graphe *Graphe::singlPtr = nullptr;
 
 Graphe::Graphe(){
 
 }
-
+/*
 Graphe::Graphe(Graphe & g)
 {
     this->sommets=g.sommets;
     this->matrice=g.matrice;
     this->table=g.table;
 }
-
+*/
 
 Graphe::~Graphe()
 {

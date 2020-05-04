@@ -8,11 +8,11 @@
  * \version 0.1
  */
 
-
 #include"string"
 #include"vector"
 #include "../include/traitementTcpIp/Data.hh"
 #include "../../include/traitementTcpIp/DataOutils.hh"
+
 #include "../../include/logiqueReseau/Station.hh"
 
 /*!

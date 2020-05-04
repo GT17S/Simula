@@ -27,7 +27,7 @@ Noeud::Noeud(string _nom, int _idNoeud, int _nbPort) :
 
 Noeud::~Noeud(){
 
-    // std::cout << "Desutruction noeud "<< nom <<" "<<idNoeud<<std::endl;
+     std::cout << "Desutruction noeud "<< nom <<" "<<idNoeud<<std::endl;
     // Supprimer ID du noeud de la liste
     idsNoeuds.erase(std::remove(idsNoeuds.begin(), idsNoeuds.end(), idNoeud), idsNoeuds.end());
 
@@ -64,6 +64,7 @@ InterfaceFE * Noeud::getInterface(int id){
     return nullptr;
 }
 
+/*
 InterfaceFE * Noeud::getInterface(Cable * _cable){
     if(_cable){
         for( InterfaceFE * i : interfaces){
@@ -74,7 +75,7 @@ InterfaceFE * Noeud::getInterface(Cable * _cable){
 
     return nullptr;
 }
-
+*/
 
 void Noeud::setNom(string _nom){
     nom = _nom;

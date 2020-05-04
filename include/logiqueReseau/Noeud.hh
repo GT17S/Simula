@@ -120,7 +120,7 @@ public:
      * \param cable : cable lié à l'interface
      * \return L'interface lié à le cable en entrée
      */
-    InterfaceFE * getInterface(Cable * cable);
+    //InterfaceFE * getInterface(Cable * cable);
 
     /*!
      * \brief getTableRoutage

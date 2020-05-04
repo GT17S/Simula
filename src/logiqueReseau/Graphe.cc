@@ -121,7 +121,8 @@ void Graphe::ajoutCableMatrice(Cable * c)
 
     int size_s = sommets.size();
     int i_N1, i_N2;
-    Noeud * N1 = c->getExt1() , * N2 = c->getExt2();
+    Noeud * N1 = c->getExt1()->noeud , * N2 = c->getExt2()->noeud;
+
     for (int i = 0; i < size_s; i++) {
         if(sommets[i] == N1) i_N1 = i;
         if(sommets[i] == N2) i_N2 = i;
@@ -159,7 +160,7 @@ void Graphe::supprimerCableMatrice(Cable * c)
 {
     int size_s = sommets.size();
     int i_N1, i_N2;
-    Noeud * N1 = c->getExt1(), * N2 = c->getExt2();
+    Noeud * N1 = c->getExt1()->noeud, * N2 = c->getExt2()->noeud;
     for (int i = 0; i < size_s; i++) {
         if(sommets[i] == N1) i_N1 = i;
         if(sommets[i] == N2) i_N2 = i;

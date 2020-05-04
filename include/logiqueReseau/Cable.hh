@@ -26,12 +26,27 @@ typedef enum {
 } cableT;
 
 #endif
+
+class Noeud;
+
+#ifndef EXTREMITE_H
+#define EXTREMITE_H
+/*!
+ * \struct extremite
+ * \brief Extremité du cable
+ */
+
+typedef struct {
+    Noeud * noeud; /*!< Noeud */
+    int interface; /*!< interface liée*/
+} extremite;
+
+#endif
 /*!
  * \class Cable
  * \brief La classe Cable représentant un Cable.
  */
 
-class Noeud;
 
 class Cable{
 private:
@@ -44,8 +59,8 @@ private:
   float latence; /*!< Latence du cable */ //refrence to congestion
   int MTU; /*! < Taille maximale du paquet transmis */
   cableT type; /*!< Type du cable */
-  Noeud* ext1; /*!< Le Noeud à l'extremitie 1 */
-  Noeud* ext2; /*!< Le Noeud à l'extremitie 2*/
+  extremite* ext1; /*!< Le Noeud à l'extremitie 1 */
+  extremite* ext2; /*!< Le Noeud à l'extremitie 2*/
 public:
 
   /*!
@@ -98,18 +113,18 @@ public:
    * \brief getExt1
    * \return Le premier Noeud a l'extremitie (Noeud)
    */
-  Noeud * getExt1() {return ext1;}
+  extremite * getExt1() {return ext1;}
   /*!
    * \brief getExt2
    * \return Le deuxième Noeud a l'extremitie (Noeud)
    */
-  Noeud * getExt2() {return ext2;}
+  extremite * getExt2() {return ext2;}
   /*!
    * \brief getExt
    * \param ext : Le noeud en extrimité 1
    * \return : Le noeud en extrimité 2
    */
-  Noeud* getExt(Noeud * ext);
+  extremite* getExt(Noeud * ext);
 
 
   /*!
@@ -159,13 +174,13 @@ public:
    * Modifier le noeud a l'extremitie
    * \param noeud1 : noeud (Noeud).
    */
-  void setExt1(Noeud *noeud1);
+  void setExt1(extremite *noeud1);
   /*!
    * \brief setExt2
    * Modifier le noeud a l'extremitie
    * \param noeud2 : noeud (Noeud).
    */
-  void setExt2(Noeud *noeud1);
+  void setExt2(extremite *noeud1);
 
   /*!
    * \brief estBienConnecte

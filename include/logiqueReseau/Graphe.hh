@@ -52,11 +52,11 @@ class Graphe{
 
 private:
 
+    static Graphe* singlPtr; //Pointeur unique
+
     static vector<Noeud*> sommets;/*!< Liste des sommets du Graphe */
     static vector<vector<Cable*>> matrice; /*!< Matrice d'adjacences du Graphe */
     static vector<vector<Chemin>> table;/*!< Table de chemins du Graphe */ 
-public:
-
 
     /*!
          * \brief Constructeur par défaut
@@ -64,6 +64,11 @@ public:
          */
 
     Graphe();
+    Graphe(const Graphe&) = delete;
+    Graphe & operator=(const Graphe&) = delete;
+
+public:
+
 
     /*!
          * \brief Construceur de copie
@@ -72,7 +77,6 @@ public:
          * \param g : voir #Graphe
          */
 
-    Graphe(Graphe& g);
 
     /*!
          * \brief Destructeur
@@ -80,6 +84,15 @@ public:
          */
 
     ~Graphe();
+
+
+
+
+    static Graphe *get() { // pour obtenir le singleton
+      if (!singlPtr) // voir plus haut
+         singlPtr = new Graphe;
+      return singlPtr;
+   }
 
 
     /*!

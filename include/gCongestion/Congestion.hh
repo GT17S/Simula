@@ -8,26 +8,37 @@
  * \version 0.1
  */
 
-#include <string>
-#include <vector>
+
+#include"string"
+#include"vector"
+#include "../include/traitementTcpIp/Data.hh"
+#include "../../include/traitementTcpIp/DataOutils.hh"
+#include "../../include/logiqueReseau/Station.hh"
 
 /*!
  * \class Congestion
  * \brief La classe Congestion représentant un contrôleur de congestion .
  */
 
-
+class Station;
 class Congestion{
 private:
     int cwnd;/*!< La taille de la fentre de congestion */
     int ssthresh; /*!< taille maximum de cwnd en mode slow start */
     int cpt;/*!< nombre de fois que cwnd a changé */
-    int dernierNumSegment;/*!<  numéro du dernier segment reçu */
     int nbrAcksDuplique;/*!<  Nombre d’ack dupliqués */
     int nbrAcksRecu; /*!<  Nombre de paquets acquittement reçus*/
     int numAckRecu;/*!< Numéro du dernier paquet acquittement reçu*/
     float baseRtt;/*!<  RoundTripTime de valeur prédéfinie*/
-    //ajout un nombre pour verfie si nbr seqgemnt recu = total et le remttre a 0 apres
+    std::vector<Data *> segAE;/*!< les segments a envoyer*/
+    int indiceEnv;/*!< indice qui detrmine segments a envoyer */
+     //pc recepteur
+    int dataTotal;/*!< nombre total des segment a envoyer */
+    int countSegment;/*! compteur des segment recu */
+    std::vector<Data *> segRecu;/*!< les segments recu */
+    int dernierNumSegment;/*!<  numéro du dernier segment reçu */
+
+
 public:
     /*!
      * \brief Constructeur par défaut
@@ -93,6 +104,37 @@ public:
       */
     int getBaseRtt(){return baseRtt;}
 
+    /*!
+      * \brief getIndiceEnv
+      * \return indiceEnv (int)
+      */
+    int getIndiceEnv() const;
+
+    /*!
+      * \brief getDataTotal
+      * \return nombre total des semgents  (int)
+      */
+    int getDataTotal() const;//pc recepteur
+
+    /*!
+      * \brief getCountSegment
+      * \return nombre des segments recu  (int)
+      */
+    int getCountSegment() const;//pc recepteur
+
+
+    /*!
+      * \brief getSegRecu
+      * \return les segments recu  (vector<Data *>)
+      */
+    std::vector<Data *> getSegRecu() const;//pc recepteur
+
+    /*!
+      * \brief getSegAE
+      * \return les segments a envoyer  (vector<Data *>)
+      */
+    std::vector<Data *> getSegAE() const;
+
 
     /*!
       * \brief setCwnd
@@ -156,12 +198,59 @@ public:
       * \param _baseRtt : RoundTripTime (int)
       */
     void setBaseRtt(int _baseRtt);
+
+    /*!
+      * \brief setIndiceEnv
+      *  Modifier numero du l'indice de vector des segment a envoyer
+      *  Vérifier _indiceEnv est positive
+      * \param _indiceEnv : indice (int)
+      */
+    void setIndiceEnv(int _indiceEnv);
+
+    /*!
+      * \brief setIndiceEnv
+      *  Modifier numero du l'indice de vector des segment a envoyer
+      *  Vérifier _indiceEnv est positive
+      * \param _indiceEnv : indice (int)
+      */
+    void setDataTotal(int value);//pc recepteur
+
+    /*!
+      * \brief setCountSegment
+      *  Modifier le compteur des segments recu
+      *  Vérifier _countSegment est positive
+      * \param _countSegment : nombre (int)
+      */
+    void setCountSegment(int _countSegment);//pc recepteur
+
+    /*!
+      * \brief setSegRecu
+      *  Modifier les segments recus
+      * \param _segRecu : segment (vector<Data *>)
+      */
+    void setSegRecu(const std::vector<Data *> _segRecu);//pc recepteur
+
+    /*!
+      * \brief setSegRecu
+      *  Modifier les segments recus
+      * \param _segRecu : segment (Data)
+      */
+    void setSegRecu(Data* _segRecu);//pc recepteur
+
+    /*!
+      * \brief setSegAE
+      *  Modifier les segments a envoyer
+      * \param _segAE : segment (vector<Data *>)
+      */
+    void setSegAE(const std::vector<Data *> &_segAE);
+
     /*!
      * \brief slowStart
      * Méthode : Méthode qui va augmenter la taille de la fenêtre de congestion de une façon exponentielle et augmenter
         le cpt.
      * Vérifier si cwnd supérieur au ssthresh.
      */
+
     void slowStart();
 
     /*!
@@ -176,12 +265,43 @@ public:
      */
     void congestionAvoidance();
 
+    /*!
+     * \brief verifieNumSegment
+     * verification des numero des segments recus et l'ienvoie d'un ack
+     * \param segment : Data recu
+     * \param stDes : la station réceptrice des datas;
+     */
+    void verifieNumSegment(Data * segment,Station *stDes);//pc recepteur
 
-    void verifieNumSegment(std::string * segment);
-    void verifieNumAck(std::string * ack,std::vector<int> num_seq);
-    void fastRetransmission(std::vector<std::string> messages);
-    void verifieNbrSegment(std::string * nbr_segment);
+
+    /*!
+     * \brief verifieNumAck
+     * verification des numero des Ack recus
+     * \param ack : l'acquittement  recu
+     * \param num_seq :vector des numeros des segments deja envoyé
+     * \param stSrc : la station émettrice des datas;
+     */
+    void verifieNumAck(Data * ack,std::vector<int> num_seq,Station *stSrc);
+
+    /*!
+     * \brief verifieNumAck
+     * retransmission des segments perdus
+     * \param messages : les segments deja envoyeé
+     * \param num :numero de segments perdu
+     */
+    void fastRetransmission(std::vector<Data> messages,int num);
+
+    /*!
+     * \brief verifieNumAck
+     * verfication nombre des segments a envoyer
+     * \param stSrc : la station émettrice des datas;
+     */
+    void verifieNbrSegment(Station *stSrc);
     //friend float CalculLatenceDynamique(Graph *,Congestion *,Data *);
+
+
+
+
 
 
 };

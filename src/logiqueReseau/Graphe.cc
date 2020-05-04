@@ -176,5 +176,15 @@ void Graphe::supprimerCableMatrice(Cable * c)
     matrice[i_N2][i_N1] = nullptr;
 
 }
+Noeud* Graphe::noeudFromIp(string _ip){
+    for(Noeud * n : sommets){
+        for(InterfaceFE *i : n->getInterfaces()){
+            if(i->getAdresseIP()==_ip)
+                return n;
+
+        }}
+
+    return nullptr;
+}
 
 

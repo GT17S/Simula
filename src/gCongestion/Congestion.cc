@@ -1,7 +1,6 @@
+#include "Congestion.hh"
 
-
-#include "../include/gCongestion/Congestion.hh"
-
+#include "string"
 using namespace std;
 
 int Congestion::getIndiceEnv() const
@@ -35,13 +34,12 @@ void Congestion::setCountSegment(int value)
 }
 
 
-void Congestion::setSegRecu(const std::vector<Data *> _segRecu)
+void Congestion::setSegRecu(const std::vector<Data *> value)
 {
-    segRecu = _segRecu;
-}   
+    segRecu = value;
+}
 
 
-void setSegRecu(Data* _segRecu){}
 
 void Congestion::setSegAE(const std::vector<Data *> &value)
 {
@@ -148,12 +146,11 @@ Congestion::Congestion(Congestion &c){
     }
 
     void Congestion::verifieNumAck(Data *ack , std::vector<int> num_seq,Station *stSrc){//la station qui va verfie d'aqq(emet)
-     /*   nbrAcksRecu++;
-        boost::dynamic_bitset<unsigned char> test;
-
+        nbrAcksRecu++;
+        boost::dynamic_bitset<> test;
         test= lire_bits (*ack->getSeq(),64,32);
         numAckRecu=test.to_ulong();
-
+        numAckRecu=int(numAckRecu);
         if(numAckRecu==num_seq[0]){
            num_seq.erase (num_seq.begin());
             if(cwnd==nbrAcksRecu){
@@ -172,17 +169,16 @@ Congestion::Congestion(Congestion &c){
                  //fastRetransmission(Station::getDataEnv(),numAckRecu);
              }
         }
-        */
     }
     void Congestion::verifieNumSegment(Data *segment,Station *stDes){//la station qui va verfie le num segment(recpt)
-     /*   string ip,ip2,numSeg;
-        boost::dynamic_bitset<unsigned char>test,test1,test2,unBit;
+        string ip,ip2,numSeg;
+        boost::dynamic_bitset<>test,test1,test2,unBit;
         test= lire_bits (*segment->getSeq(),32,32);//num seg
         dernierNumSegment=test.to_ulong();
+        dernierNumSegment=int(dernierNumSegment);
         test1=lire_bits (*segment->getSeq(),96,32);//ip src orgin pc  a
         boost::to_string(test1,ip);
         test2=lire_bits (*segment->getSeq(),128,32);//ip2 des origin pc b
-
         boost::to_string(test2,ip2);
         string dernierNumSegmentss;
         string un="1";
@@ -190,21 +186,20 @@ Congestion::Congestion(Congestion &c){
             segRecu.push_back(segment);
             dernierNumSegment++;
             dernierNumSegmentss=to_string(dernierNumSegment);//vers string numseg
+
             numSeg=segment->strtobinary(dernierNumSegmentss);//to binary
-            boost::dynamic_bitset<unsigned char>segToBin(std::begin(numSeg), std::end(numSeg));//to bistest
+            boost::dynamic_bitset<>segToBin(std::begin(numSeg), std::end(numSeg));//to bistest
 
             un=segment->strtobinary(un);//to binary 1
-            boost::dynamic_bitset<unsigned char>unBit(std::begin(un), std::end(un));//to bistest 1
+            boost::dynamic_bitset<>unBit(std::begin(un), std::end(un));//to bistest 1
 
             //ack en parcournt somment de noed et trouve le sommet qui a meme addrrss ip
                     Noeud *stSrc;
-                    stSrc=Graphe::noeudFromIp(ip2);
-
+                   // stSrc=Graphe::noeudFromIp(ip2);
                     ecrire_bits(segment->getSeq(),test2,96,32);//pos addres ip src
                     ecrire_bits(segment->getSeq(),test1,128,32);//ip des
                     ecrire_bits(segment->getSeq(),segToBin,64,32);//num acqt
                     ecrire_bits(segment->getSeq(),unBit,106,6);//flag
-
 
                     stDes->envoyerMessage(stSrc,segment);
                 }
@@ -218,40 +213,9 @@ Congestion::Congestion(Congestion &c){
             //ack avec dernierNumSegment
                 dernierNumSegmentss=to_string(dernierNumSegment);
                 numSeg=segment->strtobinary(dernierNumSegmentss);
-                boost::dynamic_bitset<unsigned char>segToBin(std::begin(numSeg), std::end(numSeg));
+                boost::dynamic_bitset<>segToBin(std::begin(numSeg), std::end(numSeg));
                 un=segment->strtobinary(un);//to binary 1
-                boost::dynamic_bitset<unsigned char>unBit(std::begin(un), std::end(un));//to bistest 1
-
-
-                        Noeud *stSrc;
-                       stSrc=Graphe::noeudFromIp(ip2);
-                        ecrire_bits(segment->getSeq(),test2,8,8);//pos addres ip src a 8
-                        ecrire_bits(segment->getSeq(),test1,16,8);//des 16
-                        ecrire_bits(segment->getSeq(),segToBin,24,8);
-                        stDes->envoyerMessage(stSrc,segment);
-
-    }
-    }*/
-
- //  void  Congestion::verifieNbrSegment(Station *stSrc){
-/*
-        int i,j;
-      i=0;j=0;
-        for (i;i<cwnd;i++){
-            Data *segment;
-            string ipSrc,ipDes;
-            j=i+indiceEnv;
-            segment=segAE[j];
-            boost::dynamic_bitset<unsigned char>test1;;
-            test1=lire_bits (*segment->getSeq(),16,8);//ip des
-            boost::to_string(test1,ipDes);
-            Noeud *des;
-            des=Graphe::noeudFromIp(ipDes);
-
-        stSrc->envoyerMessage(des,segment);
-          // segAEnv.erase(segAEnv.begin()+i);
-                }
-        indiceEnv =j+1;
+                boost::dynamic_bitset<>unBit(std::begin(un), std::end(un));//to bistest 1
 
 
                         Noeud *stSrc;
@@ -262,11 +226,10 @@ Congestion::Congestion(Congestion &c){
                        ecrire_bits(segment->getSeq(),unBit,106,6);//flag
                         stDes->envoyerMessage(stSrc,segment);
 
-    }
-    */}
+    }}
 
     void  Congestion::verifieNbrSegment(Station *stSrc){
-/*
+
         int i,j;
       i=0;j=0;
         for (i;i<cwnd;i++){
@@ -277,7 +240,7 @@ Congestion::Congestion(Congestion &c){
                 break ; //fin
             }else {
             segment=segAE[j];
-            boost::dynamic_bitset<unsigned char>test1;;
+            boost::dynamic_bitset<>test1;;
             test1=lire_bits (*segment->getSeq(),16,8);//ip des
             boost::to_string(test1,ipDes);
             Noeud *des;
@@ -288,9 +251,7 @@ Congestion::Congestion(Congestion &c){
                 }
         indiceEnv =j+1;
 
-    }
-    */}
-
+    }}
 
     void Congestion::fastRetransmission(std::vector<Data> messages, int num){
        //parcourir segAEnv et verf le numero avec num si == alors envoyerMessage

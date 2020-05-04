@@ -93,7 +93,6 @@ void lireXml(QString nomFichier, Graphe * graphe){
     QDomNode cable = cables.firstChild();
     while(!cable.isNull()){
         Cable * c = new Cable();
-
         c->setId(cable.toElement().attribute("id").toInt());
         cableT type = static_cast<cableT>(cable.toElement().attribute("type").toInt());
         c->setType(type);
@@ -107,13 +106,14 @@ void lireXml(QString nomFichier, Graphe * graphe){
         c->setMTU(element.text().toInt());
         element = element.nextSiblingElement(); // Noeud A
         int interface1 = element.attribute("interface").toInt();
-        Noeud * noeudA = graphe->getSommets()[interface1];
+        Noeud * noeudA = graphe->getSommets()[element.text().toInt()];
 
         element = element.nextSiblingElement(); // Noeud B
         int interface2 = element.attribute("interface").toInt();
-        Noeud * noeudB = graphe->getSommets()[interface2];
+        Noeud * noeudB = graphe->getSommets()[element.text().toInt()];
 
-        //c->connexionNoeuds(noeudA, interface1, noeudB, interface2);
+        //std::cout << noeudB->getNom()<<" "<<interface1<<" "<<noeudB->getNom()<<" "<<interface2<<std::endl;
+        c->connexionNoeuds(noeudA, interface1, noeudB, interface2);
 
         cable = cable.nextSibling();
     }
@@ -205,15 +205,15 @@ void ecrireXml(QString nomFichier, Graphe *graphe){
 
             QDomElement adresseRes = document.createElement("adresseRes");
             adresseRes.appendChild(document.createTextNode(QString::fromStdString(r->adresseReseau)));
-            tableRoutage.appendChild(adresseRes);
+            route.appendChild(adresseRes);
 
 
             QDomElement masque = document.createElement("masque");
             masque.appendChild(document.createTextNode(QString::fromStdString(r->masque)));
-            tableRoutage.appendChild(masque);
+            route.appendChild(masque);
             QDomElement adresseP = document.createElement("adressePasserelle");
             adresseP.appendChild(document.createTextNode(QString::fromStdString(r->passerelle)));
-            tableRoutage.appendChild(adresseP);
+            route.appendChild(adresseP);
         }
 
     }

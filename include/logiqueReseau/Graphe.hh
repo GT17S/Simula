@@ -165,6 +165,7 @@ public:
     static void ajoutCableMatrice(Cable *C);
     static void supprimerNoeudMatrice(Noeud * n);
     static void supprimerCableMatrice(Cable* c);
+    static Noeud * noeudFromIp(string _ip);
 
 };
 

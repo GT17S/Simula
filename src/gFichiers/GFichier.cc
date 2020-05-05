@@ -1,5 +1,5 @@
 #include "GFichier.hh"
-#include <iostream>
+
 
 bool verifier_schema(QFile *fichier_xml){
 
@@ -271,3 +271,62 @@ void ecrireXml(QString nomFichier, Graphe *graphe){
 
 }
 
+
+void ecrireDot(std::string filename, Graphe* graphe){
+    //Verifier les attributs
+    assert(graphe);
+    //On crée le fichier de destination
+    if(filename.empty()){
+        filename.assign("autosave.dot");
+    }else{
+        filename += ".dot";
+    }
+
+    //Ouvrir le fichier en écriture
+    std::ofstream outfile("autosave.dot", std::ofstream::out);
+    if(outfile.is_open()){
+        //On écrit dans le fichier, l'en tête d'un fichier dot
+        outfile << "graph G{ " << std::endl;
+        outfile << "rankdir=LR;" << std::endl << "splines=line;" << std::endl << "graph[bgcolor=lightyellow2,splines=true];" << std::endl << "node[ color=yellow, style=filled, shape=polygon, sides=6, fontname=\"Verdana\"] ;" << std::endl;
+        //On ecrit les noeuds
+        auto nodes = graphe->getSommets();
+        for (auto i = 0; i < (int)nodes.size(); ++i)
+        {
+           if(dynamic_cast<Routeur*>(nodes[i]))
+                outfile << i << " [shape=box , color=red , fontcolor=black , label = \" " << nodes[i]->getNom() << "\" ] ;";
+           if(dynamic_cast<Switch*>(nodes[i]))
+                outfile << i << " [shape=ellipse , color=blue , fontcolor=black , label = \" " << nodes[i]->getNom() << "\" ] ;";
+           if(dynamic_cast<Station*>(nodes[i]))
+                outfile << i << " [shape=octagon , color=green , fontcolor=black , label = \" " << nodes[i]->getNom() << "\" ] ;";
+           if(dynamic_cast<Hub*>(nodes[i]))
+                outfile << i << " [shape=ellipse , color=pink , fontcolor=black , label = \" " << nodes[i]->getNom() << "\" ] ;";    
+
+
+            outfile << std::endl;    
+        }   
+
+
+        //Ecrire les arcs
+        auto  mat = graphe->getMatrice();
+        for (auto i = 0; i < mat.size(); ++i)
+        {
+           for (auto j = 0; j < mat[i].size(); ++j)
+           {
+                if(mat[i][j]){
+                     outfile << i << "--" << j << "[label =\"1 ms − 1 Mb/ s \" , w e i g h t ="  <<  mat[i][j] << "  ,  color =\"g r e e n \" , style=dashed ] ;";
+                     outfile << std::endl;
+                }
+
+
+           }
+        }
+
+        outfile << "}"; 
+        outfile.flush();
+        outfile.close();
+    }else{
+        std::cerr << "Le fichier" + filename + " n'a pas pu être ouvert" << std::endl;
+        outfile.close();
+        return;
+    }
+}

@@ -1,4 +1,8 @@
+
+#include "../include/logiqueReseau/Graphe.hh"
+
 #include "Congestion.hh"
+
 
 #include "string"
 using namespace std;
@@ -147,6 +151,7 @@ Congestion::Congestion(Congestion &c){
 
     void Congestion::verifieNumAck(Data *ack , std::vector<int> num_seq,Station *stSrc){//la station qui va verfie d'aqq(emet)
         nbrAcksRecu++;
+
         boost::dynamic_bitset<> test;
         test= lire_bits (*ack->getSeq(),64,32);
         numAckRecu=test.to_ulong();
@@ -172,6 +177,7 @@ Congestion::Congestion(Congestion &c){
     }
     void Congestion::verifieNumSegment(Data *segment,Station *stDes){//la station qui va verfie le num segment(recpt)
         string ip,ip2,numSeg;
+
         boost::dynamic_bitset<>test,test1,test2,unBit;
         test= lire_bits (*segment->getSeq(),32,32);//num seg
         dernierNumSegment=test.to_ulong();
@@ -195,7 +201,9 @@ Congestion::Congestion(Congestion &c){
 
             //ack en parcournt somment de noed et trouve le sommet qui a meme addrrss ip
                     Noeud *stSrc;
+
                    // stSrc=Graphe::noeudFromIp(ip2);
+
                     ecrire_bits(segment->getSeq(),test2,96,32);//pos addres ip src
                     ecrire_bits(segment->getSeq(),test1,128,32);//ip des
                     ecrire_bits(segment->getSeq(),segToBin,64,32);//num acqt
@@ -215,7 +223,9 @@ Congestion::Congestion(Congestion &c){
                 numSeg=segment->strtobinary(dernierNumSegmentss);
                 boost::dynamic_bitset<>segToBin(std::begin(numSeg), std::end(numSeg));
                 un=segment->strtobinary(un);//to binary 1
+
                 boost::dynamic_bitset<>unBit(std::begin(un), std::end(un));//to bistest 1
+
 
 
                         Noeud *stSrc;

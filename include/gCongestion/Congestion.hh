@@ -10,12 +10,11 @@
 
 #include"string"
 #include"vector"
-#include "../include/traitementTcpIp/Data.hh"
-#include "../../include/traitementTcpIp/DataOutils.hh"
-#include "../include/logiqueReseau/Graphe.hh"
-#include "../include/traitementTcpIp/Data.hh"
-#include "../include/logiqueReseau/Station.hh"
-#include "../../include/logiqueReseau/Station.hh"
+#include "Data.hh"
+#include "DataOutils.hh"
+#include "congestionOutil.hh"
+#include"Graphe.hh"
+#include "Station.hh"
 
 /*!
  * \class Congestion
@@ -299,9 +298,9 @@ public:
      * \param stSrc : la station émettrice des datas;
      */
     void verifieNbrSegment(Station *stSrc);
-         
-    friend float CalculLatenceDynamique(Graphe *,Congestion *,Data *);
 
+    float CalculRTT(Congestion *g);
+    float CalculLatenceDynamique(Graphe *graphe,Congestion *congestion,Data *data);
 
 
 

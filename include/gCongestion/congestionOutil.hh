@@ -6,7 +6,7 @@
 #include "Congestion.hh"
 #include "Data.hh"
 #include "Graphe.hh"
-
+class Congestion;
 const float baseRTT = 200.0f;
 const float alpha = 0.125f;
 

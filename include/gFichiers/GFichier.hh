@@ -12,7 +12,7 @@
 #include <fstream>
 #include <string>
 #include "Graphe.hh"
-
+class Graphe;
 
 bool verifier_schema(QFile * fichier_xml);
 

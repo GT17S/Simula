@@ -313,7 +313,7 @@ void ecrireDot(std::string filename, Graphe* graphe){
            for (auto j = 0; j < mat[i].size(); ++j)
            {
                 if(mat[i][j]){
-                     outfile << i << "--" << j << "[label =\"1 ms − 1 Mb/ s \" , w e i g h t ="  <<  mat[i][j] << "  ,  color =\"g r e e n \" , style=dashed ] ;";
+                     outfile << i << "--" << j << "[label =\"1 ms − 1 Mb/ s \" , weight ="  <<  mat[i][j] << "  ,  color =\"green\" , style=dashed ] ;";
                      outfile << std::endl;
                 }
 

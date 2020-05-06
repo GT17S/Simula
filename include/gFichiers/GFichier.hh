@@ -14,6 +14,8 @@
 #include "Graphe.hh"
 
 
+class Graphe;
+
 bool verifier_schema(QFile * fichier_xml);
 
 QFile * ouvrirlXml(QString nomfichier, QIODevice::OpenMode mode);

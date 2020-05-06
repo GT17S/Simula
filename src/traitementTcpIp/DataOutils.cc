@@ -58,6 +58,21 @@ void calculerChecksum ( Data * d)	{
 
 }
 
+void calculerFrameCheckSequence ( Data * d)	{
+	if ( d == nullptr) return;
+	unsigned int fcs = 0xFFFF,
+				 length = d->getSeq()->size();
+	boost::dynamic_bitset<> tmp = *d->getSeq();
+	for (unsigned int i = 0; i < tmp.size(); i++)	{
+		bool bpf = fcs & 1;
+		if ( bpf != tmp[i])
+			fcs = fcs | 0x8408;
+		fcs = fcs << 1;
+	}
+	d->getSeq()->resize(length+32);
+	ecrire_bits ( d->getSeq(), boost::dynamic_bitset<> ( 32, fcs), length, 32);
+}
+
 void encapsule_donnee ( dynamic_bitset<> port_src, dynamic_bitset<> port_dest, dynamic_bitset<> num_seq, dynamic_bitset<> num_ack, dynamic_bitset<> flag, dynamic_bitset<> fen, Data * d)	{
 	size_t old = d->getSeq()->size();
 	size_t length = port_src.size() + port_dest.size() + num_seq.size() + num_ack.size() + flag.size() + fen.size() + old + 74;
@@ -169,9 +184,7 @@ void encapsule_paquet ( Noeud * src, Noeud * dest, Data * d)	{
 	unsigned long long mac_dest = macNoeud ( dest);
 	ecrire_bits ( d->getSeq(), boost::dynamic_bitset<> ( 48, mac_dest), 48, 48);
 	ecrire_bits ( d->getSeq(), boost::dynamic_bitset<> ( 16, 2048), 96, 16);
-	d->getSeq()->resize(length+32);
-	int fcs = 0xFFFFFFF0;
-	ecrire_bits ( d->getSeq(), boost::dynamic_bitset<> ( 32, fcs), length, 32);
+	calculerFrameCheckSequence ( d);
 	d->setType ( DATA_TRAME);
 	return;
 }

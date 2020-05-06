@@ -26,9 +26,10 @@ private:
 
 
 public:
+	Data();
 	Data(std::string message);
 	Data(boost::dynamic_bitset<>* seq, data_t type = DATA_SEGMENT);
-	Data(const Data& d);
+//	Data(const Data& d);
 	~Data();
 
 

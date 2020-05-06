@@ -1,5 +1,10 @@
 #include "../include/traitementTcpIp/Data.hh"
 
+Data::Data()	{
+	this->seq = nullptr;
+	this->type = DATA_TOTAL;
+}
+
 Data::Data(std::string message){
 	orignalstring.assign(message);
 	ossize = orignalstring.size();

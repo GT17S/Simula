@@ -14,4 +14,9 @@ void encapsule_paquet ( Noeud * src, Noeud * dest, Data * d);
 void desencapsule_trame ( Data * d);
 void desencapsule_paquet ( Data * d);
 void desencapsule_segment ( Data * d);
+void calculerChecksum ( Data * d);
+void calculerFrameCheckSequence ( Data * d);
+std::vector<Data *> fragmentationPaquet (Data p, int mtu = 1500);
+Data reassemblagepaquet ( std::vector<Data *> paquets);
+
 #endif

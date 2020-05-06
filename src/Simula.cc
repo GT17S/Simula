@@ -10,12 +10,12 @@
 
 using  namespace  std;
 
-int main()	{
+int main(int argc, char ** argv)	{
 
     Graphe * graphe = Graphe::get();
     lireXml("test.xml", graphe);
 
-
+    /*
     int size_m = graphe->getMatrice().size();
        for (int i =1; i < size_m; ++i) {
            //std::cout <<"ID =" <<graphe->getSommets()[i]->getIdNoeud()<<" --";
@@ -28,27 +28,17 @@ int main()	{
            }
            std::cout <<std::endl;
        }
+*/
+        /*
+       int n1 = 5;
+       int n2 = 0;
+       //graphe->genererChemin(n1, n1,n1, n2);
 
+*/
+        graphe->genererTableChemin();
 
-       int n1 = 0;
-       int n2 = 5;
-       graphe->genererChemin(n1, n1,n1, n2);
-        //graphe->genererTableChemin();
-       int size_tt = graphe->getTable().size();
-         for (int i = 0; i < size_tt; ++i) {
-             //std::cout <<"ID =" <<graphe->getSommets()[i]->getIdNoeud()<<" --";
-             for (int j = 0; j < size_tt; ++j) {
-                 extremite * x = graphe->getTable()[i][j];
-                 if(x){
-                     //int id = graphe->getTable[i][j]->getId();
-
-                      std::cout << x->noeud->getIdNoeud() << " ";
-                 }
-                 else std::cout << "-1" << " ";
-             }
-             std::cout <<std::endl;
-         }
-
+       int  n1 = atoi(argv[1]);
+       int n2 = atoi(argv[2]);
 
        while(  n1 != n2){
            extremite * x = graphe->getTable()[n1][n2];
@@ -57,7 +47,23 @@ int main()	{
               std::cout<< n1 << " ";
            }else break;
        }
-       /*
+       std::cout<<std::endl;
+/*
+        int size_tt = graphe->getTable().size();
+          for (int i = 0; i < size_tt; ++i) {
+              //std::cout <<"ID =" <<graphe->getSommets()[i]->getIdNoeud()<<" --";
+              for (int j = 0; j < size_tt; ++j) {
+                  extremite * x = graphe->getTable()[i][j];
+                  if(x){
+                      //int id = graphe->getTable[i][j]->getId();
+
+                       std::cout << x->noeud->getIdNoeud() << " ";
+                  }
+                  else std::cout << "-1" << " ";
+              }
+              std::cout <<std::endl;
+          }
+        /*int n1, n2;
             int size_tt = graphe->getTable().size();
          for (int i = 0; i < size_tt; i++) {
              n1 = i;
@@ -76,7 +82,7 @@ int main()	{
                  std::cout << std::endl;
              }
          }
-         */
+*/
        /*
          std::cout<< n1 << " ";
        do{

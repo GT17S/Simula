@@ -88,21 +88,21 @@ bool Graphe::verifierReseau(int n1, int n2){
         for (int j = 0; j < size_i2; j++) {
             InterfaceFE * interface2 = sommets[n2]->getInterfaces()[j];
             if(interface1->getAdresseRes() == interface2->getAdresseRes()){
-                std::cout << "Meme reseau "<<n1 <<" "<<n2<<std::endl;
+               //std::cout << "Meme reseau "<<n1 <<" "<<n2<<std::endl;
                 return true;
             }
         }
     }
-    std::cout << "Pas le meme reseau"<<n1<<" "<<n2<<std::endl;
+   //std::cout << "Pas le meme reseau"<<n1<<" "<<n2<<std::endl;
     return false;
 }
 
 int Graphe::parcourirVoisins(int  id_src , int id_n, int id_dest){
-    std::cout << "Parcourir voisins "<<id_src<<" "<<id_n<<" "<<id_dest<<std::endl;
+   //std::cout << "Parcourir voisins "<<id_src<<" "<<id_n<<" "<<id_dest<<std::endl;
     int size_m = matrice.size();
 
     if(table[id_n][id_dest]){
-        std::cout << " Parcourir déja existe"<<std::endl;
+       //std::cout << " Parcourir déja existe"<<std::endl;
         return id_n;
     }
     //  S1 ---SW1 --- SW2 -- S2
@@ -110,7 +110,8 @@ int Graphe::parcourirVoisins(int  id_src , int id_n, int id_dest){
         //Cable * cable = matrice[id_n][id_dest];
         //extremite * ext_dest = cable->getExt(sommets[id_n]);
         table[id_n][id_dest] = getExtremite(id_n, id_dest);
-        //std::cout << "Directment = Chemin de "<<id_n<<" "<<id_dest<<" = "<<ext_dest->noeud->getIdNoeud()<<std::endl;
+        //table[id_src][id_dest] = getExtremite(id_src, id_n);
+       //std::cout << "Directment = Chemin de "<<id_n<<" "<<id_dest<<std::endl;
         return id_n;
     }
 
@@ -120,12 +121,12 @@ int Graphe::parcourirVoisins(int  id_src , int id_n, int id_dest){
         if( i != id_n && i != id_src ){
             Cable * cable = matrice[id_n][i];
             if(cable){
-                std::cout << "voisin "<<id_n <<" "<<i<< std::endl;
+               //std::cout << "voisin "<<id_n <<" "<<i<< std::endl;
                 //Switch * n = sommets[i];
                 string nom = sommets[i]->getNom();
-                std::cout << nom << std::endl;
+               //std::cout << nom << std::endl;
                 if(nom == "Switch"){
-                    std::cout << "Cest un switch"<<std::endl;
+                   //std::cout << "Cest un switch"<<std::endl;
                     if(parcourirVoisins(id_n ,i, id_dest) > -1){
 
                         //Cable * cable2 = matrice[id_n][i];
@@ -139,9 +140,9 @@ int Graphe::parcourirVoisins(int  id_src , int id_n, int id_dest){
 
                 }
                 else{ //Station ou routeur
-                    std::cout << "Cest une station ou routuer"<<std::endl;
+                   //std::cout << "Cest une station ou routuer"<<std::endl;
                     if( i == id_dest){
-                        std::cout << "DISTINATION FINALE "<<id_dest<<std::endl;
+                       //std::cout << "DISTINATION FINALE "<<id_dest<<std::endl;
                         extremite * ext = cable->getExt(sommets[id_n]);
 
                         table[id_n][id_dest] = ext;
@@ -160,10 +161,10 @@ int Graphe::parcourirVoisins(int  id_src , int id_n, int id_dest){
 }
 
 int Graphe::parcourirPasserelle(int id_src_src, int id_src, int id_n , string adresse, int n2){
-    std::cout << "Parcourir passerelle "<<id_src_src<<" "<<id_src<<" "<<id_n<<" "<<adresse<<std::endl;
+   //std::cout << "Parcourir passerelle "<<id_src_src<<" "<<id_src<<" "<<id_n<<" "<<adresse<<" "<<n2<<std::endl;
 
     if(!sommets[id_src]->verifierPasserelle(adresse)){
-        std::cout << "verifier passerelle pas le meme reseau"<<std::endl;
+       //std::cout << "verifier passerelle pas le meme reseau"<<std::endl;
         return -1;
     }
 
@@ -172,65 +173,42 @@ int Graphe::parcourirPasserelle(int id_src_src, int id_src, int id_n , string ad
         if( i != id_n && i != id_src && i != id_src_src){
             Cable * cable = matrice[id_n][i];
             if(cable){
-                std::cout << "voisin "<<id_n <<" "<<i<< std::endl;
+               //std::cout << "voisin "<<id_n <<" "<<i<< std::endl;
                 //Switch * n = sommets[i];
                 string nom = sommets[i]->getNom();
-                std::cout << nom << std::endl;
+               //std::cout << nom << std::endl;
                 if(nom == "Switch"){
-                    std::cout << " I = SWITCH =" <<i<<std::endl;
+                   //std::cout << " I = SWITCH =" <<i<<std::endl;
                     int result = parcourirPasserelle(id_src, id_n, i, adresse, n2);
-                    if(result == n2){
-                        table[i][n2] = getExtremite(i , result);
-                        table[id_n][n2] = getExtremite(id_n, i);
-                        return i;
-                    }
-                    if(result > -1 && result != i && result!= id_n){
-                        std::cout << "Result SWITCH= "<< result<< std::endl;
-                        std::cout << "Appeller switch"<< i<<" "<<result<<std::endl;
-                        //Cable * cable2 = matrice[id_n][i];
-                        //extremite * ext_src = cable2->getExt(sommets[id_n]);
-                        //std::cout << "Chemin de "<<id_n<<" "<<result<<" = "<<ext_src->noeud->getIdNoeud()<<std::endl;
+                    //
+                    if(result > -1){
                         table[id_n][result] = getExtremite(id_n, i);
-                        int result_gen = genererChemin(id_n, i, result, n2); // 8 9 10
-                        std::cout << "GENERER = "<< result_gen<<std::endl;
+                        table[id_n][n2]     = getExtremite(id_n, i);
+                        // id_n, result = i
+                        // id_n , n2 = i,
 
-                        if( result_gen > -1){
-                            table[i][n2] = getExtremite(i , result);
-                            table[id_n][n2] = getExtremite(id_n, i);
-                            return i;
-
-
-                        }else{
-                            return -1;
-                        }
-                    }
-                    else if(result == i){
-                        //table[i][n2] = getExtremite(i , result);
-
-                        table[id_n][n2] = getExtremite(id_n, i);
                         return result;
-
-                    }
-                    return -1;
+                    }else
+                        return -1;
                 }
-
-
-
-            else{
-                std::cout << " I = STATION =" <<i<<std::endl;
+            else {
+               //std::cout << " I = STATION =" <<i<<std::endl;
                 for(InterfaceFE * fe : sommets[i]->getInterfaces()){
                     if(fe->getAdresseIP() == adresse){
 
+                        std::cout << "Result STATION= "<< i<< std::endl;
+
+
                         extremite * ext = cable->getExt(sommets[id_n]);
-                        std::cout << "Adresse trouvé = Chemin de "<<id_n<<" "<<i<<" = "<<ext->noeud->getIdNoeud()<<std::endl;
+                       //std::cout << "Adresse trouvé = Chemin de "<<id_n<<" "<<i<<" = "<<ext->noeud->getIdNoeud()<<std::endl;
                         table[id_n][i] = ext;
+                        table[id_n][n2] = getExtremite(id_n, i);
 
-                        //std::cout << "Result STATION= "<< result<< std::endl;
-
+                        genererChemin(id_src, id_n, i, n2);
                         return i;
+
                     }
                 }
-
             }
         }
     }
@@ -242,10 +220,10 @@ return -1;
 
 
 int Graphe::genererChemin(int id_src_src,int id_src, int n1, int n2){
-    std::cout << "Generer chemin "<<n1 <<" "<<n2<<std::endl;
+   //std::cout << "Generer chemin "<<id_src_src<<" "<<id_src<<" "<<n1 <<" "<<n2<<std::endl;
     if(table[n1][n2]){
-        std::cout << "Generer existe déja"<<std::endl;
-        return 2;
+       //std::cout << "Generer existe déja"<<std::endl;
+        return 1;
     }
     // ST1 -- SW --SW --ST2
     // parcourir(0,0,2) == 6
@@ -254,16 +232,21 @@ int Graphe::genererChemin(int id_src_src,int id_src, int n1, int n2){
 
 
     if(verifierReseau(n1, n2)){
-        parcourirVoisins(n1, n1, n2);
+       if(parcourirVoisins(n1, n1, n2))
         return 1;
+       else
+           return -1;
     }
     else {
         string adresse = verifierCoherence(sommets[n1], sommets[n2]);
         if(adresse != DEFAULT_IP){
             std::cout << "Trouver "<<n1<< " adresse "<<adresse<<std::endl;
-            int inter = parcourirPasserelle(id_src_src, id_src, n1, adresse, n2);
-            return 1;
-            // std::cout << "Resultat passerelle ="<< inter<<std::endl;
+            int result = parcourirPasserelle(id_src_src, id_src, n1, adresse, n2);
+            if(result > -1)
+                return 1;
+
+            else return -1;
+            ////std::cout << "Resultat passerelle ="<< inter<<std::endl;
             /* if(inter > -1){
                 genererChemin(inter, n2);
                 //n1   s7
@@ -279,41 +262,8 @@ int Graphe::genererChemin(int id_src_src,int id_src, int n1, int n2){
 
 std::string Graphe::verifierCoherence(Noeud * n1, Noeud * n2)
 {
-
-    /* if(verifier_meme_reseau(n1 , n2))
-        voir si matrice[n1][n2] == un cable , retourner vrai;
-        sinon parcourir_voisin( id_src ,id_n2) , sauf id_src!
-            si voisin = Station, Routeur , verifier si voisin = n2 , sinon arreter
-            si switch parcourir_voisin(n1_id, id_n2)
-      else {
-        Si N1 = Station {
-                chercherDansTableRoutage( adresseReseau n2)
-                si trouvé : verifier_meme_reseau(n1 , resultat) -> vrai , chercher chemin(n1,resultat) , faux pas de chemin
-                sinon : pas de chemin
-            }
-        Si N1 = routeur{
-            verifier s'il y a une interface qui a le meme reseau que n2
-            si trouvé : chercher_chemin(n1_interface, n2)
-            sinon : chercher dans table de routage (adresseReseau n2)
-                si trouvé : verifier_meme_reseau(n1 , resultat) -> vrai , chercher chemin(n1,resultat) , faux pas de chemin
-                sinon : pas de chemin
-        }
-
-       }
-
-
-      */
-    //int i,j;
-    //int sizeInterfaceI= n1->getInterfaces().size();
-    //int sizeInterfaceJ= n2->getInterfaces().size();
-    /*
-    for( i=0;i < sizeInterfaceI;i++)
-        for( j=0;j<sizeInterfaceJ;j++)
-            if (n1->getInterfaces()[i]->getAdresseRes() == n2->getInterfaces()[j]->getAdresseRes())	{
-                return n2->getInterfaces()[j]->getAdresseIP();
-            }
-*/
     string adresse = DEFAULT_IP;
+
     int size_i = n2->getInterfaces().size();
 
     for (int i = 0; i < size_i; i++ ) {

@@ -68,7 +68,7 @@ private:
     Graphe(const Graphe&) = delete;
     Graphe & operator=(const Graphe&) = delete;
     static int parcourirVoisins(int  id_src , int id_n, int id_dest);
-    static int parcourirPasserelle(int id_src, int id_n, string adresse, int n2);
+    static int parcourirPasserelle(int id_src_src, int id_src, int id_n, string adresse, int n2);
     static bool verifierReseau(int n1, int n2);
 
 
@@ -162,7 +162,7 @@ public:
 
     static void genererTableChemin();
 
-    static int genererChemin(int n1, int n2);
+    static int genererChemin(int id_src_src, int id_src, int n1, int n2);
 
 
     static void ajoutNoeudMatrice(Noeud * n);

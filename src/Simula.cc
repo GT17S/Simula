@@ -31,8 +31,8 @@ int main()	{
 
 
        int n1 = 0;
-       int n2 = 9;
-       graphe->genererChemin(n1, n2);
+       int n2 = 5;
+       graphe->genererChemin(n1, n1,n1, n2);
         //graphe->genererTableChemin();
        int size_tt = graphe->getTable().size();
          for (int i = 0; i < size_tt; ++i) {

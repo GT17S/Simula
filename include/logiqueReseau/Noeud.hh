@@ -171,6 +171,15 @@ public:
      * \param interfaces
      */
     void setInterfaces(vector<InterfaceFE*> interfaces);
+
+    /*!
+     * \brief verifierPasserelle
+     * Vérifier si la passerelle à la meme adresse reseau que le noeud
+     * \param passerelle
+     * \return vrai si meme adresse, faux sinon
+     */
+    bool verifierPasserelle(string passerelle);
+
     /*!
      * \brief setInterfaces
      * \param interface

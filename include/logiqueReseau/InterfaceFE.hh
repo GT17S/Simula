@@ -59,14 +59,7 @@ private :
     string masque; /*<! masque réseau */
     string adresseMac; /*<! adresse MAC*/
     Cable * cable; /*<! Cable lié à l'interface */
-    /*!
-     * \brief ipValide
-     * Vérifier si une adresse IP est bien configuré
-     * par rapport à son réseau.
-     * \see #adresseIP #adresseRes #masque
-     * \return vrai si adresse IP est configuré, faux sinon.
-     */
-    bool ipValide();
+
 public :
     /*!
      * \brief Constructeur
@@ -112,7 +105,7 @@ public :
      * \brief getAdresseMac
      * \return voir #adresseIP
      */
-    string getAdresseMac(){return adresseIP;}
+    string getAdresseMac(){return adresseMac;}
 
     /*!
      * \brief getCable
@@ -185,7 +178,14 @@ public :
      * \return Si adresse valide retourne l'adresse, sinon retourner adresse par défaut.
      */
     static string checkAdresse(string adresse, string regex,string defaut);
-
+    /*!
+     * \brief ipValide
+     * Vérifier si une adresse IP est bien configuré
+     * par rapport à son réseau.
+     * \see #adresseIP #adresseRes #masque
+     * \return vrai si adresse IP est configuré, faux sinon.
+     */
+    bool ipValide(string adresseIP, string masque, string adresseRes);
 };
 
 #endif

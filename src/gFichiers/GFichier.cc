@@ -20,6 +20,8 @@ void lireXml(QString nomFichier, Graphe * graphe){
     QFile * fichier = ouvrirlXml(nomFichier, QIODevice::ReadOnly);
     if(!fichier){
         // erreur
+
+        std::cout << "erreur lecture "<<std::endl;
         return;
     }
 
@@ -29,6 +31,8 @@ void lireXml(QString nomFichier, Graphe * graphe){
     QDomDocument document;
     if(!document.setContent(fichier)){
         // erreur parser
+
+        std::cout << "erreur parser "<<std::endl;
         return;
     }
     //Simulateur
@@ -39,17 +43,19 @@ void lireXml(QString nomFichier, Graphe * graphe){
     QDomNode noeud = noeuds.firstChild();
     while(!noeud.isNull()){
         QDomElement ne = noeud.toElement();
-        Noeud * n;
+        //Noeud * n;
         QString type = ne.toElement().attribute("type");
-        if(type.compare("Station", Qt::CaseInsensitive))
-                n = new Station();
+        if(type.compare("Station", Qt::CaseInsensitive)){
+                new Station();
+        }
         else if(type.compare("Routeur", Qt::CaseInsensitive))
-                n = new Routeur();
+                new Routeur();
         else if(type.compare("Switch", Qt::CaseInsensitive))
-                n = new Switch();
+                new Switch();
         else if(type.compare("Hub", Qt::CaseInsensitive))
-                n = new Hub();
+                new Hub();
 
+        Noeud * n =  graphe->getSommets().back();
         n->setIdNoeud(ne.attribute("id").toInt());
         n->setNbPort(ne.attribute("nbPort").toInt());
         QDomNode element = noeud.firstChild(); //nom

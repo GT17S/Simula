@@ -96,7 +96,8 @@ bool  Cable::estBienConnecte(){
 }
 
 bool Cable::connexionNoeuds(Noeud * N1, int interface1, Noeud * N2, int interface2){
-    if(N1->acceptCable(this, interface1) && N2->acceptCable(this, interface2)){
+
+    if(N1 != N2 && N1->acceptCable(this, interface1) && N2->acceptCable(this, interface2)){
 
         ext1->noeud = N1;
         ext1->interface = interface1;

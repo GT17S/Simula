@@ -43,3 +43,4 @@ void Station::setNumSegmentsEnvoye(vector<int> _numSegmentsEnvoye){
 void Station::envoyerMessage(Noeud * _Nrecepteur, string _message){
 
 }
+

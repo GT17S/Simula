@@ -18,17 +18,12 @@ Graphe::~Graphe()
 {
     //cout<<"destruction sommets"<<endl;
     // Destruction des noeuds
-
-
     for(auto i = sommets.begin(); i!= sommets.end() ;){
-
         //std::cout << "Supprimer " << (*i)->getNom() <<std::endl;
         delete *i;
         //*i = nullptr;
     }
-
     sommets.clear();
-
     // Destruction de la matrice
     matrice.clear();
 
@@ -103,11 +98,8 @@ int Graphe::parcourirVoisins(int  id_src , int id_n, int id_dest, vector<extremi
             Cable * cable = matrice[id_n][i];
             if(cable){
                 // voisin
-                //string nom = sommets[i]->getNom();
-
                 if(sommets[i]->getTypeNoeud() == SWITCH){
                     // switch
-                    std::cout <<"SWITCH"<<std::endl;
                     if(parcourirVoisins(id_n ,i, id_dest, path) > -1){
 
                         // trouver id_dest, retourner id_n
@@ -115,11 +107,9 @@ int Graphe::parcourirVoisins(int  id_src , int id_n, int id_dest, vector<extremi
 
                         return id_n;
                     }
-
-
                 }
-                else{ //Station ou routeur
-                    std::cout <<"ELSE"<<std::endl;
+                else{
+                    //Station ou routeur
                     if( i == id_dest){
                         // destination trouvée
                         return id_n;
@@ -145,7 +135,6 @@ int Graphe::parcourirPasserelle(int id_src, int id_n , string adresse, int n2, v
             if(cable){
                 // voisin
                 if(sommets[i]->getTypeNoeud() == SWITCH){
-                    std::cout <<"SWITCH"<<std::endl;
                     int result = parcourirPasserelle(id_n, i, adresse, n2, path);
                     //
                     if(result > -1){
@@ -154,9 +143,8 @@ int Graphe::parcourirPasserelle(int id_src, int id_n , string adresse, int n2, v
                         return result;
                     }
                 }
-                else{
-                    std::cout <<"ELSE"<<std::endl;
-                    // station ou routeur
+                else {
+                    // station->estpasserlle ou routeur
                     for(InterfaceFE * fe : sommets[i]->getInterfaces()){
                         if(fe->getAdresseIP() == adresse){
                             // adresse passerelle trouvée

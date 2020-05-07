@@ -69,30 +69,20 @@ void Cable::setExt2(extremite * _noeud2){ext2 = _noeud2;}
 
 bool  Cable::estBienConnecte(){
 
-    string typeNoeud1;
-    string typeNoeud2;
+    typeNoeud typeNoeud1, typeNoeud2;
 
-    typeNoeud1 = typeid(ext1->noeud).name();
-    typeNoeud2 = typeid(ext2->noeud).name();
+    typeNoeud1 = ext1->noeud->getTypeNoeud();
+    typeNoeud2 = ext2->noeud->getTypeNoeud();
 
     // Meme type, cable croisé
     if(typeNoeud1 == typeNoeud2){
-        if(type == 1)
-            return true;
-        else
-            return false;
+        return type;
     // Switch & Hub, cable croisé
-    }else if ((typeNoeud1 == "3Hub" ||typeNoeud2 == "3Hub") && (typeNoeud1 == "6Switch" ||typeNoeud2 == "6Switch")){
-        if(type == 1)
-            return true;
-        else
-            return false;
+    }else if ((typeNoeud1 == HUB ||typeNoeud2 == HUB) && (typeNoeud1 == SWITCH ||typeNoeud2 == SWITCH)){
+        return type;
 
     // Sinon cable droit
-    }else if(type == 0)
-        return true;
-     else
-        return false;
+    }else return 1 - type;
 }
 
 bool Cable::connexionNoeuds(Noeud * N1, int interface1, Noeud * N2, int interface2){

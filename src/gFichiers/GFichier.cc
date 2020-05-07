@@ -44,30 +44,21 @@ void lireXml(QString nomFichier, Graphe * graphe){
     while(!noeud.isNull()){
         QDomElement ne = noeud.toElement();
         Noeud * n;
-        Station * s;
-        Routeur * r;
-        Switch * sw;
-        Hub * h;
+
         QString type = ne.toElement().attribute("type");
-        if(type.compare("Station", Qt::CaseInsensitive)){
-              s=   new Station();
-              n = s;
+        if(type.compare("STATION", Qt::CaseInsensitive) == 0){
+              n=   new Station();
         }
-        else if(type.compare("Routeur", Qt::CaseInsensitive)){
-              r=   new Routeur();
-              n = r;
+        else if(type.compare("ROUTEUR", Qt::CaseInsensitive) == 0){
+              n=   new Routeur();
         }
-        else if(type.compare("Switch", Qt::CaseInsensitive)){
-              sw = new Switch();
-              n = sw;
+        else if(type.compare("SWITCH", Qt::CaseInsensitive) == 0){
+              n = new Switch();
         }
-        else if(type.compare("Hub", Qt::CaseInsensitive)){
-              h =  new Hub();
-              n = h;
+        else if(type.compare("HUB", Qt::CaseInsensitive) == 0){
+              n =  new Hub();
         }
 
-
-        //Noeud * n =  graphe->getSommets().back();
         n->setIdNoeud(ne.attribute("id").toInt());
         n->setNbPort(ne.attribute("nbPort").toInt());
         QDomNode element = noeud.firstChild(); //nom
@@ -162,23 +153,19 @@ void ecrireXml(QString nomFichier, Graphe *graphe){
         QDomElement noeud = document.createElement("Noeud");
         noeuds.appendChild(noeud);
 
-        // Type
-        Station * st_n = dynamic_cast<Station*>(n);
-        Routeur * r_n = dynamic_cast<Routeur*>(n);
-        Hub * h_n = dynamic_cast<Hub*>(n);
-        Switch * sw_n = dynamic_cast<Switch*>(n);
+        typeNoeud typeEnum = n->getTypeNoeud();
 
-        QString typeNoeud;
-        if(st_n)
-            typeNoeud = "Station";
-        else if(r_n)
-            typeNoeud = "Routeur";
-        else if(sw_n)
-            typeNoeud = "Switch";
-        else if(h_n)
-            typeNoeud = "Hub";
+        QString type;
+        if(typeEnum == STATION)
+            type = "STATION";
+        else if(typeEnum == ROUTEUR)
+            type = "ROUTEUR";
+        else if(typeEnum == SWITCH)
+            type = "SWITCH";
+        else if(typeEnum == HUB)
+            type = "HUB";
 
-        noeud.setAttribute("type", typeNoeud);
+        noeud.setAttribute("type", type);
         noeud.setAttribute("id", n->getIdNoeud());
         noeud.setAttribute("nbPort", n->getNbPort());
 

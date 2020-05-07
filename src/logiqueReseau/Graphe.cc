@@ -100,16 +100,17 @@ bool Graphe::verifierReseau(int n1, int n2){
 int Graphe::parcourirVoisins(int  id_src , int id_n, int id_dest, vector<extremite *>& path){
    //std::cout << "Parcourir voisins "<<id_src<<" "<<id_n<<" "<<id_dest<<std::endl;
     int size_m = matrice.size();
-
+/*
     if(table[id_n][id_dest]){
        //std::cout << " Parcourir déja existe"<<std::endl;
         return id_n;
     }
+    */
     //  S1 ---SW1 --- SW2 -- S2
     if(matrice[id_n][id_dest]){
         //Cable * cable = matrice[id_n][id_dest];
         //extremite * ext_dest = cable->getExt(sommets[id_n]);
-        table[id_n][id_dest] = getExtremite(id_n, id_dest);
+       // table[id_n][id_dest] = getExtremite(id_n, id_dest);
        //std::cout<< " REMPLIIIR V0="<<id_n<<" "<<id_dest<<"== "<<table[id_n][id_dest]->noeud->getIdNoeud()<<std::endl;
         //table[id_src][id_dest] = getExtremite(id_src, id_n);
        //std::cout << "Directment = Chemin de "<<id_n<<" "<<id_dest<<std::endl;
@@ -135,9 +136,9 @@ int Graphe::parcourirVoisins(int  id_src , int id_n, int id_dest, vector<extremi
                         //Cable * cable2 = matrice[id_n][i];
                         //extremite * ext_src = cable2->getExt(sommets[id_n]);
                         //std::cout << "DEFAULT =Chemin de "<<id_n<<" "<<id_dest<<" = "<<ext_src->noeud->getIdNoeud()<<std::endl;
-                        table[id_n][id_dest] = getExtremite(id_n, i);
+                     //   table[id_n][id_dest] = getExtremite(id_n, i);
                          //   6      9         8
-                        table[id_n][i] = getExtremite(id_n, i);
+                       // table[id_n][i] = getExtremite(id_n, i);
                        //std::cout<< " REMPLIIIR V1="<<id_n<<" "<<id_dest<<"== "<<table[id_n][id_dest]->noeud->getIdNoeud()<<std::endl;
                        //std::cout<< " REMPLIIIR V1="<<id_n<<" "<<i<<"== "<<table[id_n][i]->noeud->getIdNoeud()<<std::endl;
 
@@ -153,9 +154,9 @@ int Graphe::parcourirVoisins(int  id_src , int id_n, int id_dest, vector<extremi
                    //std::cout << "Cest une station ou routuer"<<std::endl;
                     if( i == id_dest){
                        //std::cout << "DISTINATION FINALE "<<id_dest<<std::endl;
-                        extremite * ext = cable->getExt(sommets[id_n]);
+                       // extremite * ext = cable->getExt(sommets[id_n]);
 
-                        table[id_n][id_dest] = ext;
+                      //  table[id_n][id_dest] = ext;
                        //std::cout<< " REMPLIIIR V2="<<id_n<<" "<<id_dest<<"== "<<id_dest;
                         return id_n;
                     }
@@ -193,9 +194,9 @@ int Graphe::parcourirPasserelle(int id_src_src, int id_src, int id_n , string ad
                     int result = parcourirPasserelle(id_src, id_n, i, adresse, n2, path);
                     //
                     if(result > -1){
-                        table[id_n][result] = getExtremite(id_n, i);
+                      //  table[id_n][result] = getExtremite(id_n, i);
                        //std::cout<< " REMPLIIIR 1="<<id_n<<" "<<result<<"== "<<table[id_n][result]->noeud->getIdNoeud()<<std::endl;
-                        table[id_n][n2]     = getExtremite(id_n, i);
+                      //  table[id_n][n2]     = getExtremite(id_n, i);
                        //std::cout<< " REMPLIIIR 2="<<id_n<<" "<<n2<<"== "<<table[id_n][n2]->noeud->getIdNoeud()<<std::endl;
                         // id_n, result = i
                         // id_n , n2 = i,
@@ -214,14 +215,14 @@ int Graphe::parcourirPasserelle(int id_src_src, int id_src, int id_n , string ad
                        //std::cout << "Result STATION= "<< i<< std::endl;
 
 
-                        extremite * ext = cable->getExt(sommets[id_n]);
+                      //  extremite * ext = cable->getExt(sommets[id_n]);
                        //std::cout << "Adresse trouvé = Chemin de "<<id_n<<" "<<i<<" = "<<ext->noeud->getIdNoeud()<<std::endl;
-                        table[id_n][i] = ext;
+                       // table[id_n][i] = ext;
                        //std::cout<< " REMPLIIIR STATION 1 ="<<id_n<<" "<<i<<"== "<<table[id_n][i]->noeud->getIdNoeud()<<std::endl;
                         //                  6,9,10
                         if(genererChemin(i, i, i, n2, path)){
 
-                            table[id_n][n2] = getExtremite(id_n, i);
+                         //   table[id_n][n2] = getExtremite(id_n, i);
                            //std::cout<< " REMPLIIIR STATION 2="<<id_n<<" "<<n2<<"== "<<table[id_n][n2]->noeud->getIdNoeud()<<std::endl;
                             // push id_n
                             path.push_back(getExtremite(id_n, i));
@@ -243,11 +244,11 @@ return -1;
 
 int Graphe::genererChemin(int id_src_src,int id_src, int n1, int n2, vector<extremite *> &path){
   //std::cout << "Generer chemin "<<id_src_src<<" "<<id_src<<" "<<n1 <<" "<<n2<<std::endl;
-    if(table[n1][n2]){
+   /* if(table[n1][n2]){
        //std::cout << "Generer existe déja"<<std::endl;
         return -1;
     }
-
+*/
     if(verifierReseau(n1, n2)){
        if(parcourirVoisins(n1, n1, n2, path))
         return 1;

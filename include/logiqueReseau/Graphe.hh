@@ -56,7 +56,7 @@ private:
 
     static vector<Noeud*> sommets;/*!< Liste des sommets du Graphe */
     static vector<vector<Cable*>> matrice; /*!< Matrice d'adjacences du Graphe */
-    static vector<vector<extremite*>> table;/*!< Table de chemins du Graphe */
+    //static vector<vector<extremite*>> table;/*!< Table de chemins du Graphe */
 
     static extremite * getExtremite(int n1, int n2);
     /*!
@@ -123,7 +123,7 @@ public:
          * \return voir #vector<vector<Chemin>>
          */
 
-    vector<vector<extremite*>> getTable(){return table;}
+    //vector<vector<extremite*>> getTable(){return table;}
 
     /*!
          * \brief setSommet
@@ -147,7 +147,7 @@ public:
          * \param  t : voir #Graphe
          */
 
-    void setTable(vector<vector<extremite*>> t);
+    //void setTable(vector<vector<extremite*>> t);
 
     /*!
          * \brief setMatrice

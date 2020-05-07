@@ -5,7 +5,7 @@
 
 vector<Noeud*> Graphe::sommets;/*!< Liste des sommets du Graphe */
 vector<vector<Cable*>> Graphe::matrice; /*!< Matrice d'adjacences du Graphe */
-vector<vector<extremite*>> Graphe::table;/*!< Table de chemins du Graphe */
+//vector<vector<extremite*>> Graphe::table;/*!< Table de chemins du Graphe */
 
 Graphe *Graphe::singlPtr = nullptr;
 
@@ -41,7 +41,7 @@ Graphe::~Graphe()
     matrice.clear();
 
     // Destruction de la table des chemins
-    table.clear();
+    //table.clear();
 }
 
 
@@ -59,11 +59,12 @@ void Graphe::setSommets(vector<Noeud*> s)
 {
     sommets = s;
 }
-
+/*
 void Graphe::setTable(vector<vector<extremite *> > t)
 {
     table=t;
 }
+*/
 
 void Graphe::setMatrice(vector<vector<Cable *>>m)
 {
@@ -329,16 +330,16 @@ void Graphe::ajoutNoeudMatrice(Noeud* n)
     int taille_s = sommets.size();
 
     vector<Cable *> tempCables(taille_s, nullptr);
-    vector<extremite*> tempExtremites(taille_s, nullptr);
+    //vector<extremite*> tempExtremites(taille_s, nullptr);
 
     matrice.push_back(tempCables);
-    table.push_back(tempExtremites);
+    //table.push_back(tempExtremites);
 
     for (int i = 0; i < taille_s; i++) {
         //cout << matrice.at(i).size() << endl;
 
         matrice[i].push_back(nullptr);
-        table[i].push_back(nullptr);
+        //table[i].push_back(nullptr);
     }
 }
 
@@ -369,7 +370,7 @@ void Graphe::supprimerNoeudMatrice(Noeud * n)
 
     for (unsigned int i = 0; i < matrice.size(); i++) {
         matrice[i].erase( matrice[i].begin() + indice);
-        table[i].erase( table[i].begin() + indice);
+       // table[i].erase( table[i].begin() + indice);
     }
     /*
     for ( auto i = matrice.begin(); i != matrice.end() ; i++){
@@ -379,7 +380,7 @@ void Graphe::supprimerNoeudMatrice(Noeud * n)
 
 
     matrice.erase(matrice.begin()+indice);
-    table.erase(table.begin()+indice);
+    //table.erase(table.begin()+indice);
 
 }
 

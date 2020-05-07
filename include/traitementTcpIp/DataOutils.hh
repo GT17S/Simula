@@ -3,6 +3,8 @@
 
 #include "Data.hh"
 #include "Noeud.hh"
+#include <bitset>
+#include <sstream>
 
 using namespace boost;
 

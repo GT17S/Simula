@@ -10,12 +10,19 @@
 #include <QWidget>
 #include <QLabel>
 
+
+#include "EspaceTravail.hh"
+#include "panneauOutils.hh"
+#include "ToolBarEquipement.hh"
+#include "PanneauData.hh"
+#include "PanneauEvents.hh"
+
 class simulaGui: public QWidget {
 private:
 	//Grid
     QGridLayout* mainlayout;
 	//Va contenir les 5 widgets
-    QVector<QLabelf* > widgets;
+    QVector<QWidget *> widgets;
 
 public:
 	simulaGui();

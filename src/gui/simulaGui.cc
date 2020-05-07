@@ -12,10 +12,10 @@ simulaGui::simulaGui(){
     mainlayout = new QGridLayout();
     this->setLayout(mainlayout);
 
-	for (int i = 0; i < 5; ++i)
-	{
+    for(int i = 0; i <5; ++i){
         widgets.append(new QLabel());
-    }
+   }
+
 
     //Modifier les tailles de chaque widget
     mainlayout->addWidget(widgets[0], 0, 0, 1, 4); //Barre menu (0)

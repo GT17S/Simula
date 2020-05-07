@@ -45,9 +45,9 @@ int main(int argc, char ** argv)	{
        vector<extremite*> path1;
        vector<extremite*> path2;
 
-       graphe->genererChemin(n1,n1,n1,n2, path1);
+       graphe->genererChemin(n1,n2, path1);
 
-       graphe->genererChemin(n3,n3,n3,n4, path2);
+       graphe->genererChemin(n3,n4, path2);
 
        for(extremite * x: path1){
            std::cout<< x->noeud->getIdNoeud()<<" ";

@@ -32,6 +32,21 @@ struct Route {
 };
 #endif
 
+#ifndef TYPENOEUD_H
+#define TYPENOEUD_H
+/*!
+  * \enum typeNoeud
+  * Enumeration , qui definit le type du noeud
+  */
+typedef enum {
+    STATION,
+    ROUTEUR,
+    SWITCH,
+    HUB
+}typeNoeud;
+
+#endif
+
 class InterfaceFE;
 class Cable;
 /*!
@@ -49,6 +64,7 @@ protected:
   vector<InterfaceFE*> interfaces; /*< Liste des interfaces réseaux du noeud*/
   vector<string> fileDattente; /*< File d'attente des données */
   vector<Route*> tableRoutage; /*!< Table de routage */
+  typeNoeud type; /*!< Le type du noeud #typeNoeud*/
 
 
 public:
@@ -92,6 +108,8 @@ public:
      * \return voir #idNoeud
      */
     int getIdNoeud(){return idNoeud;}
+
+    typeNoeud getTypeNoeud(){return type;}
     /*!
      * \brief getNbPort
      * \return voir #nbPort

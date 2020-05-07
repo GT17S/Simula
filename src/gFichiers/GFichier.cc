@@ -43,19 +43,31 @@ void lireXml(QString nomFichier, Graphe * graphe){
     QDomNode noeud = noeuds.firstChild();
     while(!noeud.isNull()){
         QDomElement ne = noeud.toElement();
-        //Noeud * n;
+        Noeud * n;
+        Station * s;
+        Routeur * r;
+        Switch * sw;
+        Hub * h;
         QString type = ne.toElement().attribute("type");
         if(type.compare("Station", Qt::CaseInsensitive)){
-                new Station();
+              s=   new Station();
+              n = s;
         }
-        else if(type.compare("Routeur", Qt::CaseInsensitive))
-                new Routeur();
-        else if(type.compare("Switch", Qt::CaseInsensitive))
-                new Switch();
-        else if(type.compare("Hub", Qt::CaseInsensitive))
-                new Hub();
+        else if(type.compare("Routeur", Qt::CaseInsensitive)){
+              r=   new Routeur();
+              n = r;
+        }
+        else if(type.compare("Switch", Qt::CaseInsensitive)){
+              sw = new Switch();
+              n = sw;
+        }
+        else if(type.compare("Hub", Qt::CaseInsensitive)){
+              h =  new Hub();
+              n = h;
+        }
 
-        Noeud * n =  graphe->getSommets().back();
+
+        //Noeud * n =  graphe->getSommets().back();
         n->setIdNoeud(ne.attribute("id").toInt());
         n->setNbPort(ne.attribute("nbPort").toInt());
         QDomNode element = noeud.firstChild(); //nom

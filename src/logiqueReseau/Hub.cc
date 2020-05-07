@@ -1,11 +1,15 @@
 #include "Hub.hh"
-using namespace std;
+
 
 Hub::Hub(string _nom,int _idNoeud,int _nbPort)
-    : Noeud(_nom, _idNoeud, _nbPort){}
+    : Noeud(_nom, _idNoeud, _nbPort){
+
+    type = HUB;
+}
 
 Hub::Hub() : Noeud(){
 	nom = "Hub"+std::to_string(idNoeud);	
+    type = HUB;
 }
 
 Hub::~Hub(){

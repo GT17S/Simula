@@ -1,9 +1,10 @@
 #include "Switch.hh"
 
+
 Switch::Switch(std::string  _nom,int _idNoeud,int _nbPort) :
     Hub(_nom, _idNoeud, _nbPort)
 {
-
+    type = SWITCH;
 }
 
 Switch::Switch() : Hub() {
@@ -11,6 +12,7 @@ Switch::Switch() : Hub() {
     // nb port =1
     // filedattente vide
     nom = "Switch"+std::to_string(idNoeud);
+    type = SWITCH;
 
 }
 

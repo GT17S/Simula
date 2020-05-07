@@ -59,7 +59,7 @@ HEADER_DIRECTORIES(header_list)
 
 
 #Mettre à jour en fonction des nouveaux modules ajoutés
-include_directories( ${Qt5Widgets_INCLUDES} include/ /usr/include ${Boost_INCLUDE_DIR}
+include_directories( ${Qt5Widgets_INCLUDES} include/ include/   gui /usr/include ${Boost_INCLUDE_DIR}
 					${header_list})
 link_directories(/usr/lib)
 

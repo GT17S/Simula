@@ -2,6 +2,21 @@
 
 int main()	{
 
+#include <QApplication>
+#include <QtWidgets>
 
-    return 0;
+#include "Data.hh"
+#include "DataOutils.hh"
+#include "simulaGui.hh"	
+
+
+
+int main( int argc, char ** argv)	{
+	QApplication app(argc,argv);
+	simulaGui test;
+	test.show();
+
+
+	return app.exec();
+	
 }

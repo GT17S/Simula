@@ -1,7 +1,3 @@
-#include <iostream>
-
-int main()	{
-
 #include <QApplication>
 #include <QtWidgets>
 

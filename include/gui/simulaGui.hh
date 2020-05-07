@@ -8,13 +8,14 @@
 #include <QGridLayout>
 #include <QTextEdit>
 #include <QWidget>
+#include <QLabel>
 
 class simulaGui: public QWidget {
 private:
 	//Grid
     QGridLayout* mainlayout;
 	//Va contenir les 5 widgets
-	QVector<QWidget* > widgets;
+    QVector<QLabelf* > widgets;
 
 public:
 	simulaGui();

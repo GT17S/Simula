@@ -18,5 +18,5 @@ void calculerChecksum ( Data * d);
 void calculerFrameCheckSequence ( Data * d);
 std::vector<Data *> fragmentationPaquet (Data p, int mtu = 1500);
 Data reassemblagepaquet ( std::vector<Data *> paquets);
-
+string BinaryStringToText(string binaryString);
 #endif

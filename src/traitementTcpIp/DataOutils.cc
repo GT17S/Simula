@@ -296,3 +296,15 @@ Data reassemblagepaquet ( std::vector<Data *> paquets)	{
 	ecrire_bits ( d.getSeq(), ip_dest, 128, 32);	
 	return d;
 }
+
+string BinaryStringToText(string binaryString) {
+    string text = "";
+    stringstream sstream(binaryString);
+    while (sstream.good())
+    {
+        bitset<8> bits;
+        sstream >> bits;
+        text += char(bits.to_ulong());
+    }
+    return text;
+}

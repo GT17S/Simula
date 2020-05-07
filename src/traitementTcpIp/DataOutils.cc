@@ -299,10 +299,10 @@ Data reassemblagepaquet ( std::vector<Data *> paquets)	{
 
 string BinaryStringToText(string binaryString) {
     string text = "";
-    stringstream sstream(binaryString);
+    std::stringstream sstream(binaryString);
     while (sstream.good())
     {
-        bitset<8> bits;
+        std::bitset<8> bits;
         sstream >> bits;
         text += char(bits.to_ulong());
     }

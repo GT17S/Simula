@@ -99,6 +99,8 @@ public:
      * \param data : le message à envoyer de type Data
      */
     void envoyerMessage(Noeud * Nrecepteur, Data* message);
+
+    void envoyerMessage(Noeud * nRecepteur, string data){};
 };
 
 #endif

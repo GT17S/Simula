@@ -1,4 +1,3 @@
 #include "PanneauEvents.hh"
 
 
-PanneauEvents

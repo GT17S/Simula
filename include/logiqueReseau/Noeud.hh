@@ -32,6 +32,21 @@ struct Route {
 };
 #endif
 
+#ifndef TYPENOEUD_H
+#define TYPENOEUD_H
+/*!
+  * \enum typeNoeud
+  * Enumeration , qui definit le type du noeud
+  */
+typedef enum {
+    STATION,
+    ROUTEUR,
+    SWITCH,
+    HUB
+}typeNoeud;
+
+#endif
+
 class InterfaceFE;
 class Cable;
 /*!
@@ -49,6 +64,7 @@ protected:
   vector<InterfaceFE*> interfaces; /*< Liste des interfaces réseaux du noeud*/
   vector<string> fileDattente; /*< File d'attente des données */
   vector<Route*> tableRoutage; /*!< Table de routage */
+  typeNoeud type; /*!< Le type du noeud #typeNoeud*/
 
 
 public:
@@ -92,6 +108,8 @@ public:
      * \return voir #idNoeud
      */
     int getIdNoeud(){return idNoeud;}
+
+    typeNoeud getTypeNoeud(){return type;}
     /*!
      * \brief getNbPort
      * \return voir #nbPort
@@ -171,6 +189,15 @@ public:
      * \param interfaces
      */
     void setInterfaces(vector<InterfaceFE*> interfaces);
+
+    /*!
+     * \brief verifierPasserelle
+     * Vérifier si la passerelle à la meme adresse reseau que le noeud
+     * \param passerelle
+     * \return vrai si meme adresse, faux sinon
+     */
+    bool verifierPasserelle(string passerelle);
+
     /*!
      * \brief setInterfaces
      * \param interface

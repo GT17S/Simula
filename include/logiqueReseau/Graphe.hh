@@ -30,12 +30,12 @@ using std::vector;
  * \enum Chemin
  * \brief plus court chemin entre deux noeuds et son cout.
  */
-struct Chemin
-{
-    vector<int> tab; /*!< Le chmemin*/
-    int couts; /*!< Coût du chemin*/
-};
 
+//struct Chemin
+//{
+  //  extremite * nextNoeud; /*!< Le chmemin*/
+  //  int couts; /*!< Coût du chemin*/
+//};
 
 /*!
  * \class Graphe
@@ -58,8 +58,9 @@ private:
 
     static vector<Noeud*> sommets;/*!< Liste des sommets du Graphe */
     static vector<vector<Cable*>> matrice; /*!< Matrice d'adjacences du Graphe */
-    static vector<vector<Chemin>> table;/*!< Table de chemins du Graphe */ 
+    //static vector<vector<extremite*>> table;/*!< Table de chemins du Graphe */
 
+    static extremite * getExtremite(int n1, int n2);
     /*!
          * \brief Constructeur par défaut
          * Constructeur par défaut de la classe Graphe
@@ -68,6 +69,10 @@ private:
     Graphe();
     Graphe(const Graphe&) = delete;
     Graphe & operator=(const Graphe&) = delete;
+    static int parcourirVoisins(int  id_src , int id_n, int id_dest, vector<extremite *> &path);
+    static int parcourirPasserelle(int id_src, int id_n, string adresse, int n2, vector<extremite *> &path);
+    static bool verifierReseau(int n1, int n2);
+
 
 public:
 
@@ -120,7 +125,7 @@ public:
          * \return voir #vector<vector<Chemin>>
          */
 
-    vector<vector<Chemin>> getTable(){return table;}
+    //vector<vector<extremite*>> getTable(){return table;}
 
     /*!
          * \brief setSommet
@@ -144,7 +149,7 @@ public:
          * \param  t : voir #Graphe
          */
 
-    void setTable(vector<vector<Chemin>> t);
+    //void setTable(vector<vector<extremite*>> t);
 
     /*!
          * \brief setMatrice
@@ -159,6 +164,7 @@ public:
 
     static void genererTableChemin();
 
+    static int genererChemin(int n1, int n2, vector<extremite *> &path);
 
 
     static void ajoutNoeudMatrice(Noeud * n);

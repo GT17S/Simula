@@ -67,11 +67,11 @@ string InterfaceFE::checkAdresse(std::string _adresse, std::string _regex, std::
         return _defaut;
 }
 
-bool InterfaceFE::ipValide(){
+bool InterfaceFE::ipValide(string _adresseIP, string _masque, string _adresseRes){
     vector<string> vip, vmasque, vres;
 
-    boost::algorithm::split(vip    , adresseIP , boost::is_any_of("."));
-    boost::algorithm::split(vmasque, masque    , boost::is_any_of("."));
+    boost::algorithm::split(vip    , _adresseIP , boost::is_any_of("."));
+    boost::algorithm::split(vmasque, _masque    , boost::is_any_of("."));
     boost::algorithm::split(vres   , adresseRes, boost::is_any_of("."));
 
     for(int i = 0; i < 4; i++){

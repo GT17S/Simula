@@ -7,6 +7,7 @@ Station::Station() : Noeud(){
     // filedattente vide
     nom = "Station"+std::to_string(idNoeud);
     adressePasserelle = DEFAULT_IP;
+    type = STATION;
 
 }
 
@@ -14,6 +15,7 @@ Station::Station(string _nom, int _idNoeud, int _nbPort, string _adressePasserel
                  Noeud(_nom, _idNoeud, _nbPort){
     // file dattente vide
     setPasserelle(_adressePasserelle);
+    type = STATION;
 
 }
 
@@ -41,3 +43,4 @@ void Station::setNumSegmentsEnvoye(vector<int> _numSegmentsEnvoye){
 void Station::envoyerMessage(Noeud * _Nrecepteur, Data * _message){
 
 }
+

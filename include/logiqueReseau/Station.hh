@@ -27,6 +27,7 @@ class Station : public Noeud {
   private:
     string adressePasserelle; /*!< adresse de passerelle de la station*/
     vector<int> numSegmentsEnvoye; /*!< liste des numeros de séquences des segments envoyés */
+
     //Congestion controleur;
 public:
     /*!

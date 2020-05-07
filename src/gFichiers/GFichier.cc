@@ -20,6 +20,8 @@ void lireXml(QString nomFichier, Graphe * graphe){
     QFile * fichier = ouvrirlXml(nomFichier, QIODevice::ReadOnly);
     if(!fichier){
         // erreur
+
+        std::cout << "erreur lecture "<<std::endl;
         return;
     }
 
@@ -29,6 +31,8 @@ void lireXml(QString nomFichier, Graphe * graphe){
     QDomDocument document;
     if(!document.setContent(fichier)){
         // erreur parser
+
+        std::cout << "erreur parser "<<std::endl;
         return;
     }
     //Simulateur
@@ -40,15 +44,20 @@ void lireXml(QString nomFichier, Graphe * graphe){
     while(!noeud.isNull()){
         QDomElement ne = noeud.toElement();
         Noeud * n;
+
         QString type = ne.toElement().attribute("type");
-        if(type.compare("Station", Qt::CaseInsensitive))
-                n = new Station();
-        else if(type.compare("Routeur", Qt::CaseInsensitive))
-                n = new Routeur();
-        else if(type.compare("Switch", Qt::CaseInsensitive))
-                n = new Switch();
-        else if(type.compare("Hub", Qt::CaseInsensitive))
-                n = new Hub();
+        if(type.compare("STATION", Qt::CaseInsensitive) == 0){
+              n=   new Station();
+        }
+        else if(type.compare("ROUTEUR", Qt::CaseInsensitive) == 0){
+              n=   new Routeur();
+        }
+        else if(type.compare("SWITCH", Qt::CaseInsensitive) == 0){
+              n = new Switch();
+        }
+        else if(type.compare("HUB", Qt::CaseInsensitive) == 0){
+              n =  new Hub();
+        }
 
         n->setIdNoeud(ne.attribute("id").toInt());
         n->setNbPort(ne.attribute("nbPort").toInt());
@@ -144,23 +153,19 @@ void ecrireXml(QString nomFichier, Graphe *graphe){
         QDomElement noeud = document.createElement("Noeud");
         noeuds.appendChild(noeud);
 
-        // Type
-        Station * st_n = dynamic_cast<Station*>(n);
-        Routeur * r_n = dynamic_cast<Routeur*>(n);
-        Hub * h_n = dynamic_cast<Hub*>(n);
-        Switch * sw_n = dynamic_cast<Switch*>(n);
+        typeNoeud typeEnum = n->getTypeNoeud();
 
-        QString typeNoeud;
-        if(st_n)
-            typeNoeud = "Station";
-        else if(r_n)
-            typeNoeud = "Routeur";
-        else if(sw_n)
-            typeNoeud = "Switch";
-        else if(h_n)
-            typeNoeud = "Hub";
+        QString type;
+        if(typeEnum == STATION)
+            type = "STATION";
+        else if(typeEnum == ROUTEUR)
+            type = "ROUTEUR";
+        else if(typeEnum == SWITCH)
+            type = "SWITCH";
+        else if(typeEnum == HUB)
+            type = "HUB";
 
-        noeud.setAttribute("type", typeNoeud);
+        noeud.setAttribute("type", type);
         noeud.setAttribute("id", n->getIdNoeud());
         noeud.setAttribute("nbPort", n->getNbPort());
 

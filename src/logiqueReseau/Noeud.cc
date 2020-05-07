@@ -152,6 +152,20 @@ void Noeud::setInterfaces(InterfaceFE * _interface){
     interfaces.push_back(_interface);
 }
 
+bool Noeud::verifierPasserelle(string passerelle){
+
+    for(InterfaceFE* i : interfaces){
+        string adresseRes = i->getAdresseRes();
+        string masque     = i->getMasque();
+        if(i->ipValide(passerelle, masque, adresseRes)){
+            return true;
+        }
+    }
+
+    return false;
+
+}
+
 
 void Noeud::setTableRoutage(Route * route){
     // Ajouter un route

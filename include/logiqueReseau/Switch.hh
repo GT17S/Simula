@@ -22,6 +22,7 @@ class Hub;
 
 
 class Switch : public Hub {
+
 public:
     /*!
      * \brief Constructeur

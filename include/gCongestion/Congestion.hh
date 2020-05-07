@@ -32,13 +32,11 @@ private:
     int numAckRecu;/*!< Numéro du dernier paquet acquittement reçu*/
     float baseRtt;/*!<  RoundTripTime de valeur prédéfinie*/
     std::vector<Data *> segAE;/*!< les segments a envoyer*/
-    int indiceEnv;/*!< indice qui detrmine segments a envoyer */
      //pc recepteur
-    int dataTotal;/*!< nombre total des segment a envoyer */
+    int dataTotal;/*!< nombre total des fragment a envoyer */
     int countSegment;/*! compteur des segment recu */
     std::vector<Data *> segRecu;/*!< les segments recu */
     int dernierNumSegment;/*!<  numéro du dernier segment reçu */
-
 
 public:
     /*!
@@ -105,11 +103,7 @@ public:
       */
     int getBaseRtt(){return baseRtt;}
 
-    /*!
-      * \brief getIndiceEnv
-      * \return indiceEnv (int)
-      */
-    int getIndiceEnv() const;
+
 
     /*!
       * \brief getDataTotal
@@ -200,21 +194,15 @@ public:
       */
     void setBaseRtt(int _baseRtt);
 
-    /*!
-      * \brief setIndiceEnv
-      *  Modifier numero du l'indice de vector des segment a envoyer
-      *  Vérifier _indiceEnv est positive
-      * \param _indiceEnv : indice (int)
-      */
-    void setIndiceEnv(int _indiceEnv);
+
 
     /*!
-      * \brief setIndiceEnv
-      *  Modifier numero du l'indice de vector des segment a envoyer
-      *  Vérifier _indiceEnv est positive
-      * \param _indiceEnv : indice (int)
+      * \brief setDataTotal
+      *  Modifier le nombre total des fragment a envoyer
+      *  Vérifier _dataTotal est positive
+      * \param _dataTotal : nombre total (int)
       */
-    void setDataTotal(int value);//pc recepteur
+    void setDataTotal(int _dataTotal);//pc recepteur
 
     /*!
       * \brief setCountSegment

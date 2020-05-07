@@ -12,7 +12,7 @@
 #include <fstream>
 #include <string>
 #include "Graphe.hh"
-
+class Graphe;
 
 class Graphe;
 

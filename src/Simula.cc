@@ -16,13 +16,21 @@ void envoyer(Noeud * n1, Noeud * n2, vector<Cable*> path){
     extremite * ext1, * ext2;
     Cable * cable;
 
-    //
-    cable = path[size_p -1];
-    ext1 = cable->getExt(n1);
-    ext2 = cable->getInverseExt(ext1->noeud);
-    std::cout <<"envoyer ( "<<ext1->noeud->getIdNoeud()<<", "
-             << ext2->noeud->getIdNoeud()<<")"<<std::endl;
+    // 0 6 8 9 10 7 5
 
+   // cable = path[--size_p];
+   // ext1 = cable->getExt(n1); // 0
+    Noeud * n = n1;
+
+    for(int i = size_p - 1; i > -1; i--){
+        cable = path[i];
+        ext1 = cable->getExt(n); // 6
+        ext2 = cable->getInverseExt(ext1->noeud); // 8
+        std::cout <<"envoyer ( "<<ext1->noeud->getIdNoeud()<<", "
+                 << ext2->noeud->getIdNoeud()<<")"<<std::endl;
+
+        n = ext2->noeud;
+    }
 
 }
 
@@ -63,6 +71,7 @@ int main( int argc, char ** argv)	{
     }
     std::cout<<std::endl;
 
+    envoyer(graphe->getSommets()[n1], graphe->getSommets()[n2], path);
     /*
     int i = path.size() -1;
     extremite * x  = path[i]->getExt1();

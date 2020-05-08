@@ -109,19 +109,16 @@ unsigned int ipToNumber ( std::string str)	{
 	return sum;
 }
 
-unsigned int ipNoeud ( Noeud * n)	{
+unsigned int ipNoeud ( extremite * n)	{
 	unsigned int ip = 0;
 	if ( n != nullptr)	{
-		if ( n->getInterfaces().size() == 0)
-			ip = 0;
-		else if ( n->getInterfaces().size() == 1)
-			ip = ipToNumber ( n->getInterface(0)->getAdresseIP());
-		// else : laquelle choisir ?
+		if ( n->noeud->getInterfaces().size() > n->interface)
+			ip = ipToNumber ( n->noeud->getInterface(n->interface)->getAdresseIP());
 	}
 	return ip;	
 }
 
-void encapsule_segment ( Noeud * src, Noeud * dest, boost::dynamic_bitset<> ip_id, boost::dynamic_bitset<> flag, boost::dynamic_bitset<> offset, boost::dynamic_bitset<> ttl, Data *d)	{
+void encapsule_segment ( extremite * src, extremite * dest, boost::dynamic_bitset<> ip_id, boost::dynamic_bitset<> flag, boost::dynamic_bitset<> offset, boost::dynamic_bitset<> ttl, Data *d)	{
 	size_t old = d->getSeq()->size();
 	size_t length = ip_id.size() + flag.size() + offset.size() + ttl.size() + old + 120;
 	d->getSeq()->resize(length);

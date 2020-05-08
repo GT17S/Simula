@@ -114,6 +114,7 @@ int Graphe::parcourirVoisins(int  id_src , int id_n, int id_dest, vector<Cable *
                     //Station ou routeur
                     if( i == id_dest){
                         // destination trouvée
+                        path.push_back(matrice[id_n][id_dest]);
                         return id_n;
                     }
                 }
@@ -123,7 +124,7 @@ int Graphe::parcourirVoisins(int  id_src , int id_n, int id_dest, vector<Cable *
     return -1;
 }
 
-int Graphe::parcourirPasserelle(int id_src, int id_n , string adresse, int n2, vector<Cable *> &path){
+int Graphe::parcourirPasserelle(int id_src_src ,int id_src, int id_n , string adresse, int n2, vector<Cable *> &path){
 
     if(!sommets[id_src]->verifierPasserelle(adresse)){
         // pas le meme reseau avec la passerelle
@@ -132,12 +133,12 @@ int Graphe::parcourirPasserelle(int id_src, int id_n , string adresse, int n2, v
 
     int size_m = matrice.size();
     for (int i = 0; i < size_m; i++) {
-        if( i != id_n && i != id_src){
+        if( i != id_n && i != id_src && i != id_src_src){
             Cable * cable = matrice[id_n][i];
             if(cable){
                 // voisin
                 if(sommets[i]->getTypeNoeud() == SWITCH){
-                    int result = parcourirPasserelle(id_n, i, adresse, n2, path);
+                    int result = parcourirPasserelle(id_src, id_n, i, adresse, n2, path);
                     //
                     if(result > -1){
                         // adresse trouvée , retourner resultat
@@ -151,7 +152,7 @@ int Graphe::parcourirPasserelle(int id_src, int id_n , string adresse, int n2, v
                     for(InterfaceFE * fe : sommets[i]->getInterfaces()){
                         if(fe->getAdresseIP() == adresse){
                             // adresse passerelle trouvée
-                            if(genererChemin(i, n2, path)){
+                            if(genererChemin(id_n, i, n2, path)){
                                 // chemin trouvée , entre passerelle et destination
                                 //path.push_back(getExtremite(id_n, i));
                                 path.push_back(matrice[id_n][i]);
@@ -171,7 +172,7 @@ int Graphe::parcourirPasserelle(int id_src, int id_n , string adresse, int n2, v
 }
 
 
-int Graphe::genererChemin(int n1, int n2, vector<Cable *> &path){
+int Graphe::genererChemin(int src, int n1, int n2, vector<Cable *> &path){
 
     if(verifierReseau(n1, n2)){
         // meme reseau
@@ -186,7 +187,7 @@ int Graphe::genererChemin(int n1, int n2, vector<Cable *> &path){
         string adresse = verifierCoherence(sommets[n1], sommets[n2]);
         if(adresse != DEFAULT_IP){
             // redirection vers adresse passerelle
-            int result = parcourirPasserelle(n1, n1, adresse, n2, path);
+            int result = parcourirPasserelle(src ,n1, n1, adresse, n2, path);
             if(result > -1)
                 // n2 trouvée
                 return 1;

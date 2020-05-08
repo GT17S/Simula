@@ -23,6 +23,7 @@ void envoyer(Noeud * n1, Noeud * n2, vector<Cable*> path){
     std::cout <<"envoyer ( "<<ext1->noeud->getIdNoeud()<<", "
              << ext2->noeud->getIdNoeud()<<")"<<std::endl;
 
+
 }
 
 

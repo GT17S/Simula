@@ -138,7 +138,7 @@ int Graphe::parcourirPasserelle(int id_src_src ,int id_src, int id_n , string ad
             if(cable){
                 // voisin
                 if(sommets[i]->getTypeNoeud() == SWITCH){
-                    int result = parcourirPasserelle(id_src, id_n, i, adresse, n2, path);
+                    int result = parcourirPasserelle(id_src_src, id_n, i, adresse, n2, path);
                     //
                     if(result > -1){
                         // adresse trouvée , retourner resultat
@@ -152,7 +152,7 @@ int Graphe::parcourirPasserelle(int id_src_src ,int id_src, int id_n , string ad
                     for(InterfaceFE * fe : sommets[i]->getInterfaces()){
                         if(fe->getAdresseIP() == adresse){
                             // adresse passerelle trouvée
-                            if(genererChemin(id_n, i, n2, path)){
+                            if(genererChemin(id_src, i, n2, path)){
                                 // chemin trouvée , entre passerelle et destination
                                 //path.push_back(getExtremite(id_n, i));
                                 path.push_back(matrice[id_n][i]);

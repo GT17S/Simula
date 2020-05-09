@@ -18,10 +18,10 @@ simulaGui::simulaGui(){
 */
 
     widgets.append(new PanneauOutils()); //0
-   	widgets.append(nullptr);
-    widgets.append(nullptr);
+   	widgets.append(new QLabel());
+    widgets.append(new QLabel());
     widgets.append(new ToolBarEquipement()); //3
-    widgets.append(nullptr);
+    widgets.append(new QLabel());
  
     //Modifier les tailles de chaque widget
     mainlayout->addWidget(widgets[0], 0, 0, 1, 4); //Barre menu (0)

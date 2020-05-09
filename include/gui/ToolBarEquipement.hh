@@ -5,21 +5,22 @@
 #include "Cable.hh"
 
 #include <QToolBar>
-#include <MyQWidget.hh>
-class ToolBarEquipement : public QToolBar, public MyQWidget
-{
+#include <QWidget>
+class QToolBar;
+
+class ToolBarEquipement : public QToolBar {
     Q_OBJECT
 public:
-
     ToolBarEquipement();
 	virtual ~ToolBarEquipement(){};
-public slots:
-	void selectionnerEquipement();
-	void ajouterNoeud(Noeud *);
-	void ajouterCable(Cable *);
-    void supprimerEquipement();
 
-    void showInfos() override;
+public slots:
+	void selectionnerEquipement(){};
+	void ajouterNoeud(Noeud *){};
+	void ajouterCable(Cable *){};
+    void supprimerEquipement(){};
+
 };
+
 
 #endif

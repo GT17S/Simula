@@ -9,5 +9,3 @@ PanneauOutils::PanneauOutils(){
 
 
 
-
-void PanneauOutils::showInfos(){return;};

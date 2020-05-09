@@ -2,10 +2,12 @@
 
 ToolBarEquipement::ToolBarEquipement(): QToolBar(){
 
-	this->setStyleSheet("background-color: yellow");
+    this->setStyleSheet("background-color: pink");
 	this->setMinimumSize(50,430);
     this->setMaximumWidth(100);
-}
+
+}	
 
 
-void ToolBarEquipement::showInfos(){return;}
+
+

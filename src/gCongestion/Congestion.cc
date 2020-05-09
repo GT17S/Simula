@@ -143,91 +143,100 @@ Congestion::Congestion(Congestion &c){
         cpt++;
     }
 
-    void Congestion::verifieNumAck(Data *ack , std::vector<int> num_seq,Station *stSrc){//la station qui va verfie d'aqq(emet)
-        nbrAcksRecu++;
-        boost::dynamic_bitset<> test;
-        test= lire_bits (*ack->getSeq(),64,32);
-        numAckRecu=test.to_ulong();
-        if(numAckRecu==num_seq[0]){
-           num_seq.erase (num_seq.begin());
+    void Congestion::verifieNbrSegment(Station * src){
 
-            if(cwnd==nbrAcksRecu){
-                nbrAcksRecu=0;
-                slowStart();
-               if(num_seq.empty()){
-                   cout<<"fin de l'envoi"<<endl;
-                }else verifieNbrSegment(stSrc);
+        if(mapFileEnvoyer.empty()){
+            cout<<"fin de l'envoie"<<endl;
+            //resamblahe(segRecu());
+                   return;
+        }
+
+        for(int i = 0; i< cwnd; i++){
+
+            if(i > mapFileEnvoyer.size()){
+                cout<<"fin de l'envoie"<<endl;
+                return;
             }
+
+         auto it=mapFileEnvoyer.begin();
+         std::advance(it,i);
+         int key=(*it).first;
+         destination ds;
+         ds=(*it).second;
+          src->envoyerMessage(ds.des,ds.d);
+            dynamic_bitset<> numSeq;
+            numSeq=lire_bits(*ds.d->getSeq(),32,32);//numsq
+            if(numSeq.to_ulong()==1){
+                mapFileACK.insert ({key,ds});
+
+            }
+           mapFileEnvoyer.erase (it);
+
+
+        }
+    }
+    void Congestion::retrnasmission(int key){
+
+        mapFileEnvoyer.insert (mapFileEnvoyer.begin(), mapFileACK.find(key));
+        mapFileACK.erase(mapFileACK.find(key));
+    }
+
+
+    void Congestion::verifieNumSegment(Station *stThis,Station *src,Data *data){//pc recepteur
+        Data ack("");
+        dynamic_bitset<> dF;
+        dF=lire_bits(*data->getSeq(),54,4);//fraglent ou nn
+        if(dF.to_ulong()==1){
+         segRecu.push_back(data);
+
         }else{
-            cout<<"congestion !"<<endl;
+        segRecu.push_back(data);
+        dynamic_bitset<> numSeq;
+        numSeq=lire_bits(*data->getSeq(),32,32);//numsq
+        int numeroSeqOld=numSeq.to_ulong();
+        numeroSeqOld=numeroSeqOld+1;
+        boost::dynamic_bitset<> newNum (32,numeroSeqOld);
+        boost::dynamic_bitset<> syn (32,numeroSeqOld);
+        ecrire_bits(ack.getSeq(),(32,newNum),64,32);//ack num
+        ecrire_bits(ack.getSeq(),(0,syn),64,0);//syn=1
+        /*encapsuler on a les tous les infos ici
+         * envoyer
+         * en attend medish
+         * /
+*/
+  }  }
+
+    void Congestion::verifieNumAck(Station *stThis,int numAck,int key){
+        nbrAcksRecu++;
+        map<int, destination>::iterator it = mapFileACK.find(key);
+        destination ds;
+        ds=it->second;
+        Data *dat=ds.d;
+        dynamic_bitset<> numAc;
+        numAc=lire_bits(*dat->getSeq(),62,32);//numsq7
+        if(numAc.to_ulong()==numAck-1){
+         mapFileACK.erase(mapFileACK.find(key));
+        }
+        if(cwnd==nbrAcksRecu){
+            nbrAcksRecu=0;
+            slowStart();
+            verifieNbrSegment(stThis);
         }
 
-        }
 
-    void Congestion::verifieNumSegment(Data *segment,Station *stDes){//la station qui va verfie le num segment(recpt)
-        string ip,ip2,numSeg;
-        boost::dynamic_bitset<>test,test1,test2,siFr;
-
-        test= lire_bits (*segment->getSeq(),32,32);//num seg
-        int dernierNumSegmentss=test.to_ulong();
-
-        test1=lire_bits (*segment->getSeq(),96,32);//ip src orgin pc  a
-        boost::to_string(test1,ip);
-
-        test2=lire_bits (*segment->getSeq(),128,32);//ip2 des origin pc b
-        boost::to_string(test2,ip2);
-
-        siFr=lire_bits (*segment->getSeq(),48,3);//df
-        countSegment++;//nbrfragment recu
-        if(siFr.to_ulong()==1){
-            segRecu.push_back(segment);
-
-        }else{
-
-        if(dernierNumSegmentss==dernierNumSegment+1){
-            if(countSegment==dataTotal){
-                dernierNumSegment++;
-            segRecu.push_back(segment);
-
-            boost::dynamic_bitset<>segToBin (32,dernierNumSegment);//to bistest
-            boost::dynamic_bitset<> unBit (6,1);//1 to binaire
-
-
-            Noeud *stSrc;
-            ip=BinaryStringToText(ip);
-            stSrc=Graphe::noeudFromIp(ip);
-            ecrire_bits(segment->getSeq(),(32,test2),96,32);//pos addres ip src
-            ecrire_bits(segment->getSeq(),(32,test1),128,32);//ip des
-            ecrire_bits(segment->getSeq(),segToBin,64,32);//num acqt
-            ecrire_bits(segment->getSeq(),unBit,106,6);//flag 00001
-            stDes->envoyerMessage(stSrc,segment);
-}
-}
-
-
-             }}
-
-    void  Congestion::verifieNbrSegment(Station *stSrc){
-
-        int i,j;
-      i=0;j=0;
-        for (i;i<dataTotal;i++){
-            Data *segment;
-            string ipSrc,ipDes;
-            boost::dynamic_bitset<>test1;
-            segment=segAE[i];
-            test1=lire_bits (*segment->getSeq(),128,32);//ip des
-            boost::to_string(test1,ipDes);
-            ipDes=BinaryStringToText(ipDes);
-            Noeud *des;
-            des=Graphe::noeudFromIp(ipDes);
-             stSrc->envoyerMessage(des,segment);
-          cout<<"fragment nuemro"<<i<<"est envoye"<<endl;
-                }
 
     }
 
-    void Congestion::fastRetransmission(std::vector<Data> messages, int num){
-       //parcourir segAEnv et verf le numero avec num si == alors envoyerMessage
-    }
+
+
+
+
+
+
+
+
+
+
+
+
 

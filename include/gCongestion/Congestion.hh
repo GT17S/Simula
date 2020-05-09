@@ -15,12 +15,16 @@
 #include "congestionOutil.hh"
 #include"Graphe.hh"
 #include "Station.hh"
+#include <map>
 
 /*!
  * \class Congestion
  * \brief La classe Congestion représentant un contrôleur de congestion .
  */
-
+struct destination {
+        Noeud * des;
+        Data * d;
+    };
 class Station;
 class Congestion{
 private:
@@ -37,6 +41,11 @@ private:
     int countSegment;/*! compteur des segment recu */
     std::vector<Data *> segRecu;/*!< les segments recu */
     int dernierNumSegment;/*!<  numéro du dernier segment reçu */
+
+
+    std::map<int,destination> mapFileEnvoyer;
+    std::map<int ,destination> mapFileACK;
+
 
 public:
     /*!
@@ -260,8 +269,7 @@ public:
      * \param segment : Data recu
      * \param stDes : la station réceptrice des datas;
      */
-    void verifieNumSegment(Data * segment,Station *stDes);//pc recepteur
-
+    void verifieNumSegment(Station *stThis,Station *src,Data *data);//pc recepteur
 
     /*!
      * \brief verifieNumAck
@@ -270,8 +278,7 @@ public:
      * \param num_seq :vector des numeros des segments deja envoyé
      * \param stSrc : la station émettrice des datas;
      */
-    void verifieNumAck(Data * ack,std::vector<int> num_seq,Station *stSrc);
-
+    void verifieNumAck(Station *stThis,int numAck,int key);
     /*!
      * \brief verifieNumAck
      * retransmission des segments perdus
@@ -291,8 +298,7 @@ public:
     float CalculLatenceDynamique(Graphe *graphe,Congestion *congestion,Data *data);
 
 
-
-
+   void retrnasmission(int key);
 
 };
 

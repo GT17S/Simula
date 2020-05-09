@@ -89,6 +89,7 @@ int Graphe::parcourirVoisins(int  id_src , int id_n, int id_dest, vector<Cable *
         // Directement lié
         //path.push_back(getExtremite(id_n, id_dest));
         path.push_back(matrice[id_n][id_dest]);
+        //std::cout << "V0 "<<id_n<<" "<<id_dest<<std::endl;
         return id_n;
     }
 
@@ -99,13 +100,14 @@ int Graphe::parcourirVoisins(int  id_src , int id_n, int id_dest, vector<Cable *
             Cable * cable = matrice[id_n][i];
             if(cable){
                 // voisin
-                if(sommets[i]->getTypeNoeud() == SWITCH){
+                if(sommets[i]->getTypeNoeud() == SWITCH || sommets[i]->getTypeNoeud() == HUB){
                     // switch
                     if(parcourirVoisins(id_n ,i, id_dest, path) > -1){
 
                         // trouver id_dest, retourner id_n
                         //path.push_back(getExtremite(id_n, i));
                         path.push_back(matrice[id_n][i]);
+                       // std::cout << "V1 "<<id_n<<" "<<i<<std::endl;
 
                         return id_n;
                     }
@@ -115,6 +117,7 @@ int Graphe::parcourirVoisins(int  id_src , int id_n, int id_dest, vector<Cable *
                     if( i == id_dest){
                         // destination trouvée
                         path.push_back(matrice[id_n][id_dest]);
+                       //std::cout << "V2 "<<id_n<<" "<<id_dest<<std::endl;
                         return id_n;
                     }
                 }
@@ -124,7 +127,7 @@ int Graphe::parcourirVoisins(int  id_src , int id_n, int id_dest, vector<Cable *
     return -1;
 }
 
-int Graphe::parcourirPasserelle(int id_src_src ,int id_src, int id_n , string adresse, int n2, vector<Cable *> &path){
+int Graphe::parcourirPasserelle(int id_src_src ,int id_src, int id_n , string adresse, int n2, vector<Cable *> &path, bool allPath){
 
     if(!sommets[id_src]->verifierPasserelle(adresse)){
         // pas le meme reseau avec la passerelle
@@ -137,13 +140,14 @@ int Graphe::parcourirPasserelle(int id_src_src ,int id_src, int id_n , string ad
             Cable * cable = matrice[id_n][i];
             if(cable){
                 // voisin
-                if(sommets[i]->getTypeNoeud() == SWITCH){
-                    int result = parcourirPasserelle(id_src_src, id_n, i, adresse, n2, path);
+                if(sommets[i]->getTypeNoeud() == SWITCH || sommets[i]->getTypeNoeud() == HUB){
+                    int result = parcourirPasserelle(id_src_src, id_n, i, adresse, n2, path, allPath);
                     //
                     if(result > -1){
                         // adresse trouvée , retourner resultat
                         //path.push_back(getExtremite(id_n, i));
                         path.push_back(matrice[id_n][i]);
+                        //std::cout << "P1 "<<id_n<<" "<<i<<std::endl;
                         return result;
                     }
                 }
@@ -152,14 +156,22 @@ int Graphe::parcourirPasserelle(int id_src_src ,int id_src, int id_n , string ad
                     for(InterfaceFE * fe : sommets[i]->getInterfaces()){
                         if(fe->getAdresseIP() == adresse){
                             // adresse passerelle trouvée
-                            if(genererChemin(id_src, i, n2, path)){
-                                // chemin trouvée , entre passerelle et destination
-                                //path.push_back(getExtremite(id_n, i));
+                            if(allPath){
+                                if(genererChemin(id_src, i, n2, path, allPath)){
+                                    path.push_back(matrice[id_n][i]);
+                                    return i;
+                                }
+                            }else{
                                 path.push_back(matrice[id_n][i]);
+                                //std::cout << "P2 "<<id_n<<" "<<i<<std::endl;
                                 return i;
                             }
+                           // if(genererChemin(id_src, i, n2, path)){
+                                // chemin trouvée , entre passerelle et destination
+                                //path.push_back(getExtremite(id_n, i));
+                            //}
                             // chemin non trouvée
-                            return -1;
+
                         }
                     }
                 }
@@ -172,9 +184,13 @@ int Graphe::parcourirPasserelle(int id_src_src ,int id_src, int id_n , string ad
 }
 
 
-int Graphe::genererChemin(int src, int n1, int n2, vector<Cable *> &path){
+int Graphe::genererChemin(int src, int n1, int n2, vector<Cable *> &path, bool allPath){
+    if(n1 == n2)
+        return  -1;
 
-    if(verifierReseau(n1, n2)){
+    if(sommets[n1]->getTypeNoeud() == SWITCH || sommets[n1]->getTypeNoeud() == HUB ||
+       sommets[n2]->getTypeNoeud() == SWITCH || sommets[n2]->getTypeNoeud() == HUB ||
+       verifierReseau(n1, n2)){
         // meme reseau
         if(parcourirVoisins(n1, n1, n2, path))
             // trouvée
@@ -187,7 +203,7 @@ int Graphe::genererChemin(int src, int n1, int n2, vector<Cable *> &path){
         string adresse = verifierCoherence(sommets[n1], sommets[n2]);
         if(adresse != DEFAULT_IP){
             // redirection vers adresse passerelle
-            int result = parcourirPasserelle(src ,n1, n1, adresse, n2, path);
+            int result = parcourirPasserelle(src ,n1, n1, adresse, n2, path, allPath);
             if(result > -1)
                 // n2 trouvée
                 return 1;

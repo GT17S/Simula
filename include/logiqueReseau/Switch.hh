@@ -9,7 +9,7 @@
  */
 
 #include "Hub.hh"
-
+#include "Graphe.hh"
 
 using std::string;
 
@@ -52,7 +52,7 @@ public:
      * \param nRecepteur : le noeud recepteur
      * \param data : le message à envoyer de type Data
      */
-    void envoyerMessage(Noeud *nRecepteur, string message);//change string par data
+    void envoyerMessage(string message);//change string par data
 
 };
 

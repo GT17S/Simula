@@ -308,3 +308,84 @@ string BinaryStringToText(string binaryString) {
     }
     return text;
 }
+
+
+void encapsuleAll(int portSrc, int portDest, bool ack, bool syn, int nSeq, int nAck,
+                  extremite * N1, extremite *N2, std::string macNext,  Data * data){
+    //encapsule data => segment
+        //port source & port destination
+        // numero de sequence & numero ack
+        // taille entete ??
+        // flags : 0 ACK 0 0 SYN FIN
+        // fenetre ??
+    //encapsule segment => paquet
+        // ip src, ip dest
+        // ipid = idnoeud
+        // offset fragment
+        // taille total
+    //encapsule paquet => trame
+        // mac dest + mac source
+
+}
+void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, std::string message){
+
+    if(n1->getTypeNoeud() == SWITCH || n2->getTypeNoeud() == SWITCH
+     ||n1->getTypeNoeud() == HUB || n2->getTypeNoeud() == HUB)
+
+        return;
+
+    int id_n1 = n1->getIdNoeud(),
+        id_n2 = n2->getIdNoeud();
+    vector<Cable *> path;
+    Graphe::genererChemin(id_n1, id_n1, id_n2, path, true);
+
+    int size_p = path.size();
+    // pas de chemin
+    if(!size_p)
+        return;
+
+
+    // get next
+    extremite * srcExt = path[size_p -1]->getExt(n1); // source
+    extremite * destExt; // destination finale
+    Cable * cable;
+    Noeud * n = n1;
+    extremite * nextExt = nullptr; // prochain destination
+    bool check = false;
+    for(int i = size_p - 1; i > -1; i--){
+        cable = path[i];
+        destExt = cable->getInverseExt(n);
+
+        n = destExt->noeud;
+        if(!check)
+        if(n->getTypeNoeud() == ROUTEUR || n->getTypeNoeud() == STATION)
+            { nextExt = destExt; check =true;}
+    }
+
+    // encapsulation
+    Data * data = new Data(message);
+    int nSeq = 1;
+    int nAck = 0;
+    std::string macNext;
+    encapsuleAll(portSrc, portDest, false, true, nSeq, nAck, srcExt, destExt, macNext, data);
+    //message = std::to_string(nextNoeud->getIdNoeud())+"_"+std::to_string(id_n2);
+    n1->envoyerMessage(message); // to data
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

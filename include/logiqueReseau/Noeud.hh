@@ -11,9 +11,8 @@
 #include <algorithm>
 #include <string>
 #include <vector>
-#include <typeinfo>
+#include <iostream>
 #include "InterfaceFE.hh"
-#include "Cable.hh"
 
 using std::string;
 using std::vector;
@@ -255,7 +254,7 @@ public:
      * \param nRecepteur : pointeur sur le noeud recepteur
      * \param data : le message à envoyer de type Data
      */
-    virtual  void envoyerMessage(Noeud * nRecepteur, string data)=0;
+    virtual  void envoyerMessage(string data)=0;
 };
 
 #endif

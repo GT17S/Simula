@@ -13,6 +13,7 @@
 #include "Noeud.hh"
 #include "InterfaceFE.hh"
 #include "Data.hh"
+#include "Graphe.hh"
 
 using std::string;
 using std::vector;
@@ -99,9 +100,7 @@ public:
      * \param nRecepteur : pointeur sur le noeud recepteur
      * \param data : le message à envoyer de type Data
      */
-    void envoyerMessage(Noeud * Nrecepteur, Data* message);
-
-    void envoyerMessage(Noeud * nRecepteur, string data){};
+    void envoyerMessage(string data);
 };
 
 #endif

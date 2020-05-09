@@ -200,7 +200,7 @@ Congestion::Congestion(Congestion &c){
             ecrire_bits(segment->getSeq(),(32,test1),128,32);//ip des
             ecrire_bits(segment->getSeq(),segToBin,64,32);//num acqt
             ecrire_bits(segment->getSeq(),unBit,106,6);//flag 00001
-            stDes->envoyerMessage(stSrc,segment);
+            //stDes->envoyerMessage(stSrc,segment);
 }
 }
 
@@ -221,7 +221,7 @@ Congestion::Congestion(Congestion &c){
             ipDes=BinaryStringToText(ipDes);
             Noeud *des;
             des=Graphe::noeudFromIp(ipDes);
-             stSrc->envoyerMessage(des,segment);
+             //stSrc->envoyerMessage(des,segment);
           cout<<"fragment nuemro"<<i<<"est envoye"<<endl;
                 }
 

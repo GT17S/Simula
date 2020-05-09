@@ -11,7 +11,6 @@
 #include <string>
 #include "Noeud.hh"
 
-
 using std::string;
 
 class Noeud;
@@ -52,7 +51,7 @@ public:
      * \param nRecepteur
      * \param message
      */
-    void envoyerMessage(Noeud *nRecepteur, string message);
+    void envoyerMessage(string message);
 
 
     /*!

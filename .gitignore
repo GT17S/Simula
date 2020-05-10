@@ -765,3 +765,6 @@ compile_commands.json
 *creator.user*
 #Automoc generated files
 Simula_autogen
+
+
+include/gui/moc_*

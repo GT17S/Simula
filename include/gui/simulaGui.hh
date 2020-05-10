@@ -17,6 +17,8 @@
 #include "PanneauData.hh"
 #include "PanneauEvents.hh"
 
+class ToolBarEquipement;
+
 class simulaGui: public QWidget {
 private:
 	//Grid

@@ -456,7 +456,16 @@ void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, bool syn, bool ac
               << " "<<nextExt->noeud->getIdNoeud()<<std::endl;
 
               */
-    n1->envoyerMessage(srcExt->interface, data); // to data
+   /* Station * st = dynamic_cast<Station*>(n1);
+    if(st){
+       int key=  st->getControleur()->getMapFileEnvoyer().size();
+
+    }
+    */
+    destination dest;
+    dest.data = data;
+    dest.interface_src = srcExt->interface;
+    n1->envoyerMessage(dest); // to data
 
 }
 

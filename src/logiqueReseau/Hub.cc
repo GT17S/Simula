@@ -18,25 +18,25 @@ Hub::~Hub(){
 void Hub::envoyerBroadCast(string message){
     //a implimenter
 }
-void Hub::envoyerMessage(int src_i, Data * data){
+void Hub::envoyerMessage(destination dest){
 
-    int id_src  = lireAdresseMac(data, 0);
+    int id_src  = lireAdresseMac(dest.data, 0);
 
     std::cout <<"J'envoie le message à tous les membres"<< std::endl;
     for(InterfaceFE * ie: interfaces){
         extremite * ext = ie->getCable()->getInverseExt(this);
         if(ext && ext->noeud->getIdNoeud() != id_src){
             //std::cout <<"J'envoie le message à "<<ext->noeud->getIdNoeud()<< std::endl;
-            ext->noeud->recevoirMessage(src_i, ext->interface, data);
+            ext->noeud->recevoirMessage(ext->interface, dest);
         }
     }
 }
 
-void Hub::recevoirMessage(int src_i, int dest_i, Data * data){
+void Hub::recevoirMessage(int dest_i, destination dest){
     std::cout <<"Je suis un hub"<< idNoeud<<std::endl;
 
     //int id_dest = lireAdresseMac(data, 1);
-    envoyerMessage(src_i, data);
+    envoyerMessage(dest);
 
 }
 

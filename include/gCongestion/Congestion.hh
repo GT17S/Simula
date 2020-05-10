@@ -21,13 +21,6 @@
  * \brief La classe Congestion représentant un contrôleur de congestion .
  */
 
-#ifndef DESTINATION_H
-#define DESTINATION_H
-struct destination {
-        Noeud * des;
-        Data * d;
-    };
-#endif
 class Station;
 class Graphe;
 class Congestion{
@@ -304,6 +297,10 @@ public:
 
    void retrnasmission(int key);
 
+   std::map<int, destination> getMapFileEnvoyer();
+   void setMapFileEnvoyer(std::map<int, destination> _map);
+   std::map<int, destination> getMapFileACK();
+   void setMapFileACK(std::map<int, destination> _map);
 };
 
 #endif

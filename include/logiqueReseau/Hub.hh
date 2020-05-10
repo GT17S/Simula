@@ -50,8 +50,8 @@ public:
      * \param nRecepteur
      * \param message
      */
-    void envoyerMessage(int src_i, Data * data);
-    void recevoirMessage(int src_i, int dest_i, Data * data);
+    void envoyerMessage(destination dest);
+    void recevoirMessage(int dest_i, destination dest);
 
 
     /*!

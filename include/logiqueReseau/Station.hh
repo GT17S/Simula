@@ -20,6 +20,7 @@ using std::vector;
 class Noeud;
 class Data;
 class InterfaceFE;
+class Congestion;
 /*!
  * \class Station
  * \brief La classe Station représentant une station (machine).
@@ -28,7 +29,7 @@ class Station : public Noeud {
   private:
     string adressePasserelle; /*!< adresse de passerelle de la station*/
     vector<int> numSegmentsEnvoye; /*!< liste des numeros de séquences des segments envoyés */
-   // Congestion controleur;
+    Congestion * controleur;
 
 public:
     /*!
@@ -70,7 +71,7 @@ public:
      */
     vector<int> getNumSegmentsEnvoye(){return numSegmentsEnvoye;}
 
-  //  Congestion getControleur(){return controleur; }
+    Congestion * getControleur(){return controleur; }
     /*!
      * \brief setPasserelle
      * Modifier l'adresse de passerelle de la station, #adressePasserelle
@@ -86,9 +87,11 @@ public:
      * \param data : le message à envoyer de type Data
      */
 
-   // void setControleur(Congestion c);
-    void envoyerMessage(int src_i, Data * data);
-    void recevoirMessage(int src_i, int dest_i, Data * data);
+    void setControleur(Congestion *c);
+
+
+    void envoyerMessage(destination dest);
+    void recevoirMessage(int dest_i, destination dest);
 
 
 };

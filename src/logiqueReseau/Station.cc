@@ -2,7 +2,7 @@
 #include "DataOutils.hh"
 
 
-Station::Station() : Noeud(){
+Station::Station() : Noeud(), controleur(){
     // ID automatique
     // nb port =1
     // filedattente vide
@@ -26,16 +26,16 @@ void Station::setPasserelle(string _adresse){
 
 }
 
-/*
-void SetControleur(Congestion _controleur){
+
+void Station::setControleur(Congestion *_controleur){
     controleur = _controleur;
 }
-*/
-void Station::envoyerMessage(int src_i, Data * data){
+
+void Station::envoyerMessage(destination dest){
 
     // passerelle
-    int id_src  = lireAdresseMac(data, 0);
-    int id_dest = lireAdresseMac(data, 1);
+    int id_src  = lireAdresseMac(dest.data, 0);
+    int id_dest = lireAdresseMac(dest.data, 1);
     vector<Cable*> path;
     Graphe::genererChemin(id_src, idNoeud, id_dest, path, false);
 
@@ -51,31 +51,31 @@ void Station::envoyerMessage(int src_i, Data * data){
 
     //std::cout <<"J'envoie le message à "<<ext->noeud->getIdNoeud()<< std::endl;
     //_message = std::to_string(id_next)+"_"+std::to_string(id_dest);
-    extNext->noeud->recevoirMessage(src_i, extNext->interface, data);
+    extNext->noeud->recevoirMessage(extNext->interface, dest);
 
 }
 
-void Station::recevoirMessage(int src_i, int dest_i, Data * data){
+void Station::recevoirMessage(int dest_i, destination dest){
     std::cout <<"Je suis une station "<< idNoeud<<std::endl;
-    int mac_dest = lireAdresseMac(data, 1);
-    int mac_src = lireAdresseMac(data, 0);
+    int mac_dest = lireAdresseMac(dest.data, 1);
+    int mac_src = lireAdresseMac(dest.data, 0);
 
     if(idNoeud == mac_dest){
            std::cout <<"Cest moi la passerelle" <<std::endl;
-           desencapsule_trame(data);
+           desencapsule_trame(dest.data);
            string ipSrc = getInterface(dest_i)->getAdresseIP();
-           if(ipSrc == lireAdresseIp(data, 1)){
+           if(ipSrc == lireAdresseIp(dest.data, 1)){
                std::cout <<"Cest moi la destination" <<std::endl;
-               desencapsule_paquet(data);
+               desencapsule_paquet(dest.data);
                // lire ack et syn
-               int flags = lireFlagSegment(data);
+               int flags = lireFlagSegment(dest.data);
                std::cout<<"Flags = "<<flags<<std::endl;
                if(flags == 2 || flags == 18){
                    // syn = 1, doit repondre ack
                    Data * ndata = new Data("");
                    Noeud * n2 = Graphe::getSommets()[mac_src];
                    int nSeq = 100,
-                       nAck =  lire_bits ( *data->getSeq(), 32, 32).to_ulong() + 1,
+                       nAck =  lire_bits ( *(dest.data)->getSeq(), 32, 32).to_ulong() + 1,
                        ipId = 100;
                    std::cout<<"Retouuuur"<<std::endl;
                    envoyer(this, n2, 0,0,false, true, nSeq, nAck,ipId, ndata);
@@ -94,8 +94,8 @@ void Station::recevoirMessage(int src_i, int dest_i, Data * data){
                }
 
 
-               desencapsule_segment(data);
-               std::cout <<showMessage(data) <<std::endl;
+               desencapsule_segment(dest.data);
+               std::cout <<showMessage(dest.data) <<std::endl;
            }
            else {
                // generer chemin jusqua cette IP

@@ -19,6 +19,14 @@ using std::string;
 using std::vector;
 
 
+#ifndef DESTINATION_H
+#define DESTINATION_H
+struct destination {
+        int interface_src;
+        Data * data;
+    };
+#endif
+
 #ifndef ROUTE_H
 #define ROUTE_H
 /*!
@@ -256,8 +264,8 @@ public:
      * \param data : le message à envoyer de type Data
      */
 
-    virtual void envoyerMessage(int src_i, Data * data) = 0;
-    virtual void recevoirMessage(int src_i, int dest_i, Data * data) = 0;
+    virtual void envoyerMessage(destination dest) = 0;
+    virtual void recevoirMessage(int dest_i, destination dest) = 0;
 };
 
 #endif

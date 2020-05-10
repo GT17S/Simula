@@ -4,7 +4,7 @@
 const string IP_REGEX = "^(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$";
 const string MAC_REGEX = "^([0-9]{6}[:])([0-9]{6})$";
 const string DEFAULT_IP = "0.0.0.0";
-const string DEFAULT_MAC = "111111:111111";
+const string DEFAULT_MAC = "000000:111111";
 
 InterfaceFE::InterfaceFE(int idNoeud, string _nomInterface, string _adresseIP,
                          string _adresseRes, string _masque){

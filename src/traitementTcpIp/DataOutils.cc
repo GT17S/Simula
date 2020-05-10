@@ -44,13 +44,13 @@ std::string ip_to_string (unsigned int ip)	{
 	return s;
 }
 
-unsigned long long lireMac ( Data * d, int flag = 0)	{	// If mac src, flag = 0, if mac dest, flag = 1
+unsigned long long lireMac ( Data * d, int flag)	{	// If mac src, flag = 0, if mac dest, flag = 1
 	if ( d->getType () != 3) return -1;
 	unsigned long long adresseMac = lire_bits ( *d->getSeq (), 48*flag, 48).to_ulong();
 	return adresseMac;
 }
 
-std::string lireAdresseIp ( Data * d, int flag = 0)	{	// If ip src, flag = 0, if ip dest, flag = 1
+std::string lireAdresseIp ( Data * d, int flag)	{	// If ip src, flag = 0, if ip dest, flag = 1
 	if ( d->getType() == 0) return DEFAULT_IP;
 	else if ( d->getType() == 1) return DEFAULT_IP;
 	else if ( d->getType() == 2) return ip_to_string ( (unsigned int)lire_bits ( *d->getSeq (), 96+(flag*32), 32).to_ulong());

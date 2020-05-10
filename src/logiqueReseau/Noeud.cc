@@ -7,8 +7,8 @@ Noeud::Noeud() : nbPort(1){
     // Générer automatiquement un ID
     //setIdNoeud(1);
     // Initialisation d'une seule interface
-    interfaces.push_back(new InterfaceFE());
     Graphe::ajoutNoeudMatrice(this);
+    interfaces.push_back(new InterfaceFE(idNoeud));
 }
 
 Noeud::Noeud(string _nom, int _idNoeud, int _nbPort){
@@ -16,11 +16,11 @@ Noeud::Noeud(string _nom, int _idNoeud, int _nbPort){
     nom = _nom;
     //setIdNoeud(_idNoeud);
     nbPort = _nbPort;
+    Graphe::ajoutNoeudMatrice(this);
     // Initialisation des interfaces
     for (int i = 0; i < nbPort; i++) {
-        interfaces.push_back(new InterfaceFE());
+        interfaces.push_back(new InterfaceFE(_idNoeud));
     }
-    Graphe::ajoutNoeudMatrice(this);
 }
 
 Noeud::~Noeud(){
@@ -93,7 +93,7 @@ void Noeud::setNbPort(int _nbPort){
     // Ajouter des ports
     if(_nbPort > nbPort){
         for (int i = nbPort; i < _nbPort; i++) {
-            interfaces.push_back(new InterfaceFE());
+            interfaces.push_back(new InterfaceFE(idNoeud));
         }
         nbPort = _nbPort;
 

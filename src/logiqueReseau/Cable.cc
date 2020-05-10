@@ -40,17 +40,6 @@ Cable::~Cable(){
 }
 
 
-extremite * Cable::getExt(Noeud * ext){
-    if(ext == ext1->noeud)
-            return ext2;
-
-    else if(ext == ext2->noeud)
-            return ext1;
-
-    else
-            return nullptr;
-}
-
 void Cable::setId(int _idCable){ id = _idCable;}
 
 void Cable::setDebitMax(int _debitMax){debitMax = _debitMax;}

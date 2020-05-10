@@ -3,11 +3,14 @@
 
 #include "Data.hh"
 #include "Noeud.hh"
+#include "Graphe.hh"
 #include "Cable.hh"
 #include <bitset>
 #include <sstream>
+#include <vector>
 
 using namespace boost;
+using std::vector;
 
 std::string ip_to_string (unsigned int ip);
 unsigned long long lireAdresseMac ( Data * d, int flag = 0);	// If mac src, flag = 0, if mac dest, flag = 1
@@ -29,4 +32,8 @@ void calculerFrameCheckSequence ( Data * d);
 std::vector<Data *> fragmentationPaquet (Data p, int mtu = 1500);
 Data reassemblagepaquet ( std::vector<Data *> paquets);
 string BinaryStringToText(string binaryString);
+void encapsuleAll(int portSrc, int portDest, bool ack, bool syn, int nSeq, int nAck,
+                  extremite * N1, extremite *N2, std::string macNext,  Data * data);
+void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, std::string message);
+
 #endif

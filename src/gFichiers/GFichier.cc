@@ -76,8 +76,9 @@ void lireXml(QString nomFichier, Graphe * graphe){
             ife->setAdresseRes(element.text().toStdString());
             element = element.nextSiblingElement(); // masque
             ife->setMasque(element.text().toStdString());
-            element = element.nextSiblingElement(); // mac
-            ife->setAdresseMac(element.text().toStdString());
+            //element = element.nextSiblingElement(); // mac
+            //std::cout <<element.text().toStdString()<<std::endl;
+            //ife->setAdresseMac(element.text().toStdString());
             i++;
             interface = interface.nextSibling();
         }

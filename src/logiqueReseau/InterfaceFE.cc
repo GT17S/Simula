@@ -15,8 +15,9 @@ InterfaceFE::InterfaceFE(int idNoeud, string _nomInterface, string _adresseIP,
     setAdresseRes(_adresseRes);
     setMasque(_masque);
     // generer adresse Mac
-    char s[15];
+    char s[14];
     sprintf(s,"000000:%06d",idNoeud);
+    std::cout <<s<<std::endl;
     adresseMac = s;
     setAdresseMac(adresseMac);
 }
@@ -60,7 +61,7 @@ bool InterfaceFE::regexValide(string adresse, string _regex){
 
     if(std::regex_match(adresse, regex_ip))
         return true;
-
+    std::cout <<"False"<<std::endl;
     return false;
 }
 

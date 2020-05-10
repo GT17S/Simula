@@ -39,19 +39,19 @@ void envoyer(Noeud * n1, vector<Cable*> path){
 
 
 int main( int argc, char ** argv)	{
-
     int n1 = atoi(argv[1]);
+
     int n2 = atoi(argv[2]);
 
     Graphe * graphe = Graphe::get();
     lireXml("test.xml", graphe);
 
-    vector<Cable*> path;
-    graphe->genererChemin(n1, n1, n2, path, true);
+//  vector<Cable*> path;
+    //graphe->genererChemin(n1, n1, n2, path, true);
 
     //string data;
     //envoyer(graphe->getSommets()[n1], graphe->getSommets()[n2], 1025, 80, data);
-    envoyer(graphe->getSommets()[n1], path);
+//    envoyer(graphe->getSommets()[n1], path);
 
 
 }

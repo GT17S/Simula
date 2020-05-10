@@ -328,7 +328,7 @@ void encapsuleAll(int portSrc, int portDest, bool ack, bool syn, int nSeq, int n
 
 }
 void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, std::string message){
-
+    // switch ou hub , ne peuvent ni envoyer ni recevoir
     if(n1->getTypeNoeud() == SWITCH || n2->getTypeNoeud() == SWITCH
      ||n1->getTypeNoeud() == HUB || n2->getTypeNoeud() == HUB)
 
@@ -336,7 +336,9 @@ void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, std::string messa
 
     int id_n1 = n1->getIdNoeud(),
         id_n2 = n2->getIdNoeud();
+
     vector<Cable *> path;
+    // generer chemin complet, jusqua la destination
     Graphe::genererChemin(id_n1, id_n1, id_n2, path, true);
 
     int size_p = path.size();
@@ -344,13 +346,12 @@ void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, std::string messa
     if(!size_p)
         return;
 
-
     // get next
     extremite * srcExt = path[size_p -1]->getExt(n1); // source
     extremite * destExt; // destination finale
     Cable * cable;
     Noeud * n = n1;
-    extremite * nextExt = nullptr; // prochain destination
+    extremite * nextExt = nullptr; // prochaine destination
     bool check = false;
     for(int i = size_p - 1; i > -1; i--){
         cable = path[i];
@@ -363,10 +364,10 @@ void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, std::string messa
     }
 
     // encapsulation
-    Data * data = new Data(message);
+    Data * data = new Data(message); // message à envoyer
     int nSeq = 1;
     int nAck = 0;
-    std::string macNext;
+    std::string macNext = nextExt->noeud->getInterface(nextExt->interface)->getAdresseMac();
     encapsuleAll(portSrc, portDest, false, true, nSeq, nAck, srcExt, destExt, macNext, data);
     //message = std::to_string(nextNoeud->getIdNoeud())+"_"+std::to_string(id_n2);
     n1->envoyerMessage(message); // to data

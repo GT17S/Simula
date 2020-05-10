@@ -394,23 +394,6 @@ string BinaryStringToText(string binaryString) {
 }
 
 
-void encapsuleAll(int portSrc, int portDest, bool ack, bool syn, int nSeq, int nAck,
-                  extremite * N1, extremite *N2, std::string macNext,  Data * data){
-    //encapsule data => segment
-        //port source & port destination
-        // numero de sequence & numero ack
-        // taille entete ??
-        // flags : 0 ACK 0 0 SYN FIN
-        // fenetre ??
-    //encapsule segment => paquet
-        // ip src, ip dest
-        // ipid = idnoeud
-        // offset fragment
-        // taille total
-    //encapsule paquet => trame
-        // mac dest + mac source
-
-}
 void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, std::string message){
     // switch ou hub , ne peuvent ni envoyer ni recevoir
     if(n1->getTypeNoeud() == SWITCH || n2->getTypeNoeud() == SWITCH
@@ -451,8 +434,9 @@ void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, std::string messa
     Data * data = new Data(message); // message à envoyer
     int nSeq = 1;
     int nAck = 0;
-    std::string macNext = nextExt->noeud->getInterface(nextExt->interface)->getAdresseMac();
-    encapsuleAll(portSrc, portDest, false, true, nSeq, nAck, srcExt, destExt, macNext, data);
+    int ipId = 1;
+
+    encapsuleAll(portSrc, portDest, false, true, nSeq, nAck, ipId, srcExt, destExt, nextExt, data);
     //message = std::to_string(nextNoeud->getIdNoeud())+"_"+std::to_string(id_n2);
     n1->envoyerMessage(message); // to data
 

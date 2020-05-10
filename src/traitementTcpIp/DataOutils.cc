@@ -411,7 +411,7 @@ string BinaryStringToText(string binaryString) {
 }
 
 
-void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, std::string message){
+void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, bool syn, bool ack, int nSeq, int nAck, int ipId, Data * data){
     // switch ou hub , ne peuvent ni envoyer ni recevoir
     if(n1->getTypeNoeud() == SWITCH || n2->getTypeNoeud() == SWITCH
      ||n1->getTypeNoeud() == HUB || n2->getTypeNoeud() == HUB)
@@ -447,15 +447,9 @@ void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, std::string messa
             { nextExt = destExt; check =true;}
     }
 
-    // encapsulation
-    Data * data = new Data(message); // message à envoyer
-    int nSeq = 1;
-    int nAck = 0;
-    int ipId = 1;
-
 
     std::cout<<"J'envoie le message : "<<message<<" à "<<n2->getIdNoeud()<<std::endl;
-    encapsuleAll(portSrc, portDest, false, true, nSeq, nAck, ipId, srcExt, destExt, nextExt, data);
+    encapsuleAll(portSrc, portDest, syn, ack, nSeq, nAck, ipId, srcExt, destExt, nextExt, data);
 /*
     std::cout << " "<<srcExt->noeud->getIdNoeud()
               << " "<<destExt->noeud->getIdNoeud()

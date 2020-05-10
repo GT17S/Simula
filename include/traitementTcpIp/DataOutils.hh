@@ -33,5 +33,5 @@ void calculerFrameCheckSequence ( Data * d);
 std::vector<Data *> fragmentationPaquet (Data p, int mtu = 1500);
 Data reassemblagepaquet ( std::vector<Data *> paquets);
 string BinaryStringToText(string binaryString);
-void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, std::string message);
+void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, bool syn, bool ack, int nSeq, int nAck, int ipId, Data *data);
 #endif

@@ -90,8 +90,8 @@ public:
     void setControleur(Congestion *c);
 
 
-    void envoyerMessage(destination dest);
-    void recevoirMessage(int dest_i, destination dest);
+    void envoyerMessage(int key, destination dest);
+    void recevoirMessage(int key, int dest_i, destination dest);
 
 
 };

@@ -264,8 +264,8 @@ public:
      * \param data : le message à envoyer de type Data
      */
 
-    virtual void envoyerMessage(destination dest) = 0;
-    virtual void recevoirMessage(int dest_i, destination dest) = 0;
+    virtual void envoyerMessage(int key, destination dest) = 0;
+    virtual void recevoirMessage(int key,int dest_i, destination dest) = 0;
 };
 
 #endif

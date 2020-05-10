@@ -61,7 +61,7 @@ void Congestion::setMapFileACK(std::map<int, destination> _map)
     mapFileACK =  _map;
 }
 
-Congestion::Congestion(){
+Congestion::Congestion() : mapFileACK(), mapFileEnvoyer(){
     cwnd=1;
     ssthresh=32;
     cpt=0;
@@ -161,9 +161,10 @@ void Congestion::congestionAvoidance(){
 }
 
 void Congestion::verifieNbrSegment(Noeud * src){
+    cout<<"hello"<<endl;
 
     if(mapFileEnvoyer.empty()){
-        cout<<"fin de l'envoie"<<endl;
+        cout<<"fin de l'envoie 1"<<endl;
         //resamblahe(segRecu());
         return;
     }
@@ -171,7 +172,7 @@ void Congestion::verifieNbrSegment(Noeud * src){
     for(int i = 0; i< cwnd; i++){
 
         if(i > mapFileEnvoyer.size()){
-            cout<<"fin de l'envoie"<<endl;
+            cout<<"fin de l'envoie 2"<<endl;
             return;
         }
 
@@ -180,11 +181,12 @@ void Congestion::verifieNbrSegment(Noeud * src){
         int key=(*it).first;
         destination ds;
         ds=(*it).second;
-        //src->envoyerMessage(ds.des,ds.d);
+        src->envoyerMessage(key, ds);
         //
-        dynamic_bitset<> numSeq;
-        numSeq=lire_bits(*ds.data->getSeq(),32,32);//numsq
-        if(numSeq.to_ulong()==1){
+        // si syn = 1 alors doit attendre!
+        int flags = lireFlagSegment(ds.data);
+
+        if(flags == 2 || flags == 18){
             mapFileACK.insert ({key,ds});
 
         }

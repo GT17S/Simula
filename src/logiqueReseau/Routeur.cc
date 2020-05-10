@@ -20,7 +20,7 @@ Routeur::~Routeur(){
 
 }
 
-void Routeur::envoyerMessage(destination dest){
+void Routeur::envoyerMessage(int key, destination dest){
     int id_dest = lireAdresseMac(dest.data, 1);
     int id_src  = lireAdresseMac(dest.data, 0);
 
@@ -38,10 +38,10 @@ void Routeur::envoyerMessage(destination dest){
 
     //std::cout <<"J'envoie le message à "<<ext->noeud->getIdNoeud()<< std::endl;
     //_message = std::to_string(id_next)+"_"+std::to_string(id_dest);
-    extNext->noeud->recevoirMessage(extNext->interface,  dest);
+    extNext->noeud->recevoirMessage(key, extNext->interface,  dest);
 }
 
-void Routeur::recevoirMessage(int dest_i, destination dest){
+void Routeur::recevoirMessage(int key, int dest_i, destination dest){
     std::cout <<"Je suis un routeur"<< idNoeud<<std::endl;
 
     int id_src  = lireAdresseMac(dest.data, 0);
@@ -90,7 +90,7 @@ void Routeur::recevoirMessage(int dest_i, destination dest){
             srcExt->interface = dest.interface_src;
 
             encapsule_paquet ( srcExt, destExt, dest.data);
-            envoyerMessage(dest);
+            envoyerMessage(key, dest);
         }
     }
     else {

@@ -56,8 +56,8 @@ public:
      * \param data : le message à envoyer de type Data
      */
 
-    void envoyerMessage(destination dest);
-    void recevoirMessage(int dest_i, destination dest);
+    void envoyerMessage(int key, destination dest);
+    void recevoirMessage(int key, int dest_i, destination dest);
 
 
 };

@@ -2,13 +2,14 @@
 #include "DataOutils.hh"
 
 
-Station::Station() : Noeud(), controleur(){
+Station::Station() : Noeud(){
     // ID automatique
     // nb port =1
     // filedattente vide
     nom = "Station"+std::to_string(idNoeud);
     adressePasserelle = DEFAULT_IP;
     type = STATION;
+    controleur = new Congestion();
 
 }
 
@@ -17,7 +18,6 @@ Station::Station(string _nom, int _idNoeud, int _nbPort, string _adressePasserel
     // file dattente vide
     setPasserelle(_adressePasserelle);
     type = STATION;
-
 }
 
 
@@ -31,7 +31,7 @@ void Station::setControleur(Congestion *_controleur){
     controleur = _controleur;
 }
 
-void Station::envoyerMessage(destination dest){
+void Station::envoyerMessage(int key, destination dest){
 
     // passerelle
     int id_src  = lireAdresseMac(dest.data, 0);
@@ -51,11 +51,11 @@ void Station::envoyerMessage(destination dest){
 
     //std::cout <<"J'envoie le message à "<<ext->noeud->getIdNoeud()<< std::endl;
     //_message = std::to_string(id_next)+"_"+std::to_string(id_dest);
-    extNext->noeud->recevoirMessage(extNext->interface, dest);
+    extNext->noeud->recevoirMessage(key, extNext->interface, dest);
 
 }
 
-void Station::recevoirMessage(int dest_i, destination dest){
+void Station::recevoirMessage(int key, int dest_i, destination dest){
     std::cout <<"Je suis une station "<< idNoeud<<std::endl;
     int mac_dest = lireAdresseMac(dest.data, 1);
     int mac_src = lireAdresseMac(dest.data, 0);

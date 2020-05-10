@@ -163,7 +163,7 @@ Congestion::Congestion(Congestion &c){
          int key=(*it).first;
          destination ds;
          ds=(*it).second;
-          src->envoyerMessage(ds.des,ds.d);
+          //src->envoyerMessage(ds.des,ds.d);
             dynamic_bitset<> numSeq;
             numSeq=lire_bits(*ds.d->getSeq(),32,32);//numsq
             if(numSeq.to_ulong()==1){

@@ -20,10 +20,11 @@ Routeur::~Routeur(){
 
 }
 
-void Routeur::envoyerMessage(Data * data){
-
+void Routeur::envoyerMessage(int src_i, Data * data){
     int id_dest = lireAdresseMac(data, 1);
     int id_src  = lireAdresseMac(data, 0);
+
+
     vector<Cable*> path;
     Graphe::genererChemin(id_src, idNoeud, id_dest, path, false);
     int size_p = path.size();
@@ -37,17 +38,21 @@ void Routeur::envoyerMessage(Data * data){
 
     //std::cout <<"J'envoie le message à "<<ext->noeud->getIdNoeud()<< std::endl;
     //_message = std::to_string(id_next)+"_"+std::to_string(id_dest);
-    extNext->noeud->recevoirMessage(extNext->interface, data);
+    extNext->noeud->recevoirMessage(src_i, extNext->interface, data);
 
 
 }
 
-void Routeur::recevoirMessage(int interface, Data * data){
+void Routeur::recevoirMessage(int src_i, int dest_i, Data * data){
     std::cout <<"Je suis un routeur"<< idNoeud<<std::endl;
+
+    int id_src  = lireAdresseMac(data, 0);
+    int id_dest = lireAdresseMac(data, 1);
+
     if(idNoeud == lireAdresseMac(data, 1)){
         std::cout <<"Cest moi la passerelle" <<std::endl;
         desencapsule_trame(data);
-        string ipSrc = getInterface(interface)->getAdresseIP();
+        string ipSrc = getInterface(dest_i)->getAdresseIP();
         if(ipSrc == lireAdresseIp(data, 1)){
             std::cout <<"Cest moi la destination" <<std::endl;
             desencapsule_paquet(data);
@@ -58,11 +63,12 @@ void Routeur::recevoirMessage(int interface, Data * data){
 
             // generer chemin complet, jusqua la destination
             vector<Cable *> path;
+            string ip_dest_string = lireAdresseIp(data, 1);
+            int ip_dest = Graphe::noeudFromIp(ip_dest_string);
+            if(ip_dest < 0)
+                return;
 
-            int id_src  = lireAdresseMac(data, 0);
-            string ip_dest = lireAdresseIp(data, 1);
-            //Graphe::genererChemin(id_src, idNoeud, ip_dest, path, false);
-
+            Graphe::genererChemin(id_src, idNoeud, ip_dest, path, false);
             int size_p = path.size();
             // pas de chemin
             if(!size_p){
@@ -81,7 +87,12 @@ void Routeur::recevoirMessage(int interface, Data * data){
                 n = destExt->noeud;
             }
             // encapsuler paquet avec la prochaine @mac
-            envoyerMessage(data);
+            extremite* srcExt = new extremite;
+            srcExt->noeud = Graphe::getSommets()[id_src];
+            srcExt->interface = src_i;
+
+            encapsule_paquet ( srcExt, destExt, data);
+            envoyerMessage(src_i, data);
         }
     }
     else {

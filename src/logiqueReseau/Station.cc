@@ -41,7 +41,7 @@ void Station::setNumSegmentsEnvoye(vector<int> _numSegmentsEnvoye){
     numSegmentsEnvoye = _numSegmentsEnvoye;
 }
 
-void Station::envoyerMessage(Data * data){
+void Station::envoyerMessage(int src_i, Data * data){
 
 
     // station , j'ai preparer la distination , j'envoie
@@ -66,22 +66,38 @@ void Station::envoyerMessage(Data * data){
 
     //std::cout <<"J'envoie le message à "<<ext->noeud->getIdNoeud()<< std::endl;
     //_message = std::to_string(id_next)+"_"+std::to_string(id_dest);
-    extNext->noeud->recevoirMessage(extNext->interface, data);
+    extNext->noeud->recevoirMessage(src_i, extNext->interface, data);
 
 }
 
-void Station::recevoirMessage(int interface, Data * data){
+void Station::recevoirMessage(int src_i, int dest_i, Data * data){
     std::cout <<"Je suis une station "<< idNoeud<<std::endl;
     int mac_dest = lireAdresseMac(data, 1);
-    std::cout << mac_dest <<std::endl;
 
     if(idNoeud == mac_dest){
            std::cout <<"Cest moi la passerelle" <<std::endl;
            desencapsule_trame(data);
-           string ipSrc = getInterface(interface)->getAdresseIP();
+           string ipSrc = getInterface(dest_i)->getAdresseIP();
            if(ipSrc == lireAdresseIp(data, 1)){
                std::cout <<"Cest moi la destination" <<std::endl;
                desencapsule_paquet(data);
+               // lire ack et syn
+               int flags = lireFlagSegment(data);
+               if(flags == 2 || flags == 18){
+                   //syn = 1
+
+                   if(flags ==18){
+
+                   }
+               }
+               else if(flags == 16){
+                   // ack = 1
+               }else {
+                   std::cout <<"Probleme lecture data"<<std::endl;
+                   return;
+               }
+
+
                desencapsule_segment(data);
                std::cout <<showMessage(data) <<std::endl;
            }
@@ -95,22 +111,19 @@ void Station::recevoirMessage(int interface, Data * data){
         std::cout <<"Mauvaise destination" <<std::endl;
         return;
     }
-    /*
-    -station recoit le message,
-    -elle lit la trame (@mac dest)
-    -si @macdest = this->@macdest
-        - desencapsule la trame => paquet
-        - elle lit le paquet (@ip dest)
-        - si @ipdest = this->@ip je suis le destinataire
-            - desencapsulation jusqua lire le message
-        - sinon, generer chemin jusqua cette distination
-                - envoyer(message)
-    -sinon, mauvaise destination
 
-    */
 }
 
-
+/* TABLE DE VERITE ACK SYN FIN :
+    0	0	0	0	0	0   = 0
+    0	0	0	0	0	FIN = 1
+    0	0	0	0	SYN 0   = 2
+    0	0	0	0	SYN FIN = 3
+    0	ACK 0	0	0   0   = 16
+    0	ACK 0	0	0   FIN = 17
+    0	ACK 0	0	SYN 0   = 18
+    0	ACK 0	0	SYN FIN = 19
+*/
 
 
 

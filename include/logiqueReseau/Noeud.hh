@@ -255,8 +255,9 @@ public:
      * \param nRecepteur : pointeur sur le noeud recepteur
      * \param data : le message à envoyer de type Data
      */
-    virtual void envoyerMessage(Data * data)=0;
-    virtual void recevoirMessage(int interface, Data * data) = 0;
+
+    virtual void envoyerMessage(int src_i, Data * data) = 0;
+    virtual void recevoirMessage(int src_i, int dest_i, Data * data) = 0;
 };
 
 #endif

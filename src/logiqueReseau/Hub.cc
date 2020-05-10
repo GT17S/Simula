@@ -18,7 +18,7 @@ Hub::~Hub(){
 void Hub::envoyerBroadCast(string message){
     //a implimenter
 }
-void Hub::envoyerMessage(Data * data){
+void Hub::envoyerMessage(int src_i, Data * data){
 
     int id_src  = lireAdresseMac(data, 0);
 
@@ -27,16 +27,16 @@ void Hub::envoyerMessage(Data * data){
         extremite * ext = ie->getCable()->getInverseExt(this);
         if(ext && ext->noeud->getIdNoeud() != id_src){
             //std::cout <<"J'envoie le message à "<<ext->noeud->getIdNoeud()<< std::endl;
-            ext->noeud->recevoirMessage(ext->interface, data);
+            ext->noeud->recevoirMessage(src_i, ext->interface, data);
         }
     }
 }
 
-void Hub::recevoirMessage(int interface, Data * data){
+void Hub::recevoirMessage(int src_i, int dest_i, Data * data){
     std::cout <<"Je suis un hub"<< idNoeud<<std::endl;
 
     //int id_dest = lireAdresseMac(data, 1);
-    envoyerMessage(data);
+    envoyerMessage(src_i, data);
 
 }
 

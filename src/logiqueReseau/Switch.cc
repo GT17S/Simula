@@ -21,7 +21,7 @@ Switch::Switch() : Hub() {
 Switch::~Switch(){
 
 }
-void Switch::envoyerMessage(Data * data){
+void Switch::envoyerMessage(int src_i, Data * data){
 
     int id_src  = lireAdresseMac(data, 0);
     int id_dest = lireAdresseMac(data, 1);
@@ -38,13 +38,13 @@ void Switch::envoyerMessage(Data * data){
 
     extremite * extNext = path[size_p -1]->getInverseExt(this);
     //std::cout <<"J'envoie le message à "<<ext->noeud->getIdNoeud()<< std::endl;
-    extNext->noeud->recevoirMessage(extNext->interface, data);
+    extNext->noeud->recevoirMessage(src_i, extNext->interface, data);
 }
 
-void Switch::recevoirMessage(int interface, Data * data){
+void Switch::recevoirMessage(int src_i, int dest_i, Data * data){
     std::cout <<"Je suis un switch"<< idNoeud<<std::endl;
 
     //int id_dest = lireAdresseMac(data, 1);
-    envoyerMessage(data);
+    envoyerMessage(src_i, data);
 
 }

@@ -303,15 +303,19 @@ void Graphe::supprimerCableMatrice(Cable * c)
     matrice[i_N2][i_N1] = nullptr;
 
 }
-Noeud* Graphe::noeudFromIp(string _ip){
+int Graphe::noeudFromIp(string _ip){
+    if(_ip == DEFAULT_IP) return -1;
+
     for(Noeud * n : sommets){
+        if(n->getTypeNoeud() == STATION || n->getTypeNoeud() == ROUTEUR)
         for(InterfaceFE *i : n->getInterfaces()){
-            if(i->getAdresseIP()==_ip)
-                return n;
+            if(i->getAdresseIP()== _ip)
+                return n->getIdNoeud();
 
-        }}
+        }
+    }
 
-    return nullptr;
+    return -1;
 }
 
 

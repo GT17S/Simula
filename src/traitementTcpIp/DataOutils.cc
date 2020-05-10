@@ -28,7 +28,7 @@ boost::dynamic_bitset<> lire_bits (boost::dynamic_bitset<> sbe, int pos, int tai
 std::string showMessage(Data * d){
     boost::dynamic_bitset<> tmp = *d->getSeq();
 
-        std::cout << tmp << std::endl;
+       // std::cout << tmp << std::endl;
         std::string res = "";
         for (int i = 0; i < (int)tmp.size(); i+=8)    {
             char c = (char)0;
@@ -254,7 +254,8 @@ void encapsule_paquet ( extremite * src, extremite * dest, Data * d)	{
 	return;
 }
 
-void encapsuleAll(int portSrc, int portDest, bool ack, bool syn, int nSeq, int nAck, int ipId, extremite * n1, extremite * n2, extremite * nextMac, Data * data)	{
+void encapsuleAll(int portSrc, int portDest, bool ack, bool syn, int nSeq, int nAck, int ipId,
+                  extremite * n1, extremite * n2, extremite * nextMac, Data * data)	{
 
 	int flag = 0, 
 		n_ack = ack ? 1 : 0,
@@ -452,9 +453,16 @@ void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, std::string messa
     int nAck = 0;
     int ipId = 1;
 
-    encapsuleAll(portSrc, portDest, false, true, nSeq, nAck, ipId, srcExt, destExt, nextExt, data);
 
-    n1->envoyerMessage(data); // to data
+    std::cout<<"J'envoie le message : "<<message<<" à "<<n2->getIdNoeud()<<std::endl;
+    encapsuleAll(portSrc, portDest, false, true, nSeq, nAck, ipId, srcExt, destExt, nextExt, data);
+/*
+    std::cout << " "<<srcExt->noeud->getIdNoeud()
+              << " "<<destExt->noeud->getIdNoeud()
+              << " "<<nextExt->noeud->getIdNoeud()<<std::endl;
+
+              */
+    n1->envoyerMessage(srcExt->interface, data); // to data
 
 }
 

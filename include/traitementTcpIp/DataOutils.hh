@@ -16,7 +16,7 @@ std::string ip_to_string (unsigned int ip);
 unsigned long long lireAdresseMac ( Data * d, int flag = 0);	// If mac src, flag = 0, if mac dest, flag = 1
 std::string lireAdresseIp ( Data * d, int flag = 0);			// If ip src, flag = 0, if ip dest, flag = 1
 int lireIdIp ( Data * d);
-int lireFlagSemgment ( Data * d);
+int lireFlagSegment ( Data * d);
 unsigned long long macToNumber ( std::string str);
 void ecrire_bits ( boost::dynamic_bitset<> * sbe, boost::dynamic_bitset<> se, int pos, int taille);
 boost::dynamic_bitset<> lire_bits ( boost::dynamic_bitset<> sbe, int pos, int taille);

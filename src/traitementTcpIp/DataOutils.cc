@@ -448,8 +448,8 @@ void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, bool syn, bool ac
     }
 
 
-    std::cout<<"J'envoie le message : "<<message<<" à "<<n2->getIdNoeud()<<std::endl;
-    encapsuleAll(portSrc, portDest, syn, ack, nSeq, nAck, ipId, srcExt, destExt, nextExt, data);
+    //std::cout<<"J'envoie le message : "<<message<<" à "<<n2->getIdNoeud()<<std::endl;
+    encapsuleAll(portSrc, portDest, ack, syn, nSeq, nAck, ipId, srcExt, destExt, nextExt, data);
 /*
     std::cout << " "<<srcExt->noeud->getIdNoeud()
               << " "<<destExt->noeud->getIdNoeud()

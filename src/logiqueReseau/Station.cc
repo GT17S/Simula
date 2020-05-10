@@ -73,6 +73,7 @@ void Station::envoyerMessage(int src_i, Data * data){
 void Station::recevoirMessage(int src_i, int dest_i, Data * data){
     std::cout <<"Je suis une station "<< idNoeud<<std::endl;
     int mac_dest = lireAdresseMac(data, 1);
+    int mac_src = lireAdresseMac(data, 0);
 
     if(idNoeud == mac_dest){
            std::cout <<"Cest moi la passerelle" <<std::endl;
@@ -83,15 +84,25 @@ void Station::recevoirMessage(int src_i, int dest_i, Data * data){
                desencapsule_paquet(data);
                // lire ack et syn
                int flags = lireFlagSegment(data);
+               std::cout<<"Flags = "<<flags<<std::endl;
                if(flags == 2 || flags == 18){
-                   //syn = 1
+                   // syn = 1, doit repondre ack
+                   Data * ndata = new Data("");
+                   Noeud * n2 = Graphe::getSommets()[mac_src];
+                   int nSeq = 100,
+                       nAck =  lire_bits ( *data->getSeq(), 32, 32).to_ulong() + 1,
+                       ipId = 100;
+                   std::cout<<"Retouuuur"<<std::endl;
+                   envoyer(this, n2, 0,0,false, true, nSeq, nAck,ipId, ndata);
 
-                   if(flags ==18){
+                   return;
 
-                   }
+               }else if(flags ==18){
+                   // syn 1 ack 1, doit repondre , et accusé ack
+
                }
                else if(flags == 16){
-                   // ack = 1
+                   // ack = 1, accusé ack
                }else {
                    std::cout <<"Probleme lecture data"<<std::endl;
                    return;

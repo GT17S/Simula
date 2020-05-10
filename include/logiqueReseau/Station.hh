@@ -12,6 +12,7 @@
 #include <vector>
 #include "Noeud.hh"
 #include "Graphe.hh"
+#include "Congestion.hh"
 
 using std::string;
 using std::vector;
@@ -27,8 +28,8 @@ class Station : public Noeud {
   private:
     string adressePasserelle; /*!< adresse de passerelle de la station*/
     vector<int> numSegmentsEnvoye; /*!< liste des numeros de séquences des segments envoyés */
+   // Congestion controleur;
 
-    //Congestion controleur;
 public:
     /*!
      * \brief Constructeur par défaut
@@ -69,29 +70,14 @@ public:
      */
     vector<int> getNumSegmentsEnvoye(){return numSegmentsEnvoye;}
 
-
+  //  Congestion getControleur(){return controleur; }
     /*!
      * \brief setPasserelle
      * Modifier l'adresse de passerelle de la station, #adressePasserelle
      * \param adressePasserelle : adresse IP
      */
     void setPasserelle(string adressePasserelle);
-    /*!
-     * \brief setNumSegmentsEnvoye
-     *  Modifier le tableau des numeros des segments envoyés, #numSegmentsEnvoye
-     *  Vérifier si nSegment n'existe pas déja0
-     *  Ajouter à la fin, un numero de séquence de segment
-     * \param nSegment : numero de séquence de segment envoyé
-     */
-    void setNumSegmentsEnvoye(int nSegment);
 
-    /*!
-     * \brief setNumSegmentsEnvoye
-     * Modifier un tableau des numeros des séquences de segments envoyés qui est déja existant.
-     * #numSegmentsEnvoye
-     * \param numSegmentsEnvoye : liste des numéros de séquences de segments envoyés.
-     */
-    void setNumSegmentsEnvoye(vector<int> numSegmentsEnvoye);
 
     /*!
      * \brief envoyerMessage
@@ -100,6 +86,7 @@ public:
      * \param data : le message à envoyer de type Data
      */
 
+   // void setControleur(Congestion c);
     void envoyerMessage(int src_i, Data * data);
     void recevoirMessage(int src_i, int dest_i, Data * data);
 

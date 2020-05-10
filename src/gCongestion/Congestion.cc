@@ -1,6 +1,3 @@
-
-#include "../include/logiqueReseau/Graphe.hh"
-
 #include "Congestion.hh"
 
 
@@ -143,7 +140,7 @@ Congestion::Congestion(Congestion &c){
         cpt++;
     }
 
-    void Congestion::verifieNbrSegment(Station * src){
+    void Congestion::verifieNbrSegment(Noeud * src){
 
         if(mapFileEnvoyer.empty()){
             cout<<"fin de l'envoie"<<endl;
@@ -182,7 +179,7 @@ Congestion::Congestion(Congestion &c){
     }
 
 
-    void Congestion::verifieNumSegment(Station *stThis,Station *src,Data *data){//pc recepteur
+    void Congestion::verifieNumSegment(Noeud *stThis,Noeud *src,Data *data){//pc recepteur
         Data ack("");
         dynamic_bitset<> dF;
         dF=lire_bits(*data->getSeq(),54,4);//fraglent ou nn
@@ -206,7 +203,7 @@ Congestion::Congestion(Congestion &c){
 */
   }  }
 
-    void Congestion::verifieNumAck(Station *stThis,int numAck,int key){
+    void Congestion::verifieNumAck(Noeud *stThis, int numAck, int key){
         nbrAcksRecu++;
         map<int, destination>::iterator it = mapFileACK.find(key);
         destination ds;

@@ -14,18 +14,22 @@
 #include "DataOutils.hh"
 #include "congestionOutil.hh"
 #include"Graphe.hh"
-#include "Station.hh"
 #include <map>
 
 /*!
  * \class Congestion
  * \brief La classe Congestion représentant un contrôleur de congestion .
  */
+
+#ifndef DESTINATION_H
+#define DESTINATION_H
 struct destination {
         Noeud * des;
         Data * d;
     };
+#endif
 class Station;
+class Graphe;
 class Congestion{
 private:
     int cwnd;/*!< La taille de la fentre de congestion */
@@ -269,7 +273,7 @@ public:
      * \param segment : Data recu
      * \param stDes : la station réceptrice des datas;
      */
-    void verifieNumSegment(Station *stThis,Station *src,Data *data);//pc recepteur
+    void verifieNumSegment(Noeud *stThis,Noeud *src,Data *data);//pc recepteur
 
     /*!
      * \brief verifieNumAck
@@ -278,7 +282,7 @@ public:
      * \param num_seq :vector des numeros des segments deja envoyé
      * \param stSrc : la station émettrice des datas;
      */
-    void verifieNumAck(Station *stThis,int numAck,int key);
+    void verifieNumAck(Noeud *stThis,int numAck,int key);
     /*!
      * \brief verifieNumAck
      * retransmission des segments perdus
@@ -292,10 +296,10 @@ public:
      * verfication nombre des segments a envoyer
      * \param stSrc : la station émettrice des datas;
      */
-    void verifieNbrSegment(Station *stSrc);
+    void verifieNbrSegment(Noeud *stSrc);
 
-    float CalculRTT(Congestion *g);
-    float CalculLatenceDynamique(Graphe *graphe,Congestion *congestion,Data *data);
+    friend float CalculRTT(Congestion *g);
+    friend float CalculLatenceDynamique(Graphe *graphe,Congestion *congestion,Data *data);
 
 
    void retrnasmission(int key);

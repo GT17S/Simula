@@ -26,35 +26,20 @@ void Station::setPasserelle(string _adresse){
 
 }
 
-void Station::setNumSegmentsEnvoye(int _nSegment){
-    for(int ns : numSegmentsEnvoye){
-        // Existe déja
-        if(ns == _nSegment)
-            return;
-    }
-
-    numSegmentsEnvoye.push_back(_nSegment);
-
+/*
+void SetControleur(Congestion _controleur){
+    controleur = _controleur;
 }
-
-void Station::setNumSegmentsEnvoye(vector<int> _numSegmentsEnvoye){
-    numSegmentsEnvoye = _numSegmentsEnvoye;
-}
-
+*/
 void Station::envoyerMessage(int src_i, Data * data){
 
-
-    // station , j'ai preparer la distination , j'envoie
-
-    /*if(id_next != idNoeud){
-        std::cout<<"Mauvaise destination"<<std::endl;
-        return;
-    }*/
     // passerelle
     int id_src  = lireAdresseMac(data, 0);
     int id_dest = lireAdresseMac(data, 1);
     vector<Cable*> path;
     Graphe::genererChemin(id_src, idNoeud, id_dest, path, false);
+
+
     int size_p = path.size();
 
     if(!size_p){

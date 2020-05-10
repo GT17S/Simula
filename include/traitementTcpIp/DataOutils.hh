@@ -20,6 +20,7 @@ int lireFlagSemgment ( Data * d);
 unsigned long long macToNumber ( std::string str);
 void ecrire_bits ( boost::dynamic_bitset<> * sbe, boost::dynamic_bitset<> se, int pos, int taille);
 boost::dynamic_bitset<> lire_bits ( boost::dynamic_bitset<> sbe, int pos, int taille);
+std::string showMessage(Data * d);
 void encapsule_donnee ( dynamic_bitset<> port_src, dynamic_bitset<> port_dest, dynamic_bitset<> num_seq, dynamic_bitset<> num_ack, dynamic_bitset<> flag, dynamic_bitset<> fen, Data * d);
 void encapsule_segment ( extremite * src, extremite * dest, boost::dynamic_bitset<> ip_id, boost::dynamic_bitset<> flag, boost::dynamic_bitset<> offset, boost::dynamic_bitset<> ttl, Data *d);
 void encapsule_paquet ( extremite * src, extremite * dest, Data * d);

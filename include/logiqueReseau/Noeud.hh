@@ -13,6 +13,7 @@
 #include <vector>
 #include <iostream>
 #include "InterfaceFE.hh"
+#include "Data.hh"
 
 using std::string;
 using std::vector;
@@ -43,8 +44,8 @@ typedef enum {
     SWITCH,
     HUB
 }typeNoeud;
-
 #endif
+
 
 class InterfaceFE;
 class Cable;
@@ -254,7 +255,8 @@ public:
      * \param nRecepteur : pointeur sur le noeud recepteur
      * \param data : le message à envoyer de type Data
      */
-    virtual  void envoyerMessage(string data)=0;
+    virtual void envoyerMessage(Data * data)=0;
+    virtual void recevoirMessage(int interface, Data * data) = 0;
 };
 
 #endif

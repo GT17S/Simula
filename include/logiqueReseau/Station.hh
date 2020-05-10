@@ -11,15 +11,14 @@
 #include <string>
 #include <vector>
 #include "Noeud.hh"
-#include "InterfaceFE.hh"
-#include "Data.hh"
 #include "Graphe.hh"
 
 using std::string;
 using std::vector;
 
 class Noeud;
-
+class Data;
+class InterfaceFE;
 /*!
  * \class Station
  * \brief La classe Station représentant une station (machine).
@@ -100,7 +99,9 @@ public:
      * \param nRecepteur : pointeur sur le noeud recepteur
      * \param data : le message à envoyer de type Data
      */
-    void envoyerMessage(string data);
+    void envoyerMessage(Data * data);
+    void recevoirMessage(int interface, Data * data);
+
 };
 
 #endif

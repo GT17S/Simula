@@ -1,5 +1,7 @@
 #include "Switch.hh"
 #include <iostream>
+#include "DataOutils.hh"
+
 
 Switch::Switch(string  _nom,int _idNoeud,int _nbPort) :
     Hub(_nom, _idNoeud, _nbPort)
@@ -19,23 +21,30 @@ Switch::Switch() : Hub() {
 Switch::~Switch(){
 
 }
-void Switch::envoyerMessage(string _message){
-    std::cout << _message << std::endl;
-    std::cout <<"Je suis un switch"<< idNoeud<<std::endl;
-    // id_next _ id_dest
-    int id_next = std::stoi(_message.substr(0, _message.find("_")));
-    //_message.erase(0, _message.find("_") + 1);
-    //int id_dest = std::stoi(d);
+void Switch::envoyerMessage(Data * data){
+
+    int id_src  = lireAdresseMac(data, 0);
+    int id_dest = lireAdresseMac(data, 1);
+
+
     vector<Cable*> path;
-    Graphe::genererChemin(idNoeud, idNoeud, id_next, path, false);
+    Graphe::genererChemin(id_src, idNoeud, id_dest, path, false);
     int size_p = path.size();
 
     if(!size_p){
-        std::cout<<"Je connais pas la distination"<<std::endl;
+        std::cout<<"Je connais pas le chemin vers "<<id_dest<<std::endl;
         return;
     }
-    extremite * ext = path[size_p -1]->getInverseExt(this);
-    std::cout <<"J'envoie le message à "<<ext->noeud->getIdNoeud()<< std::endl;
-    ext->noeud->envoyerMessage(_message);
+
+    extremite * extNext = path[size_p -1]->getInverseExt(this);
+    //std::cout <<"J'envoie le message à "<<ext->noeud->getIdNoeud()<< std::endl;
+    extNext->noeud->recevoirMessage(extNext->interface, data);
+}
+
+void Switch::recevoirMessage(int interface, Data * data){
+    std::cout <<"Je suis un switch"<< idNoeud<<std::endl;
+
+    //int id_dest = lireAdresseMac(data, 1);
+    envoyerMessage(data);
 
 }

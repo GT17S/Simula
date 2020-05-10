@@ -25,6 +25,22 @@ boost::dynamic_bitset<> lire_bits (boost::dynamic_bitset<> sbe, int pos, int tai
 	return b;
 }
 
+std::string showMessage(Data * d){
+    boost::dynamic_bitset<> tmp = *d->getSeq();
+
+        std::cout << tmp << std::endl;
+        std::string res = "";
+        for (int i = 0; i < (int)tmp.size(); i+=8)    {
+            char c = (char)0;
+            for ( int j = i%8; j < 8; j++)
+                if ( tmp[i+j])
+                    c = c | ( 1<<(7-j));
+            res += c;
+        }
+
+        return res;
+}
+
 std::string ip_to_string (unsigned int ip)	{
 	int val = 0;
 	unsigned int B = 0;
@@ -44,7 +60,7 @@ std::string ip_to_string (unsigned int ip)	{
 	return s;
 }
 
-unsigned long long lireMac ( Data * d, int flag)	{	// If mac src, flag = 0, if mac dest, flag = 1
+unsigned long long lireAdresseMac ( Data * d, int flag)	{	// If mac src, flag = 0, if mac dest, flag = 1
 	if ( d->getType () != 3) return -1;
 	unsigned long long adresseMac = lire_bits ( *d->getSeq (), 48*flag, 48).to_ulong();
 	return adresseMac;
@@ -164,7 +180,7 @@ unsigned int ipNoeud ( extremite * n)	{
 	if ( n != nullptr)	{
 		if ( (int) n->noeud->getInterfaces().size() > n->interface)	{
 			ip = ipToNumber ( n->noeud->getInterface(n->interface)->getAdresseIP());
-			std::cout << "In encaps : " << n->noeud->getInterface(n->interface)->getAdresseIP() << " " << ip << std::endl;
+            //std::cout << "In encaps : " << n->noeud->getInterface(n->interface)->getAdresseIP() << " " << ip << std::endl;
 		}
 	}
 	return ip;	
@@ -437,8 +453,8 @@ void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, std::string messa
     int ipId = 1;
 
     encapsuleAll(portSrc, portDest, false, true, nSeq, nAck, ipId, srcExt, destExt, nextExt, data);
-    //message = std::to_string(nextNoeud->getIdNoeud())+"_"+std::to_string(id_n2);
-    n1->envoyerMessage(message); // to data
+
+    n1->envoyerMessage(data); // to data
 
 }
 

@@ -17,7 +17,6 @@ InterfaceFE::InterfaceFE(int idNoeud, string _nomInterface, string _adresseIP,
     // generer adresse Mac
     char s[14];
     sprintf(s,"000000:%06d",idNoeud);
-    std::cout <<s<<std::endl;
     adresseMac = s;
     setAdresseMac(adresseMac);
 }
@@ -56,12 +55,21 @@ void InterfaceFE::setCable(Cable * _cable){
     cable = _cable;
 }
 
+
+
+
+
+
+
+
+
+
+
 bool InterfaceFE::regexValide(string adresse, string _regex){
     std::regex regex_ip(_regex, std::regex::ECMAScript);
 
     if(std::regex_match(adresse, regex_ip))
         return true;
-    std::cout <<"False"<<std::endl;
     return false;
 }
 

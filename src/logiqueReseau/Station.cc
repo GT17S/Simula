@@ -1,4 +1,5 @@
 #include "Station.hh"
+#include "DataOutils.hh"
 
 
 Station::Station() : Noeud(){
@@ -40,30 +41,60 @@ void Station::setNumSegmentsEnvoye(vector<int> _numSegmentsEnvoye){
     numSegmentsEnvoye = _numSegmentsEnvoye;
 }
 
-void Station::envoyerMessage(string _message){
+void Station::envoyerMessage(Data * data){
+
+
+    // station , j'ai preparer la distination , j'envoie
 
     /*if(id_next != idNoeud){
         std::cout<<"Mauvaise destination"<<std::endl;
         return;
     }*/
     // passerelle
-  /*  vector<Cable*> path;
-    Graphe::genererChemin(idNoeud, idNoeud, id_dest, path, false);
+    int id_src  = lireAdresseMac(data, 0);
+    int id_dest = lireAdresseMac(data, 1);
+    vector<Cable*> path;
+    Graphe::genererChemin(id_src, idNoeud, id_dest, path, false);
     int size_p = path.size();
 
-    if(!size_p)
+    if(!size_p){
+        std::cout << "Je connais pas le chemin vers "<<id_dest<<std::endl;
         return;
+    }
 
-    extremite * ext = path[size_p -1]->getInverseExt(this);
+    extremite * extNext = path[size_p -1]->getInverseExt(this);
 
-    std::cout <<"J'envoie le message à "<<ext->noeud->getIdNoeud()<< std::endl;
-    _message = std::to_string(id_next)+"_"+std::to_string(id_dest);
-    ext->noeud->envoyerMessage(_message);
-*/
+    //std::cout <<"J'envoie le message à "<<ext->noeud->getIdNoeud()<< std::endl;
+    //_message = std::to_string(id_next)+"_"+std::to_string(id_dest);
+    extNext->noeud->recevoirMessage(extNext->interface, data);
+
 }
-/*
-void Station::recevoirMessage(string _message){
 
+void Station::recevoirMessage(int interface, Data * data){
+    std::cout <<"Je suis une station "<< idNoeud<<std::endl;
+    int mac_dest = lireAdresseMac(data, 1);
+    std::cout << mac_dest <<std::endl;
+
+    if(idNoeud == mac_dest){
+           std::cout <<"Cest moi la passerelle" <<std::endl;
+           desencapsule_trame(data);
+           string ipSrc = getInterface(interface)->getAdresseIP();
+           if(ipSrc == lireAdresseIp(data, 1)){
+               std::cout <<"Cest moi la destination" <<std::endl;
+               desencapsule_paquet(data);
+               desencapsule_segment(data);
+               std::cout <<showMessage(data) <<std::endl;
+           }
+           else {
+               // generer chemin jusqua cette IP
+               // encapsule paquet , avec la nouvelle @mac dest
+               // envoyer message
+           }
+    }
+    else {
+        std::cout <<"Mauvaise destination" <<std::endl;
+        return;
+    }
     /*
     -station recoit le message,
     -elle lit la trame (@mac dest)
@@ -76,22 +107,9 @@ void Station::recevoirMessage(string _message){
                 - envoyer(message)
     -sinon, mauvaise destination
 
-    *//*
-    std::cout << _message << std::endl;
-    std::cout <<"Je suis une station "<< idNoeud<<std::endl;
-    // id_next _ id_dest
-    int id_next = std::stoi(_message.substr(0, _message.find("_"))); // prochaine passerelle
-    _message.erase(0, _message.find("_") + 1);
-    int id_dest = std::stoi(_message); // destination
-
-    if(id_dest == idNoeud){
-        std::cout<<"c'est moi la distination"<<std::endl;
-        return;
-    }
-    // preparer le messaer ,et l'envoyer
-    envoyerMessage(_message);
+    */
 }
-*/
+
 
 
 

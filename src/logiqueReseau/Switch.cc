@@ -43,6 +43,10 @@ void Switch::envoyerMessage(int key, destination dest){
 
 void Switch::recevoirMessage(int key, int dest_i, destination dest){
     std::cout <<"Je suis un switch"<< idNoeud<<std::endl;
+    if(dest.data->getType() < 3){
+        std::cout <<"Data non encapsulée"<<std::endl;
+        return;
+    }
 
     //int id_dest = lireAdresseMac(data, 1);
     envoyerMessage(key, dest);

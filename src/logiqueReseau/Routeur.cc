@@ -26,7 +26,7 @@ void Routeur::envoyerMessage(int key, destination dest){
 
 
     vector<Cable*> path;
-    Graphe::genererChemin(id_src, idNoeud, id_dest, path, false);
+    Graphe::genererChemin(id_src, idNoeud, id_dest, path, true);
     int size_p = path.size();
 
     if(!size_p){
@@ -43,6 +43,11 @@ void Routeur::envoyerMessage(int key, destination dest){
 
 void Routeur::recevoirMessage(int key, int dest_i, destination dest){
     std::cout <<"Je suis un routeur"<< idNoeud<<std::endl;
+
+    if(dest.data->getType() < 3){
+        std::cout <<"Data non encapsuler"<<std::endl;
+        return;
+    }
 
     int id_src  = lireAdresseMac(dest.data, 0);
     int id_dest = lireAdresseMac(dest.data, 1);

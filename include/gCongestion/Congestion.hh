@@ -270,7 +270,7 @@ public:
      * \param segment : Data recu
      * \param stDes : la station réceptrice des datas;
      */
-    void verifieNumSegment(Noeud *stThis,Noeud *src,Data *data);//pc recepteur
+    void verifieNumSegment(Noeud *stThis, Noeud *src, int nAck);//pc recepteur
 
     /*!
      * \brief verifieNumAck
@@ -279,7 +279,7 @@ public:
      * \param num_seq :vector des numeros des segments deja envoyé
      * \param stSrc : la station émettrice des datas;
      */
-    void verifieNumAck(Noeud *n, Data *data);
+    void verifieNumAck(Noeud *n, int nAck);
     /*!
      * \brief verifieNumAck
      * retransmission des segments perdus

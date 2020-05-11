@@ -414,10 +414,10 @@ string BinaryStringToText(string binaryString) {
 void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, bool syn, bool ack, int nSeq, int nAck, int ipId, Data * data){
     // switch ou hub , ne peuvent ni envoyer ni recevoir
     if(n1->getTypeNoeud() == SWITCH || n2->getTypeNoeud() == SWITCH
-     ||n1->getTypeNoeud() == HUB || n2->getTypeNoeud() == HUB)
-
+     ||n1->getTypeNoeud() == HUB || n2->getTypeNoeud() == HUB){
+        std::cout <<"SWITCH OU HUB INTERDIT"<<std::endl;
         return;
-
+    }
     int id_n1 = n1->getIdNoeud(),
         id_n2 = n2->getIdNoeud();
 
@@ -427,8 +427,10 @@ void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, bool syn, bool ac
 
     int size_p = path.size();
     // pas de chemin
-    if(!size_p)
+    if(!size_p){
+        std::cout << "Pas de chemin vers "<<id_n2<<std::endl;
         return;
+    }
 
     // get next
     extremite * srcExt = path[size_p -1]->getExt(n1); // source
@@ -448,37 +450,16 @@ void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, bool syn, bool ac
     }
 
 
-    //std::cout<<"J'envoie le message : "<<message<<" à "<<n2->getIdNoeud()<<std::endl;
     encapsuleAll(portSrc, portDest, ack, syn, nSeq, nAck, ipId, srcExt, destExt, nextExt, data);
-/*
-    std::cout << " "<<srcExt->noeud->getIdNoeud()
-              << " "<<destExt->noeud->getIdNoeud()
-              << " "<<nextExt->noeud->getIdNoeud()<<std::endl;
 
-              */
     Station * st = dynamic_cast<Station*>(n1);
     if(st){
 
         destination dest;
         dest.data = data;
         dest.interface_src = srcExt->interface;
-        //n1->envoyerMessage(key, dest); // to data
-        st->getControleur()->mapFileEnvoyer.insert({nSeq,dest});
-        //st->getControleur()->verifieNbrSegment(n1);
+        st->getControleur()->mapFileEnvoyer.insert({nSeq,dest});  // inserer dans la file d'attente
 
     }else return;
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

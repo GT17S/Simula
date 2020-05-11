@@ -203,13 +203,12 @@ void Congestion::retrnasmission(int key){
 }
 
 
-void Congestion::verifieNumSegment(Noeud * src,Noeud * dest, Data *data){//pc recepteur
+void Congestion::verifieNumSegment(Noeud * src,Noeud * dest, int nAck){//pc recepteur
     Data* ndata = new Data("");
     Station * st = dynamic_cast<Station*>(src);
     if(!st ) return;
 
     int nSeq = st->getNextNumSeq(),
-        nAck = lire_bits ( *(data)->getSeq(), 32, 32).to_ulong() + 1,
         ipId = 100;
     //std::cout<<"Retouuuur"<<std::endl;
     envoyer(src, dest, 0, 0,false, true, nSeq, nAck,ipId, ndata);
@@ -217,18 +216,14 @@ void Congestion::verifieNumSegment(Noeud * src,Noeud * dest, Data *data){//pc re
 
 }
 
-void Congestion::verifieNumAck(Noeud * n, Data * data){
+void Congestion::verifieNumAck(Noeud * n, int nAck){
     Station * st = dynamic_cast<Station*>(n);
     if(!st ) return;
-    int nAck = lire_bits ( *(data)->getSeq(), 64, 32).to_ulong();
+
     int oldNseq = nAck - 1;
     map<int, destination>::iterator it = mapFileACK.find(oldNseq);
     if(it == mapFileACK.end()) return;
     mapFileACK.erase(it);
-
-
-    std::cout <<"FILE ACK "<<mapFileACK.size()<<std::endl;
-    std::cout <<"FILE EN "<<mapFileEnvoyer.size()<<std::endl;
 
     nbrAcksRecu++;
 

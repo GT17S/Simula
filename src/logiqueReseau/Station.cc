@@ -31,7 +31,7 @@ Station::Station() : Noeud(){
 }
 
 Station::Station(string _nom, int _idNoeud, int _nbPort, string _adressePasserelle):
-                 Noeud(_nom, _idNoeud, _nbPort){
+    Noeud(_nom, _idNoeud, _nbPort){
     // file dattente vide
     setPasserelle(_adressePasserelle);
     type = STATION;
@@ -39,7 +39,7 @@ Station::Station(string _nom, int _idNoeud, int _nbPort, string _adressePasserel
 
 
 void Station::setPasserelle(string _adresse){
-     adressePasserelle = InterfaceFE::checkAdresse(_adresse, IP_REGEX, DEFAULT_IP);
+    adressePasserelle = InterfaceFE::checkAdresse(_adresse, IP_REGEX, DEFAULT_IP);
 
 }
 
@@ -51,13 +51,15 @@ void Station::setControleur(Congestion *_controleur){
 void Station::envoyerMessage(int key, destination dest){
 
     // passerelle
-    std::cout << dest.data->getType() <<std::endl;
     int id_src  = lireAdresseMac(dest.data, 0);
     int id_dest = lireAdresseMac(dest.data, 1);
+    if(id_src < 0 || id_dest < 0){
+        std::cout <<"Lecture @mac probleme "<<id_src<<" "<<id_dest<< std::endl;
+        return;
+    }
+
     vector<Cable*> path;
     Graphe::genererChemin(id_src, idNoeud, id_dest, path, false);
-
-
     int size_p = path.size();
 
     if(!size_p){
@@ -65,66 +67,83 @@ void Station::envoyerMessage(int key, destination dest){
         return;
     }
 
+    // prochaine destination
     extremite * extNext = path[size_p -1]->getInverseExt(this);
-
-    //std::cout <<"J'envoie le message à "<<ext->noeud->getIdNoeud()<< std::endl;
-    //_message = std::to_string(id_next)+"_"+std::to_string(id_dest);
     extNext->noeud->recevoirMessage(key, extNext->interface, dest);
 
 }
 
 void Station::recevoirMessage(int key, int dest_i, destination dest){
     std::cout <<"Je suis une station "<< idNoeud<<std::endl;
+   // std::cout <<"TYPE DATA = "<< dest.data->getType() << std::endl;
+    if(dest.data->getType() < 3){
+        std::cout <<"Data non encapsuler"<<std::endl;
+        return;
+    }
+
     int mac_dest = lireAdresseMac(dest.data, 1);
     int mac_src = lireAdresseMac(dest.data, 0);
 
+    if(mac_dest < 0 || mac_src < 0){
+        std::cout << "Lecture @mac probleme "<<mac_src<<" "<<mac_dest<< std::endl;
+        return;
+    }
     if(idNoeud == mac_dest){
-           std::cout <<"Cest moi la passerelle" <<std::endl;
-           desencapsule_trame(dest.data);
-           string ipSrc = getInterface(dest_i)->getAdresseIP();
-           if(ipSrc == lireAdresseIp(dest.data, 1)){
-               std::cout <<"Cest moi la destination" <<std::endl;
-               desencapsule_paquet(dest.data);
-               // lire ack et syn
-               int flags = lireFlagSegment(dest.data);
-               std::cout<<"Flags = "<<flags<<std::endl;
-               if(flags == 2 || flags == 18){
-                   // syn = 1, doit repondre ack
-                   if(flags == 18){
-                       std::cout <<"J'ai bien recu un ack"<<std::endl;
-                       controleur->verifieNumAck(this, dest.data);
+        desencapsule_trame(dest.data);
+        string ipSrc = getInterface(dest_i)->getAdresseIP();
+        string ipDest= lireAdresseIp(dest.data, 1);
+        if(ipSrc == DEFAULT_IP || ipDest == DEFAULT_IP){
+            std::cout<< "Probleme lecture @ip" <<std::endl;
+            return;
+        }
 
-                   }
-                   //Data * ndata = new Data("");
-                   Noeud * n2 = Graphe::getSommets()[mac_src];
-                   controleur->verifieNumSegment(this, n2, dest.data);
+        if(ipSrc == ipDest){
+            std::cout <<"Cest moi la destination" <<std::endl;
+            desencapsule_paquet(dest.data);
+            // lire ack et syn
+            int flags = lireFlagSegment(dest.data);
+            if(flags == 2 || flags == 18){
+                // syn = 1, doit repondre ack
+                if(flags == 18){
+                    std::cout <<"J'ai bien recu un ack"<<std::endl;
+                    int nAck = lire_bits ( *(dest.data)->getSeq(), 64, 32).to_ulong();
+                    if(nAck < 0) return;
+                    // supprimer de la file d'attente
+                    controleur->verifieNumAck(this, nAck);
+                }
+                Noeud * n2 = Graphe::getSommets()[mac_src];
+                // retourner un ACK
+                int nSeq = lire_bits ( *(dest.data)->getSeq(), 32, 32).to_ulong();
+                if(nSeq < 0) return;
 
-                  // return;
+                desencapsule_segment(dest.data);
+                std::cout <<"Jai recu le message :"<<std::endl<<showMessage(dest.data) <<std::endl;
 
-               }
-               else if(flags == 16){
-                   // ack = 1, accusé ack
+                // envoi nouveau ack
+                controleur->verifieNumSegment(this, n2, nSeq+1);
+            }
+            else if(flags == 16){
+                // ack = 1, accusé ack
+                std::cout <<"J'ai bien recu un ack"<<std::endl;
+                int nAck = lire_bits ( *(dest.data)->getSeq(), 64, 32).to_ulong();
+                if(nAck < 0) return;
 
-                   std::cout <<"J'ai bien recu un ack"<<std::endl;
+                desencapsule_segment(dest.data);
+                std::cout <<"Jai recu le message :"<<std::endl<<showMessage(dest.data) <<std::endl;
+                // supprimer de la file d'attente
+                controleur->verifieNumAck(this, nAck);
+            }else {
 
-                   controleur->verifieNumAck(this, dest.data);
-               }else {
-                   std::cout <<"Probleme lecture data"<<std::endl;
-                   return;
-               }
-
-
-               desencapsule_segment(dest.data);
-
-               std::cout <<showMessage(dest.data) <<std::endl;
-               std::cout <<"FILE ACK "<<controleur->mapFileACK.size()<<std::endl;
-               std::cout <<"FILE EN "<<controleur->mapFileEnvoyer.size()<<std::endl;
-           }
-           else {
-               // generer chemin jusqua cette IP
-               // encapsule paquet , avec la nouvelle @mac dest
-               // envoyer message
-           }
+                desencapsule_segment(dest.data);
+                std::cout <<"Jai recu le message :"<<std::endl<<showMessage(dest.data) <<std::endl;
+                return;
+            }
+        }
+        else {
+            /// Station nest pas une passerelle
+            std::cout <<"Je ne suis pas une passerelle"<<std::endl;
+            return;
+        }
     }
     else {
         std::cout <<"Mauvaise destination" <<std::endl;

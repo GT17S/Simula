@@ -18,7 +18,7 @@ simulaGui::simulaGui(){
 */
 
     widgets.append(new PanneauOutils()); //0
-   	widgets.append(new QLabel());
+   	widgets.append(new EspaceTravail());
     widgets.append(new QLabel());
     widgets.append(new ToolBarEquipement()); //3
     widgets.append(new QLabel());
@@ -30,8 +30,7 @@ simulaGui::simulaGui(){
     mainlayout->addWidget(widgets[3], 1, 0, 3, 1); //Barre d'équipements (3)
     mainlayout->addWidget(widgets[4], 1, 3, 3, 1); //Panneau evenements (4)
 
-    widgets[1]->setStyleSheet("background-color: red");
-    widgets[2]->setStyleSheet("background-color: blue");
+   	widgets[2]->setStyleSheet("background-color: blue");
     widgets[4]->setStyleSheet("background-color: black");
 
     //Stretch

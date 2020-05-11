@@ -24,7 +24,7 @@ class Noeud;
  * \class Station
  * \brief La classe Station représentant une station (machine).
  */
-class Station : public Noeud {
+class Station : public virtual Noeud {
   private:
     string adressePasserelle; /*!< adresse de passerelle de la station*/
     vector<int> numSegmentsEnvoye; /*!< liste des numeros de séquences des segments envoyés */

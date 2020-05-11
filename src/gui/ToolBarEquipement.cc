@@ -27,7 +27,7 @@ ToolBarEquipement::ToolBarEquipement(): QToolBar(){
     connect(mapper, SIGNAL(mapped(int)), this, SLOT(ajouterNoeud(int)));
 
     connect(Addcable, SIGNAL(triggered()), this, SLOT(ajouterCable()));
-    connect(DelEq, SIGNAL(triggered()), this, SLOT(suprimerEquipement()));
+    connect(DelEq, SIGNAL(triggered()), this, SLOT(supprimerEquipement()));
     mapper->setMapping(NRouteur, 1);
     mapper->setMapping(NHub, 2);
     mapper->setMapping(NStation, 3);

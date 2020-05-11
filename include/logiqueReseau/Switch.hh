@@ -21,7 +21,7 @@ class Hub;
  */
 
 
-class Switch : public Hub {
+class Switch : public virtual Hub {
 
 public:
     /*!

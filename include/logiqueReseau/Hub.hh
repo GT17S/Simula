@@ -20,7 +20,7 @@ class Noeud;
  * \brief La classe Hub dérivée de la classe Noeud .
  */
 
-class Hub: public Noeud{
+class Hub: public virtual Noeud{
 
 public:
     /*!

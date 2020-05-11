@@ -16,10 +16,11 @@ std::string ip_to_string (unsigned int ip);
 unsigned long long lireAdresseMac ( Data * d, int flag = 0);	// If mac src, flag = 0, if mac dest, flag = 1
 std::string lireAdresseIp ( Data * d, int flag = 0);			// If ip src, flag = 0, if ip dest, flag = 1
 int lireIdIp ( Data * d);
-int lireFlagSemgment ( Data * d);
+int lireFlagSegment ( Data * d);
 unsigned long long macToNumber ( std::string str);
 void ecrire_bits ( boost::dynamic_bitset<> * sbe, boost::dynamic_bitset<> se, int pos, int taille);
 boost::dynamic_bitset<> lire_bits ( boost::dynamic_bitset<> sbe, int pos, int taille);
+std::string showMessage(Data * d);
 void encapsule_donnee ( dynamic_bitset<> port_src, dynamic_bitset<> port_dest, dynamic_bitset<> num_seq, dynamic_bitset<> num_ack, dynamic_bitset<> flag, dynamic_bitset<> fen, Data * d);
 void encapsule_segment ( extremite * src, extremite * dest, boost::dynamic_bitset<> ip_id, boost::dynamic_bitset<> flag, boost::dynamic_bitset<> offset, boost::dynamic_bitset<> ttl, Data *d);
 void encapsule_paquet ( extremite * src, extremite * dest, Data * d);
@@ -32,5 +33,5 @@ void calculerFrameCheckSequence ( Data * d);
 std::vector<Data *> fragmentationPaquet (Data p, int mtu = 1500);
 Data reassemblagepaquet ( std::vector<Data *> paquets);
 string BinaryStringToText(string binaryString);
-void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, std::string message);
+void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, bool syn, bool ack, int nSeq, int nAck, int ipId, Data *data);
 #endif

@@ -14,19 +14,20 @@
 #include "DataOutils.hh"
 #include "congestionOutil.hh"
 #include"Graphe.hh"
-#include "Station.hh"
 #include <map>
 
 /*!
  * \class Congestion
  * \brief La classe Congestion représentant un contrôleur de congestion .
  */
-struct destination {
-        Noeud * des;
-        Data * d;
-    };
+
 class Station;
+class Graphe;
 class Congestion{
+
+    friend class Station;
+    friend void envoyer(Noeud *, Noeud *, int, int, bool, bool, int, int, int, Data*);
+
 private:
     int cwnd;/*!< La taille de la fentre de congestion */
     int ssthresh; /*!< taille maximum de cwnd en mode slow start */
@@ -269,7 +270,7 @@ public:
      * \param segment : Data recu
      * \param stDes : la station réceptrice des datas;
      */
-    void verifieNumSegment(Station *stThis,Station *src,Data *data);//pc recepteur
+    void verifieNumSegment(Noeud *stThis, Noeud *src, int nAck);//pc recepteur
 
     /*!
      * \brief verifieNumAck
@@ -278,7 +279,7 @@ public:
      * \param num_seq :vector des numeros des segments deja envoyé
      * \param stSrc : la station émettrice des datas;
      */
-    void verifieNumAck(Station *stThis,int numAck,int key);
+    void verifieNumAck(Noeud *n, int nAck);
     /*!
      * \brief verifieNumAck
      * retransmission des segments perdus
@@ -292,14 +293,18 @@ public:
      * verfication nombre des segments a envoyer
      * \param stSrc : la station émettrice des datas;
      */
-    void verifieNbrSegment(Station *stSrc);
+    void verifieNbrSegment(Noeud *stSrc);
 
-    float CalculRTT(Congestion *g);
-    float CalculLatenceDynamique(Graphe *graphe,Congestion *congestion,Data *data);
+    friend float CalculRTT(Congestion *g);
+    friend float CalculLatenceDynamique(Graphe *graphe,Congestion *congestion,Data *data);
 
 
    void retrnasmission(int key);
 
+   std::map<int, destination> getMapFileEnvoyer();
+   void setMapFileEnvoyer(std::map<int, destination> _map);
+   std::map<int, destination> getMapFileACK();
+   void setMapFileACK(std::map<int, destination> _map);
 };
 
 #endif

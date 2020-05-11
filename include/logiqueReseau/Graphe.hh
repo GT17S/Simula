@@ -68,8 +68,6 @@ private:
     Graphe();
     Graphe(const Graphe&) = delete;
     Graphe & operator=(const Graphe&) = delete;
-    static int parcourirVoisins(int  id_src , int id_n, int id_dest, vector<Cable *> &path);
-    static int parcourirPasserelle(int id_src_src, int id_src, int id_n, string adresse, int n2, vector<Cable *> &path, bool allPath);
     static bool verifierReseau(int n1, int n2);
 
 
@@ -107,7 +105,7 @@ public:
          * \return voir #vector<Noeud*>
          */
 
-    vector<Noeud*> getSommets(){ return sommets;}
+    static vector<Noeud*> getSommets(){ return sommets;}
 
 
     /*!
@@ -116,7 +114,7 @@ public:
          * \return voir #vector<vector<Cable*>>
          */
 
-    vector<vector<Cable*>> getMatrice(){return matrice;}
+    static vector<vector<Cable*>> getMatrice(){return matrice;}
 
     /*!
          * \brief getTable
@@ -170,8 +168,10 @@ public:
     static void ajoutCableMatrice(Cable *C);
     static void supprimerNoeudMatrice(Noeud * n);
     static void supprimerCableMatrice(Cable* c);
-    static Noeud * noeudFromIp(string _ip);
+    static int noeudFromIp(string _ip);
 
+    static int parcourirVoisins(int  id_src , int id_n, int id_dest, vector<Cable *> &path);
+    static int parcourirPasserelle(int id_src_src, int id_src, int id_n, string adresse, int n2, vector<Cable *> &path, bool allPath);
 };
 
 

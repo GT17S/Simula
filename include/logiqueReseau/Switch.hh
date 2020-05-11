@@ -11,10 +11,9 @@
 #include "Hub.hh"
 #include "Graphe.hh"
 
-using std::string;
-
 class Hub;
 
+using std::string;
 /*!
  * \class Switch
  * \brief La classe Switch dérivée de la classe Hub.
@@ -52,7 +51,11 @@ public:
      * \param nRecepteur : le noeud recepteur
      * \param data : le message à envoyer de type Data
      */
-    void envoyerMessage(string message);//change string par data
+
+    void envoyerMessage(int key, destination dest);
+    void recevoirMessage(int ket, int dest_i, destination dest);
+
+
 
 };
 

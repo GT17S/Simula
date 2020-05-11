@@ -25,6 +25,22 @@ boost::dynamic_bitset<> lire_bits (boost::dynamic_bitset<> sbe, int pos, int tai
 	return b;
 }
 
+std::string showMessage(Data * d){
+    boost::dynamic_bitset<> tmp = *d->getSeq();
+
+       // std::cout << tmp << std::endl;
+        std::string res = "";
+        for (int i = 0; i < (int)tmp.size(); i+=8)    {
+            char c = (char)0;
+            for ( int j = i%8; j < 8; j++)
+                if ( tmp[i+j])
+                    c = c | ( 1<<(7-j));
+            res += c;
+        }
+
+        return res;
+}
+
 std::string ip_to_string (unsigned int ip)	{
 	int val = 0;
 	unsigned int B = 0;
@@ -44,7 +60,7 @@ std::string ip_to_string (unsigned int ip)	{
 	return s;
 }
 
-unsigned long long lireMac ( Data * d, int flag)	{	// If mac src, flag = 0, if mac dest, flag = 1
+unsigned long long lireAdresseMac ( Data * d, int flag)	{	// If mac src, flag = 0, if mac dest, flag = 1
 	if ( d->getType () != 3) return -1;
 	unsigned long long adresseMac = lire_bits ( *d->getSeq (), 48*flag, 48).to_ulong();
 	return adresseMac;
@@ -164,7 +180,7 @@ unsigned int ipNoeud ( extremite * n)	{
 	if ( n != nullptr)	{
 		if ( (int) n->noeud->getInterfaces().size() > n->interface)	{
 			ip = ipToNumber ( n->noeud->getInterface(n->interface)->getAdresseIP());
-			std::cout << "In encaps : " << n->noeud->getInterface(n->interface)->getAdresseIP() << " " << ip << std::endl;
+            //std::cout << "In encaps : " << n->noeud->getInterface(n->interface)->getAdresseIP() << " " << ip << std::endl;
 		}
 	}
 	return ip;	
@@ -238,7 +254,8 @@ void encapsule_paquet ( extremite * src, extremite * dest, Data * d)	{
 	return;
 }
 
-void encapsuleAll(int portSrc, int portDest, bool ack, bool syn, int nSeq, int nAck, int ipId, extremite * n1, extremite * n2, extremite * nextMac, Data * data)	{
+void encapsuleAll(int portSrc, int portDest, bool ack, bool syn, int nSeq, int nAck, int ipId,
+                  extremite * n1, extremite * n2, extremite * nextMac, Data * data)	{
 
 	int flag = 0, 
 		n_ack = ack ? 1 : 0,
@@ -394,13 +411,13 @@ string BinaryStringToText(string binaryString) {
 }
 
 
-void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, std::string message){
+void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, bool syn, bool ack, int nSeq, int nAck, int ipId, Data * data){
     // switch ou hub , ne peuvent ni envoyer ni recevoir
     if(n1->getTypeNoeud() == SWITCH || n2->getTypeNoeud() == SWITCH
-     ||n1->getTypeNoeud() == HUB || n2->getTypeNoeud() == HUB)
-
+     ||n1->getTypeNoeud() == HUB || n2->getTypeNoeud() == HUB){
+        std::cout <<"SWITCH OU HUB INTERDIT"<<std::endl;
         return;
-
+    }
     int id_n1 = n1->getIdNoeud(),
         id_n2 = n2->getIdNoeud();
 
@@ -410,8 +427,10 @@ void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, std::string messa
 
     int size_p = path.size();
     // pas de chemin
-    if(!size_p)
+    if(!size_p){
+        std::cout << "Pas de chemin vers "<<id_n2<<std::endl;
         return;
+    }
 
     // get next
     extremite * srcExt = path[size_p -1]->getExt(n1); // source
@@ -430,31 +449,17 @@ void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, std::string messa
             { nextExt = destExt; check =true;}
     }
 
-    // encapsulation
-    Data * data = new Data(message); // message à envoyer
-    int nSeq = 1;
-    int nAck = 0;
-    int ipId = 1;
 
-    encapsuleAll(portSrc, portDest, false, true, nSeq, nAck, ipId, srcExt, destExt, nextExt, data);
-    //message = std::to_string(nextNoeud->getIdNoeud())+"_"+std::to_string(id_n2);
-    n1->envoyerMessage(message); // to data
+    encapsuleAll(portSrc, portDest, ack, syn, nSeq, nAck, ipId, srcExt, destExt, nextExt, data);
+
+    Station * st = dynamic_cast<Station*>(n1);
+    if(st){
+
+        destination dest;
+        dest.data = data;
+        dest.interface_src = srcExt->interface;
+        st->getControleur()->mapFileEnvoyer.insert({nSeq,dest});  // inserer dans la file d'attente
+
+    }else return;
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

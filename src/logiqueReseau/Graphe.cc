@@ -151,8 +151,10 @@ int Graphe::parcourirPasserelle(int id_src_src ,int id_src, int id_n , string ad
                         return result;
                     }
                 }
-                else {
-                    // station->estpasserlle ou routeur
+                else{
+                    Station * st = dynamic_cast<Station*>(sommets[i]);
+                    if(sommets[i]->getTypeNoeud() == ROUTEUR || (st && st->getIsPasserelle()))
+
                     for(InterfaceFE * fe : sommets[i]->getInterfaces()){
                         if(fe->getAdresseIP() == adresse){
                             // adresse passerelle trouvée

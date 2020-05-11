@@ -336,7 +336,8 @@ std::vector<Data *> fragmentationPaquet (Data d, int mtu)	{
 							f 		= lire_bits ( s, 48, 3),
 							ttl		= lire_bits ( s, 64, 8);
 	int tp_initial = (int) lire_bits ( s, 16, 16).to_ulong()-20,
-		tp = 0;
+		tp = 0,
+		offset = (int) lire_bits ( s, 51, 13).to_ulong();
 	desencapsule_paquet (&d);
 	s = *d.getSeq();
 
@@ -353,7 +354,7 @@ std::vector<Data *> fragmentationPaquet (Data d, int mtu)	{
 		if ( tp + mtu >= tp_initial)	ecrire_bits ( &f, boost::dynamic_bitset<> ( 1, 0), 0, 1);
 		else 							ecrire_bits ( &f, boost::dynamic_bitset<> ( 1, 1), 0, 1);
 		pi.push_back ( new Data ( new boost::dynamic_bitset<> ( s_tmp), DATA_SEGMENT));
-		encapsule_segment ( nullptr, nullptr, ip_id, f, boost::dynamic_bitset<> ( 13, tp*8), ttl, pi[pi.size()-1]);
+		encapsule_segment ( nullptr, nullptr, ip_id, f, boost::dynamic_bitset<> ( 13, tp*8+offset), ttl, pi[pi.size()-1]);
 		ecrire_bits ( pi[pi.size()-1]->getSeq(), ip_src, 96, 32);
 		ecrire_bits ( pi[pi.size()-1]->getSeq(), ip_dest, 128, 32);
 		tp+=mtu;

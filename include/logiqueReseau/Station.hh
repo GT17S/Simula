@@ -31,6 +31,7 @@ class Station : public Noeud {
     vector<int> numSegmentsEnvoye; /*!< liste des numeros de séquences des segments envoyés */
     Congestion * controleur;
     int numSeq;
+    bool isPasserelle;
 
 public:
     /*!
@@ -53,7 +54,7 @@ public:
      * \param adressePasserelle : voir #adressePasserelle
      */
     Station(string nom,int idNoeud,int nbPort,
-            string adressePasserelle);
+            string adressePasserelle, bool isPasserelle = false);
     /*!
       * \brief Destructeur
       * Destructeur de la classe Station
@@ -73,6 +74,9 @@ public:
     vector<int> getNumSegmentsEnvoye(){return numSegmentsEnvoye;}
 
     Congestion * getControleur(){return controleur; }
+    int getNumSeq(){return numSeq;}
+    int getNextNumSeq();
+    bool getIsPasserelle(){return isPasserelle;}
     /*!
      * \brief setPasserelle
      * Modifier l'adresse de passerelle de la station, #adressePasserelle
@@ -90,14 +94,13 @@ public:
 
     void setControleur(Congestion *c);
 
+    void setNumSeq(int value);
 
+    void setIsPasserelle(bool isPasserelle);
     void envoyerMessage(int key, destination dest);
     void recevoirMessage(int key, int dest_i, destination dest);
 
 
-    int getNumSeq();
-    void setNumSeq(int value);
-    int getNextNumSeq();
 };
 
 #endif

@@ -50,7 +50,7 @@ void Routeur::recevoirMessage(int key, int dest_i, destination dest){
     }
 
     int id_src  = lireAdresseMac(dest.data, 0);
-    int id_dest = lireAdresseMac(dest.data, 1);
+    //int id_dest = lireAdresseMac(dest.data, 1);
 
     if(idNoeud == lireAdresseMac(dest.data, 1)){
         std::cout <<"Cest moi la passerelle" <<std::endl;

@@ -458,23 +458,17 @@ void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, bool syn, bool ac
               */
     Station * st = dynamic_cast<Station*>(n1);
     if(st){
-        int size = st->getControleur()->mapFileEnvoyer.size();
-         int key=  size;
-        std::cout << size <<std::endl;
+
         destination dest;
         dest.data = data;
         dest.interface_src = srcExt->interface;
         //n1->envoyerMessage(key, dest); // to data
-        st->getControleur()->mapFileEnvoyer.insert({key,dest});
-        st->getControleur()->verifieNbrSegment(n1);
+        st->getControleur()->mapFileEnvoyer.insert({nSeq,dest});
+        //st->getControleur()->verifieNbrSegment(n1);
 
     }else return;
 
 }
-
-
-
-
 
 
 

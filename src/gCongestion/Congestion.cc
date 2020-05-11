@@ -140,13 +140,13 @@ void Congestion::setBaseRtt(int _baseRtt){
 }
 
 void Congestion::slowStart(){
-    if(cwnd > ssthresh){
+    if(cwnd < ssthresh){
         cwnd=cwnd*2;
         cpt++;
     }else{
         congestionAvoidance();
     }
-
+    std::cout<<"CWND = "<<cwnd<<std::endl;
 }
 void Congestion::fastRecovery(){
     ssthresh=ssthresh/2;
@@ -161,7 +161,7 @@ void Congestion::congestionAvoidance(){
 }
 
 void Congestion::verifieNbrSegment(Noeud * src){
-    cout<<"hello"<<endl;
+    //cout<<"hello"<<endl;
 
     if(mapFileEnvoyer.empty()){
         cout<<"fin de l'envoie 1"<<endl;
@@ -177,11 +177,10 @@ void Congestion::verifieNbrSegment(Noeud * src){
         }
 
         auto it=mapFileEnvoyer.begin();
-        std::advance(it,i);
+        //std::advance(it,i);
         int key=(*it).first;
         destination ds;
         ds=(*it).second;
-        src->envoyerMessage(key, ds);
         //
         // si syn = 1 alors doit attendre!
         int flags = lireFlagSegment(ds.data);
@@ -190,7 +189,9 @@ void Congestion::verifieNbrSegment(Noeud * src){
             mapFileACK.insert ({key,ds});
 
         }
+
         mapFileEnvoyer.erase (it);
+        src->envoyerMessage(key, ds);
 
 
     }
@@ -202,43 +203,38 @@ void Congestion::retrnasmission(int key){
 }
 
 
-void Congestion::verifieNumSegment(Noeud *stThis,Noeud *src,Data *data){//pc recepteur
-    Data ack("");
-    dynamic_bitset<> dF;
-    dF=lire_bits(*data->getSeq(),54,4);//fraglent ou nn
-    if(dF.to_ulong()==1){
-        segRecu.push_back(data);
+void Congestion::verifieNumSegment(Noeud * src,Noeud * dest, Data *data){//pc recepteur
+    Data* ndata = new Data("");
+    Station * st = dynamic_cast<Station*>(src);
+    if(!st ) return;
 
-    }else{
-        segRecu.push_back(data);
-        dynamic_bitset<> numSeq;
-        numSeq=lire_bits(*data->getSeq(),32,32);//numsq
-        int numeroSeqOld=numSeq.to_ulong();
-        numeroSeqOld=numeroSeqOld+1;
-        boost::dynamic_bitset<> newNum (32,numeroSeqOld);
-        boost::dynamic_bitset<> syn (32,numeroSeqOld);
-        ecrire_bits(ack.getSeq(),(32,newNum),64,32);//ack num
-        ecrire_bits(ack.getSeq(),(0,syn),64,0);//syn=1
-        /*encapsuler on a les tous les infos ici
-         * envoyer
-         * en attend medish
-         * /
-*/
-    }  }
+    int nSeq = st->getNextNumSeq(),
+        nAck = lire_bits ( *(data)->getSeq(), 32, 32).to_ulong() + 1,
+        ipId = 100;
+    //std::cout<<"Retouuuur"<<std::endl;
+    envoyer(src, dest, 0, 0,false, true, nSeq, nAck,ipId, ndata);
+    verifieNbrSegment(st);
 
-void Congestion::verifieNumAck(Noeud *stThis, int numAck, int key){
+}
+
+void Congestion::verifieNumAck(Noeud * n, Data * data){
+    Station * st = dynamic_cast<Station*>(n);
+    if(!st ) return;
+    int nAck = lire_bits ( *(data)->getSeq(), 64, 32).to_ulong();
+    int oldNseq = nAck - 1;
+    map<int, destination>::iterator it = mapFileACK.find(oldNseq);
+    if(it == mapFileACK.end()) return;
+    mapFileACK.erase(it);
+
+
+    std::cout <<"FILE ACK "<<mapFileACK.size()<<std::endl;
+    std::cout <<"FILE EN "<<mapFileEnvoyer.size()<<std::endl;
+
     nbrAcksRecu++;
-    map<int, destination>::iterator it = mapFileACK.find(key);
-    destination ds;
-    ds=it->second;
-    Data *data=ds.data;
-    int numAc = lire_bits(*data->getSeq(),32,32).to_ulong();//numsq7
-    if(numAc == numAck-1){
-        mapFileACK.erase(mapFileACK.find(key));
-    }
+
     if(cwnd==nbrAcksRecu){
         nbrAcksRecu=0;
         slowStart();
-        verifieNbrSegment(stThis);
+        verifieNbrSegment(st);
     }
 }

@@ -30,6 +30,7 @@ class Station : public Noeud {
     string adressePasserelle; /*!< adresse de passerelle de la station*/
     vector<int> numSegmentsEnvoye; /*!< liste des numeros de séquences des segments envoyés */
     Congestion * controleur;
+    int numSeq;
 
 public:
     /*!
@@ -94,6 +95,9 @@ public:
     void recevoirMessage(int key, int dest_i, destination dest);
 
 
+    int getNumSeq();
+    void setNumSeq(int value);
+    int getNextNumSeq();
 };
 
 #endif

@@ -2,6 +2,22 @@
 #include "DataOutils.hh"
 
 
+int Station::getNumSeq()
+{
+    return numSeq;
+}
+
+int Station::getNextNumSeq()
+{
+    numSeq++;
+    return numSeq-1;
+}
+
+void Station::setNumSeq(int _numSeq)
+{
+    numSeq = _numSeq;
+}
+
 Station::Station() : Noeud(){
     // ID automatique
     // nb port =1
@@ -10,6 +26,7 @@ Station::Station() : Noeud(){
     adressePasserelle = DEFAULT_IP;
     type = STATION;
     controleur = new Congestion();
+    numSeq = 1;
 
 }
 
@@ -34,6 +51,7 @@ void Station::setControleur(Congestion *_controleur){
 void Station::envoyerMessage(int key, destination dest){
 
     // passerelle
+    std::cout << dest.data->getType() <<std::endl;
     int id_src  = lireAdresseMac(dest.data, 0);
     int id_dest = lireAdresseMac(dest.data, 1);
     vector<Cable*> path;
@@ -72,22 +90,24 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
                std::cout<<"Flags = "<<flags<<std::endl;
                if(flags == 2 || flags == 18){
                    // syn = 1, doit repondre ack
-                   Data * ndata = new Data("");
+                   if(flags == 18){
+                       std::cout <<"J'ai bien recu un ack"<<std::endl;
+                       controleur->verifieNumAck(this, dest.data);
+
+                   }
+                   //Data * ndata = new Data("");
                    Noeud * n2 = Graphe::getSommets()[mac_src];
-                   int nSeq = 100,
-                       nAck =  lire_bits ( *(dest.data)->getSeq(), 32, 32).to_ulong() + 1,
-                       ipId = 100;
-                   std::cout<<"Retouuuur"<<std::endl;
-                   envoyer(this, n2, 0,0,false, true, nSeq, nAck,ipId, ndata);
+                   controleur->verifieNumSegment(this, n2, dest.data);
 
-                   return;
-
-               }else if(flags ==18){
-                   // syn 1 ack 1, doit repondre , et accusé ack
+                  // return;
 
                }
                else if(flags == 16){
                    // ack = 1, accusé ack
+
+                   std::cout <<"J'ai bien recu un ack"<<std::endl;
+
+                   controleur->verifieNumAck(this, dest.data);
                }else {
                    std::cout <<"Probleme lecture data"<<std::endl;
                    return;
@@ -95,7 +115,10 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
 
 
                desencapsule_segment(dest.data);
+
                std::cout <<showMessage(dest.data) <<std::endl;
+               std::cout <<"FILE ACK "<<controleur->mapFileACK.size()<<std::endl;
+               std::cout <<"FILE EN "<<controleur->mapFileEnvoyer.size()<<std::endl;
            }
            else {
                // generer chemin jusqua cette IP

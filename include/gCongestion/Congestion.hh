@@ -279,7 +279,7 @@ public:
      * \param num_seq :vector des numeros des segments deja envoyé
      * \param stSrc : la station émettrice des datas;
      */
-    void verifieNumAck(Noeud *stThis,int numAck,int key);
+    void verifieNumAck(Noeud *n, Data *data);
     /*!
      * \brief verifieNumAck
      * retransmission des segments perdus

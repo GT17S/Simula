@@ -12,6 +12,7 @@ using namespace boost;
 std::string ip_to_string (unsigned int ip);
 unsigned long long lireAdresseMac ( Data * d, int flag = 0);	// If mac src, flag = 0, if mac dest, flag = 1
 std::string lireAdresseIp ( Data * d, int flag = 0);			// If ip src, flag = 0, if ip dest, flag = 1
+int lirePortTcp ( Data * d, int flag = 0);						// If port src, flag = 0, if port dest, flag = 1
 int lireIdIp ( Data * d);
 int lireFlagSemgment ( Data * d);
 unsigned long long macToNumber ( std::string str);
@@ -29,4 +30,18 @@ void calculerFrameCheckSequence ( Data * d);
 std::vector<Data *> fragmentationPaquet (Data p, int mtu = 1500);
 Data reassemblagepaquet ( std::vector<Data *> paquets);
 string BinaryStringToText(string binaryString);
+std::string dataType ( Data * d);
+std::string adresseMac ( Data * d, int flag = 0);
+unsigned int lireFCS ( Data * d);
+int lireLongueurPaquet ( Data * d);
+int lireFlagPaquet ( Data * d);
+int lireOffsetPaquet ( Data * d);
+int lireTTL ( Data * d);
+int lireSommePaquet ( Data * d);
+int lireNumeroSequence ( Data * d);
+int lireNumeroAck ( Data * d);
+int lireFenetre ( Data * d);
+int lireSommeSegment ( Data * d);
+std::string findTcpFlags ( Data * d);
+std::string showMessage ( Data * d);
 #endif

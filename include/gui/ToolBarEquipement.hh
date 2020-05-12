@@ -14,6 +14,7 @@
 #include <QWidget>
 #include <QPixmap>
 #include <QAction>
+#include <QSignalMapper>
 #include <iostream>
 
 class QToolBar;
@@ -24,10 +25,12 @@ public:
     ToolBarEquipement();
 	virtual ~ToolBarEquipement(){};
 
+signals:
+	
 public slots:
     void selectionnerEquipement(){};
-    void ajouterNoeud(Noeud * n){ std::cout << n << std::endl;};
-    void ajouterCable(Cable *){ };
+    void ajouterNoeud(int n){ std::cout << n << std::endl;};
+    void ajouterCable(){ };
     void supprimerEquipement(){std::cout << "Winiw" << std::endl;};
 
 };

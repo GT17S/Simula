@@ -70,8 +70,8 @@ public :
      * \param masque : voir #masque, Intialisé par défaut à #DEFAULT_IP
      * \param adresseMac : voir #adresseMac, Intialisé par défaut à #DEFAULT_MAC
      */
-    InterfaceFE(string nomInterface = "Interface", string adresseIP = DEFAULT_IP, string adresseRes = DEFAULT_IP,
-                string masque = DEFAULT_IP, string adresseMac = DEFAULT_MAC);
+    InterfaceFE(int idNoeud, string nomInterface = "Interface", string adresseIP = DEFAULT_IP, string adresseRes = DEFAULT_IP,
+                string masque = DEFAULT_IP);
 
     /*!
      * \brief Destructeur

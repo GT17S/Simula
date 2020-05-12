@@ -15,7 +15,7 @@ QFile * ouvrirlXml(QString nomFichier, QIODevice::OpenMode mode){
     return fichier;
 }
 
-void lireXml(QString nomFichier, Graphe * graphe){
+void lireXml(QString nomFichier){
 
     QFile * fichier = ouvrirlXml(nomFichier, QIODevice::ReadOnly);
     if(!fichier){
@@ -76,8 +76,8 @@ void lireXml(QString nomFichier, Graphe * graphe){
             ife->setAdresseRes(element.text().toStdString());
             element = element.nextSiblingElement(); // masque
             ife->setMasque(element.text().toStdString());
-            element = element.nextSiblingElement(); // mac
-            ife->setAdresseMac(element.text().toStdString());
+            //element = element.nextSiblingElement(); // mac
+            //ife->setAdresseMac(element.text().toStdString());
             i++;
             interface = interface.nextSibling();
         }
@@ -115,11 +115,11 @@ void lireXml(QString nomFichier, Graphe * graphe){
         c->setMTU(element.text().toInt());
         element = element.nextSiblingElement(); // Noeud A
         int interface1 = element.attribute("interface").toInt();
-        Noeud * noeudA = graphe->getSommets()[element.text().toInt()];
+        Noeud * noeudA = Graphe::getSommets()[element.text().toInt()];
 
         element = element.nextSiblingElement(); // Noeud B
         int interface2 = element.attribute("interface").toInt();
-        Noeud * noeudB = graphe->getSommets()[element.text().toInt()];
+        Noeud * noeudB = Graphe::getSommets()[element.text().toInt()];
 
         //std::cout << noeudB->getNom()<<" "<<interface1<<" "<<noeudB->getNom()<<" "<<interface2<<std::endl;
         c->connexionNoeuds(noeudA, interface1, noeudB, interface2);
@@ -131,7 +131,7 @@ void lireXml(QString nomFichier, Graphe * graphe){
 
 }
 
-void ecrireXml(QString nomFichier, Graphe *graphe){
+void ecrireXml(QString nomFichier){
     // Ouvrir fichier pour ecriture
     QFile * fichier = ouvrirlXml(nomFichier, QIODevice::WriteOnly);
     if(!fichier){
@@ -149,7 +149,7 @@ void ecrireXml(QString nomFichier, Graphe *graphe){
     QDomElement noeuds = document.createElement("Noeuds");
     equipements.appendChild(noeuds);
 
-    for(Noeud * n : graphe->getSommets()){
+    for(Noeud * n : Graphe::getSommets()){
         QDomElement noeud = document.createElement("Noeud");
         noeuds.appendChild(noeud);
 
@@ -226,7 +226,7 @@ void ecrireXml(QString nomFichier, Graphe *graphe){
     QDomElement cables = document.createElement("Cables");
     equipements.appendChild(cables);
 
-    vector<vector<Cable*>> matrice = graphe->getMatrice();
+    vector<vector<Cable*>> matrice = Graphe::getMatrice();
 
     int size_m = matrice.size();
     for (int i = 1; i < size_m; i++) {
@@ -277,9 +277,9 @@ void ecrireXml(QString nomFichier, Graphe *graphe){
 }
 
 
-void ecrireDot(std::string filename, Graphe* graphe){
+void ecrireDot(std::string filename){
     //Verifier les attributs
-    assert(graphe);
+    //assert(graphe);
     //On crée le fichier de destination
     if(filename.empty()){
         filename.assign("autosave.dot");
@@ -294,7 +294,7 @@ void ecrireDot(std::string filename, Graphe* graphe){
         outfile << "graph G{ " << std::endl;
         outfile << "rankdir=LR;" << std::endl << "splines=line;" << std::endl << "graph[bgcolor=lightyellow2,splines=true];" << std::endl << "node[ color=yellow, style=filled, shape=polygon, sides=6, fontname=\"Verdana\"] ;" << std::endl;
         //On ecrit les noeuds
-        auto nodes = graphe->getSommets();
+        auto nodes = Graphe::getSommets();
         for (auto i = 0; i < (int)nodes.size(); ++i)
         {
            if(dynamic_cast<Routeur*>(nodes[i]))
@@ -312,7 +312,7 @@ void ecrireDot(std::string filename, Graphe* graphe){
 
 
         //Ecrire les arcs
-        auto  mat = graphe->getMatrice();
+        auto  mat = Graphe::getMatrice();
         for (auto i = 0; i < mat.size(); ++i)
         {
            for (auto j = 0; j < mat[i].size(); ++j)

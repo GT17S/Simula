@@ -124,7 +124,13 @@ public:
    * \param ext : Le noeud en extrimité 1
    * \return : Le noeud en extrimité 2
    */
-  extremite* getExt(Noeud * ext);
+  extremite* getExt(Noeud * _noeud){
+      return _noeud == ext1->noeud ?  ext1 : _noeud == ext2->noeud  ? ext2 : nullptr;
+  }
+
+  extremite * getInverseExt(Noeud * _noeud){
+      return _noeud == ext1->noeud ?  ext2 : _noeud == ext2->noeud  ? ext1 : nullptr;
+  }
 
 
   /*!

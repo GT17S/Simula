@@ -10,15 +10,19 @@
 
 #include <string>
 #include <vector>
+#include <map>
 #include "Noeud.hh"
-#include "InterfaceFE.hh"
-#include "Data.hh"
+#include "Graphe.hh"
+#include "Congestion.hh"
 
 using std::string;
 using std::vector;
+using std::multimap;
 
 class Noeud;
-
+class Data;
+class InterfaceFE;
+class Congestion;
 /*!
  * \class Station
  * \brief La classe Station représentant une station (machine).
@@ -27,8 +31,10 @@ class Station : public Noeud {
   private:
     string adressePasserelle; /*!< adresse de passerelle de la station*/
     vector<int> numSegmentsEnvoye; /*!< liste des numeros de séquences des segments envoyés */
-
-    //Congestion controleur;
+    Congestion * controleur;
+    int numSeq;
+    bool isPasserelle;
+    multimap<int, Data*> fragments;
 public:
     /*!
      * \brief Constructeur par défaut
@@ -50,7 +56,7 @@ public:
      * \param adressePasserelle : voir #adressePasserelle
      */
     Station(string nom,int idNoeud,int nbPort,
-            string adressePasserelle);
+            string adressePasserelle, bool isPasserelle = false);
     /*!
       * \brief Destructeur
       * Destructeur de la classe Station
@@ -69,29 +75,17 @@ public:
      */
     vector<int> getNumSegmentsEnvoye(){return numSegmentsEnvoye;}
 
-
+    Congestion * getControleur(){return controleur; }
+    int getNumSeq(){return numSeq;}
+    int getNextNumSeq();
+    bool getIsPasserelle(){return isPasserelle;}
     /*!
      * \brief setPasserelle
      * Modifier l'adresse de passerelle de la station, #adressePasserelle
      * \param adressePasserelle : adresse IP
      */
     void setPasserelle(string adressePasserelle);
-    /*!
-     * \brief setNumSegmentsEnvoye
-     *  Modifier le tableau des numeros des segments envoyés, #numSegmentsEnvoye
-     *  Vérifier si nSegment n'existe pas déja0
-     *  Ajouter à la fin, un numero de séquence de segment
-     * \param nSegment : numero de séquence de segment envoyé
-     */
-    void setNumSegmentsEnvoye(int nSegment);
 
-    /*!
-     * \brief setNumSegmentsEnvoye
-     * Modifier un tableau des numeros des séquences de segments envoyés qui est déja existant.
-     * #numSegmentsEnvoye
-     * \param numSegmentsEnvoye : liste des numéros de séquences de segments envoyés.
-     */
-    void setNumSegmentsEnvoye(vector<int> numSegmentsEnvoye);
 
     /*!
      * \brief envoyerMessage
@@ -99,9 +93,17 @@ public:
      * \param nRecepteur : pointeur sur le noeud recepteur
      * \param data : le message à envoyer de type Data
      */
-    void envoyerMessage(Noeud * Nrecepteur, Data* message);
 
-    void envoyerMessage(Noeud * nRecepteur, string data){};
+    void setControleur(Congestion *c);
+
+    void setNumSeq(int value);
+
+    void setIsPasserelle(bool isPasserelle);
+    int  checkFragment(Data* data);
+    void envoyerMessage(int key, destination dest);
+    void recevoirMessage(int key, int dest_i, destination dest);
+
+
 };
 
 #endif

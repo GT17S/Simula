@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 #include "Noeud.hh"
+#include "Graphe.hh"
 
 using std::string;
 using std::vector;
@@ -54,7 +55,11 @@ public:
      * \param nRecepteur : pointeur sur le noeud recepteur
      * \param data : le message à envoyer de type Data
      */
-    void envoyerMessage(Noeud * Nrecepteur , string message);
+
+    void envoyerMessage(int key, destination dest);
+    void recevoirMessage(int key, int dest_i, destination dest);
+
+
 };
 
 #endif

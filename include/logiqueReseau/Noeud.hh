@@ -11,13 +11,21 @@
 #include <algorithm>
 #include <string>
 #include <vector>
-#include <typeinfo>
+#include <iostream>
 #include "InterfaceFE.hh"
-#include "Cable.hh"
+#include "Data.hh"
 
 using std::string;
 using std::vector;
 
+
+#ifndef DESTINATION_H
+#define DESTINATION_H
+struct destination {
+        int interface_src;
+        Data * data;
+    };
+#endif
 
 #ifndef ROUTE_H
 #define ROUTE_H
@@ -44,8 +52,8 @@ typedef enum {
     SWITCH,
     HUB
 }typeNoeud;
-
 #endif
+
 
 class InterfaceFE;
 class Cable;
@@ -255,7 +263,9 @@ public:
      * \param nRecepteur : pointeur sur le noeud recepteur
      * \param data : le message à envoyer de type Data
      */
-    virtual  void envoyerMessage(Noeud * nRecepteur, string data)=0;
+
+    virtual void envoyerMessage(int key, destination dest) = 0;
+    virtual void recevoirMessage(int key,int dest_i, destination dest) = 0;
 };
 
 #endif

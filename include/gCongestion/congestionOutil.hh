@@ -3,11 +3,11 @@
 
 #include <cmath>
 
-#include "Congestion.hh"
 #include "Data.hh"
 #include "Graphe.hh"
 
 class Congestion;
+class Graphe;
 
 const float baseRTT = 200.0f;
 const float alpha = 0.125f;

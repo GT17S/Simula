@@ -22,14 +22,21 @@ ToolBarEquipement::ToolBarEquipement(): QToolBar(){
     QAction* NStation =this->addAction(QIcon(station),"Nouvelle Station");
     QAction* NSw =this->addAction(QIcon(sw),"Nouveau Swtich");
 
+    //Mapper le 4 triggered vers 
+    QSignalMapper* mapper = new QSignalMapper(this);
+    connect(mapper, SIGNAL(mapped(int)), this, SLOT(ajouterNoeud(int)));
 
     connect(Addcable, SIGNAL(triggered()), this, SLOT(ajouterCable()));
-    connect(DelEq, SIGNAL(triggered()), this, SLOT(supprimerEquipement()));
-    connect(NRouteur, SIGNAL(triggered()), this, SLOT(ajouterNoeud(Noeud*)));
-    connect(NHub, SIGNAL(triggered()), this, SLOT(ajouterNoeud(Noeud*)));
-    connect(NStation, SIGNAL(triggered()), this, SLOT(ajouterNoeud(Noeud*)));
-    connect(NSw, SIGNAL(triggered()), this, SLOT(ajouterNoeud(Noeud*)));
+    connect(DelEq, SIGNAL(triggered()), this, SLOT(suprimerEquipement()));
+    mapper->setMapping(NRouteur, 1);
+    mapper->setMapping(NHub, 2);
+    mapper->setMapping(NStation, 3);
+    mapper->setMapping(NSw, 4);
 
+  	connect(NRouteur, SIGNAL(triggered()), mapper, SLOT(map()));
+    connect(NHub, SIGNAL(triggered()), mapper, SLOT(map()));
+    connect(NStation, SIGNAL(triggered()), mapper, SLOT(map()));
+    connect(NSw, SIGNAL(triggered()), mapper, SLOT(map()));
 
 }	
 

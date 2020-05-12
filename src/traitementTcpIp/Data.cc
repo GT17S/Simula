@@ -28,6 +28,7 @@ Data::Data(boost::dynamic_bitset<>* seq, data_t type){
 }
 
 Data::~Data(){
+    std::cout << "Data deleted"<<std::endl;
 	delete seq;
 }
 

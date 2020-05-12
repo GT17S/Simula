@@ -61,6 +61,7 @@ void Routeur::recevoirMessage(int key, int dest_i, destination dest){
             desencapsule_paquet(dest.data);
             desencapsule_segment(dest.data);
             std::cout <<showMessage(dest.data) <<std::endl;
+            delete dest.data;
         }
         else {
 
@@ -94,8 +95,33 @@ void Routeur::recevoirMessage(int key, int dest_i, destination dest){
             srcExt->noeud = Graphe::getSommets()[id_src];
             srcExt->interface = dest.interface_src;
 
-            encapsule_paquet ( srcExt, destExt, dest.data);
-            envoyerMessage(key, dest);
+            // fragmentation
+            Cable * next_cable = path[size_p -1];
+            //Cable * prec_cable = getInterface(dest_i)->getCable(); // cable precedent
+            int mtu = next_cable->getMTU() / 8;
+            int tp_initial = (int) lire_bits ( *(dest.data->getSeq()), 16, 16).to_ulong()-20;
+            std::cout << dest.data->getSeq()->size() << std::endl;
+
+            std::cout <<"MTU = "<< mtu<<" TP  "<<tp_initial<< std::endl;
+            if(mtu < tp_initial){
+                //fragmenter
+                unsigned int df = (unsigned int) lire_bits ( *(dest.data->getSeq()), 49, 1).to_ulong();
+                if(df) { delete dest.data; return;}
+                vector<Data*> fragments = fragmentationPaquet(*(dest.data), mtu);
+                for(Data * d : fragments){
+                    encapsule_paquet ( srcExt, destExt, d);
+                    destination t_dest;
+                    t_dest.data = d;
+                    t_dest.interface_src = dest.interface_src;
+                    envoyerMessage(key, t_dest);
+                }
+
+                delete dest.data;
+            }else {
+                encapsule_paquet ( srcExt, destExt, dest.data);
+                envoyerMessage(key, dest);
+            }
+
         }
     }
     else {

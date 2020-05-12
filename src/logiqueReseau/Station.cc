@@ -51,6 +51,29 @@ void Station::setIsPasserelle(bool _isPasserelle){
 }
 
 
+
+int Station::checkFragment(Data* data){
+    if(data->getType() != DATA_PAQUET) return -1;
+    unsigned int mf = (unsigned int) lire_bits ( *(data->getSeq()), 50, 1).to_ulong();
+    //unsigned int df = (unsigned int) lire_bits ( p, 49, 1).to_ulong();
+    unsigned int offset = (unsigned int)lire_bits (*(data->getSeq()) , 51, 13).to_ulong();
+    int ipid = lireIdIp(data);
+
+    if(!mf && !offset) return 0;  // non fragmenté
+    else if(mf){ // encore des fragments
+        fragments.insert({ipid ,data});
+        return -1;
+    }
+    else if(!mf && offset){ // dernier fragment
+        fragments.insert({ipid ,data});
+        return ipid;
+    }
+    //mf = 0 et offset = 0 : paquet non fragmenté
+    //mf = 0 et offset != 0 : dernier fragment
+    //mf = 1 et offset = 0 : premier fragment
+    //mf = 1 et offset != 0 : fragments
+}
+
 void Station::envoyerMessage(int key, destination dest){
 
     // passerelle
@@ -78,7 +101,7 @@ void Station::envoyerMessage(int key, destination dest){
 
 void Station::recevoirMessage(int key, int dest_i, destination dest){
     std::cout <<"Je suis une station "<< idNoeud<<std::endl;
-   // std::cout <<"TYPE DATA = "<< dest.data->getType() << std::endl;
+    // std::cout <<"TYPE DATA = "<< dest.data->getType() << std::endl;
     if(dest.data->getType() < 3){
         std::cout <<"Data non encapsuler"<<std::endl;
         return;
@@ -102,6 +125,22 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
 
         if(ipSrc == ipDest){
             std::cout <<"Cest moi la destination" <<std::endl;
+            // verifier fragmentation ?
+            int ipid = checkFragment(dest.data);
+            if(ipid < 0) return; // nextfragment
+            if(ipid > 0){  // reassemblage
+                vector<Data*> res;
+                for(auto it = fragments.begin(); it != fragments.end();){
+                    if(it->first == ipid){
+                        res.push_back(it->second);
+                        it = fragments.erase(it);
+                    }else it++;
+                }
+                // reassemblage
+                dest.data = reassemblagepaquet(res);
+                }
+
+
             desencapsule_paquet(dest.data);
             // lire ack et syn
             int flags = lireFlagSegment(dest.data);
@@ -121,7 +160,7 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
 
                 desencapsule_segment(dest.data);
                 std::cout <<"Jai recu le message :"<<std::endl<<showMessage(dest.data) <<std::endl;
-
+                delete dest.data;
                 // envoi nouveau ack
                 controleur->verifieNumSegment(this, n2, nSeq+1);
             }
@@ -133,12 +172,14 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
 
                 desencapsule_segment(dest.data);
                 std::cout <<"Jai recu le message :"<<std::endl<<showMessage(dest.data) <<std::endl;
+                delete dest.data;
                 // supprimer de la file d'attente
                 controleur->verifieNumAck(this, nAck);
             }else {
 
                 desencapsule_segment(dest.data);
                 std::cout <<"Jai recu le message :"<<std::endl<<showMessage(dest.data) <<std::endl;
+                delete dest.data;
                 return;
             }
         }

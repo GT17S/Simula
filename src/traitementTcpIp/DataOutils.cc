@@ -61,17 +61,18 @@ std::string ip_to_string (unsigned int ip)	{
 }
 
 unsigned long long lireAdresseMac ( Data * d, int flag)	{	// If mac src, flag = 0, if mac dest, flag = 1
-    if ( d->getType () != 3) return -1;
-    unsigned long long adresseMac = lire_bits ( *d->getSeq (), 48*flag, 48).to_ulong();
-    return adresseMac;
+	if ( d->getType () != 3) return -1;
+	unsigned long long adresseMac = lire_bits ( *d->getSeq (), 48*flag, 48).to_ulong();
+	return adresseMac;
 }
 
 std::string lireAdresseIp ( Data * d, int flag)	{	// If ip src, flag = 0, if ip dest, flag = 1
-    if ( d->getType() == 0) return DEFAULT_IP;
-    else if ( d->getType() == 1) return DEFAULT_IP;
-    else if ( d->getType() == 2) return ip_to_string ( (unsigned int)lire_bits ( *d->getSeq (), 96+(flag*32), 32).to_ulong());
-    else if ( d->getType() == 3) return ip_to_string ( (unsigned int)lire_bits ( *d->getSeq (), 208+(flag*32), 32).to_ulong());
-    return DEFAULT_IP;
+	if ( d->getType() == 0) return DEFAULT_IP;
+	else if ( d->getType() == 1) return DEFAULT_IP;
+	else if ( d->getType() == 2) return ip_to_string ( (unsigned int)lire_bits ( *d->getSeq (), 96+(flag*32), 32).to_ulong());
+	else if ( d->getType() == 3) return ip_to_string ( (unsigned int)lire_bits ( *d->getSeq (), 208+(flag*32), 32).to_ulong());
+	return DEFAULT_IP;
+    
 }
 
 int lireIdIp ( Data * d)	{
@@ -80,6 +81,14 @@ int lireIdIp ( Data * d)	{
     else if ( d->getType() == 2) return (int)lire_bits ( *d->getSeq (), 32, 16).to_ulong();
     else if ( d->getType() == 3) return (int)lire_bits ( *d->getSeq (), 144, 16).to_ulong();
     return -2;
+}
+
+int lirePortTcp ( Data * d, int flag)	{	// If mac src, flag = 0, if mac dest, flag = 1
+	if ( d->getType () == 0) return -1;
+	else if ( d->getType() == 1) return (int)lire_bits ( *d->getSeq (), 0+(flag*16), 16).to_ulong();
+	else if ( d->getType() == 2) return (int)lire_bits ( *d->getSeq (), 160+(flag*16), 16).to_ulong();
+	else if ( d->getType() == 3) return (int)lire_bits ( *d->getSeq (), 272+(flag*16), 16).to_ulong();;
+	return -2;
 }
 
 int lireFlagSegment ( Data * d)	{
@@ -228,14 +237,15 @@ unsigned long long macToNumber ( std::string str)	{
 }
 
 unsigned long long macNoeud ( extremite * n)	{
-    unsigned long long mac = 0;
-    if ( n != nullptr)	{
-        if ((int) n->noeud->getInterfaces().size() <= n->interface)
-            mac = 0;
-        else
-            mac = macToNumber ( n->noeud->getInterface(n->interface)->getAdresseMac());
-    }
-    return mac;
+	unsigned long long mac = 111111;
+	if ( n != nullptr)	{
+		if ((int) n->noeud->getInterfaces().size() <= n->interface)
+			mac = 0;
+		else
+			mac = macToNumber ( n->noeud->getInterface(n->interface)->getAdresseMac());
+	}
+	return mac;	
+ 
 }
 
 void encapsule_paquet ( extremite * src, extremite * dest, Data * d)	{
@@ -415,6 +425,133 @@ string BinaryStringToText(string binaryString) {
     return text;
 }
 
+std::string dataType ( Data * d)	{
+	if ( d->getType() == 0) return "Donnée";
+	else if ( d->getType() == 1) return "Segment TCP";
+	else if ( d->getType() == 2) return "Paquet IP";
+	else if ( d->getType() == 3) return "Trame";
+	return "n/a";
+}
+
+std::string adresseMac ( Data * d, int flag)	{
+	char c[14];
+	int mac = (int)lireAdresseMac ( d, flag);
+	sprintf ( c, "000000:%06d", mac);
+	std::string s;
+	if ( mac < 0)
+		s = s + "n/f";
+
+	else 
+		s = s + c;
+	return s;
+}
+
+unsigned int lireFCS ( Data * d)	{
+	unsigned int fcs = (unsigned int) lire_bits ( *d->getSeq (), d->getSeq ()->size()-32, 32).to_ulong();
+	return fcs;
+}
+
+int lireLongueurPaquet ( Data * d)	{
+	if ( d->getType() == 0) return -1;
+	else if ( d->getType() == 1) return -1;
+	else if ( d->getType() == 2) return (int)lire_bits ( *d->getSeq (), 16, 16).to_ulong();
+	else if ( d->getType() == 3) return (int)lire_bits ( *d->getSeq (), 128, 16).to_ulong();
+	return -2;
+}
+
+int lireFlagPaquet ( Data * d)	{
+	if ( d->getType() < 2) return -1;
+	else if ( d->getType() == 2) return (int)lire_bits ( *d->getSeq (), 48, 3).to_ulong();
+	else if ( d->getType() == 3) return (int)lire_bits ( *d->getSeq (), 160, 3).to_ulong();
+	return -2;
+}
+
+int lireOffsetPaquet ( Data * d)	{
+	if ( d->getType() < 2) return -1;
+	else if ( d->getType() == 2) return (int)lire_bits ( *d->getSeq (), 51, 13).to_ulong();
+	else if ( d->getType() == 3) return (int)lire_bits ( *d->getSeq (), 163, 13).to_ulong();
+	return -2;
+}
+
+int lireTTL ( Data * d)	{
+	if ( d->getType() < 2) return -1;
+	else if ( d->getType() == 2) return (int)lire_bits ( *d->getSeq (), 64, 8).to_ulong();
+	else if ( d->getType() == 3) return (int)lire_bits ( *d->getSeq (), 176, 8).to_ulong();
+	return -2;
+}
+
+int lireSommePaquet ( Data * d)	{
+	if ( d->getType() < 2) return -1;
+	else if ( d->getType() == 2) return (int)lire_bits ( *d->getSeq (), 80, 16).to_ulong();
+	else if ( d->getType() == 3) return (int)lire_bits ( *d->getSeq (), 192, 16).to_ulong();
+	return -2;
+}
+
+int lireNumeroSequence ( Data * d)	{
+	if ( d->getType () == 0) return -1;
+	else if ( d->getType() == 1) return (int)lire_bits ( *d->getSeq (), 32, 32).to_ulong();
+	else if ( d->getType() == 2) return (int)lire_bits ( *d->getSeq (), 192, 32).to_ulong();
+	else if ( d->getType() == 3) return (int)lire_bits ( *d->getSeq (), 304, 32).to_ulong();;
+	return -2;
+}
+
+int lireNumeroAck ( Data * d)	{
+	if ( d->getType () == 0) return -1;
+	else if ( d->getType() == 1) return (int)lire_bits ( *d->getSeq (), 64, 32).to_ulong();
+	else if ( d->getType() == 2) return (int)lire_bits ( *d->getSeq (), 224, 32).to_ulong();
+	else if ( d->getType() == 3) return (int)lire_bits ( *d->getSeq (), 336, 32).to_ulong();
+	return -2;
+}
+
+int lireFenetre ( Data * d)	{
+	if ( d->getType () == 0) return -1;
+	else if ( d->getType() == 1) return (int)lire_bits ( *d->getSeq (), 112, 16).to_ulong();
+	else if ( d->getType() == 2) return (int)lire_bits ( *d->getSeq (), 272, 16).to_ulong();
+	else if ( d->getType() == 3) return (int)lire_bits ( *d->getSeq (), 384, 16).to_ulong();
+	return -2;
+}
+
+int lireSommeSegment ( Data * d)	{
+	if ( d->getType () == 0) return -1;
+	else if ( d->getType() == 1) return (int)lire_bits ( *d->getSeq (), 128, 16).to_ulong();
+	else if ( d->getType() == 2) return (int)lire_bits ( *d->getSeq (), 288, 16).to_ulong();
+	else if ( d->getType() == 3) return (int)lire_bits ( *d->getSeq (), 400, 16).to_ulong();
+	return -2;
+}
+
+std::string findTcpFlags ( Data * d)	{
+	std::string s = "";
+	int f = lireFlagSegment ( d);
+	if ( f < 0) s = s + "Flags : n/f";
+	if ( f == 0) s = s + "No Flags";
+	if (( f == 16) || ( f == 18) || (f == 19))
+		s = s + "ACK ";
+	if (( f == 2) || ( f == 3) || ( f == 18) || (f == 19))
+		s = s + "SYN ";
+
+	if (( f == 1) || ( f == 3) || ( f == 17) || (f == 19))
+		s = s + "FIN";
+	return s;
+}
+
+std::string showMessage ( Data * d)	{
+	boost::dynamic_bitset<> tmp;
+	if ( d->getType() == 0)	tmp = lire_bits ( *d->getSeq(), 0, d->getSeq()->size());
+	if ( d->getType() == 1)	tmp = lire_bits ( *d->getSeq(), 192, d->getSeq()->size()-192);
+	if ( d->getType() == 2)	tmp = lire_bits ( *d->getSeq(), 352, d->getSeq()->size()-352);
+	if ( d->getType() == 3)	tmp = lire_bits ( *d->getSeq(), 464, d->getSeq()->size()-(464+32));
+	std::string res = " ";
+	for (int i = (int)tmp.size()-8; i > -1 ; i-=8)	{
+		char c = (char)0;
+		for ( int j = 7; j > (i%8) - 1; j--)	{	
+			if ( tmp[i+j])
+				c = c | ( 1<<(j));
+		}
+		res += c;
+	}
+	return res;
+  }
+
 
 void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, bool syn, bool ack, int nSeq, int nAck, int ipId, bool df, Data * data){
     // switch ou hub , ne peuvent ni envoyer ni recevoir
@@ -466,5 +603,4 @@ void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, bool syn, bool ac
         st->getControleur()->mapFileEnvoyer.insert({nSeq,dest});  // inserer dans la file d'attente
 
     }else return;
-
 }

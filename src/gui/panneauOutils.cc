@@ -1,4 +1,5 @@
 #include "panneauOutils.hh"
+
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QStatusBar>
@@ -7,19 +8,18 @@
 #include "GFichier.hh"
 PanneauOutils::PanneauOutils(){
 
-   // this->setStyleSheet("background-color: green");
     this->setMinimumHeight(60);
     this->setMaximumHeight(70);
     this->setOrientation(Qt::Horizontal);
 
     QPixmap New("../../ressources/ajouterFichier.png");
- // New.size().setHeight(5);
- // New.size().setWidth(4);
+
     QPixmap open("../../ressources/ouvrirFichier.png");
     QPixmap save("../../ressources/sauvegarder.png");
     QPixmap exporte("../../ressources/exporter.jpeg");
     QPixmap png("../../ressources/img.png");
     QPixmap start("../../ressources/demarrer.jpeg");
+    QPixmap paus("../../ressources/pause.jpeg");
     QPixmap stop("../../ressources/stop.jpeg");
     QPixmap relance("../../ressources/relancer.png");
     QPixmap change("../../ressources/changeMode.jpeg");
@@ -32,7 +32,10 @@ PanneauOutils::PanneauOutils(){
     QAction *exporter = this->addAction(QIcon(exporte),"Exporter fichier");
     QAction *exporterPng=this->addAction(QIcon(png),"Exporter en Image");
     this->addSeparator();
+
+
     QAction *demarrer = this->addAction(QIcon(start),"demarrer Simulation");
+    QAction *pause=this->addAction(QIcon(paus),"pause Simulation");
     QAction *arreter = this->addAction(QIcon(stop),"Arreter Simulation");
     QAction *relancer = this->addAction(QIcon(relance),"Relancer Simulation");
     QAction *changerMode = this->addAction(QIcon(change),"Changer mode");
@@ -53,21 +56,20 @@ PanneauOutils::PanneauOutils(){
     connect(sauvegarder,SIGNAL(triggered()),this,SLOT(sauvegarderFichier()));
     connect(exporter,SIGNAL(triggered()),this,SLOT(exporterFichier()));
     connect(exporterPng,SIGNAL(triggered()),this,SLOT(exporterImage()));
+    connect(this->gestSimulation.getTimer(),SIGNAL(timeout()),this,SLOT(timer()));
     connect(demarrer,SIGNAL(triggered()),this,SLOT(demarrerSimulation()));
-    connect(arreter,SIGNAL(triggered()),this,SLOT(arreterSimulation()));
+    connect(pause,SIGNAL(triggered()),this,SLOT(pauseSimulation()));
+    connect(arreter,SIGNAL(triggered()),this,SLOT(arreterSimulation())); 
     connect(relancer,SIGNAL(triggered()),this,SLOT(resetSimulation()));
     connect(changerMode,SIGNAL(triggered()),this,SLOT(changeMode()));
     connect(envoyer,SIGNAL(triggered()),this,SLOT(envoieD()));
-
-
 }
 
 void PanneauOutils::ouvrirFichier(){
     QString fileName=QFileDialog::getOpenFileName(this,
                                                tr("Open Address Book"), "",
                                                tr("Address Book (*.xml)"));
-                            /* QTextEdit *feuille=new QTextEdit;
-                             feuille->setText(texte);*/
+
    curFile=fileName;
     //Graphe *g=new(); il faut rendre le constructeur public
     //lireXml(fileName,g);//appliquer le graphe sur la scene
@@ -124,12 +126,48 @@ void PanneauOutils::nouveauFichier()
     switch (ret) {
     case QMessageBox::Save:
         sauvegarderFichier();
-  /* case QMessageBox::Discard
+       // EspaceTravail::scene->clear();
+     /*case QMessageBox::Discard
+       EspaceTravail::scene->clear();
         je dois recuperer ce qu'il y'a dans la scene et le clean */
     default:
         break;
     }
-   // EspaceTravail::scene->clear();
+
     curFile.clear();
     QMessageBox::information(NULL, "Information!", "Nouveau Fichier créer !");
 }
+
+
+ void PanneauOutils::demarrerSimulation()
+ {
+     this->gestSimulation.demarrer();
+ }
+ void PanneauOutils::pauseSimulation()
+{
+  this->gestSimulation.pause();
+}
+void PanneauOutils::arreterSimulation()
+{
+  this->gestSimulation.arreter();
+}
+void PanneauOutils::resetSimulation()
+{
+  this->gestSimulation.reset();
+
+}
+
+void PanneauOutils::timer()
+{
+    QTime *t = this->gestSimulation.getTime();
+    qDebug()<<t->toString("hh:mm:ss");
+    this->gestSimulation.demarrer();
+    *t=t->addSecs(1);
+    this->gestSimulation.getTimer()->setInterval(1000);
+}
+
+
+
+
+
+

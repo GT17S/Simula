@@ -24,14 +24,14 @@ std::string showMessage(Data * d);
 void encapsule_donnee ( dynamic_bitset<> port_src, dynamic_bitset<> port_dest, dynamic_bitset<> num_seq, dynamic_bitset<> num_ack, dynamic_bitset<> flag, dynamic_bitset<> fen, Data * d);
 void encapsule_segment ( extremite * src, extremite * dest, boost::dynamic_bitset<> ip_id, boost::dynamic_bitset<> flag, boost::dynamic_bitset<> offset, boost::dynamic_bitset<> ttl, Data *d);
 void encapsule_paquet ( extremite * src, extremite * dest, Data * d);
-void encapsuleAll(int portSrc, int portDest, bool ack, bool syn, int nSeq, int nAck, int ipId, extremite * n1, extremite * n2, extremite * nextMac, Data * data);
+void encapsuleAll(int portSrc, int portDest, bool ack, bool syn, int nSeq, int nAck, int ipId, bool df, extremite * n1, extremite * n2, extremite * nextMac, Data * data);
 void desencapsule_trame ( Data * d);
 void desencapsule_paquet ( Data * d);
 void desencapsule_segment ( Data * d);
 void calculerChecksum ( Data * d);
 void calculerFrameCheckSequence ( Data * d);
-std::vector<Data *> fragmentationPaquet (Data p, int mtu = 1500);
-Data reassemblagepaquet ( std::vector<Data *> paquets);
+std::vector<Data *> fragmentationPaquet (Data &d, int mtu = 1500);
+Data *reassemblagepaquet( std::vector<Data *> paquets);
 string BinaryStringToText(string binaryString);
-void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, bool syn, bool ack, int nSeq, int nAck, int ipId, Data *data);
+void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, bool syn, bool ack, int nSeq, int nAck, int ipId, bool df, Data *data);
 #endif

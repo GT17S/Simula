@@ -26,7 +26,7 @@ class Graphe;
 class Congestion{
 
     friend class Station;
-    friend void envoyer(Noeud *, Noeud *, int, int, bool, bool, int, int, int, Data*);
+    friend void envoyer(Noeud *, Noeud *, int, int, bool, bool, int, int, int,bool, Data*);
 
 private:
     int cwnd;/*!< La taille de la fentre de congestion */

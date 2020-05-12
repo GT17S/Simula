@@ -61,7 +61,7 @@ void Congestion::setMapFileACK(std::map<int, destination> _map)
     mapFileACK =  _map;
 }
 
-Congestion::Congestion() : mapFileACK(), mapFileEnvoyer(){
+Congestion::Congestion() :  mapFileEnvoyer(), mapFileACK(){
     cwnd=1;
     ssthresh=32;
     cpt=0;
@@ -211,7 +211,7 @@ void Congestion::verifieNumSegment(Noeud * src,Noeud * dest, int nAck){//pc rece
     int nSeq = st->getNextNumSeq(),
         ipId = 100;
     //std::cout<<"Retouuuur"<<std::endl;
-    envoyer(src, dest, 0, 0,false, true, nSeq, nAck,ipId, ndata);
+    envoyer(src, dest, 0, 0,false, true, nSeq, nAck,ipId,false, ndata);
     verifieNbrSegment(st);
 
 }

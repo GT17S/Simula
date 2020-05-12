@@ -33,8 +33,8 @@ public:
 	~Data();
 
 
-	data_t getType(void) const {return this->type;};
-	boost::dynamic_bitset<>* getSeq(void) {return this->seq;};
+    data_t getType(void) const {return this->type;}
+    boost::dynamic_bitset<>* getSeq(void) {return this->seq;}
 
 	int getOriginialStringSize(void) const {return this->ossize;}
 	void setType (data_t _type);

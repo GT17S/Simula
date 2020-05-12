@@ -10,12 +10,14 @@
 
 #include <string>
 #include <vector>
+#include <map>
 #include "Noeud.hh"
 #include "Graphe.hh"
 #include "Congestion.hh"
 
 using std::string;
 using std::vector;
+using std::multimap;
 
 class Noeud;
 class Data;
@@ -32,7 +34,7 @@ class Station : public Noeud {
     Congestion * controleur;
     int numSeq;
     bool isPasserelle;
-
+    multimap<int, Data*> fragments;
 public:
     /*!
      * \brief Constructeur par défaut
@@ -97,6 +99,7 @@ public:
     void setNumSeq(int value);
 
     void setIsPasserelle(bool isPasserelle);
+    int  checkFragment(Data* data);
     void envoyerMessage(int key, destination dest);
     void recevoirMessage(int key, int dest_i, destination dest);
 

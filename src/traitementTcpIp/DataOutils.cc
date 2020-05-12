@@ -534,25 +534,6 @@ std::string findTcpFlags ( Data * d)	{
 	return s;
 }
 
-std::string showMessage ( Data * d)	{
-	boost::dynamic_bitset<> tmp;
-	if ( d->getType() == 0)	tmp = lire_bits ( *d->getSeq(), 0, d->getSeq()->size());
-	if ( d->getType() == 1)	tmp = lire_bits ( *d->getSeq(), 192, d->getSeq()->size()-192);
-	if ( d->getType() == 2)	tmp = lire_bits ( *d->getSeq(), 352, d->getSeq()->size()-352);
-	if ( d->getType() == 3)	tmp = lire_bits ( *d->getSeq(), 464, d->getSeq()->size()-(464+32));
-	std::string res = " ";
-	for (int i = (int)tmp.size()-8; i > -1 ; i-=8)	{
-		char c = (char)0;
-		for ( int j = 7; j > (i%8) - 1; j--)	{	
-			if ( tmp[i+j])
-				c = c | ( 1<<(j));
-		}
-		res += c;
-	}
-	return res;
-  }
-
-
 void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, bool syn, bool ack, int nSeq, int nAck, int ipId, bool df, Data * data){
     // switch ou hub , ne peuvent ni envoyer ni recevoir
     if(n1->getTypeNoeud() == SWITCH || n2->getTypeNoeud() == SWITCH

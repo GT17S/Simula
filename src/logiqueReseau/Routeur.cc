@@ -50,9 +50,9 @@ void Routeur::recevoirMessage(int key, int dest_i, destination dest){
     }
 
     int id_src  = lireAdresseMac(dest.data, 0);
-    //int id_dest = lireAdresseMac(dest.data, 1);
+    int id_dest = lireAdresseMac(dest.data, 1);
 
-    if(idNoeud == lireAdresseMac(dest.data, 1)){
+    if(idNoeud == id_dest){
         std::cout <<"Cest moi la passerelle" <<std::endl;
         desencapsule_trame(dest.data);
         string ipSrc = getInterface(dest_i)->getAdresseIP();
@@ -100,9 +100,9 @@ void Routeur::recevoirMessage(int key, int dest_i, destination dest){
             //Cable * prec_cable = getInterface(dest_i)->getCable(); // cable precedent
             int mtu = next_cable->getMTU() / 8;
             int tp_initial = (int) lire_bits ( *(dest.data->getSeq()), 16, 16).to_ulong()-20;
-            std::cout << dest.data->getSeq()->size() << std::endl;
+            //std::cout << dest.data->getSeq()->size() << std::endl;
 
-            std::cout <<"MTU = "<< mtu<<" TP  "<<tp_initial<< std::endl;
+            //std::cout <<"MTU = "<< mtu<<" TP  "<<tp_initial<< std::endl;
             if(mtu < tp_initial){
                 //fragmenter
                 unsigned int df = (unsigned int) lire_bits ( *(dest.data->getSeq()), 49, 1).to_ulong();

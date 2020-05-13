@@ -34,7 +34,7 @@ struct destination {
  *  Struct qui représente une ligne dans la table de routage
  */
 struct Route {
-    string adresseReseau; /*!< Adresse sous réseau */
+    string adresseReseau; /*!< Adressfe sous réseau */
     string masque;  /*!< masque sous réseau*/
     string passerelle; /*!< adresse de passerelle*/
 };

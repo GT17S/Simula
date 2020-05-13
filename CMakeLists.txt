@@ -4,7 +4,7 @@ project(Simula)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
-set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_INSTALL_PREFIX ~/Bureau)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -29,8 +29,8 @@ if (CMAKE_BUILD_TYPE MATCHES "^[Rr]elease")
 find_package(Doxygen)
 if (DOXYGEN_FOUND)
     # set input and output files
-    set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/doc/Doxyfile)
-    set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/doc/Doxyfile)
+    set(DOXYGEN_IN  ../Simula/doc/Doxyfile.in)
+    set(DOXYGEN_OUT ../Simula/doc/Doxyfile.in)
 
     # request to configure the file
     configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
@@ -39,7 +39,7 @@ if (DOXYGEN_FOUND)
     # note the option ALL which allows to build the docs together with the application
     add_custom_target( doc_doxygen ALL
         COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
-        WORKING_DIRECTORY ../Simula/doc/
+        WORKING_DIRECTORY ../Simula/
         COMMENT "Generating API documentation with Doxygen"
         VERBATIM )
 else (DOXYGEN_FOUND)

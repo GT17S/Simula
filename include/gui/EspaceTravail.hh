@@ -36,8 +36,7 @@ private:
     //QVector<Equipement*> Equipement;/*!< Vecteur d'Equipements se trouvant sur l'espace de travail*/
 
     /*!< Booléen qui vérifie si deux clics on été faits */
-    bool clickedonce;
-    int nbclic = 0;
+    QPoint p1,p2;
     QPushButton *pb;
     QLabel *o;
 

@@ -14,7 +14,11 @@
 #include "CableG.hh"
 
 EspaceTravail::EspaceTravail(){
-    clickedonce = false;
+    p1.setX(0);
+    p1.setY(0);
+    p2.setX(0);
+    p2.setY(0);
+
     scene = new QGraphicsScene();
     vue = new QGraphicsView(scene,this);
     vue->setStyleSheet("background-color:#f2f0f0");
@@ -52,28 +56,25 @@ void EspaceTravail::mouseDoubleClickEvent(QMouseEvent *e)
 }
 
 void EspaceTravail::mousePressEvent(QMouseEvent *event)
-{
-    nbclic++;
-
-   
-   
-
-    if(event->button()==Qt::LeftButton)
-    {
-        offset.rx()=event->pos().rx();
-        offset.ry()=event->pos().ry();
-        std::cout<<"-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_"<<std::endl;
-        qDebug()<<"position X= "<<offset.rx();
-        qDebug()<<"position Y= "<<offset.ry();
-        mousePressed=true;
-       // qDebug()<<mousePressed;
-        if(nbclic % 2 == 0){ //dans le cas de deux clics successifs
-            offset2 = offset;
-            std::cout << "double clic" << std::endl;
-            addCatPos();
+{   
+    if(event->button()==Qt::LeftButton){
+        if (p1.x() == 0 && p1.y() == 0) {
+            p1 = event->pos();
+            return;
+        }else {
+            p2 = event->pos();
+            std::cout<<"-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_"<<std::endl;
+            qDebug()<<"position X1= "<<p1.rx();
+            qDebug()<<"position Y1= "<<p1.ry();
+            std::cout<<"________________________________________________"<<std::endl;
+            qDebug()<<"position X2= "<<p2.rx();
+            qDebug()<<"position Y2= "<<p2.ry();
+            std::cout<<"-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_"<<std::endl;
+            //afficher
+            p1.setX(0);
+            p1.setY(0); 
         }
     }
-
 
 
 }
@@ -140,8 +141,9 @@ void EspaceTravail::mouseReleaseEvent(QMouseEvent *e)
 //EspaceTravail::EspaceTravail(QVector<Equipement *> Equipement){}
 
 void EspaceTravail::addCatPos(){
-    if(!offset.isNull()){
-        if(!offset2.isNull())
-        scene->addItem(new CableG(offset2.rx(),offset2.ry(), offset.rx(), offset.ry()));
+    if(!p1.isNull()){
+        if(!p2.isNull())
+        std::cout << "Je suis là" << std::endl;
+        scene->addItem(new CableG(p1.rx(),p1.ry(), p2.rx(), p2.ry()));
     }
 }

@@ -51,3 +51,32 @@ void ToolBarEquipement::ajouterCable(){
    assert(ss && ss2);  
    ss2->addCatPos();
 }
+
+void ToolBarEquipement::ajouterNoeud(int n){
+   auto s  = this->parent();
+   simulaGui* ss = dynamic_cast<simulaGui*>(s);
+   auto ss2 = dynamic_cast<EspaceTravail*>(ss->getMainlayout()->itemAtPosition(1,1)->widget());
+   assert(ss && ss2); 
+
+    switch(n){
+        case 1:{ //Routour
+            RouteurG* tmpRouteur = new RouteurG(ss2->getScene());
+            ss2->addNoeud(tmpRouteur);
+            break;
+        }
+        case 2:{//
+            qDebug() << "Non implemented";
+            break;
+        }
+        case 3:{
+            StationG* tmpStation = new StationG(ss2->getScene()); 
+            ss2->addNoeud(tmpStation);
+            break;
+        }  
+        case 4:{
+            qDebug() << "Non implemented";
+            break;
+        }
+       default: break;
+    }
+}

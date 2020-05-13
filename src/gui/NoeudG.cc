@@ -5,7 +5,7 @@ NoeudG::NoeudG(QGraphicsScene *parent, QPixmap pixmap) : QGraphicsPixmapItem(pix
     this->setFlag(QGraphicsItem::ItemIsMovable);
     parent->addItem(this);
 
-    this->setTabWidget(new QTabWidget) ;
+    this->setTabWidget(new QTabWidget);
     //tabWidget->addTab("GENERAL");
 }
 

@@ -18,23 +18,25 @@ EspaceTravail::EspaceTravail(){
     p1.setY(0);
     p2.setX(0);
     p2.setY(0);
-
     scene = new QGraphicsScene();
-    vue = new QGraphicsView(scene,this);
-    vue->setStyleSheet("background-color:#f2f0f0");
-    vue->setGeometry(0,0,900,520);
-    vue->setMinimumSize(450,430);
 
+    vue= new QGraphicsView(scene,this);
+    vue->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    vue->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+
+    //scroll avec  souris (HandDrag)
+    vue->setDragMode(QGraphicsView::ScrollHandDrag);
+
+    vue->setRenderHints( QPainter::SmoothPixmapTransform );
+    vue->setStyleSheet("background-color:#f2f0f0");
+    //this->setGeometry(0,0,900,520);
+    this->setMinimumSize(450,430);
     vue->setAcceptDrops(true);
-   
-    setMouseTracking(true);
-    auto test = new CableG(10,10,80,90);
-    
-    scene->addItem(test);
+    scene->setSceneRect(0,0,1600,1000);
+
     vue->show();
     scene->update();
 }
-
 EspaceTravail::~EspaceTravail()
 {
     delete scene;
@@ -49,10 +51,7 @@ void EspaceTravail::deleteScene()
 
 void EspaceTravail::mouseDoubleClickEvent(QMouseEvent *e)
 {
-    if(e->button()==Qt::RightButton)
-    {
-        emit deleteButton();
-    }
+    
 }
 
 void EspaceTravail::mousePressEvent(QMouseEvent *event)
@@ -146,4 +145,9 @@ void EspaceTravail::addCatPos(){
         std::cout << "Je suis là" << std::endl;
         scene->addItem(new CableG(p1.rx(),p1.ry(), p2.rx(), p2.ry()));
     }
+}
+
+void EspaceTravail::addNoeud(NoeudG* noeud){
+    assert(noeud && "Pointeur null");
+    scene->addItem(noeud);
 }

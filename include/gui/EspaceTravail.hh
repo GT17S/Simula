@@ -21,6 +21,8 @@
 #include <QPoint>
 #include <iostream>
 
+#include "NoeudG.hh"
+
 /*!
  * \class EspaceTravail
  * \brief La classe EspaceTravail représentant l'Espace de Travail de l'utilisateur sur le protocole TCP/IP.
@@ -104,6 +106,7 @@ public:
          * \param  _vue : voir #vue
     */
     void addCatPos();
+    void addNoeud(NoeudG* noeud);
 
 
 protected:

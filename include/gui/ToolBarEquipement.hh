@@ -10,17 +10,23 @@
 #include <iostream>
 
 #include "Noeud.hh"
+#include "NoeudG.hh"
+#include "CableG.hh"
 #include "Cable.hh"
 #include "Hub.hh"
-#include "CableG.hh"
+#include "Switch.hh"
 #include "DataG.hh"
 #include "Station.hh"
-#include "Routeur.hh"
-#include "Switch.hh"
+#include "StationG.hh"
 #include "simulaGui.hh"
+#include "Routeur.hh"
+#include "RouteurG.hh"
 
 class QToolBar;
 class simulaGui;
+class NoeudG;
+class RouteurG;
+class StationG;	
 
 class ToolBarEquipement : public QToolBar {
     Q_OBJECT
@@ -32,7 +38,7 @@ public:
     
 public slots:
     void selectionnerEquipement(){};
-    void ajouterNoeud(int n){ std::cout << n << std::endl;};
+    void ajouterNoeud(int n);
     void ajouterCable();
     void supprimerEquipement(){std::cout << "Winiw" << std::endl;};
 

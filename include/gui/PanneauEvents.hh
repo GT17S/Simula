@@ -1,12 +1,24 @@
 #ifndef __H_PANNEAUEVENTS__
 #define __H_PANNEAUEVENTS__
 
+/*!
+ * \file PanneauEvents.hh
+ * \brief Panneau des événements
+ * \author Nadjibian
+ * \version 0.1
+ */
+
 #include "QTextEdit"
 #include "QLabel"
 #include "QLCDNumber"
 #include "gSimulation.hh"
 #include "QString"
-#include <QThread>
+
+
+/*!
+ * \class PanneauEvents
+ * \brief La classe PanneauEvents pour afficher les traces des algorithmes de congestions  .
+ */
 
 class PanneauEvents : public QWidget
 {

@@ -55,7 +55,7 @@ PanneauOutils::PanneauOutils(){
     connect(ouvrir,SIGNAL(triggered()),this,SLOT(ouvrirFichier()));
     connect(sauvegarder,SIGNAL(triggered()),this,SLOT(sauvegarderFichier()));
     connect(exporter,SIGNAL(triggered()),this,SLOT(exporterFichier()));
-    connect(exporterPng,SIGNAL(triggered()),this,SLOT(exporterImage()));
+    connect(exporterPng,SIGNAL(triggered()),this,SLOT(toPng()));
     connect(this->gestSimulation.getTimer(),SIGNAL(timeout()),this,SLOT(timer()));
     connect(demarrer,SIGNAL(triggered()),this,SLOT(demarrerSimulation()));
     connect(pause,SIGNAL(triggered()),this,SLOT(pauseSimulation()));
@@ -142,6 +142,7 @@ void PanneauOutils::nouveauFichier()
  void PanneauOutils::demarrerSimulation()
  {
      this->gestSimulation.demarrer();
+     PanneauEvents::afftime();
  }
  void PanneauOutils::pauseSimulation()
 {
@@ -164,7 +165,19 @@ void PanneauOutils::timer()
     this->gestSimulation.demarrer();
     *t=t->addSecs(1);
     this->gestSimulation.getTimer()->setInterval(1000);
+    PanneauEvents::afftime();
 }
+
+void PanneauOutils::toPng(){
+    QString fileName = QFileDialog::getSaveFileName(this,
+       tr("Save PNG"));
+
+    if (fileName.isEmpty())
+          return;
+  else{
+            QPixmap pixMap = QPixmap::grabWidget(EspaceTravail::getVue());
+            pixMap.save(fileName+".png");
+}}
 
 
 

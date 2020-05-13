@@ -20,9 +20,10 @@ bool verifier_schema(QFile * fichier_xml);
 
 QFile * ouvrirlXml(QString nomfichier, QIODevice::OpenMode mode);
 
-void lireXml(QString nomfichier, Graphe *graphe);
+void lireXml(QString nomfichier);
 
-void ecrireXml(QString fichier, Graphe * graphe);
+void ecrireXml(QString fichier);
+
 
 
 /*!
@@ -32,6 +33,7 @@ void ecrireXml(QString fichier, Graphe * graphe);
          * \param graphe à ecrire dans le fichier
 */
 void ecrireDot(std::string filename, Graphe* graphe);
+
 
 
 #endif

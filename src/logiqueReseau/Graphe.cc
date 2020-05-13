@@ -151,8 +151,10 @@ int Graphe::parcourirPasserelle(int id_src_src ,int id_src, int id_n , string ad
                         return result;
                     }
                 }
-                else {
-                    // station->estpasserlle ou routeur
+                else{
+                    Station * st = dynamic_cast<Station*>(sommets[i]);
+                    if(sommets[i]->getTypeNoeud() == ROUTEUR || (st && st->getIsPasserelle()))
+
                     for(InterfaceFE * fe : sommets[i]->getInterfaces()){
                         if(fe->getAdresseIP() == adresse){
                             // adresse passerelle trouvée
@@ -303,15 +305,19 @@ void Graphe::supprimerCableMatrice(Cable * c)
     matrice[i_N2][i_N1] = nullptr;
 
 }
-Noeud* Graphe::noeudFromIp(string _ip){
+int Graphe::noeudFromIp(string _ip){
+    if(_ip == DEFAULT_IP) return -1;
+
     for(Noeud * n : sommets){
+        if(n->getTypeNoeud() == STATION || n->getTypeNoeud() == ROUTEUR)
         for(InterfaceFE *i : n->getInterfaces()){
-            if(i->getAdresseIP()==_ip)
-                return n;
+            if(i->getAdresseIP()== _ip)
+                return n->getIdNoeud();
 
-        }}
+        }
+    }
 
-    return nullptr;
+    return -1;
 }
 
 

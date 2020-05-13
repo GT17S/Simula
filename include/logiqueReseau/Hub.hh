@@ -11,9 +11,8 @@
 #include <string>
 #include "Noeud.hh"
 
+class Data;
 using std::string;
-
-class Noeud;
 
 /*!
  * \class Hub
@@ -51,7 +50,8 @@ public:
      * \param nRecepteur
      * \param message
      */
-    void envoyerMessage(string message);
+    void envoyerMessage(int key,destination dest);
+    void recevoirMessage(int key, int dest_i, destination dest);
 
 
     /*!

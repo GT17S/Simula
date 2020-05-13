@@ -3,11 +3,11 @@
 
 #include <cmath>
 
-#include "Congestion.hh"
 #include "Data.hh"
 #include "Graphe.hh"
 
 class Congestion;
+class Graphe;
 
 const float baseRTT = 200.0f; /*!< Valeur du RTT définie à l'initialisation*/
 const float alpha = 0.125f; /*!< Cconstante alpha definie dans [RFC2098]*/

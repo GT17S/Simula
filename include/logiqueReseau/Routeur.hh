@@ -55,7 +55,11 @@ public:
      * \param nRecepteur : pointeur sur le noeud recepteur
      * \param data : le message à envoyer de type Data
      */
-    void envoyerMessage(string message);
+
+    void envoyerMessage(int key, destination dest);
+    void recevoirMessage(int key, int dest_i, destination dest);
+
+
 };
 
 #endif

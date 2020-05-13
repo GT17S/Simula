@@ -1,6 +1,9 @@
 #include "ToolBarEquipement.hh"
 
-ToolBarEquipement::ToolBarEquipement(): QToolBar(){
+
+
+
+ToolBarEquipement::ToolBarEquipement(QWidget* par): QToolBar(par){
 
     //this->setStyleSheet("background-color: pink");
 	this->setMinimumSize(50,430);
@@ -41,5 +44,10 @@ ToolBarEquipement::ToolBarEquipement(): QToolBar(){
 }	
 
 
-
-
+void ToolBarEquipement::ajouterCable(){
+   auto s  = this->parent();
+   simulaGui* ss = dynamic_cast<simulaGui*>(s);
+   auto ss2 = dynamic_cast<EspaceTravail*>(ss->getMainlayout()->itemAtPosition(1,1)->widget());
+   assert(ss && ss2);  
+   ss2->addCatPos();
+}

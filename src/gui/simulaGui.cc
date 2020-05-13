@@ -20,9 +20,10 @@ simulaGui::simulaGui(){
     widgets.append(new PanneauOutils()); //0
    	widgets.append(new EspaceTravail());
     widgets.append(new QLabel());
-    widgets.append(new ToolBarEquipement()); //3
+    widgets.append(new ToolBarEquipement(this)); //3
     widgets.append(new QLabel());
- 
+ 	
+
     //Modifier les tailles de chaque widget
     mainlayout->addWidget(widgets[0], 0, 0, 1, 4); //Barre menu (0)
     mainlayout->addWidget(widgets[1], 1, 1, 3, 2); //Espace de travail (1)
@@ -53,8 +54,10 @@ simulaGui::simulaGui(){
     widgets[4]->setMinimumSize(100,430);
     widgets[4]->setMaximumWidth(350);
 
-    for(int i = 0; i < 5; i++)
+    for(int i = 0; i < 5; i++){
         widgets[i]->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        widgets[i]->setParent(this);
+    }
 
     //Signaux
 

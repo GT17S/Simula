@@ -35,6 +35,9 @@ private:
     QGraphicsView* vue;/*!< Vue qui va afficher la scene */
     //QVector<Equipement*> Equipement;/*!< Vecteur d'Equipements se trouvant sur l'espace de travail*/
 
+    /*!< Booléen qui vérifie si deux clics on été faits */
+    bool clickedonce;
+    int nbclic = 0;
     QPushButton *pb;
     QLabel *o;
 
@@ -58,7 +61,7 @@ public:
          * \brief Destructeur
          * Destructeur de la classe EspaceTravail
      */
-    ~EspaceTravail();
+    virtual ~EspaceTravail();
 
     /*!
          * \brief getScene
@@ -92,13 +95,25 @@ public:
     void deleteButton(){
         if(pb->isActiveWindow()){ qDebug()<<"endless speech";pb->~QPushButton();}}
     bool mousePressed = false;
-    QPoint offset;
+    
+    QPoint offset; /*!< Coordonnées du premier point*/
+    QPoint offset2; /*!< Coordonnées du deuxieme point*/
+
+    /*!
+         * \brief AddCatPos
+         * Dessine une cable entre deux points entrés par l'utilisateur
+         * \param  _vue : voir #vue
+    */
+    void addCatPos();
+
 
 protected:
     void mouseDoubleClickEvent( QMouseEvent * e );
     void mousePressEvent(QMouseEvent  *event);
     void mouseMoveEvent( QMouseEvent *e );
     void mouseReleaseEvent( QMouseEvent *e );
+
+
 };
 
 #endif

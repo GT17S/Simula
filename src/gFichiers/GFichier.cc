@@ -276,7 +276,12 @@ void ecrireXml(QString nomFichier, Graphe *graphe){
     fichier->close();
 
 }
-
+/*!
+         * \brief Serialise un graphe dans un fichier DOT
+         * Ecrit tout d'abord l'entête de graphe puis les sommets enfin les arcs avec des paramètres de couleur de formes differents
+         * \param filename nom du fichier d'entrée
+         * \param graphe à ecrire dans le fichier
+*/
 
 void ecrireDot(std::string filename, Graphe* graphe){
     //Verifier les attributs
@@ -311,7 +316,6 @@ void ecrireDot(std::string filename, Graphe* graphe){
             outfile << std::endl;    
         }   
 
-
         //Ecrire les arcs
         auto  mat = graphe->getMatrice();
         for (auto i = 0; i < mat.size(); ++i)
@@ -319,11 +323,9 @@ void ecrireDot(std::string filename, Graphe* graphe){
            for (auto j = 0; j < mat[i].size(); ++j)
            {
                 if(mat[i][j]){
-                     outfile << i << "--" << j << "[label =\"1 ms − 1 Mb/ s \" , weight ="  <<  mat[i][j] << "  ,  color =\"green\" , style=dashed ] ;";
+                     outfile << i << "--" << j << "[label =\" " << mat[i][j]->getLatence() <<"\" , weight ="  <<  mat[i][j] << "  ,  color =\"green\" , style=dashed ] ;";
                      outfile << std::endl;
                 }
-
-
            }
         }
 

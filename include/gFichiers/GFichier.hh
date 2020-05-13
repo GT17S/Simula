@@ -12,7 +12,7 @@
 #include <fstream>
 #include <string>
 #include "Graphe.hh"
-class Graphe;
+
 
 class Graphe;
 
@@ -24,6 +24,13 @@ void lireXml(QString nomfichier, Graphe *graphe);
 
 void ecrireXml(QString fichier, Graphe * graphe);
 
+
+/*!
+         * \brief Serialise un graphe dans un fichier DOT
+         * Ecrit tout d'abord l'entête de graphe puis les sommets enfin les arcs avec des paramètres de couleur de formes differents
+         * \param filename nom du fichier d'entrée
+         * \param graphe à ecrire dans le fichier
+*/
 void ecrireDot(std::string filename, Graphe* graphe);
 
 

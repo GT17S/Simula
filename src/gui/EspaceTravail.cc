@@ -11,11 +11,12 @@
 
 #include "EspaceTravail.hh"
 #include "NoeudG.hh"
+#include "CableG.hh"
 
 EspaceTravail::EspaceTravail(){
-
+    clickedonce = false;
     scene = new QGraphicsScene();
-    vue= new QGraphicsView(scene,this);
+    vue = new QGraphicsView(scene,this);
     vue->setStyleSheet("background-color:#f2f0f0");
     vue->setGeometry(0,0,900,520);
     vue->setMinimumSize(450,430);
@@ -23,8 +24,8 @@ EspaceTravail::EspaceTravail(){
     vue->setAcceptDrops(true);
    
     setMouseTracking(true);
-    auto test = new StationG();
-   
+    auto test = new CableG(10,10,80,90);
+    
     scene->addItem(test);
     vue->show();
     scene->update();
@@ -52,17 +53,29 @@ void EspaceTravail::mouseDoubleClickEvent(QMouseEvent *e)
 
 void EspaceTravail::mousePressEvent(QMouseEvent *event)
 {
-    std::cout<<"-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_"<<std::endl;
-    offset.rx()=event->pos().rx();
-    qDebug()<<"position X= "<<offset.rx();
-    offset.ry()=event->pos().ry();
-    qDebug()<<"position Y= "<<offset.ry();
+    nbclic++;
+
+   
+   
 
     if(event->button()==Qt::LeftButton)
     {
+        offset.rx()=event->pos().rx();
+        offset.ry()=event->pos().ry();
+        std::cout<<"-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_"<<std::endl;
+        qDebug()<<"position X= "<<offset.rx();
+        qDebug()<<"position Y= "<<offset.ry();
         mousePressed=true;
-        qDebug()<<mousePressed;
+       // qDebug()<<mousePressed;
+        if(nbclic % 2 == 0){ //dans le cas de deux clics successifs
+            offset2 = offset;
+            std::cout << "double clic" << std::endl;
+            addCatPos();
+        }
     }
+
+
+
 }
 
 void EspaceTravail::mouseMoveEvent(QMouseEvent *e)
@@ -125,3 +138,10 @@ void EspaceTravail::mouseReleaseEvent(QMouseEvent *e)
     }*/
 
 //EspaceTravail::EspaceTravail(QVector<Equipement *> Equipement){}
+
+void EspaceTravail::addCatPos(){
+    if(!offset.isNull()){
+        if(!offset2.isNull())
+        scene->addItem(new CableG(offset2.rx(),offset2.ry(), offset.rx(), offset.ry()));
+    }
+}

@@ -1,6 +1,9 @@
 #include "ToolBarEquipement.hh"
 
-ToolBarEquipement::ToolBarEquipement(): QToolBar(){
+
+
+
+ToolBarEquipement::ToolBarEquipement(QWidget* par): QToolBar(par){
 
     //this->setStyleSheet("background-color: pink");
 	this->setMinimumSize(50,430);
@@ -27,7 +30,7 @@ ToolBarEquipement::ToolBarEquipement(): QToolBar(){
     connect(mapper, SIGNAL(mapped(int)), this, SLOT(ajouterNoeud(int)));
 
     connect(Addcable, SIGNAL(triggered()), this, SLOT(ajouterCable()));
-    connect(DelEq, SIGNAL(triggered()), this, SLOT(suprimerEquipement()));
+    connect(DelEq, SIGNAL(triggered()), this, SLOT(supprimerEquipement()));
     mapper->setMapping(NRouteur, 1);
     mapper->setMapping(NHub, 2);
     mapper->setMapping(NStation, 3);
@@ -41,5 +44,10 @@ ToolBarEquipement::ToolBarEquipement(): QToolBar(){
 }	
 
 
-
-
+void ToolBarEquipement::ajouterCable(){
+   auto s  = this->parent();
+   simulaGui* ss = dynamic_cast<simulaGui*>(s);
+   auto ss2 = dynamic_cast<EspaceTravail*>(ss->getMainlayout()->itemAtPosition(1,1)->widget());
+   assert(ss && ss2);  
+   ss2->addCatPos();
+}

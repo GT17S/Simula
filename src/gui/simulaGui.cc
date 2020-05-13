@@ -18,11 +18,12 @@ simulaGui::simulaGui(){
 */
 
     widgets.append(new PanneauOutils()); //0
-   	widgets.append(new QLabel());
+   	widgets.append(new EspaceTravail());
     widgets.append(new PanneauData());
-    widgets.append(new ToolBarEquipement()); //3
+    widgets.append(new ToolBarEquipement(this)); 
     widgets.append(new QLabel());
- 
+ 	
+
     //Modifier les tailles de chaque widget
     mainlayout->addWidget(widgets[0], 0, 0, 1, 4); //Barre menu (0)
     mainlayout->addWidget(widgets[1], 1, 1, 3, 2); //Espace de travail (1)
@@ -30,7 +31,7 @@ simulaGui::simulaGui(){
     mainlayout->addWidget(widgets[3], 1, 0, 3, 1); //Barre d'équipements (3)
     mainlayout->addWidget(widgets[4], 1, 3, 3, 1); //Panneau evenements (4)
 
-    widgets[1]->setStyleSheet("background-color: red");
+  widgets[1]->setStyleSheet("background-color: red");
 //    widgets[2]->setStyleSheet("background-color: blue");
     widgets[4]->setStyleSheet("background-color: black");
 
@@ -54,8 +55,10 @@ simulaGui::simulaGui(){
     widgets[4]->setMinimumSize(100,410);
     widgets[4]->setMaximumWidth(350);
 
-    for(int i = 0; i < 5; i++)
+    for(int i = 0; i < 5; i++){
         widgets[i]->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        widgets[i]->setParent(this);
+    }
 
     //Signaux
 

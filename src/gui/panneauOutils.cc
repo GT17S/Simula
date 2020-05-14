@@ -175,8 +175,9 @@ void PanneauOutils::toPng(){
     if (fileName.isEmpty())
           return;
   else{
-            QPixmap pixMap = QPixmap::grabWidget(EspaceTravail::getVue());
+           /* QPixmap pixMap = QPixmap::grabWidget(EspaceTravail::getVue());
             pixMap.save(fileName+".png");
+            */
 }}
 
 

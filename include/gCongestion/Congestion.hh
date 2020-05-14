@@ -229,6 +229,7 @@ public:
      */
 
    void setMapFileACK(std::map<int, destination> _map);
+   void setlatence(float f){ this->latenceLastSend = f;};
 
 };
 

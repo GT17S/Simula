@@ -769,3 +769,5 @@ Simula_autogen
 
 include/gui/moc_*
 doc/html/*
+
+.git-old

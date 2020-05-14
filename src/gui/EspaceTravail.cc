@@ -145,3 +145,4 @@ void EspaceTravail::addCatPos(){
         scene->addItem(new CableG(offset2.rx(),offset2.ry(), offset.rx(), offset.ry()));
     }
 }
+QGraphicsView *EspaceTravail::vue;

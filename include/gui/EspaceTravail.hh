@@ -34,7 +34,7 @@ class EspaceTravail : public QWidget
     Q_OBJECT
 private:
     QGraphicsScene* scene;/*!< Scene d'affichage de l'espace de travail*/
-    QGraphicsView* vue;/*!< Vue qui va afficher la scene */
+   static QGraphicsView* vue;/*!< Vue qui va afficher la scene */
     //QVector<Equipement*> Equipement;/*!< Vecteur d'Equipements se trouvant sur l'espace de travail*/
 
     /*!< Booléen qui vérifie si deux clics on été faits */
@@ -69,7 +69,7 @@ public:
          * getter qui recupere la Scene.
          * \return voir #scene
     */
-    QGraphicsScene *getScene() const {return scene;}
+    QGraphicsScene *getScene()  {return scene;}
 
     /*!
          * \brief setScene
@@ -83,7 +83,7 @@ public:
          * getter qui recupere la Vue.
          * \return voir #vue
     */
-    QGraphicsView *getVue() const {return vue;}
+  static  QGraphicsView *getVue()  {return vue;}
 
     /*!
          * \brief setVue

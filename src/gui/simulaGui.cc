@@ -21,7 +21,7 @@ simulaGui::simulaGui(){
    	widgets.append(new EspaceTravail());
     widgets.append(new PanneauData());
     widgets.append(new ToolBarEquipement(this)); 
-    widgets.append(new QLabel());
+    widgets.append(new PanneauEvents());
  	
 
     //Modifier les tailles de chaque widget
@@ -33,7 +33,7 @@ simulaGui::simulaGui(){
 
   widgets[1]->setStyleSheet("background-color: red");
 //    widgets[2]->setStyleSheet("background-color: blue");
-    widgets[4]->setStyleSheet("background-color: black");
+    //widgets[4]->setStyleSheet("background-color: black");
 
     //Stretch
 

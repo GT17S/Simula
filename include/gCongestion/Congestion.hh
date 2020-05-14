@@ -34,18 +34,9 @@ private:
     int cpt;/*!< nombre de fois que cwnd a changé */
     int nbrAcksDuplique;/*!<  Nombre d’ack dupliqués */
     int nbrAcksRecu; /*!<  Nombre de paquets acquittement reçus*/
-    int numAckRecu;/*!< Numéro du dernier paquet acquittement reçu*/
     float baseRtt;/*!<  RoundTripTime de valeur prédéfinie*/
-    std::vector<Data *> segAE;/*!< les segments a envoyer*/
-     //pc recepteur
-    int dataTotal;/*!< nombre total des fragment a envoyer */
-    int countSegment;/*! compteur des segment recu */
-    std::vector<Data *> segRecu;/*!< les segments recu */
-    int dernierNumSegment;/*!<  numéro du dernier segment reçu */
-
-
-    std::map<int,destination> mapFileEnvoyer;
-    std::map<int ,destination> mapFileACK;
+    std::map<int,destination> mapFileEnvoyer;/*!<  liste des datas a envoyer avec num de segments*/
+    std::map<int ,destination> mapFileACK;/*!<  liste des Acks a recevoir */
 
     //Cet valeur est à afficher dans le panneau d'evenement
     float latenceLastSend; /*!<  Latence d'un envoie entre A et B  en ms */
@@ -90,66 +81,17 @@ public:
       * \return nombre de fois que cwnd a changé (int)
       */
     int getCpt(){return cpt;}
-    /*!
-      * \brief getDernierNumSegment
-      * \return numéro du dernier segment reçu (int)
-      */
-    int getDernierNumSegment(){return dernierNumSegment;}
-    /*!
-      * \brief getNbrAcksDuplique
-      * \return Nombre d’ack dupliqués (int)
-      */
-    int getNbrAcksDuplique(){return nbrAcksDuplique;}
+
     /*!
       * \brief getNbrAcksRecu
       * \return Nombre de paquets acquittement reçus (int)
       */
     int getNbrAcksRecu(){return nbrAcksRecu;}
     /*!
-      * \brief getNumAckRecu
-      * \return Numéro du dernier paquet acquittement reçu (int)
-      */
-    int getNumAckRecu(){return nbrAcksRecu;}
-    /*!
       * \brief getBaseRtt
       * \return RoundTripTime (int)
       */
     int getBaseRtt(){return baseRtt;}
-
-
-    /*!
-      * \brief latenceLastSend
-      * \return RoundTripTime (int)
-      */
-    int getlatenceLastSend(){return latenceLastSend;}
-
-
-
-    /*!
-      * \brief getDataTotal
-      * \return nombre total des semgents  (int)
-      */
-    int getDataTotal() const;//pc recepteur
-
-    /*!
-      * \brief getCountSegment
-      * \return nombre des segments recu  (int)
-      */
-    int getCountSegment() const;//pc recepteur
-
-
-    /*!
-      * \brief getSegRecu
-      * \return les segments recu  (vector<Data *>)
-      */
-    std::vector<Data *> getSegRecu() const;//pc recepteur
-
-    /*!
-      * \brief getSegAE
-      * \return les segments a envoyer  (vector<Data *>)
-      */
-    std::vector<Data *> getSegAE() const;
-
 
     /*!
       * \brief setCwnd
@@ -157,6 +99,7 @@ public:
       *  Vérifier si _cwnd est positive
       * \param _cwnd : taille de la fentre de congestion
       */
+
     void setCwnd(int _cwnd);
     /*!
       * \brief setSsthresh
@@ -175,14 +118,6 @@ public:
     void setCpt(int _cpt);
 
     /*!
-      * \brief setDernierNumSegment
-      *  Modifier numéro du dernier segment reçu
-      *  Vérifier si _dernierNumSegment est positive
-      * \param _dernierNumSegment : numéro du dernier segment reçu(int)
-      */
-    void setDernierNumSegment(int _dernierNumSegment );
-
-    /*!
       * \brief setNbrAcksDuplique
       *  Modifier nombre d’ack dupliqués
       *  Vérifier si _nbrAcksDuplique est positive
@@ -198,13 +133,6 @@ public:
       */
     void setNbrAcksRecu(int _nbrAcksRecu);
 
-    /*!
-      * \brief setNumAckRecu
-      *  Modifier numéro du dernier paquet acquittement reçu
-      *  Vérifier si _numAckRecu est positive
-      * \param _numAckRecu : numéro du dernier paquet acquittement reçu (int)
-      */
-    void setNumAckRecu(int _numAckRecu);
 
     /*!
       * \brief setBaseRtt
@@ -213,52 +141,6 @@ public:
       * \param _baseRtt : RoundTripTime (int)
       */
     void setBaseRtt(int _baseRtt);
-
-
-     /*!
-      * \brief latenceLastSend
-      * \param latence du dernier envoi
-      * \return void
-      */
-    void setlatenceLastSend(float llt){ this->latenceLastSend = llt;};
-
-
-    /*!
-      * \brief setDataTotal
-      *  Modifier le nombre total des fragment a envoyer
-      *  Vérifier _dataTotal est positive
-      * \param _dataTotal : nombre total (int)
-      */
-    void setDataTotal(int _dataTotal);//pc recepteur
-
-    /*!
-      * \brief setCountSegment
-      *  Modifier le compteur des segments recu
-      *  Vérifier _countSegment est positive
-      * \param _countSegment : nombre (int)
-      */
-    void setCountSegment(int _countSegment);//pc recepteur
-
-    /*!
-      * \brief setSegRecu
-      *  Modifier les segments recus
-      * \param _segRecu : segment (vector<Data *>)
-      */
-    void setSegRecu(const std::vector<Data *> _segRecu);//pc recepteur
-
-    /*!
-      * \brief setSegRecu
-      *  Modifier les segments recus
-      * \param _segRecu : segment (Data)
-      */
-    void setSegRecu(Data* _segRecu);//pc recepteur
-
-    /*!
-      * \brief setSegAE
-      *  Modifier les segments a envoyer
-      * \param _segAE : segment (vector<Data *>)
-      */
-    void setSegAE(const std::vector<Data *> &_segAE);
 
     /*!
      * \brief slowStart
@@ -284,17 +166,17 @@ public:
     /*!
      * \brief verifieNumSegment
      * verification des numero des segments recus et l'ienvoie d'un ack
-     * \param segment : Data recu
-     * \param stDes : la station réceptrice des datas;
+     * \param stThis : station qui va envoyer l'ack
+     * \param src : la station réceptrice des acks;
+     * \param nAck : numero d'ack
      */
     void verifieNumSegment(Noeud *stThis, Noeud *src, int nAck);//pc recepteur
 
     /*!
      * \brief verifieNumAck
      * verification des numero des Ack recus
-     * \param ack : l'acquittement  recu
-     * \param num_seq :vector des numeros des segments deja envoyé
-     * \param stSrc : la station émettrice des datas;
+     * \param n : station qui va vérifier l'ack
+     * \param nAck :numero d'ack
      */
     void verifieNumAck(Noeud *n, int nAck);
     /*!
@@ -306,7 +188,7 @@ public:
     void fastRetransmission(std::vector<Data> messages,int num);
 
     /*!
-     * \brief verifieNumAck
+     * \brief verifieNbrSegment
      * verfication nombre des segments a envoyer
      * \param stSrc : la station émettrice des datas;
      */
@@ -317,12 +199,37 @@ public:
     friend float CalculLatenceDynamique(Graphe *graphe,Congestion *congestion,Data *data);
 
 
+    /*!
+     * \brief retrnasmission
+     * retrnasmission des datas apres un certain temps sans ack
+     * \param key : trouve le data dans mapFileEnvoyer;
+     */
    void retrnasmission(int key);
-   void updateLatence();
-   std::map<int, destination> getMapFileEnvoyer();
+   /*!
+     * \brief getMapFileEnvoyer
+     * \return liste des datas a envoyer avec num de segments
+     */
+   std::map<int, destination> getMapFileEnvoyer(){    return mapFileACK;;}
+
+   /*!
+     * \brief getMapFileACK
+     * \return liste des Acks a recevoir
+     */
+   std::map<int, destination> getMapFileACK(){return mapFileACK;}
+   /*!
+     * \brief setMapFileEnvoyer
+     *  Modifier liste des datas a envoyer avec leurs numeros de segments
+     * \param _map : liste des datas a envoyer avec leurs numeros de segments
+     */
    void setMapFileEnvoyer(std::map<int, destination> _map);
-   std::map<int, destination> getMapFileACK();
+   /*!
+     * \brief setMapFileACK
+     *  Modifier liste des Acks a recevoir
+     * \param _map : liste des Acks a recevoir
+     */
+
    void setMapFileACK(std::map<int, destination> _map);
+
 };
 
 #endif

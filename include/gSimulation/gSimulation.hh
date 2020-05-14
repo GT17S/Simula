@@ -37,8 +37,8 @@ class gSimulation{
 
 private:
         etat_s etat;/*!< Etat de la simulation */
-        QTimer *timer;/*!< Timer de la simulation */
-        QTime *time;/*!< Le temps de la simulation */
+       static  QTimer *timer;/*!< Timer de la simulation */
+        static QTime *time;/*!< Le temps de la simulation */
 
 public:
         /*!
@@ -61,7 +61,7 @@ public:
              * getter qui recupere le timer.
              * \return voir #QTimer
         */
-        QTimer *getTimer() const {return timer;}
+      static   QTimer *getTimer()  {return timer;}
 
 
         /*!
@@ -78,7 +78,7 @@ public:
              * \return voir #QTime
         */
 
-        QTime *getTime() const {return time;}
+     static   QTime *getTime()  {return time;}
 
         /*!
              * \brief setTime

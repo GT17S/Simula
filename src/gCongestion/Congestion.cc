@@ -6,55 +6,15 @@ using namespace std;
 
 
 
-int Congestion::getDataTotal() const
-{
-    return dataTotal;
-}
-
-void Congestion::setDataTotal(int value)
-{
-    dataTotal = value;
-}
-
-int Congestion::getCountSegment() const
-{
-    return countSegment;
-}
-
-void Congestion::setCountSegment(int value)
-{
-    countSegment = value;
-}
 
 
-void Congestion::setSegRecu(const std::vector<Data *> value)
-{
-    segRecu = value;
-}
-
-
-
-void Congestion::setSegAE(const std::vector<Data *> &value)
-{
-    segAE = value;
-}
-
-
-
-std::map<int, destination> Congestion::getMapFileEnvoyer()
-{
-    return mapFileEnvoyer;
-}
 
 void Congestion::setMapFileEnvoyer(const std::map<int, destination> _map)
 {
     mapFileEnvoyer = _map;
 }
 
-std::map<int, destination> Congestion::getMapFileACK()
-{
-    return mapFileACK;
-}
+
 
 void Congestion::setMapFileACK(std::map<int, destination> _map)
 {
@@ -65,26 +25,16 @@ Congestion::Congestion() :  mapFileEnvoyer(), mapFileACK(){
     cwnd=1;
     ssthresh=32;
     cpt=0;
-    numAckRecu=0;
     nbrAcksRecu=0;
     nbrAcksDuplique=0;
-    dernierNumSegment=0;
-    //segRecu=NULL;
-    countSegment=0;
-    dataTotal=0;
 
 }
 Congestion::Congestion(Congestion &c){
     cwnd=c.cwnd;
     ssthresh=c.ssthresh;
     cpt=c.cpt;
-    numAckRecu=c.numAckRecu;
     nbrAcksRecu=c.nbrAcksRecu;
     nbrAcksDuplique=c.nbrAcksDuplique;
-    dernierNumSegment=c.dernierNumSegment;
-    segRecu=c.segRecu;
-    countSegment=c.countSegment;
-    dataTotal=c.dataTotal;
 
 }
 void Congestion::setCwnd(int _cwnd){
@@ -107,11 +57,6 @@ void Congestion::setCpt(int _cpt){
 }
 
 
-void Congestion::setDernierNumSegment(int _dernierNumSegment ){
-    if(_dernierNumSegment >0)
-        dernierNumSegment = _dernierNumSegment ;
-    else return;
-}
 
 
 void Congestion::setNbrAcksDuplique(int _nbrAcksDuplique){
@@ -126,11 +71,6 @@ void Congestion::setNbrAcksRecu(int _nbrAcksRecu){
     else return;
 }
 
-void Congestion::setNumAckRecu(int _numAckRecu){
-    if(_numAckRecu >0)
-        numAckRecu = _numAckRecu ;
-    else return;
-}
 
 
 void Congestion::setBaseRtt(int _baseRtt){

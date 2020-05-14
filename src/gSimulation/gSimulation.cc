@@ -8,23 +8,23 @@ gSimulation::gSimulation()
 
 gSimulation::gSimulation(etat_s _etat, QTimer *_timer)
 {
-    this->etat=_etat;
-    this->timer=_timer;
+    etat=_etat;
+    timer=_timer;
 }
 
 void gSimulation::setTimer(QTimer *_timer)
 {
-    this->timer=_timer;
+   timer=_timer;
 }
 
 void gSimulation::setTime(QTime *_time)
 {
-    this->time=_time;
+   time=_time;
 }
 
 void gSimulation::setEtat(etat_s _etat)
 {
-    this->etat=_etat;
+    etat=_etat;
 }
 
 void gSimulation::arreter()
@@ -48,9 +48,9 @@ void gSimulation::pause()
 
 void gSimulation::reset()
 {
-    this->arreter();
-    this->time->setHMS(0,0,0);
-    this->demarrer();
+   arreter();
+    time->setHMS(0,0,0);
+   demarrer();
 }
 
 gSimulation::~gSimulation()
@@ -58,3 +58,5 @@ gSimulation::~gSimulation()
     delete timer;
     delete time;
 }
+QTime *gSimulation::time;
+QTimer *gSimulation::timer;

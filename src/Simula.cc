@@ -5,9 +5,9 @@
 #include "simulaGui.hh"
 
 int main ( int argc, char ** argv) {
-	QApplication app ( argc, argv);
-	simulaGui g;
-	g.show();
-  return app.exec();
+    QApplication app ( argc, argv);
+    simulaGui g;
+    g.show();
+    return app.exec();
 
 }

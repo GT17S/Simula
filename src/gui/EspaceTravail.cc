@@ -12,6 +12,7 @@
 #include "EspaceTravail.hh"
 #include "NoeudG.hh"
 #include "CableG.hh"
+#include "ConstantsRessources.hh"
 
 EspaceTravail::EspaceTravail(){
     clickedonce = false;
@@ -25,6 +26,7 @@ EspaceTravail::EspaceTravail(){
    
     setMouseTracking(true);
     auto test = new CableG(10,10,80,90);
+    //setCursor(QCursor(QPixmap(ICON_NEW)));
     
     scene->addItem(test);
     vue->show();

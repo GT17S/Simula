@@ -3,7 +3,7 @@
 NoeudG::NoeudG(QGraphicsScene *parent, QPixmap pixmap) : QGraphicsPixmapItem(pixmap)
 {
     this->setFlag(QGraphicsItem::ItemIsMovable);
-    parent->addItem(this);
+    //parent->addItem(this);
 
     this->setTabWidget(new QTabWidget);
     //tabWidget->addTab("GENERAL");
@@ -37,10 +37,10 @@ NoeudG::NoeudG(QGraphicsScene *parent, QPixmap pixmap): QGraphicsPixmapItem(pixm
 */
 NoeudG::~NoeudG()
 {
-    delete pixmap;
-    delete item;
     delete tabWidget;
     delete buttonBox;
+    delete item;
+    //delete pixmap; Sert à rien de delete c'est passé statiquement au super constructeur
 }
 
 QGraphicsPixmapItem *NoeudG::getItem() const

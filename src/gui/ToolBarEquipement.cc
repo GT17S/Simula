@@ -60,21 +60,21 @@ void ToolBarEquipement::ajouterNoeud(int n){
 
     switch(n){
         case 1:{ //Routour
-            RouteurG* tmpRouteur = new RouteurG(ss2->getScene());
-            ss2->addNoeud(tmpRouteur);
+            //NoeudG* tmpRouteur = new RouteurG(ss2->getScene());
+            ss2->addNoeud(new RouteurG(ss2->getScene()));
             break;
         }
         case 2:{//
-            qDebug() << "Non implemented";
+            ss2->addNoeud(new HubG(ss2->getScene()));
             break;
         }
         case 3:{
-            StationG* tmpStation = new StationG(ss2->getScene()); 
-            ss2->addNoeud(tmpStation);
+            //NoeudG* tmpStation = new StationG(ss2->getScene()); 
+            ss2->addNoeud(new StationG(ss2->getScene()));
             break;
         }  
         case 4:{
-            qDebug() << "Non implemented";
+             ss2->addNoeud(new SwitchG(ss2->getScene()));
             break;
         }
        default: break;

@@ -10,12 +10,12 @@ ToolBarEquipement::ToolBarEquipement(QWidget* par): QToolBar(par){
     this->setMaximumWidth(100);
     this->setOrientation(Qt::Vertical);
     //Creer les boutons
-    QPixmap cable("../../ressources/logo.png");
-    QPixmap suppr("../../ressources/logo.png");
-    QPixmap routeur("../../ressources/logo.png");
-    QPixmap hub("../../ressources/logo.png");
-    QPixmap station("../../ressources/logo.png");
-    QPixmap sw("../../ressources/logo.png");
+    QPixmap cable("../../ressources/wire.png");
+    QPixmap suppr("../../ressources/cross.png");
+    QPixmap routeur("../../ressources/router.png");
+    QPixmap hub("../../ressources/hub.png");
+    QPixmap station("../../ressources/computer.png");
+    QPixmap sw("../../ressources/switch.png");
 
     QAction* Addcable =  this->addAction(QIcon(cable),"Ajouter Cable");
     QAction* DelEq = this->addAction(QIcon(suppr),"Supprimer Equipement");

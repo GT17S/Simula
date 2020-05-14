@@ -22,4 +22,4 @@ float CalculLatenceDynamique(Graphe *graphe,Congestion *congestion,Data *data, i
 
 	return latency;
 }
-
+	

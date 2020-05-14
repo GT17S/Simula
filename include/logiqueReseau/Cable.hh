@@ -54,8 +54,8 @@ private:
   static int i; /*!< Générateur des ID */
 
   int id; /*!< Identificateur du cable */
-  int debitMax; /*!< Débit maximum du câble */
-  float debitAcc; /*!< Débit actuel du câble */
+  int debitMax; /*!< Bande Passante Max */
+  float debitAcc; /*!< Bande passante  */
   float latence; /*!< Latence du cable */ //refrence to congestion
   int MTU; /*! < Taille maximale du paquet transmis */
   cableT type; /*!< Type du cable */

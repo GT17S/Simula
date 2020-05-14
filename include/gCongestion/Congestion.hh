@@ -38,6 +38,9 @@ private:
     std::map<int,destination> mapFileEnvoyer;/*!<  liste des datas a envoyer avec num de segments*/
     std::map<int ,destination> mapFileACK;/*!<  liste des Acks a recevoir */
 
+    //Cet valeur est à afficher dans le panneau d'evenement
+    float latenceLastSend; /*!<  Latence d'un envoie entre A et B  en ms */
+
 
 public:
     /*!
@@ -89,6 +92,7 @@ public:
       * \return RoundTripTime (int)
       */
     int getBaseRtt(){return baseRtt;}
+
     /*!
       * \brief setCwnd
       *  Modifier la taille de la fentre de congestion
@@ -190,6 +194,7 @@ public:
      */
     void verifieNbrSegment(Noeud *stSrc);
 
+
     friend float CalculRTT(Congestion *g);
     friend float CalculLatenceDynamique(Graphe *graphe,Congestion *congestion,Data *data);
 
@@ -200,7 +205,6 @@ public:
      * \param key : trouve le data dans mapFileEnvoyer;
      */
    void retrnasmission(int key);
-
    /*!
      * \brief getMapFileEnvoyer
      * \return liste des datas a envoyer avec num de segments
@@ -217,7 +221,6 @@ public:
      *  Modifier liste des datas a envoyer avec leurs numeros de segments
      * \param _map : liste des datas a envoyer avec leurs numeros de segments
      */
-
    void setMapFileEnvoyer(std::map<int, destination> _map);
    /*!
      * \brief setMapFileACK

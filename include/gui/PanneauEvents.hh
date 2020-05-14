@@ -14,12 +14,11 @@
 #include "gSimulation.hh"
 #include "QString"
 
-
 /*!
  * \class PanneauEvents
  * \brief La classe PanneauEvents pour afficher les traces des algorithmes de congestions  .
  */
-
+class gSimulation;
 class PanneauEvents : public QWidget
 {
     Q_OBJECT

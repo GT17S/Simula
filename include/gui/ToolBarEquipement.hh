@@ -39,10 +39,10 @@ public:
 
     
 public slots:
-    void selectionnerEquipement(){};
+  	//void selectionnerEquipement(){};
     void ajouterNoeud(int n);
     void ajouterCable();
-    void supprimerEquipement(){std::cout << "Winiw" << std::endl;};
+    void supprimerEquipement();
 
 };
 

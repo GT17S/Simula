@@ -80,3 +80,10 @@ void ToolBarEquipement::ajouterNoeud(int n){
        default: break;
     }
 }
+
+ void ToolBarEquipement::supprimerEquipement(){
+      auto s  = this->parent();
+      simulaGui* ss = dynamic_cast<simulaGui*>(s);
+      auto ss2 = dynamic_cast<EspaceTravail*>(ss->getMainlayout()->itemAtPosition(1,1)->widget());
+      assert(ss && ss2);  
+ }

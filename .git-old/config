@@ -1,0 +1,16 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[remote "origin"]
+	url = https://github.com/Groupe-TCP-IP/Simula.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "dev"]
+	remote = origin
+	merge = refs/heads/dev
+[branch "AjouterCables"]
+	remote = origin
+	merge = refs/heads/AjouterCables
+[advice]
+	objectNameWarning = false

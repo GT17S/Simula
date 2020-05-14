@@ -51,3 +51,39 @@ void ToolBarEquipement::ajouterCable(){
    assert(ss && ss2);  
    ss2->addCatPos();
 }
+
+void ToolBarEquipement::ajouterNoeud(int n){
+   auto s  = this->parent();
+   simulaGui* ss = dynamic_cast<simulaGui*>(s);
+   auto ss2 = dynamic_cast<EspaceTravail*>(ss->getMainlayout()->itemAtPosition(1,1)->widget());
+   assert(ss && ss2); 
+
+    switch(n){
+        case 1:{ //Routour
+            //NoeudG* tmpRouteur = new RouteurG(ss2->getScene());
+            ss2->addNoeud(new RouteurG(ss2->getScene()));
+            break;
+        }
+        case 2:{//
+            ss2->addNoeud(new HubG(ss2->getScene()));
+            break;
+        }
+        case 3:{
+            //NoeudG* tmpStation = new StationG(ss2->getScene()); 
+            ss2->addNoeud(new StationG(ss2->getScene()));
+            break;
+        }  
+        case 4:{
+             ss2->addNoeud(new SwitchG(ss2->getScene()));
+            break;
+        }
+       default: break;
+    }
+}
+
+ void ToolBarEquipement::supprimerEquipement(){
+      auto s  = this->parent();
+      simulaGui* ss = dynamic_cast<simulaGui*>(s);
+      auto ss2 = dynamic_cast<EspaceTravail*>(ss->getMainlayout()->itemAtPosition(1,1)->widget());
+      assert(ss && ss2);  
+ }

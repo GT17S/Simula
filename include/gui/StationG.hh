@@ -42,7 +42,7 @@ class StationG  :  public virtual NoeudG
              * \param pixmap : voir #QPixmap
              * \param parent : voir #QGraphicsScene
         */
-        StationG(QGraphicsScene *parent=nullptr,QPixmap pixmap = QPixmap("../../ressources/computer.png"));
+        StationG(QGraphicsScene *parent=nullptr,QPixmap pixmap = QPixmap("../../ressources/station.png"));
 
         /*!
              * \brief desctructeur

@@ -20,7 +20,7 @@ simulaGui::simulaGui(){
     widgets.append(new PanneauOutils()); //0
    	widgets.append(new EspaceTravail());
     widgets.append(new PanneauData());
-    widgets.append(new ToolBarEquipement(this)); 
+    widgets.append(new ToolBarEquipement());
     widgets.append(new PanneauEvents());
  	
 

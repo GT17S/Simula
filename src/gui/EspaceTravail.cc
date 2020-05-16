@@ -12,7 +12,6 @@
 #include "EspaceTravail.hh"
 #include "NoeudG.hh"
 #include "CableG.hh"
-#include "ConstantsRessources.hh"
 
 EspaceTravail::EspaceTravail(){
     p1.setX(0);

@@ -3,46 +3,86 @@
 
 
 
-ToolBarEquipement::ToolBarEquipement(QWidget* par): QToolBar(par){
+ToolBarEquipement::ToolBarEquipement(){
 
+    createButtons();
+    createSignals();
+}	
+
+void ToolBarEquipement::createButtons(){
     //this->setStyleSheet("background-color: pink");
-	this->setMinimumSize(50,430);
+    this->setMinimumSize(50,430);
     this->setMaximumWidth(100);
     this->setOrientation(Qt::Vertical);
+    this->setObjectName("equiBarMain");
     //Creer les boutons
-    QPixmap cable("../../ressources/wire.png");
-    QPixmap suppr("../../ressources/cross.png");
-    QPixmap routeur("../../ressources/router.png");
-    QPixmap hub("../../ressources/hub.png");
-    QPixmap station("../../ressources/computer.png");
-    QPixmap sw("../../ressources/switch.png");
 
-    QAction* Addcable =  this->addAction(QIcon(cable),"Ajouter Cable");
-    QAction* DelEq = this->addAction(QIcon(suppr),"Supprimer Equipement");
-    this->addSeparator();
-    QAction* NRouteur =  this->addAction(QIcon(routeur),"Nouveau Routeur");
-    QAction* NHub = this->addAction(QIcon(hub),"Nouveau Hub");
-    QAction* NStation =this->addAction(QIcon(station),"Nouvelle Station");
-    QAction* NSw =this->addAction(QIcon(sw),"Nouveau Swtich");
+    QToolBar * hbar = new QToolBar;
+    hbar->setOrientation(Qt::Horizontal);
+    hbar->setObjectName("hbar");
+    addWidget(hbar);
+    selectAction = new QPushButton(this);
+    selectAction->setObjectName("selectAction");
+    //selectAction->setProperty("hbar", true);
+    selectAction->setToolTip("Selectionner");
+    hbar->addWidget(selectAction);
 
-    //Mapper le 4 triggered vers 
+    supprAction = new QPushButton(this);
+    supprAction->setObjectName("supprAction");
+    //supprAction->setProperty("outilsBar", false);
+    supprAction->setToolTip("Supprimer");
+    hbar->addWidget(supprAction);
+    addSeparator();
+    cableAction = new QPushButton(this);
+    cableAction->setObjectName("cableAction");
+    cableAction->setProperty("outilsBar", false);
+    cableAction->setToolTip("Cable");
+    addWidget(cableAction);
+
+    stationAction = new QPushButton(this);
+    stationAction->setObjectName("stationAction");
+    stationAction->setProperty("outilsBar", false);
+    stationAction->setToolTip("Station");
+    addWidget(stationAction);
+
+    routeurAction = new QPushButton(this);
+    routeurAction->setObjectName("routeurAction");
+    routeurAction->setProperty("outilsBar", false);
+    routeurAction->setToolTip("Routeur");
+    addWidget(routeurAction);
+
+    hubAction = new QPushButton(this);
+    hubAction->setObjectName("hubAction");
+    hubAction->setProperty("outilsBar", false);
+    hubAction->setToolTip("Hub");
+    addWidget(hubAction);
+
+    switchAction = new QPushButton(this);
+    switchAction->setObjectName("switchAction");
+    switchAction->setProperty("outilsBar", false);
+    switchAction->setToolTip("Switch");
+    addWidget(switchAction);
+
+}
+
+void ToolBarEquipement::createSignals(){
+    //Mapper le 4 clicked vers
     QSignalMapper* mapper = new QSignalMapper(this);
     connect(mapper, SIGNAL(mapped(int)), this, SLOT(ajouterNoeud(int)));
 
-    connect(Addcable, SIGNAL(triggered()), this, SLOT(ajouterCable()));
-    connect(DelEq, SIGNAL(triggered()), this, SLOT(supprimerEquipement()));
-    mapper->setMapping(NRouteur, 1);
-    mapper->setMapping(NHub, 2);
-    mapper->setMapping(NStation, 3);
-    mapper->setMapping(NSw, 4);
+    connect(cableAction, SIGNAL(clicked()), this, SLOT(ajouterCable()));
+    connect(supprAction, SIGNAL(clicked()), this, SLOT(supprimerEquipement()));
+    mapper->setMapping(routeurAction, 1);
+    mapper->setMapping(hubAction, 2);
+    mapper->setMapping(stationAction, 3);
+    mapper->setMapping(switchAction, 4);
 
-  	connect(NRouteur, SIGNAL(triggered()), mapper, SLOT(map()));
-    connect(NHub, SIGNAL(triggered()), mapper, SLOT(map()));
-    connect(NStation, SIGNAL(triggered()), mapper, SLOT(map()));
-    connect(NSw, SIGNAL(triggered()), mapper, SLOT(map()));
+    connect(routeurAction, SIGNAL(clicked()), mapper, SLOT(map()));
+    connect(hubAction, SIGNAL(clicked()), mapper, SLOT(map()));
+    connect(stationAction, SIGNAL(clicked()), mapper, SLOT(map()));
+    connect(switchAction, SIGNAL(clicked()), mapper, SLOT(map()));
 
-}	
-
+}
 
 void ToolBarEquipement::ajouterCable(){
    auto s  = this->parent();

@@ -6,7 +6,6 @@
 #include <QPixmap>
 #include <QStateMachine>
 #include "GFichier.hh"
-#include "ConstantsRessources.hh"
 
 PanneauOutils::PanneauOutils(){
 
@@ -16,8 +15,6 @@ PanneauOutils::PanneauOutils(){
     createButtons();
     createSignals();
     createShortCuts();
-
-
 
 }
 
@@ -65,8 +62,8 @@ void PanneauOutils::createButtons(){
     exportButton->setProperty("outilsBar", true);
     exportButton->setToolTip("Exporter");
     QMenu * menu = new QMenu;
-    exporterDot = menu->addAction(QIcon(QPixmap(ICON_EXPORT)),"Exporter en Dot");
-    exporterPng = menu->addAction(QIcon(QPixmap(ICON_EXPORT_PNG)),"Exporter en Image");
+    exporterDot = menu->addAction(QIcon(QPixmap("../../ressources/outilsBar/exportImage.png")),"Exporter en Dot");
+    exporterPng = menu->addAction(QIcon(QPixmap("../../ressources/outilsBar/exportImage.png")),"Exporter en Image");
     exportButton->setMenu(menu);
     //exportButton->setPopupMode(QToolButton::MenuButtonPopup);
     addWidget(exportButton);

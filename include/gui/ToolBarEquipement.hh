@@ -4,8 +4,6 @@
 
 #include <QToolBar>
 #include <QWidget>
-#include <QPixmap>
-#include <QAction>
 #include <QSignalMapper>
 #include <iostream>
 
@@ -32,9 +30,19 @@ class StationG;
 
 class ToolBarEquipement : public QToolBar {
     Q_OBJECT
+private:
+    QPushButton *selectAction,
+                *supprAction,
+                *cableAction,
+                *stationAction,
+                *routeurAction,
+                *hubAction,
+                *switchAction;
+    void createButtons();
+    void createSignals();
 public:
-    ToolBarEquipement(QWidget*);
-    virtual ~ToolBarEquipement(){};
+    ToolBarEquipement();
+    virtual ~ToolBarEquipement(){}
 
 
     

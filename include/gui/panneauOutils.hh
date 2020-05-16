@@ -3,13 +3,10 @@
 
 #include <QToolBar>
 #include <QWidget>
-#include <QAction>
-#include <QTimer>
 #include <QDebug>
-#include <QLabel>
 #include <QMenu>
-#include <QToolButton>
 #include <QPushButton>
+#include <QAction>
 #include "EspaceTravail.hh"
 #include "gSimulation.hh"
 class PanneauOutils : public QToolBar{
@@ -17,18 +14,19 @@ class PanneauOutils : public QToolBar{
 private :
     QString curFile;
     gSimulation gestSimulation;
-    QAction *nouveau,
-            *ouvrir,
-            *sauvegarder,
-            *exporterDot,
-            *exporterPng,
-            *demarrer,
-            *pause,
-            *arreter,
-            *relancer,
-            *changerMode,
-            *envoyer;
-    QToolButton * exportButton;
+    QPushButton *nouveau,
+                *ouvrir,
+                *sauvegarder,
+                *simDemPause,
+                *arreter,
+                *relancer,
+                *changerMode,
+                *envoyer,
+                *zoomIn,
+                *zoomOut,
+                *exportButton;
+    QAction     *exporterDot,
+                *exporterPng;
 
 void createButtons();
 void createSignals();
@@ -46,11 +44,10 @@ public slots:
     void sauvegarderFichier();
     void exportDot();
     void exportPng();
-    void demarrerSimulation();
-    void pauseSimulation();
+    void demarrerPauseSimulation();
     void arreterSimulation();
     void resetSimulation();
-    void changeMode(){std::cout<< "changeMode"<<std::endl;}
+    void changeMode();
     void envoieD(){std::cout<< "envoieD"<<std::endl;}
 
 };

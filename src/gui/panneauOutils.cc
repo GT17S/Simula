@@ -1,6 +1,6 @@
 #include "panneauOutils.hh"
 #include <iostream>
-
+#include <QWidgetAction>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QPixmap>
@@ -39,56 +39,115 @@ PanneauOutils::~PanneauOutils()
 
 void PanneauOutils::createButtons(){
 
-    //Bouttons
-    nouveau = this->addAction(QIcon(QPixmap(ICON_NEW)),"Nouveau fichier");
-    ouvrir = this->addAction(QIcon(QPixmap(ICON_OUVRIR)),"Ouvrir fichier");
-    sauvegarder =this->addAction(QIcon(QPixmap(ICON_SAVE)),"Sauvegarder fichier");
-    exportButton = new QToolButton;
-    addWidget(exportButton);
-    this->addSeparator();
-    demarrer = this->addAction(QIcon(QPixmap(ICON_SIM_START)),"demarrer Simulation");
-    pause=this->addAction(QIcon(QPixmap(ICON_SIM_PAUSE)),"pause Simulation");
-    arreter = this->addAction(QIcon(QPixmap(ICON_SIM_STOP)),"Arreter Simulation");
-    relancer = this->addAction(QIcon(QPixmap(ICON_SIM_RESET)),"Relancer Simulation");
-    changerMode = this->addAction(QIcon(QPixmap(ICON_SIM_CHANGEMODE)),"Changer mode");
-    envoyer = this->addAction(QIcon(QPixmap(ICON_ENVOYER)),"Envoyer Message");
+    //Boutton
+    setObjectName("outilsBarMain");
+   // setStyleSheet("background-color : white;");
+    nouveau = new QPushButton(this);
+    nouveau->setObjectName("nvAction");
+    nouveau->setProperty("outilsBar", true);
+    nouveau->setToolTip("Nouveau");
+    addWidget(nouveau);
 
+    ouvrir = new QPushButton(this);
+    ouvrir->setObjectName("ouvrirAction");
+    ouvrir->setProperty("outilsBar", true);
+    ouvrir->setToolTip("Ouvrir fichier");
+    addWidget(ouvrir);
+
+    sauvegarder = new QPushButton(this);
+    sauvegarder->setObjectName("svgdAction");
+    sauvegarder->setProperty("outilsBar", true);
+    sauvegarder->setToolTip("Sauvegarder");
+    addWidget(sauvegarder);
+
+    exportButton = new QPushButton(this);
+    exportButton->setObjectName("exportAction");
+    exportButton->setProperty("outilsBar", true);
+    exportButton->setToolTip("Exporter");
     QMenu * menu = new QMenu;
     exporterDot = menu->addAction(QIcon(QPixmap(ICON_EXPORT)),"Exporter en Dot");
     exporterPng = menu->addAction(QIcon(QPixmap(ICON_EXPORT_PNG)),"Exporter en Image");
-
-
     exportButton->setMenu(menu);
-    exportButton->setPopupMode(QToolButton::MenuButtonPopup);
+    //exportButton->setPopupMode(QToolButton::MenuButtonPopup);
+    addWidget(exportButton);
+
+    addSeparator();
+    /* simulation */
+    simDemPause = new QPushButton(this);
+    simDemPause->setCheckable(true);
+    simDemPause->setObjectName("simDP");
+    simDemPause->setToolTip("Demarrer");
+    simDemPause->setProperty("outilsBar", true);
+    addWidget(simDemPause);
+
+    arreter = new QPushButton(this);
+    arreter->setObjectName("arreterAction");
+    arreter->setProperty("outilsBar", true);
+    arreter->setToolTip("Arreter");
+    addWidget(arreter);
+
+    relancer = new QPushButton(this);
+    relancer->setObjectName("relancerAction");
+    relancer->setProperty("outilsBar", true);
+    relancer->setToolTip("Relancer");
+    addWidget(relancer);
+
+    changerMode = new QPushButton(this);
+    changerMode->setCheckable(true);
+    changerMode->setObjectName("changeAction");
+    changerMode->setProperty("outilsBar", true);
+    changerMode->setToolTip("Mode");
+    addWidget(changerMode);
+
+    envoyer = new QPushButton(this);
+    envoyer->setObjectName("envoyerAction");
+    envoyer->setProperty("outilsBar", true);
+    envoyer->setToolTip("Envoyer");
+
+    addWidget(envoyer);
+
+    addSeparator();
+    zoomIn = new QPushButton(this);
+    zoomIn->setObjectName("zoomInAction");
+    zoomIn->setProperty("outilsBar", true);
+    zoomIn->setToolTip("Dé-zoomer");
+
+    addWidget(zoomIn);
+    zoomOut = new QPushButton(this);
+    zoomOut->setObjectName("zoomOutAction");
+    zoomOut->setProperty("outilsBar", true);
+    zoomOut->setToolTip("Zoomer");
+    addWidget(zoomOut);
+
     //connect(exportButton, SIGNAL(triggered(QAction*)), exportButton, SLOT(setDefaultAction(QAction*)));
 }
 void PanneauOutils::createSignals(){
 
     //connection SIGNAL-SLOT
-    connect(nouveau,SIGNAL(triggered()),this,SLOT(nouveauFichier()));
-    connect(ouvrir,SIGNAL(triggered()),this,SLOT(ouvrirFichier()));
-    connect(sauvegarder,SIGNAL(triggered()),this,SLOT(sauvegarderFichier()));
+    connect(nouveau,SIGNAL(clicked()),this,SLOT(nouveauFichier()));
+    connect(ouvrir,SIGNAL(clicked()),this,SLOT(ouvrirFichier()));
+    connect(sauvegarder,SIGNAL(clicked()),this,SLOT(sauvegarderFichier()));
     connect(exporterDot,SIGNAL(triggered()),this,SLOT(exportDot()));
     connect(exporterPng,SIGNAL(triggered()),this,SLOT(exportPng()));
     connect(gestSimulation.getTimer(),SIGNAL(timeout()),this,SLOT(timer()));
-    connect(demarrer,SIGNAL(triggered()),this,SLOT(demarrerSimulation()));
-    connect(pause,SIGNAL(triggered()),this,SLOT(pauseSimulation()));
-    connect(arreter,SIGNAL(triggered()),this,SLOT(arreterSimulation()));
-    connect(relancer,SIGNAL(triggered()),this,SLOT(resetSimulation()));
-    connect(changerMode,SIGNAL(triggered()),this,SLOT(changeMode()));
-    connect(envoyer,SIGNAL(triggered()),this,SLOT(envoieD()));
+    connect(simDemPause,SIGNAL(clicked()),this,SLOT(demarrerPauseSimulation()));
+   // connect(pause,SIGNAL(triggered()),this,SLOT(pauseSimulation()));
+    connect(arreter,SIGNAL(clicked()),this,SLOT(arreterSimulation()));
+    connect(relancer,SIGNAL(clicked()),this,SLOT(resetSimulation()));
+    connect(changerMode,SIGNAL(clicked()),this,SLOT(changeMode()));
+    connect(envoyer,SIGNAL(clicked()),this,SLOT(envoieD()));
 
 }
 void PanneauOutils::createShortCuts(){
-
+/*
     //Racourcis
     nouveau->setShortcut(QKeySequence("Ctrl+N"));
     ouvrir->setShortcut(QKeySequence("Ctrl+O"));
     sauvegarder->setShortcut(QKeySequence("Ctrl+S"));
     //exporter->setShortcut(QKeySequence("Ctrl+E"));
-    demarrer->setShortcut(QKeySequence("Ctrl+D"));
+    //demarrer->setShortcut(QKeySequence("Ctrl+D"));
     arreter->setShortcut(QKeySequence("Ctrl+Q"));
-
+*/
 }
 
 void PanneauOutils::nouveauFichier(){
@@ -173,18 +232,35 @@ void PanneauOutils::exportPng(){
 }
 
 
-void PanneauOutils::demarrerSimulation(){
-    this->gestSimulation.demarrer();
-}
-void PanneauOutils::pauseSimulation(){
-    this->gestSimulation.pause();
+void PanneauOutils::demarrerPauseSimulation(){
+    if(simDemPause->isChecked()){
+        simDemPause->setToolTip("Pause");
+        this->gestSimulation.demarrer();
+    }
+
+    else{
+        simDemPause->setToolTip("Demarrer");
+        this->gestSimulation.pause();
+    }
+
 }
 void PanneauOutils::arreterSimulation(){
     this->gestSimulation.arreter();
+    simDemPause->setChecked(false);
 }
 void PanneauOutils::resetSimulation(){
     this->gestSimulation.reset();
 
+}
+
+void PanneauOutils::changeMode(){
+    if(changerMode->isChecked()){
+        changerMode->setToolTip("Mode manuel");
+    }
+
+    else{
+        changerMode->setToolTip("Mode automatique");
+    }
 }
 
 void PanneauOutils::timer(){

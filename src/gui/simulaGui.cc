@@ -5,7 +5,7 @@ simulaGui::simulaGui(){
     //Initialisation de la fenetre principale
 	this->setWindowTitle("Simula");
 	this->setWindowIcon(QIcon("../../ressources/logo.png"));
-	this->setStyleSheet("background-color: lightgray;");
+    this->setStyleSheet("background-color: #f5f2f2;");
     this->setMinimumSize(900,600);
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     resize(1000,600);

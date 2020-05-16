@@ -16,6 +16,8 @@ QFile * ouvrirlXml(QString nomFichier, QIODevice::OpenMode mode){
 }
 
 void lireXml(QString nomFichier){
+    Graphe * graphe = Graphe::get();
+    graphe->~Graphe();
 
     QFile * fichier = ouvrirlXml(nomFichier, QIODevice::ReadOnly);
     if(!fichier){

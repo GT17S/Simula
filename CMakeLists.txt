@@ -86,7 +86,7 @@ file(
        )
 
 qt5_wrap_cpp(SOURCES ${HEADERSGUI})
-add_executable (Simula ${SOURCES} ${HEADERS} ${header_list})
+add_executable (Simula ${SOURCES} ${HEADERS} ${header_list} resources.qrc)
 target_link_libraries(Simula ${Qt5Widgets_LIBRARIES} Qt5::Widgets Qt5::Xml ${Boost_LIBRARIES})	
 
 

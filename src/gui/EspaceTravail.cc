@@ -12,6 +12,7 @@
 #include "EspaceTravail.hh"
 #include "NoeudG.hh"
 #include "CableG.hh"
+#include "ConstantsRessources.hh"
 
 EspaceTravail::EspaceTravail(){
     p1.setX(0);
@@ -33,7 +34,6 @@ EspaceTravail::EspaceTravail(){
     this->setMinimumSize(450,430);
     vue->setAcceptDrops(true);
     scene->setSceneRect(0,0,1600,1000);
-
     vue->show();
     scene->update();
 }

@@ -86,12 +86,24 @@ void Station::envoyerMessage(int key, destination dest){
 
     vector<Cable*> path;
     Graphe::genererChemin(id_src, idNoeud, id_dest, path, false);
+    this->lastpath = path;
     int size_p = path.size();
 
     if(!size_p){
         std::cout << "Je connais pas le chemin vers "<<id_dest<<std::endl;
         return;
     }
+
+    
+    //Une fois que le paquet est envoyé on met à jour le rtt
+    controleur->setBaseRtt(CalculRTT(controleur));
+    //On calcule la latence de l'envoi dans le contrôleur
+    controleur->setlatence(CalculLatenceDynamique(Graphe::get(), controleur, dest.data, id_src, id_dest));
+    //Et on diminue la bande passante du cable à l'envoi pour chaque cable du chemin
+     for (int i = 0; i < path.size(); ++i){   
+            float tmpcableBP = path[i]->getDebitAcc();
+            path[i]->setDebitAcc(tmpcableBP - (float)dest.data->getOriginialStringSize()*8);
+        }    
 
     // prochaine destination
     extremite * extNext = path[size_p -1]->getInverseExt(this);
@@ -100,6 +112,12 @@ void Station::envoyerMessage(int key, destination dest){
 }
 
 void Station::recevoirMessage(int key, int dest_i, destination dest){
+     //Libèration de la bande passante dans les cas particuliers de reception
+    for (int i = 0; i < lastpath.size(); ++i){   
+        float tmpcableBP = lastpath[i]->getDebitAcc();
+        lastpath[i]->setDebitAcc(tmpcableBP + (float)dest.data->getOriginialStringSize()*8);
+    }    
+
     std::cout <<"Je suis une station "<< idNoeud<<std::endl;
     // std::cout <<"TYPE DATA = "<< dest.data->getType() << std::endl;
     if(dest.data->getType() < 3){
@@ -158,9 +176,15 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
                 int nSeq = lire_bits ( *(dest.data)->getSeq(), 32, 32).to_ulong();
                 if(nSeq < 0) return;
 
+
                 desencapsule_segment(dest.data);
                 std::cout <<"Jai recu le message :"<<std::endl<<showMessage(dest.data) <<std::endl;
                 delete dest.data;
+                //Libèration de la bande passante 
+                for (int i = 0; i < lastpath.size(); ++i){   
+                    float tmpcableBP = lastpath[i]->getDebitAcc();
+                    lastpath[i]->setDebitAcc(tmpcableBP + (float)dest.data->getOriginialStringSize()*8);
+                }    
                 // envoi nouveau ack
                 controleur->verifieNumSegment(this, n2, nSeq+1);
             }

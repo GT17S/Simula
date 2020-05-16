@@ -21,6 +21,8 @@
 #include <QPoint>
 #include <iostream>
 
+#include "NoeudG.hh"
+
 /*!
  * \class EspaceTravail
  * \brief La classe EspaceTravail représentant l'Espace de Travail de l'utilisateur sur le protocole TCP/IP.
@@ -36,8 +38,7 @@ private:
     //QVector<Equipement*> Equipement;/*!< Vecteur d'Equipements se trouvant sur l'espace de travail*/
 
     /*!< Booléen qui vérifie si deux clics on été faits */
-    bool clickedonce;
-    int nbclic = 0;
+    QPoint p1,p2;
     QPushButton *pb;
     QLabel *o;
 
@@ -68,7 +69,7 @@ public:
          * getter qui recupere la Scene.
          * \return voir #scene
     */
-    QGraphicsScene *getScene() const {return scene;}
+    QGraphicsScene *getScene()  {return scene;}
 
     /*!
          * \brief setScene
@@ -82,7 +83,7 @@ public:
          * getter qui recupere la Vue.
          * \return voir #vue
     */
-    QGraphicsView *getVue() const {return vue;}
+    QGraphicsView *getVue()  {return vue;}
 
     /*!
          * \brief setVue
@@ -105,6 +106,7 @@ public:
          * \param  _vue : voir #vue
     */
     void addCatPos();
+    void addNoeud(NoeudG* noeud);
 
 
 protected:

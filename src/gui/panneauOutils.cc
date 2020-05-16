@@ -172,7 +172,6 @@ void PanneauOutils::nouveauFichier(){
         }
     }
     // nouveau fichier
-
 }
 void PanneauOutils::ouvrirFichier(){
     // verifier si un fichier est déja ouvert
@@ -269,7 +268,20 @@ void PanneauOutils::timer(){
     this->gestSimulation.demarrer();
     *t=t->addSecs(1);
     this->gestSimulation.getTimer()->setInterval(1000);
+    PanneauEvents::afftime();
 }
+
+void PanneauOutils::toPng(){
+    QString fileName = QFileDialog::getSaveFileName(this,
+       tr("Save PNG"));
+
+    if (fileName.isEmpty())
+          return;
+  else{
+           /* QPixmap pixMap = QPixmap::grabWidget(EspaceTravail::getVue());
+            pixMap.save(fileName+".png");
+            */
+}}
 
 
 

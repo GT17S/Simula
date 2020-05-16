@@ -32,7 +32,7 @@ CableG::~CableG(){
 }
 
 void CableG::updateaff(){
-	tooltipstr << "Cable: " << this->getId() << std::endl << "Latence Acutelle :"<< this->getLatence() << std::endl \
+	tooltipstr << "Cable: " << this->getId() << std::endl << "Bande Passante:"<< this->getDebitAcc() << std::endl \
 			   << "MTU :" <<  this->getMTU() << std::endl << "Type de cable: " << this->getType() << std::endl \
 			   << "Extremité 1 :" << this->getExt1()->interface << std::endl << "Extremité 2 :" << this->getExt1()->interface;
 	

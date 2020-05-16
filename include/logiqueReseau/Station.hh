@@ -14,6 +14,7 @@
 #include "Noeud.hh"
 #include "Graphe.hh"
 #include "Congestion.hh"
+#include "congestionOutil.hh"
 
 using std::string;
 using std::vector;
@@ -35,6 +36,8 @@ class Station : public virtual Noeud {
     int numSeq;
     bool isPasserelle;
     multimap<int, Data*> fragments;
+
+   vector<Cable*> lastpath;
 public:
     /*!
      * \brief Constructeur par défaut

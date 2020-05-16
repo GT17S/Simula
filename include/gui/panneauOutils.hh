@@ -9,6 +9,7 @@
 #include <QAction>
 #include "EspaceTravail.hh"
 #include "gSimulation.hh"
+#include "PanneauEvents.hh"
 class PanneauOutils : public QToolBar{
 	Q_OBJECT
 private :
@@ -49,6 +50,11 @@ public slots:
     void resetSimulation();
     void changeMode();
     void envoieD(){std::cout<< "envoieD"<<std::endl;}
+    /*!
+         * \brief toPng
+         * slot qui permet d'exporter l'espace de travail en image png
+    */
+    void toPng();
 
 };
 

@@ -15,6 +15,7 @@ const float alpha = 0.125f; /*!< Cconstante alpha definie dans [RFC2098]*/
          * \brief Actualise le RTT de chaque gestionnaire de congestion à chaque envoie de message
          * Algorithme de Karn pour le calcul du RTT
          * \param g le gestionnaire de congestion à modifier
+         * \return la nouvelle valeur du RTT
 */
 
 float CalculRTT(Congestion *g);
@@ -24,9 +25,10 @@ float CalculRTT(Congestion *g);
          * \param congestion le controleur de congestion résponsable
          * \param graphe qui représente le réseau
          * \param data la donnée envoyée qui modifie la latence
+         * \return float résentant le mis par un paquet de A vers 2 en ms
 */
 
-float CalculLatenceDynamique(Graphe *graphe,Congestion *congestion,Data *data);
+float CalculLatenceDynamique(Graphe *graphe,Congestion *congestion,Data *data, int, int);
 
 #endif
 

@@ -34,12 +34,12 @@ if (DOXYGEN_FOUND)
 
     # request to configure the file
     configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
-     message("Doxygen build started")
+    message("Doxygen build started")
 
     # note the option ALL which allows to build the docs together with the application
     add_custom_target( doc_doxygen ALL
         COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
-        WORKING_DIRECTORY ../Simula/doc/
+        WORKING_DIRECTORY ../Simula
         COMMENT "Generating API documentation with Doxygen"
         VERBATIM )
 else (DOXYGEN_FOUND)

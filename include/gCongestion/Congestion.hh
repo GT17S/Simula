@@ -15,6 +15,7 @@
 #include "congestionOutil.hh"
 #include"Graphe.hh"
 #include <map>
+#include "PanneauEvents.hh"
 
 /*!
  * \class Congestion

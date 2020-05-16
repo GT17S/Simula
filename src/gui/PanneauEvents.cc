@@ -3,22 +3,26 @@
 using namespace std;
 #include "QDebug"
 PanneauEvents::PanneauEvents(){
+    setMinimumSize(100,410);
+    setMaximumWidth(350);
+    this->setLayout(&layout);
+    evenements=new QLabel(this);
+    evenements->setText("Evenements");
+    layout.addWidget(evenements);
+    evenements->setAlignment(Qt::AlignHCenter);
+    evenements->setStyleSheet("font-weight: bold; color: red;font: 15pt");
+
+    timerSimulation=new QLCDNumber(this);
+    timerSimulation->setDigitCount(8);
+    timerSimulation->setSegmentStyle(QLCDNumber::Flat);
+    layout.addWidget(timerSimulation);
+    timerSimulation->setMinimumHeight(30);
     txt=new QTextEdit(this);
     txt->setReadOnly(true);
     //txt->setEnabled(false);
+    layout.addWidget(txt);
     txt->setStyleSheet(QString::fromUtf8("background-color: rgb(122, 122, 122);"));
-    txt->setGeometry(0,70,300,350);
-
-    evenements=new QLabel(this);
-
-    evenements->setText("Evenements");
-   txt->setText(gSimulation::getTime()->toString("hh:mm:ss")+"  Debut de sumulation");
-    evenements->setGeometry(80,-15,120,50);
-    evenements->setStyleSheet("font-weight: bold; color: red;font: 15pt");
-    timerSimulation=new QLCDNumber(this);
-    timerSimulation->setSegmentStyle(QLCDNumber::Flat);
-    timerSimulation->setGeometry(40,25,200,40);
-    txt->append(gSimulation::getTime()->toString("hh:mm:ss")+"  Events 1");
+    txt->setText(gSimulation::getTime()->toString("hh:mm:ss")+"  Debut de sumulation");
 
 }
 void PanneauEvents::afftime(){

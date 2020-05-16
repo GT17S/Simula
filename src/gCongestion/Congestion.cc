@@ -87,24 +87,31 @@ void Congestion::slowStart(){
         congestionAvoidance();
     }
     std::cout<<"CWND = "<<cwnd<<std::endl;
+    //PanneauEvents::affichage("CWND est a :"+ QString::number(cwnd););
+
 }
 void Congestion::fastRecovery(){
     ssthresh=ssthresh/2;
     cwnd= ssthresh+3;
     cpt++;
+    //PanneauEvents::affichage("fastRecovery est lance");
+
 }
 
 void Congestion::congestionAvoidance(){
 
     cwnd =cwnd+1;
     cpt++;
+    //PanneauEvents::affichage("congestionAvoidance est lance");
+
 }
 
 void Congestion::verifieNbrSegment(Noeud * src){
-    //cout<<"hello"<<endl;
 
     if(mapFileEnvoyer.empty()){
         cout<<"fin de l'envoie 1"<<endl;
+        //PanneauEvents::affichage("fin de l'envoie 1 ");
+
         //resamblahe(segRecu());
         return;
     }
@@ -113,11 +120,12 @@ void Congestion::verifieNbrSegment(Noeud * src){
 
         if(i > mapFileEnvoyer.size()){
             cout<<"fin de l'envoie 2"<<endl;
+            //PanneauEvents::affichage("fin de l'envoie de pc : "+src.getNom());
+
             return;
         }
 
         auto it=mapFileEnvoyer.begin();
-        //std::advance(it,i);
         int key=(*it).first;
         destination ds;
         ds=(*it).second;
@@ -150,7 +158,6 @@ void Congestion::verifieNumSegment(Noeud * src,Noeud * dest, int nAck){//pc rece
 
     int nSeq = st->getNextNumSeq(),
         ipId = 100;
-    //std::cout<<"Retouuuur"<<std::endl;
     envoyer(src, dest, 0, 0,false, true, nSeq, nAck,ipId,false, ndata);
     verifieNbrSegment(st);
 

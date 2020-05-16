@@ -13,7 +13,7 @@
 #include "QLCDNumber"
 #include "gSimulation.hh"
 #include "QString"
-
+#include "QVBoxLayout"
 /*!
  * \class PanneauEvents
  * \brief La classe PanneauEvents pour afficher les traces des algorithmes de congestions  .
@@ -26,6 +26,7 @@ private:
   QLabel *evenements;/*!< Titre a afficher sur le panneau d'événements */
   static QTextEdit *txt;/*!< espace d'affichage des événements */
   static QLCDNumber *timerSimulation;/*!< affichage de timer*/
+  QVBoxLayout layout;/*!< alignment attributes de widget*/
 
 public:
   /*!

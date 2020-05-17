@@ -1,8 +1,8 @@
 #include "ThreadManager.hh"
 
 
-ThreadManager::ThreadManager(){
-
+ThreadManager::ThreadManager(): QObject(){
+	mutexmap["Cable"] = new std::mutex();
 }
 
 
@@ -13,6 +13,15 @@ ThreadManager::~ThreadManager(){
 }
 void ThreadManager::sendConcurrent(int i){
 
+}
+
+void ThreadManager::initStation(){
+	for(auto item : Graphe::get()->getSommets()){
+		Station* tmp = dynamic_cast<Station*>(item);
+		if(tmp){
+			WorkingThreads.push_back(std::thread(&Station::mainlocal,tmp, mutexmap["Cable"]));
+		}
+	}
 }
 
 void ThreadManager::joinall(){

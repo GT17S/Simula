@@ -557,7 +557,7 @@ void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, bool syn, bool ac
 
     // get next
     extremite * srcExt = path[size_p -1]->getExt(n1); // source
-    extremite * destExt; // destination finale
+    extremite * destExt; // destination finale 5
     Cable * cable;
     Noeud * n = n1;
     extremite * nextExt = nullptr; // prochaine destination

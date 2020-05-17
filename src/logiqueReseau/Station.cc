@@ -285,7 +285,17 @@ mf = 1 et offset != 0 : fragments
 
 
 
-
+void Station::mainlocal(std::mutex *m){
+        this->mutexcabl = m;
+        controleur->setMutex(m);
+        //while simulation en marche 
+        //récuperer les infos
+        //si info 
+        //envoyer sur un thread 
+        //sinon 
+        // on reboucle
+           
+}
 
 
 

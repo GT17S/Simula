@@ -117,7 +117,7 @@ void Congestion::verifieNbrSegment(Noeud * src){
     }
 
     for(int i = 0; i< cwnd; i++){
-
+        //lock mutex mapfile
         if(i > mapFileEnvoyer.size()){
             cout<<"fin de l'envoie 2"<<endl;
             //PanneauEvents::affichage("fin de l'envoie de pc : "+src.getNom());
@@ -132,14 +132,16 @@ void Congestion::verifieNbrSegment(Noeud * src){
         //
         // si syn = 1 alors doit attendre!
         int flags = lireFlagSegment(ds.data);
-
         if(flags == 2 || flags == 18){
             mapFileACK.insert ({key,ds});
 
         }
 
         mapFileEnvoyer.erase (it);
-        src->envoyerMessage(key, ds);
+        //std::mutex unlock
+        //std::thread emetteur(src::envoyerMessage(int, destination), key,ds);
+        
+       src->envoyerMessage(key, ds);
 
 
     }

@@ -16,7 +16,7 @@
 #define ETATS_H
 
 /*!
- * \enum etat_s
+ * \enum etats_s
  * \brief Etat du Simulation
  */
 

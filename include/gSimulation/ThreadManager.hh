@@ -10,18 +10,26 @@
 #include "Data.hh"
 #include "Graphe.hh"
 
-class ThreadManager
+class ThreadManager : QObject
 {
+	Q_OBJECT
 private:
 	std::vector<Data*> MovingData;
 	std::vector<std::thread> WorkingThreads;
-	std::map<std::string, std::mutex> mutexmap;	
+	std::map<std::string, std::mutex*> mutexmap;	
+
 public:
 	ThreadManager();
 	~ThreadManager();
 
+	void initStation();
+
 	void sendConcurrent(int i);
 	void joinall();
+
+public slots:
+ 	void envoieD(){};
+
 };
 
 #endif

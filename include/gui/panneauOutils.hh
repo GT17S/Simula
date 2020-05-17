@@ -49,7 +49,7 @@ public slots:
     void arreterSimulation();
     void resetSimulation();
     void changeMode();
-    void envoieD(){std::cout<< "envoieD"<<std::endl;}
+    void envoieD();
     /*!
          * \brief toPng
          * slot qui permet d'exporter l'espace de travail en image png

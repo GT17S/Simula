@@ -83,6 +83,7 @@ file(
     GLOB_RECURSE
     HEADERSGUI
     "include/gui/*.hh"
+    "include/gSimulation/ThreadManager.hh"
        )
 
 qt5_wrap_cpp(SOURCES ${HEADERSGUI})

@@ -284,7 +284,6 @@ void PanneauOutils::toPng(){
 }}
 
 
-
-
-
-
+void panneauOutils::envoieD(){
+    
+}

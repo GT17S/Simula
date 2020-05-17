@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <mutex>
 #include "Noeud.hh"
 #include "Graphe.hh"
 #include "Congestion.hh"
@@ -36,8 +37,9 @@ class Station : public virtual Noeud {
     int numSeq;
     bool isPasserelle;
     multimap<int, Data*> fragments;
-
-   vector<Cable*> lastpath;
+    //mutex sur cables
+    std::mutex* mutexcabl;
+    vector<Cable*> lastpath;
 public:
     /*!
      * \brief Constructeur par défaut
@@ -106,6 +108,9 @@ public:
     void envoyerMessage(int key, destination dest);
     void recevoirMessage(int key, int dest_i, destination dest);
 
+
+
+    void mainlocal(std::mutex* m);
 
 };
 

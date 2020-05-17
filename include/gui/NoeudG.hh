@@ -9,6 +9,7 @@
  */
 
 #include <Noeud.hh>
+#include "EspaceTravail.hh"
 #include <QPixmap>
 #include <QGraphicsPixmapItem>
 #include <QDialog>
@@ -18,6 +19,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsItem>
 
+class EspaceTravail;
 /*!
  * \class NoeudG
  * \brief La classe NoeudG représentant un noeud (equipement) sur l'interface graphique
@@ -25,7 +27,7 @@
  */
 class NoeudG  :  public QGraphicsPixmapItem
 {
-    private:
+private:
     //pour les icons afficher les differents noeuds
     QPixmap *pixmap;
     QGraphicsPixmapItem* item;
@@ -33,8 +35,9 @@ class NoeudG  :  public QGraphicsPixmapItem
     //fenetre en clickant sur l'un des noeuds
     QTabWidget *tabWidget;
     QDialogButtonBox *buttonBox;
+    EspaceTravail *parent;
 
-    public:
+public:
 
     /*!
          * \brief Construceur d'initialisation
@@ -43,7 +46,7 @@ class NoeudG  :  public QGraphicsPixmapItem
          * \param pixmap : voir #QPixmap
          * \param parent : voir #QGraphicsScene
     */
-    NoeudG(QGraphicsScene *parent=nullptr ,QPixmap pixmap= QPixmap("../../ressources/hub.png"));
+    NoeudG(EspaceTravail *parent, QPixmap pixmap= QPixmap("../../ressources/hub.png"));
 
 
     /*!
@@ -58,25 +61,25 @@ class NoeudG  :  public QGraphicsPixmapItem
          * \brief Destructeur
          * Destructeur de la classe NoeudG
      */
-      ~NoeudG();
+    ~NoeudG();
 
-        QPixmap *getPixmap() const;
-        void setPixmap(QPixmap *value);
+    QPixmap *getPixmap() const;
+    void setPixmap(QPixmap *value);
 
-        QGraphicsPixmapItem *getItem() const;
-        void setItem(QGraphicsPixmapItem *value);
+    QGraphicsPixmapItem *getItem() const;
+    void setItem(QGraphicsPixmapItem *value);
 
-        QTabWidget *getTabWidget() const;
-        void setTabWidget(QTabWidget *value);
+    QTabWidget *getTabWidget() const;
+    void setTabWidget(QTabWidget *value);
 
-        QDialogButtonBox *getButtonBox() const;
-        void setButtonBox(QDialogButtonBox *value);
+    QDialogButtonBox *getButtonBox() const;
+    void setButtonBox(QDialogButtonBox *value);
 
-     protected:
-        //void mouseDoubleClickEvent( QMouseEvent * e );
-        void mousePressEvent(QMouseEvent  *event);
-        //void mouseMoveEvent( QMouseEvent *e );
-        //void mouseReleaseEvent( QMouseEvent *e );
+protected:
+    //void mouseDoubleClickEvent( QMouseEvent * e );
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    //void mouseMoveEvent( QMouseEvent *e );
+    //void mouseReleaseEvent( QMouseEvent *e );
 };
 
 #endif

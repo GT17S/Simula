@@ -125,7 +125,7 @@ void PanneauOutils::createSignals(){
     connect(ouvrir,SIGNAL(clicked()),this,SLOT(ouvrirFichier()));
     connect(sauvegarder,SIGNAL(clicked()),this,SLOT(sauvegarderFichier()));
     connect(exporterDot,SIGNAL(triggered()),this,SLOT(exportDot()));
-    connect(exporterPng,SIGNAL(triggered()),this,SLOT(exportPng()));
+    connect(exporterPng,SIGNAL(triggered()),this,SLOT(toPng()));
     connect(gestSimulation.getTimer(),SIGNAL(timeout()),this,SLOT(timer()));
     connect(simDemPause,SIGNAL(clicked()),this,SLOT(demarrerPauseSimulation()));
     // connect(pause,SIGNAL(triggered()),this,SLOT(pauseSimulation()));
@@ -277,9 +277,9 @@ void PanneauOutils::toPng(){
     if (fileName.isEmpty())
         return;
     else{
-        /* QPixmap pixMap = QPixmap::grabWidget(EspaceTravail::getVue());
+        QPixmap pixMap = QPixmap::grabWidget(espaceTravail->getVue());
             pixMap.save(fileName+".png");
-            */
+
     }
 }
 

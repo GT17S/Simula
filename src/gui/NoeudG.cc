@@ -1,7 +1,8 @@
 #include <NoeudG.hh>
 
-NoeudG::NoeudG(QGraphicsScene *parent, QPixmap pixmap) : QGraphicsPixmapItem(pixmap)
+NoeudG::NoeudG(EspaceTravail *_parent, QPixmap pixmap) : QGraphicsPixmapItem(pixmap)
 {
+    parent = _parent;
     this->setFlag(QGraphicsItem::ItemIsMovable);
     //parent->addItem(this);
 
@@ -9,11 +10,6 @@ NoeudG::NoeudG(QGraphicsScene *parent, QPixmap pixmap) : QGraphicsPixmapItem(pix
     //tabWidget->addTab("GENERAL");
 }
 
-NoeudG::NoeudG(QPixmap pixmap) : QGraphicsPixmapItem(pixmap)
-{
-    this->setFlag(QGraphicsItem::ItemIsMovable);
-    this->moveBy(qrand()%200-100, qrand()%200-100);
-}
 /*
 NoeudG::NoeudG(QGraphicsScene *parent, QPixmap pixmap): QGraphicsPixmapItem(pixmap)
 {
@@ -83,9 +79,17 @@ void NoeudG::setPixmap(QPixmap *value)
     pixmap = value;
 }
 
-/////////////////***********///////////////////
-void NoeudG::mousePressEvent(QMouseEvent *event)
+void NoeudG::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if(event->button()== Qt::RightButton)
-        tabWidget->show();
+    qDebug() <<"mouse pressed NoeudG";
+    switch(parent->getMode()){
+    case SELECT_MODE:  { break;}
+    case DELETE_MODE:  { this->~NoeudG(); break;}
+    case ROUTEUR_MODE: { break;}
+    case STATION_MODE: { break;}
+    case SWITCH_MODE:  { break;}
+    case HUB_MODE:     { break;}
+    case CABLE_MODE:   { break;}
+    default: return;
+    }
 }

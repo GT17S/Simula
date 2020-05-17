@@ -23,16 +23,6 @@ class RouteurG  : public virtual NoeudG
     private:
 
     public:
-    RouteurG();
-    /*!
-         * \brief Construceur d'initialisation
-         *  Constructeur de la classe RouteurG
-         *  Initialise un RouteurG par une icon.
-         * \param pixmap : voir #QPixmap
-    */
-    RouteurG(QPixmap pixmap);
-
-
     /*!
          * \brief Construceur d'initialisation
          *  Constructeur de la classe RouteurG
@@ -40,16 +30,13 @@ class RouteurG  : public virtual NoeudG
          * \param pixmap : voir #QPixmap
          * \param parent : voir #QGraphicsScene
     */
-    RouteurG(QGraphicsScene *parent,QPixmap pixmap = QPixmap("../../ressources/routeur.png"));
+    RouteurG(EspaceTravail *parent, QPixmap pixmap = QPixmap("../../ressources/routeur.png"));
 
     /*!
          * \brief desctructeur
          *  Desctructeur de la classe RouteurG
     */
     ~RouteurG();
-protected:
-    void mousePressEvent(QGraphicsSceneMouseEvent *event);
-    void mouseDoubleClickEvent( QGraphicsSceneMouseEvent * event );
 
 };
 

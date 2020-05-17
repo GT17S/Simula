@@ -6,27 +6,8 @@
 #include <QWidget>
 #include <QSignalMapper>
 #include <iostream>
-
-#include "Noeud.hh"
-#include "NoeudG.hh"
-#include "CableG.hh"
-#include "Cable.hh"
-#include "Hub.hh"
-#include "HubG.hh"
-#include "Switch.hh"
-#include "SwitchG.hh"
-#include "DataG.hh"
-#include "Station.hh"
-#include "StationG.hh"
 #include "simulaGui.hh"
-#include "Routeur.hh"
-#include "RouteurG.hh"
 
-class QToolBar;
-class simulaGui;
-class NoeudG;
-class RouteurG;
-class StationG;	
 
 class ToolBarEquipement : public QToolBar {
     Q_OBJECT
@@ -40,8 +21,9 @@ private:
                 *switchAction;
     void createButtons();
     void createSignals();
+    EspaceTravail * espaceTravail;
 public:
-    ToolBarEquipement();
+    ToolBarEquipement(EspaceTravail *);
     virtual ~ToolBarEquipement(){}
 
 

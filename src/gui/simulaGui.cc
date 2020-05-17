@@ -16,11 +16,11 @@ simulaGui::simulaGui(){
         widgets.append(new QLabel());
    }
 */
-    EspaceTravail * e = new EspaceTravail;
-    widgets.append(new PanneauOutils(e)); //0
-    widgets.append(e);
+    EspaceTravail * espaceTravail = new EspaceTravail;
+    widgets.append(new PanneauOutils(espaceTravail)); //0
+    widgets.append(espaceTravail);
     widgets.append(new PanneauData());
-    widgets.append(new ToolBarEquipement());
+    widgets.append(new ToolBarEquipement(espaceTravail));
     widgets.append(new PanneauEvents());
  	
 

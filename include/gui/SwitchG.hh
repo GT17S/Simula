@@ -23,16 +23,6 @@ class SwitchG  :  public  NoeudG
     private:
 
     public:
-        SwitchG();
-
-        /*!
-             * \brief Construceur d'initialisation
-             *  Constructeur de la classe SwitchG
-             *  Initialise un SwitchG par une icon.
-             * \param pixmap : voir #QPixmap
-        */
-        SwitchG(QPixmap pixmap);
-
         /*!
              * \brief Construceur d'initialisation
              *  Constructeur de la classe SwitchG
@@ -40,7 +30,7 @@ class SwitchG  :  public  NoeudG
              * \param pixmap : voir #QPixmap
              * \param parent : voir #QGraphicsScene
         */
-        SwitchG(QGraphicsScene *parent=nullptr,QPixmap pixmap = QPixmap("../../ressources/switch.png"));
+        SwitchG(EspaceTravail *parent=nullptr, QPixmap pixmap = QPixmap("../../ressources/switch.png"));
 
         /*!
              * \brief desctructeur
@@ -48,9 +38,6 @@ class SwitchG  :  public  NoeudG
         */
 
         ~SwitchG();
-    protected:
-        void mousePressEvent(QGraphicsSceneMouseEvent *event);
-        void mouseDoubleClickEvent( QGraphicsSceneMouseEvent * event );
 
 };
 

@@ -3,8 +3,8 @@
 
 
 
-ToolBarEquipement::ToolBarEquipement(){
-
+ToolBarEquipement::ToolBarEquipement(EspaceTravail * _espaceTravail){
+    espaceTravail = _espaceTravail;
     createButtons();
     createSignals();
 }	
@@ -89,7 +89,7 @@ void ToolBarEquipement::ajouterCable(){
    simulaGui* ss = dynamic_cast<simulaGui*>(s);
    auto ss2 = dynamic_cast<EspaceTravail*>(ss->getMainlayout()->itemAtPosition(1,1)->widget());
    assert(ss && ss2);  
-   ss2->addCatPos();
+  // ss2->addCatPos();
 }
 
 void ToolBarEquipement::ajouterNoeud(int n){
@@ -99,31 +99,32 @@ void ToolBarEquipement::ajouterNoeud(int n){
    assert(ss && ss2); 
 
     switch(n){
-        case 1:{ //Routour
-            //NoeudG* tmpRouteur = new RouteurG(ss2->getScene());
-            ss2->addNoeud(new RouteurG(ss2->getScene()));
-            break;
-        }
-        case 2:{//
-            ss2->addNoeud(new HubG(ss2->getScene()));
-            break;
-        }
-        case 3:{
-            //NoeudG* tmpStation = new StationG(ss2->getScene()); 
-            ss2->addNoeud(new StationG(ss2->getScene()));
-            break;
-        }  
-        case 4:{
-             ss2->addNoeud(new SwitchG(ss2->getScene()));
-            break;
-        }
+    case 1:{ //Routour
+                //NoeudG* tmpRouteur = new RouteurG(ss2->getScene());
+               // ss2->addNoeud(new RouteurG(ss2->getScene()));
+                espaceTravail->setMode(ROUTEUR_MODE);
+                break;
+            }
+            case 2:{//
+                //ss2->addNoeud(new HubG(ss2->getScene()));
+                espaceTravail->setMode(HUB_MODE);
+                break;
+            }
+            case 3:{
+                //NoeudG* tmpStation = new StationG(ss2->getScene());
+                //ss2->addNoeud(new StationG(ss2->getScene()));
+                espaceTravail->setMode(STATION_MODE);
+                break;
+            }
+            case 4:{
+                 //ss2->addNoeud(new SwitchG(ss2->getScene()));
+                 espaceTravail->setMode(SWITCH_MODE);
+                break;
+            }
        default: break;
     }
 }
 
  void ToolBarEquipement::supprimerEquipement(){
-      auto s  = this->parent();
-      simulaGui* ss = dynamic_cast<simulaGui*>(s);
-      auto ss2 = dynamic_cast<EspaceTravail*>(ss->getMainlayout()->itemAtPosition(1,1)->widget());
-      assert(ss && ss2);  
+      espaceTravail->setMode(DELETE_MODE);
  }

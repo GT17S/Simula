@@ -21,9 +21,20 @@
 #include <QPoint>
 #include <QMainWindow>
 #include <iostream>
-
 #include "NoeudG.hh"
 
+class NoeudG;
+
+#ifndef CURSOR_MODE
+#define CURSOR_MODE
+enum cursor_mode {SELECT_MODE,
+                  DELETE_MODE,
+                  ROUTEUR_MODE,
+                  STATION_MODE,
+                  SWITCH_MODE,
+                  HUB_MODE,
+                  CABLE_MODE};
+#endif
 /*!
  * \class EspaceTravail
  * \brief La classe EspaceTravail représentant l'Espace de Travail de l'utilisateur sur le protocole TCP/IP.
@@ -39,9 +50,8 @@ private:
     //QVector<Equipement*> Equipement;/*!< Vecteur d'Equipements se trouvant sur l'espace de travail*/
 
     /*!< Booléen qui vérifie si deux clics on été faits */
-    QPoint p1,p2;
-    QPushButton *pb;
-    QLabel *o;
+    cursor_mode mode;
+    static void createCursors();
 
 public:
 
@@ -94,24 +104,29 @@ public:
     void setVue(QGraphicsView *_vue){vue=_vue;}
 
     void deleteScene();
-    void deleteButton(){
-        if(pb->isActiveWindow()){ qDebug()<<"endless speech";pb->~QPushButton();}}
     bool mousePressed = false;
-    
-    QPoint offset; /*!< Coordonnées du premier point*/
-    QPoint offset2; /*!< Coordonnées du deuxieme point*/
+
     /*!
          * \brief AddCatPos
          * Dessine une cable entre deux points entrés par l'utilisateur
          * \param  _vue : voir #vue
     */
-    void addCatPos();
-    void addNoeud(NoeudG* noeud);
+    //void addCatPos();
+    void addNoeud(NoeudG* noeud, QPointF p);
 
+    static  QCursor DELETE_CURSOR,
+                   SELECT_CURSOR,
+                   ROUTEUR_CURSOR,
+                   STATION_CURSOR,
+                   SWITCH_CURSOR,
+                   HUB_CURSOR,
+                   CABLE_CURSOR;
 
+    cursor_mode getMode(){return mode;}
+    void setMode(cursor_mode);
 protected:
     void mouseDoubleClickEvent( QMouseEvent * e );
-    void mousePressEvent(QMouseEvent  *event);
+    void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent( QMouseEvent *e );
     void mouseReleaseEvent( QMouseEvent *e );
 

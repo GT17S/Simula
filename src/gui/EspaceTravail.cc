@@ -18,7 +18,8 @@ EspaceTravail::EspaceTravail(){
     p1.setY(0);
     p2.setX(0);
     p2.setY(0);
-    scene = new QGraphicsScene();
+    this->setMinimumSize(450,430);
+    scene = new QGraphicsScene(this);
 
     vue= new QGraphicsView(scene,this);
     vue->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
@@ -26,15 +27,16 @@ EspaceTravail::EspaceTravail(){
 
     //scroll avec  souris (HandDrag)
     vue->setDragMode(QGraphicsView::ScrollHandDrag);
-
     vue->setRenderHints( QPainter::SmoothPixmapTransform );
-    vue->setStyleSheet("background-color:#f2f0f0");
+    vue->setStyleSheet("background-color:white;");
+    //vue->setSceneRect(0,0,2000,2000);
     //this->setGeometry(0,0,900,520);
-    this->setMinimumSize(450,430);
     vue->setAcceptDrops(true);
-    scene->setSceneRect(0,0,1600,1000);
+
+    scene->setSceneRect(0, 0, 2000, 1000);
+    setCentralWidget(vue);
     vue->show();
-    scene->update();
+    //scene->update();
 }
 EspaceTravail::~EspaceTravail()
 {

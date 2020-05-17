@@ -13,6 +13,7 @@
 class PanneauOutils : public QToolBar{
 	Q_OBJECT
 private :
+    EspaceTravail * espaceTravail;
     QString curFile;
     gSimulation gestSimulation;
     QPushButton *nouveau,
@@ -35,7 +36,7 @@ void createShortCuts();
 
 public:
 
-    PanneauOutils();
+    PanneauOutils(EspaceTravail * e);
     virtual ~PanneauOutils();
 
 public slots:
@@ -50,6 +51,8 @@ public slots:
     void resetSimulation();
     void changeMode();
     void envoieD(){std::cout<< "envoieD"<<std::endl;}
+    void zoomer();
+    void dezoomer();
     /*!
          * \brief toPng
          * slot qui permet d'exporter l'espace de travail en image png

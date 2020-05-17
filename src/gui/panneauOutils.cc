@@ -7,8 +7,8 @@
 #include <QStateMachine>
 #include "GFichier.hh"
 
-PanneauOutils::PanneauOutils(){
-
+PanneauOutils::PanneauOutils(EspaceTravail * _espaceTravail){
+    espaceTravail = _espaceTravail;
     this->setMinimumHeight(60);
     this->setMaximumHeight(70);
     this->setOrientation(Qt::Horizontal);
@@ -38,7 +38,7 @@ void PanneauOutils::createButtons(){
 
     //Boutton
     setObjectName("outilsBarMain");
-   // setStyleSheet("background-color : white;");
+    // setStyleSheet("background-color : white;");
     nouveau = new QPushButton(this);
     nouveau->setObjectName("nvAction");
     nouveau->setProperty("outilsBar", true);
@@ -107,13 +107,13 @@ void PanneauOutils::createButtons(){
     zoomIn = new QPushButton(this);
     zoomIn->setObjectName("zoomInAction");
     zoomIn->setProperty("outilsBar", true);
-    zoomIn->setToolTip("Dé-zoomer");
-
+    zoomIn->setToolTip("Zoomer");
     addWidget(zoomIn);
+
     zoomOut = new QPushButton(this);
     zoomOut->setObjectName("zoomOutAction");
     zoomOut->setProperty("outilsBar", true);
-    zoomOut->setToolTip("Zoomer");
+    zoomOut->setToolTip("Dé-zoomer");
     addWidget(zoomOut);
 
     //connect(exportButton, SIGNAL(triggered(QAction*)), exportButton, SLOT(setDefaultAction(QAction*)));
@@ -128,15 +128,17 @@ void PanneauOutils::createSignals(){
     connect(exporterPng,SIGNAL(triggered()),this,SLOT(exportPng()));
     connect(gestSimulation.getTimer(),SIGNAL(timeout()),this,SLOT(timer()));
     connect(simDemPause,SIGNAL(clicked()),this,SLOT(demarrerPauseSimulation()));
-   // connect(pause,SIGNAL(triggered()),this,SLOT(pauseSimulation()));
+    // connect(pause,SIGNAL(triggered()),this,SLOT(pauseSimulation()));
     connect(arreter,SIGNAL(clicked()),this,SLOT(arreterSimulation()));
     connect(relancer,SIGNAL(clicked()),this,SLOT(resetSimulation()));
     connect(changerMode,SIGNAL(clicked()),this,SLOT(changeMode()));
     connect(envoyer,SIGNAL(clicked()),this,SLOT(envoieD()));
+    connect(zoomIn,SIGNAL(clicked()),this,SLOT(zoomer()));
+    connect(zoomOut,SIGNAL(clicked()),this,SLOT(dezoomer()));
 
 }
 void PanneauOutils::createShortCuts(){
-/*
+    /*
     //Racourcis
     nouveau->setShortcut(QKeySequence("Ctrl+N"));
     ouvrir->setShortcut(QKeySequence("Ctrl+O"));
@@ -270,15 +272,26 @@ void PanneauOutils::timer(){
 
 void PanneauOutils::toPng(){
     QString fileName = QFileDialog::getSaveFileName(this,
-       tr("Save PNG"));
+                                                    tr("Save PNG"));
 
     if (fileName.isEmpty())
-          return;
-  else{
-           /* QPixmap pixMap = QPixmap::grabWidget(EspaceTravail::getVue());
+        return;
+    else{
+        /* QPixmap pixMap = QPixmap::grabWidget(EspaceTravail::getVue());
             pixMap.save(fileName+".png");
             */
-}}
+    }
+}
+
+void PanneauOutils::zoomer(){
+    espaceTravail->getVue()->scale(1.2,1.2);
+}
+
+void PanneauOutils::dezoomer(){
+     espaceTravail->getVue()->scale(1/1.2,1/1.2);
+}
+
+
 
 
 

@@ -19,6 +19,7 @@
 #include <QDebug>
 #include <QtWidgets>
 #include <QPoint>
+#include <QMainWindow>
 #include <iostream>
 
 #include "NoeudG.hh"
@@ -28,7 +29,7 @@
  * \brief La classe EspaceTravail représentant l'Espace de Travail de l'utilisateur sur le protocole TCP/IP.
  */
 
-class EspaceTravail : public QWidget
+class EspaceTravail : public QMainWindow
 {
 
     Q_OBJECT
@@ -99,7 +100,6 @@ public:
     
     QPoint offset; /*!< Coordonnées du premier point*/
     QPoint offset2; /*!< Coordonnées du deuxieme point*/
-
     /*!
          * \brief AddCatPos
          * Dessine une cable entre deux points entrés par l'utilisateur

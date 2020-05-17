@@ -6,7 +6,7 @@
 ToolBarEquipement::ToolBarEquipement(QWidget* par): QToolBar(par){
 
     //this->setStyleSheet("background-color: pink");
-	this->setMinimumSize(50,430);
+	  this->setMinimumSize(50,430);
     this->setMaximumWidth(100);
     this->setOrientation(Qt::Vertical);
     //Creer les boutons

@@ -10,6 +10,7 @@
 
 #include <QTime>
 #include <qtimer.h>
+#include "ThreadManager.hh"
 
 #ifndef ETATS_H
 #define ETATS_H
@@ -29,6 +30,8 @@ PAUSE
 
 #endif
 
+class ThreadManager;
+
 /*!
  * \class G_Simulation
  * \brief La classe G_Simulation représentant la Gestion de la simulation TCP/IP.
@@ -37,8 +40,9 @@ class gSimulation{
 
 private:
         etat_s etat;/*!< Etat de la simulation */
-       static  QTimer *timer;/*!< Timer de la simulation */
+        static  QTimer *timer;/*!< Timer de la simulation */
         static QTime *time;/*!< Le temps de la simulation */
+        ThreadManager* tm; /*!< Gère les envois concurents*/
 
 public:
         /*!

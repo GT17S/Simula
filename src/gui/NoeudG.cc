@@ -1,37 +1,12 @@
 #include <NoeudG.hh>
 #include <QMessageBox>
 
-NoeudG::NoeudG(EspaceTravail *_parent, QPixmap pixmap) : QGraphicsPixmapItem(pixmap)
+NoeudG::NoeudG(EspaceTravail * _espaceTravail, QPixmap pixmap) : QGraphicsPixmapItem(pixmap)
 {
-    parent = _parent;
+    espaceTravail = _espaceTravail;
+    child = nullptr;
     this->setFlag(QGraphicsItem::ItemIsMovable);
-    //parent->addItem(this);
-
-    this->setTabWidget(new QTabWidget);
-    //tabWidget->addTab("GENERAL");
 }
-
-/*
-NoeudG::NoeudG(QGraphicsScene *parent, QPixmap pixmap): QGraphicsPixmapItem(pixmap)
-{
-
-    //this = parent->addPixmap(new QPixmap("../../ressources/station.png"));
-
-    QPixmap *pix=new QPixmap("../../ressources/routeur.png");
-    setPixmap(pix);
-    //QGraphicsPixmapItem* item3 = parent->addPixmap(pixmap3);
-    //this =parent->addPixmap(pix);
-
-
-    this->moveBy(qrand()%200-100, qrand()%200-100);
-    this->setFlag(QGraphicsItem::ItemIsMovable);
-    //parent->addItem(this);
-
-
-    this->setTabWidget(new QTabWidget) ;
-    //this->getTabWidget()->addTab(this,"GENERAL");
-}
-*/
 NoeudG::~NoeudG()
 {
     //delete tabWidget;
@@ -50,26 +25,6 @@ void NoeudG::setItem(QGraphicsPixmapItem *value)
     item = value;
 }
 
-QTabWidget *NoeudG::getTabWidget() const
-{
-    return tabWidget;
-}
-
-void NoeudG::setTabWidget(QTabWidget *value)
-{
-    tabWidget = value;
-}
-
-QDialogButtonBox *NoeudG::getButtonBox() const
-{
-    return buttonBox;
-}
-
-void NoeudG::setButtonBox(QDialogButtonBox *value)
-{
-    buttonBox = value;
-}
-
 QPixmap *NoeudG::getPixmap() const
 {
     return pixmap;
@@ -80,15 +35,19 @@ void NoeudG::setPixmap(QPixmap *value)
     pixmap = value;
 }
 
+void NoeudG::setChild(Noeud * _child){
+    child = _child;
+}
+
 void NoeudG::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     qDebug() <<"mouse pressed NoeudG";
-    switch(parent->getMode()){
+    switch(espaceTravail->getMode()){
     case SELECT_MODE:  { break;}
     case DELETE_MODE:  {
 
         const QMessageBox::StandardButton ret
-                = QMessageBox::question(parent, "Supprimer equipement",
+                = QMessageBox::question(espaceTravail, "Supprimer equipement",
                                        "Voulez-vous vraiment supprimer l'éuipement ?",
                                        QMessageBox::Yes | QMessageBox::No);
         if(ret == QMessageBox::Yes)

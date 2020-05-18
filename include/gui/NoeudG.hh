@@ -19,6 +19,8 @@
 #include <QGraphicsScene>
 #include <QGraphicsItem>
 
+class Noeud;
+
 class EspaceTravail;
 /*!
  * \class NoeudG
@@ -33,9 +35,8 @@ private:
     QGraphicsPixmapItem* item;
 
     //fenetre en clickant sur l'un des noeuds
-    QTabWidget *tabWidget;
-    QDialogButtonBox *buttonBox;
-    EspaceTravail *parent;
+    EspaceTravail *espaceTravail;
+    Noeud * child;
 
 public:
 
@@ -46,16 +47,7 @@ public:
          * \param pixmap : voir #QPixmap
          * \param parent : voir #QGraphicsScene
     */
-    NoeudG(EspaceTravail *parent, QPixmap pixmap= QPixmap("../../ressources/hub.png"));
-
-
-    /*!
-         * \brief Construceur d'initialisation
-         *  Constructeur de la classe NoeudG
-         *  Initialise un NoeudG par une icon.
-         * \param pixmap : voir #QPixmap
-    */
-    NoeudG(QPixmap pixmap);
+    NoeudG(EspaceTravail *_espaceTravail, QPixmap pixmap= QPixmap("../../ressources/hub.png"));
 
     /*!
          * \brief Destructeur
@@ -69,11 +61,8 @@ public:
     QGraphicsPixmapItem *getItem() const;
     void setItem(QGraphicsPixmapItem *value);
 
-    QTabWidget *getTabWidget() const;
-    void setTabWidget(QTabWidget *value);
-
-    QDialogButtonBox *getButtonBox() const;
-    void setButtonBox(QDialogButtonBox *value);
+    Noeud * getChild(){return child;}
+    void setChild(Noeud * child);
 
 protected:
     //void mouseDoubleClickEvent( QMouseEvent * e );

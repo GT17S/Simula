@@ -36,18 +36,18 @@ QPushButton[outilsBar="false"]::hover{
 border: 1px inset gray;
 }
 QPushButton#nvAction{
-image : url(../../ressources/outilsBar/nvAction.png);
+image : url(:/ressources/outilsBar/nvAction.png);
 }
 QPushButton#ouvrirAction{
 
-image : url(../../ressources/outilsBar/ouvrirAction.png);
+image : url(:/ressources/outilsBar/ouvrirAction.png);
 }
 QPushButton#svgdAction{
 
-image : url(../../ressources/outilsBar/svgdAction.png);
+image : url(:/ressources/outilsBar/svgdAction.png);
 }
 QPushButton#exportAction{
-image : url(../../ressources/outilsBar/exportAction.png);
+image : url(:/ressources/outilsBar/exportAction.png);
 }
 QPushButton#exportAction::menu-indicator {
     subcontrol-position: center bottom;
@@ -58,67 +58,73 @@ QPushButton#exportAction::menu-indicator {
 
 QPushButton#simDP{
 
-image : url(../../ressources/outilsBar/simD.png);
+image : url(:/ressources/outilsBar/simD.png);
 }
 
 QPushButton#simDP::checked{
 
-image : url(../../ressources/outilsBar/simP.png);
+image : url(:/ressources/outilsBar/simP.png);
 }
 QPushButton#arreterAction{
 
-image : url(../../ressources/outilsBar/arreterAction.png);
+image : url(:/ressources/outilsBar/arreterAction.png);
 }
 QPushButton#relancerAction{
 
-image : url(../../ressources/outilsBar/relancerAction.png);
+image : url(:/ressources/outilsBar/relancerAction.png);
 }
 
 QPushButton#changeAction{
 
-image : url(../../ressources/outilsBar/changeActionA.png);
+image : url(:/ressources/outilsBar/changeActionA.png);
 }
 
 QPushButton#changeAction::checked{
 
-image : url(../../ressources/outilsBar/changeActionM.png);
+image : url(:/ressources/outilsBar/changeActionM.png);
 }
 
 QPushButton#envoyerAction{
 
-image : url(../../ressources/outilsBar/envoyerAction.png);
+image : url(:/ressources/outilsBar/envoyerAction.png);
 }
 
 QPushButton#zoomInAction{
 
-image : url(../../ressources/outilsBar/zoomInAction.png);
+image : url(:/ressources/outilsBar/zoomInAction.png);
 }
 
 QPushButton#zoomOutAction{
 
-image : url(../../ressources/outilsBar/zoomOutAction.png);
+image : url(:/ressources/outilsBar/zoomOutAction.png);
 }
 
 QPushButton#selectAction{
-image : url(../../ressources/equiBar/selectAction.png);
+image : url(:/ressources/equiBar/selectAction.png);
 }
 QPushButton#supprAction{
-image : url(../../ressources/equiBar/supprAction.png);
+image : url(:/ressources/equiBar/supprAction.png);
 }
 QPushButton#cableAction{
-image : url(../../ressources/equiBar/cableAction.png);
+image : url(:/ressources/equiBar/cableAction.png);
 }
+QPushButton#cableAction::menu-indicator {
+    subcontrol-position: right center;
+    subcontrol-origin: padding;
+
+    width:10px;
+  }
 QPushButton#stationAction{
- image : url(../../ressources/equiBar/stationAction.png);
+ image : url(:/ressources/equiBar/stationAction.png);
 }
 QPushButton#routeurAction{
-image : url(../../ressources/equiBar/routeurAction.png);
+image : url(:/ressources/equiBar/routeurAction.png);
 }
 QPushButton#hubAction{
-image : url(../../ressources/equiBar/hubAction.png);
+image : url(:/ressources/equiBar/hubAction.png);
 }
 QPushButton#switchAction{
- image : url(../../ressources/equiBar/switchAction.png);
+ image : url(:/ressources/equiBar/switchAction.png);
 }
 
 QPushButton:pressed {

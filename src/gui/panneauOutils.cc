@@ -138,15 +138,14 @@ void PanneauOutils::createSignals(){
 
 }
 void PanneauOutils::createShortCuts(){
-    /*
+
     //Racourcis
-    nouveau->setShortcut(QKeySequence("Ctrl+N"));
-    ouvrir->setShortcut(QKeySequence("Ctrl+O"));
-    sauvegarder->setShortcut(QKeySequence("Ctrl+S"));
+    nouveau->setShortcut(QKeySequence::New);
+    ouvrir->setShortcut(QKeySequence::Open);
+    sauvegarder->setShortcut(QKeySequence::Save);
     //exporter->setShortcut(QKeySequence("Ctrl+E"));
     //demarrer->setShortcut(QKeySequence("Ctrl+D"));
-    arreter->setShortcut(QKeySequence("Ctrl+Q"));
-*/
+    //arreter->setShortcut(QKeySequence("Ctrl+Q"));
 }
 
 void PanneauOutils::nouveauFichier(){

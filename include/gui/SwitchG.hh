@@ -30,7 +30,7 @@ class SwitchG  :  public  NoeudG
              * \param pixmap : voir #QPixmap
              * \param parent : voir #QGraphicsScene
         */
-        SwitchG(EspaceTravail *parent=nullptr, QPixmap pixmap = QPixmap("../../ressources/switch.png"));
+        SwitchG(EspaceTravail *parent=nullptr, QPixmap pixmap = QPixmap(":/ressources/equipements/switch.png"));
 
         /*!
              * \brief desctructeur

@@ -19,8 +19,11 @@ private:
                 *routeurAction,
                 *hubAction,
                 *switchAction;
+    QAction     *cableCAction,
+                *cableDAction;
     void createButtons();
     void createSignals();
+    void createShortcuts();
     EspaceTravail * espaceTravail;
 public:
     ToolBarEquipement(EspaceTravail *);
@@ -30,6 +33,7 @@ public:
     
 public slots:
   	//void selectionnerEquipement(){};
+    void selectItem();
     void ajouterNoeud(int n);
     void ajouterCable();
     void supprimerEquipement();

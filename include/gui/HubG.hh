@@ -23,15 +23,7 @@ class HubG :  public virtual NoeudG
     private:
 
     public:
-        HubG();
 
-        /*!
-             * \brief Construceur d'initialisation
-             *  Constructeur de la classe HubG
-             *  Initialise un HubG par une icon.
-             * \param pixmap : voir #QPixmap
-        */
-        HubG(QPixmap pixmap);
 
         /*!
              * \brief Construceur d'initialisation
@@ -40,7 +32,7 @@ class HubG :  public virtual NoeudG
              * \param pixmap : voir #QPixmap
              * \param parent : voir #QGraphicsScene
         */
-        HubG(QGraphicsScene *parent=nullptr,QPixmap pixmap = QPixmap("../../ressources/hub.png"));
+        HubG(EspaceTravail *parent=nullptr,QPixmap pixmap = QPixmap(":/ressources/equipements/hub.png"));
 
         /*!
              * \brief desctructeur
@@ -48,9 +40,6 @@ class HubG :  public virtual NoeudG
         */
 
         ~HubG();
-    protected:
-        void mousePressEvent(QGraphicsSceneMouseEvent *event);
-        void mouseDoubleClickEvent( QGraphicsSceneMouseEvent * event );
 
 };
 

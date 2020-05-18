@@ -1,7 +1,9 @@
 #include <NoeudG.hh>
+#include <QMessageBox>
 
-NoeudG::NoeudG(QGraphicsScene *parent, QPixmap pixmap) : QGraphicsPixmapItem(pixmap)
+NoeudG::NoeudG(EspaceTravail *_parent, QPixmap pixmap) : QGraphicsPixmapItem(pixmap)
 {
+    parent = _parent;
     this->setFlag(QGraphicsItem::ItemIsMovable);
     //parent->addItem(this);
 
@@ -9,11 +11,6 @@ NoeudG::NoeudG(QGraphicsScene *parent, QPixmap pixmap) : QGraphicsPixmapItem(pix
     //tabWidget->addTab("GENERAL");
 }
 
-NoeudG::NoeudG(QPixmap pixmap) : QGraphicsPixmapItem(pixmap)
-{
-    this->setFlag(QGraphicsItem::ItemIsMovable);
-    this->moveBy(qrand()%200-100, qrand()%200-100);
-}
 /*
 NoeudG::NoeudG(QGraphicsScene *parent, QPixmap pixmap): QGraphicsPixmapItem(pixmap)
 {
@@ -37,9 +34,9 @@ NoeudG::NoeudG(QGraphicsScene *parent, QPixmap pixmap): QGraphicsPixmapItem(pixm
 */
 NoeudG::~NoeudG()
 {
-    delete tabWidget;
-    delete buttonBox;
-    delete item;
+    //delete tabWidget;
+    //delete buttonBox;
+    //delete item;
     //delete pixmap; Sert à rien de delete c'est passé statiquement au super constructeur
 }
 
@@ -83,9 +80,28 @@ void NoeudG::setPixmap(QPixmap *value)
     pixmap = value;
 }
 
-/////////////////***********///////////////////
-void NoeudG::mousePressEvent(QMouseEvent *event)
+void NoeudG::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if(event->button()== Qt::RightButton)
-        tabWidget->show();
+    qDebug() <<"mouse pressed NoeudG";
+    switch(parent->getMode()){
+    case SELECT_MODE:  { break;}
+    case DELETE_MODE:  {
+
+        const QMessageBox::StandardButton ret
+                = QMessageBox::question(parent, "Supprimer equipement",
+                                       "Voulez-vous vraiment supprimer l'éuipement ?",
+                                       QMessageBox::Yes | QMessageBox::No);
+        if(ret == QMessageBox::Yes)
+            this->~NoeudG();
+        break;
+    }
+    case ROUTEUR_MODE: { break;}
+    case STATION_MODE: { break;}
+    case SWITCH_MODE:  { break;}
+    case HUB_MODE:     { break;}
+    case CABLE_MODE:   { break;}
+    default: return;
+    }
 }
+
+

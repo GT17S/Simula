@@ -25,16 +25,6 @@ class StationG  :  public virtual NoeudG
     private:
 
     public:
-        StationG();
-
-        /*!
-             * \brief Construceur d'initialisation
-             *  Constructeur de la classe StationG
-             *  Initialise une StationG par une icon.
-             * \param pixmap : voir #QPixmap
-        */
-        StationG(QPixmap pixmap);
-
         /*!
              * \brief Construceur d'initialisation
              *  Constructeur de la classe StationG
@@ -42,16 +32,13 @@ class StationG  :  public virtual NoeudG
              * \param pixmap : voir #QPixmap
              * \param parent : voir #QGraphicsScene
         */
-        StationG(QGraphicsScene *parent=nullptr,QPixmap pixmap = QPixmap("../../ressources/computer.png"));
+        StationG(EspaceTravail *parent=nullptr,QPixmap pixmap = QPixmap(":/ressources/equipements/station.png"));
 
         /*!
              * \brief desctructeur
              *  Desctructeur de la classe StationG
         */
         ~StationG();
-    protected:
-        void mousePressEvent(QGraphicsSceneMouseEvent *event);
-        void mouseDoubleClickEvent( QMouseEvent * event );
 
 };
 

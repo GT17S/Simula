@@ -14,6 +14,8 @@
 #include "gSimulation.hh"
 #include "QString"
 #include "QVBoxLayout"
+#include "QTreeWidgetItem"
+#include "QStandardItemModel"
 /*!
  * \class PanneauEvents
  * \brief La classe PanneauEvents pour afficher les traces des algorithmes de congestions  .
@@ -27,6 +29,7 @@ private:
   static QTextEdit *txt;/*!< espace d'affichage des événements */
   static QLCDNumber *timerSimulation;/*!< affichage de timer*/
   QVBoxLayout layout;/*!< alignment attributes de widget*/
+  static QTreeWidget *treeview;
 
 public:
   /*!
@@ -45,6 +48,11 @@ public:
          * \param  text : text a afficher
     */
    static void affichage(QString text);
+  static  void addRoot(QTreeWidgetItem *,QString nom);
+  static void addCh(QTreeWidgetItem *parent,QString nom);
+  static QTreeWidgetItem* test();
+  static QTreeWidget *getTreeview();
+  static void setTreeview(QTreeWidget *value);
 
 public slots:
    /*!
@@ -52,6 +60,7 @@ public slots:
         * afficher le timer sur un qcld number
    */
   static void afftime();
+
 };
 #endif
 

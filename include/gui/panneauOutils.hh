@@ -29,6 +29,8 @@ private :
                 *exportButton;
     QAction     *exporterDot,
                 *exporterPng;
+    QTreeWidgetItem *parent;/*!< la section ou tous les traitement d'une station seront affiche dans PanneauEvent */
+
 
 void createButtons();
 void createSignals();
@@ -59,6 +61,8 @@ public slots:
     */
     void toPng();
 
+    QTreeWidgetItem *getParent() const;
+    void setParent(QTreeWidgetItem *value);
 };
 
 #endif

@@ -6,6 +6,8 @@ PanneauData::PanneauData( QWidget *parent) : QTabWidget(parent) {
 	this->setTabsClosable(true);
 //	this->setStyleSheet("background-color: blue");
 //	this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    parentt=new QTreeWidgetItem(PanneauEvents::getTreeview());
+    PanneauEvents::addRoot(parentt,"Panneau DATA");
 }
 
 
@@ -18,3 +20,14 @@ void PanneauData::addData ( Data * d)	{
 	this->addTab( od,QString("Envoie n°%1").arg( onglets.size()+1));
 	onglets.insert ( d,od);
 }
+
+QTreeWidgetItem *PanneauData::getParentt() const
+{
+    return parentt;
+}
+
+void PanneauData::setParentt(QTreeWidgetItem *value)
+{
+    parentt = value;
+}
+

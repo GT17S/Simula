@@ -15,6 +15,9 @@ PanneauOutils::PanneauOutils(EspaceTravail * _espaceTravail){
     createButtons();
     createSignals();
     createShortCuts();
+    parent=new QTreeWidgetItem(PanneauEvents::getTreeview());
+    PanneauEvents::addRoot(parent,"Panneau Outils");
+
 
 }
 
@@ -32,6 +35,16 @@ PanneauOutils::~PanneauOutils()
     delete changerMode;
     delete envoyer;
 */
+}
+
+QTreeWidgetItem *PanneauOutils::getParent() const
+{
+    return parent;
+}
+
+void PanneauOutils::setParent(QTreeWidgetItem *value)
+{
+    parent = value;
 }
 
 void PanneauOutils::createButtons(){
@@ -277,8 +290,16 @@ void PanneauOutils::toPng(){
         return;
     else{
         QPixmap pixMap = QPixmap::grabWidget(espaceTravail->getVue());
-            pixMap.save(fileName+".png");
+        int a=espaceTravail->getVue()->verticalScrollBar()->width();
+        int b=espaceTravail->getVue()->horizontalScrollBar()->width();
+        int c=espaceTravail->getVue()->rect().height();
+        int d=espaceTravail->getVue()->rect().width();
 
+        QRect rect(0, 0, d-a,c-a);
+        QPixmap original(pixMap);
+        QPixmap cropped = original.copy(rect);
+        cropped.save(fileName+".png");
+        PanneauEvents::addCh(parent,"Votre espace est exporte en png");
     }
 }
 

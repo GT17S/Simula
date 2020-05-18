@@ -8,8 +8,8 @@
 #include "GFichier.hh"
 #include "ConstantsRessources.hh"
 
-PanneauOutils::PanneauOutils(){
-
+PanneauOutils::PanneauOutils(gSimulation * g) {
+	this->gestSimulation = g;
     this->setMinimumHeight(60);
     this->setMaximumHeight(70);
     this->setOrientation(Qt::Horizontal);
@@ -22,7 +22,9 @@ PanneauOutils::PanneauOutils(){
 }
 
 PanneauOutils::~PanneauOutils()
-{/*
+{
+	delete gestSimulation;
+	/*
     delete nouveau;
     delete ouvrir;
     delete sauvegarder;
@@ -129,7 +131,7 @@ void PanneauOutils::createSignals(){
     connect(sauvegarder,SIGNAL(clicked()),this,SLOT(sauvegarderFichier()));
     connect(exporterDot,SIGNAL(triggered()),this,SLOT(exportDot()));
     connect(exporterPng,SIGNAL(triggered()),this,SLOT(exportPng()));
-    connect(gestSimulation.getTimer(),SIGNAL(timeout()),this,SLOT(timer()));
+    connect(gestSimulation->getTimer(),SIGNAL(timeout()),this,SLOT(timer()));
     connect(simDemPause,SIGNAL(clicked()),this,SLOT(demarrerPauseSimulation()));
    // connect(pause,SIGNAL(triggered()),this,SLOT(pauseSimulation()));
     connect(arreter,SIGNAL(clicked()),this,SLOT(arreterSimulation()));
@@ -234,21 +236,21 @@ void PanneauOutils::exportPng(){
 void PanneauOutils::demarrerPauseSimulation(){
     if(simDemPause->isChecked()){
         simDemPause->setToolTip("Pause");
-        this->gestSimulation.demarrer();
+        this->gestSimulation->demarrer();
     }
 
     else{
         simDemPause->setToolTip("Demarrer");
-        this->gestSimulation.pause();
+        this->gestSimulation->pause();
     }
 
 }
 void PanneauOutils::arreterSimulation(){
-    this->gestSimulation.arreter();
+    this->gestSimulation->arreter();
     simDemPause->setChecked(false);
 }
 void PanneauOutils::resetSimulation(){
-    this->gestSimulation.reset();
+    this->gestSimulation->reset();
 
 }
 
@@ -263,11 +265,11 @@ void PanneauOutils::changeMode(){
 }
 
 void PanneauOutils::timer(){
-    QTime *t = this->gestSimulation.getTime();
+    QTime *t = this->gestSimulation->getTime();
     qDebug()<<t->toString("hh:mm:ss");
-    this->gestSimulation.demarrer();
+    this->gestSimulation->demarrer();
     *t=t->addSecs(1);
-    this->gestSimulation.getTimer()->setInterval(1000);
+    this->gestSimulation->getTimer()->setInterval(1000);
     PanneauEvents::afftime();
 }
 
@@ -284,6 +286,35 @@ void PanneauOutils::toPng(){
 }}
 
 
-void panneauOutils::envoieD(){
-    
+void PanneauOutils::envoieD(){
+	bool ok;     
+	QString text = QInputDialog::getText(this, tr("Message à envoyer"),
+	tr("Paramètre d'envoi : \nFormat : 'ipSrc, ipDest, portSource, portDest, df[0,1], message'"), QLineEdit::Normal, "ipSrc, ipDest, portSource, portDest, df[0,1], message", &ok);     
+	if (ok && !text.isEmpty())	{      
+		qDebug() << text;
+		// Verifier le format
+		arg_t a;
+		const char * tmp = text.toStdString().c_str();
+		char * pch = strtok ( tmp, ",");
+		for (int i = 0; i < 6; i++)	{
+			std::cout << i << std::endl;
+			if ( i == 0)
+				a.ipSrc = pch;
+			if ( i == 1)
+				a.ipDest = pch;				
+			if ( i == 2)
+				a.pSrc = atoi(pch);
+			if ( i == 3)
+				a.ipDest = atoi(pch);
+			if ( i == 4)
+				a.df = pch[0] == '0' ? false : true;
+			if ( i == 5)
+				a.message = pch;
+			pch = strtok ( NULL, ",");	
+		}
+		std::cout << a.ipSrc << " " << a.ipDest << " " << a.pSrc << " " << a.pDest << " " << a.df << " " << a.message << std::endl;
+//		gestSimlation->getArg( a);
+	}
+    // Envoyer d'ici 
+
 }

@@ -7,6 +7,15 @@
 #include <QMenu>
 #include <QPushButton>
 #include <QAction>
+
+#include <QFormLayout>
+#include <QInputDialog>
+#include <QTextEdit>
+#include <QCheckBox>
+
+#include <stdio.h>
+#include <string.h>
+
 #include "EspaceTravail.hh"
 #include "gSimulation.hh"
 #include "PanneauEvents.hh"
@@ -14,7 +23,7 @@ class PanneauOutils : public QToolBar{
 	Q_OBJECT
 private :
     QString curFile;
-    gSimulation gestSimulation;
+    gSimulation *gestSimulation;
     QPushButton *nouveau,
                 *ouvrir,
                 *sauvegarder,
@@ -35,8 +44,10 @@ void createShortCuts();
 
 public:
 
-    PanneauOutils();
+    PanneauOutils( gSimulation * g);
     virtual ~PanneauOutils();
+	gSimulation* getGestionnaire(){ return gestSimulation;};
+	void setGestionnaire ( gSimulation * g){gestSimulation = g;};
 
 public slots:
     void timer();

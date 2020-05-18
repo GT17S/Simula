@@ -1,6 +1,6 @@
 #include "simulaGui.hh"
 
-simulaGui::simulaGui(){
+simulaGui::simulaGui( gSimulation * g){
 
     //Initialisation de la fenetre principale
 	this->setWindowTitle("Simula");
@@ -17,7 +17,7 @@ simulaGui::simulaGui(){
    }
 */
 
-    widgets.append(new PanneauOutils()); //0
+    widgets.append(new PanneauOutils(g)); //0
    	widgets.append(new EspaceTravail());
     widgets.append(new PanneauData());
     widgets.append(new ToolBarEquipement(this)); 

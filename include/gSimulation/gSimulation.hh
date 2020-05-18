@@ -149,5 +149,7 @@ public:
         ~gSimulation();
 
 
+
+        ThreadManager* getManager() { return this->tm;};
 };
 #endif

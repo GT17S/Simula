@@ -75,7 +75,6 @@ int Station::checkFragment(Data* data){
 }
 
 void Station::envoyerMessage(int key, destination dest){
-
     // passerelle
     int id_src  = lireAdresseMac(dest.data, 0);
     int id_dest = lireAdresseMac(dest.data, 1);
@@ -288,16 +287,15 @@ mf = 1 et offset != 0 : fragments
 void Station::mainlocal(std::mutex *m){
         this->mutexcabl = m;
         controleur->setMutex(m);
-//        while ()	{
-			// Recevoir ici
-			//récuperer les infos
-			//si info 
-			//envoyer sur un thread 
-			//sinon 
-//		}
+        std::cout << "Fonction principale du thread" << std::endl;
 
-        // on reboucle
-           
+       while (1){
+        //if var == true 
+        //  verifiernbrseqgment()
+
+
+        }
+    
 }
 
 

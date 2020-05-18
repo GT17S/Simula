@@ -19,10 +19,14 @@
 #include "EspaceTravail.hh"
 #include "gSimulation.hh"
 #include "PanneauEvents.hh"
+#include "DataOutils.hh"
+
 class PanneauOutils : public QToolBar{
 	Q_OBJECT
 private :
     QString curFile;
+    QWidget* formulaire;
+    std::vector<QWidget*> widgets;
     gSimulation *gestSimulation;
     QPushButton *nouveau,
                 *ouvrir,
@@ -31,7 +35,7 @@ private :
                 *arreter,
                 *relancer,
                 *changerMode,
-                *envoyer,
+                *benvoyer,
                 *zoomIn,
                 *zoomOut,
                 *exportButton;
@@ -41,7 +45,6 @@ private :
 void createButtons();
 void createSignals();
 void createShortCuts();
-
 public:
 
     PanneauOutils( gSimulation * g);
@@ -50,6 +53,7 @@ public:
 	void setGestionnaire ( gSimulation * g){gestSimulation = g;};
 
 public slots:
+    void preparenvoi();
     void timer();
     void nouveauFichier();
     void ouvrirFichier();
@@ -66,6 +70,8 @@ public slots:
          * slot qui permet d'exporter l'espace de travail en image png
     */
     void toPng();
+
+
 
 };
 

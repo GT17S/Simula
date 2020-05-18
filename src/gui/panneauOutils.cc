@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include <QPixmap>
 #include <QStateMachine>
+#include <cstring>
 #include "GFichier.hh"
 #include "ConstantsRessources.hh"
 
@@ -24,6 +25,7 @@ PanneauOutils::PanneauOutils(gSimulation * g) {
 PanneauOutils::~PanneauOutils()
 {
 	delete gestSimulation;
+    delete formulaire;
 	/*
     delete nouveau;
     delete ouvrir;
@@ -101,12 +103,12 @@ void PanneauOutils::createButtons(){
     changerMode->setToolTip("Mode");
     addWidget(changerMode);
 
-    envoyer = new QPushButton(this);
-    envoyer->setObjectName("envoyerAction");
-    envoyer->setProperty("outilsBar", true);
-    envoyer->setToolTip("Envoyer");
+    benvoyer = new QPushButton(this);
+    benvoyer->setObjectName("envoyerAction");
+    benvoyer->setProperty("outilsBar", true);
+    benvoyer->setToolTip("Envoyer");
 
-    addWidget(envoyer);
+    addWidget(benvoyer);
 
     addSeparator();
     zoomIn = new QPushButton(this);
@@ -121,7 +123,7 @@ void PanneauOutils::createButtons(){
     zoomOut->setToolTip("Zoomer");
     addWidget(zoomOut);
 
-    //connect(exportButton, SIGNAL(triggered(QAction*)), exportButton, SLOT(setDefaultAction(QAction*)));
+//connect(exportButton, SIGNAL(triggered(QAction*)), exportButton, SLOT(setDefaultAction(QAction*)));
 }
 void PanneauOutils::createSignals(){
 
@@ -137,7 +139,7 @@ void PanneauOutils::createSignals(){
     connect(arreter,SIGNAL(clicked()),this,SLOT(arreterSimulation()));
     connect(relancer,SIGNAL(clicked()),this,SLOT(resetSimulation()));
     connect(changerMode,SIGNAL(clicked()),this,SLOT(changeMode()));
-    connect(envoyer,SIGNAL(clicked()),this,SLOT(envoieD()));
+    connect(benvoyer,SIGNAL(clicked()),this,SLOT(envoieD()));
 
 }
 void PanneauOutils::createShortCuts(){
@@ -287,34 +289,78 @@ void PanneauOutils::toPng(){
 
 
 void PanneauOutils::envoieD(){
-	bool ok;     
-	QString text = QInputDialog::getText(this, tr("Message à envoyer"),
-	tr("Paramètre d'envoi : \nFormat : 'ipSrc, ipDest, portSource, portDest, df[0,1], message'"), QLineEdit::Normal, "ipSrc, ipDest, portSource, portDest, df[0,1], message", &ok);     
-	if (ok && !text.isEmpty())	{      
-		qDebug() << text;
-		// Verifier le format
-		arg_t a;
-		const char * tmp = text.toStdString().c_str();
-		char * pch = strtok ( tmp, ",");
-		for (int i = 0; i < 6; i++)	{
-			std::cout << i << std::endl;
-			if ( i == 0)
-				a.ipSrc = pch;
-			if ( i == 1)
-				a.ipDest = pch;				
-			if ( i == 2)
-				a.pSrc = atoi(pch);
-			if ( i == 3)
-				a.ipDest = atoi(pch);
-			if ( i == 4)
-				a.df = pch[0] == '0' ? false : true;
-			if ( i == 5)
-				a.message = pch;
-			pch = strtok ( NULL, ",");	
-		}
-		std::cout << a.ipSrc << " " << a.ipDest << " " << a.pSrc << " " << a.pDest << " " << a.df << " " << a.message << std::endl;
-//		gestSimlation->getArg( a);
-	}
-    // Envoyer d'ici 
+	std::cout << "Envoi D" << std::endl;
+    formulaire = new QWidget();
+    formulaire->setWindowTitle(QString("Paramètres d'envoi"));
+    formulaire->setMinimumSize(50,100);
+    formulaire->resize(300,600);
+    formulaire->setLayout(new QVBoxLayout());
 
+    for (int i = 0; i < 12; ++i)
+    {  
+         
+        if(i > 10)
+            widgets.push_back(new QPushButton("Envoyer"));
+        widgets.push_back(new QLineEdit());
+    }
+
+
+    for (int i = 0; i < 12; ++i)
+    {
+       
+        formulaire->layout()->addWidget(widgets[i]);
+    }
+
+    formulaire->show();
+    
+    auto benvoyer = dynamic_cast<QPushButton*>(formulaire->layout()->itemAt(11)->widget());
+    if(benvoyer)
+        connect(benvoyer, SIGNAL(clicked()),this , SLOT(preparenvoi()));
+    
+}
+
+
+void PanneauOutils::preparenvoi(){
+    //Vérifier que les info sont bonnes 
+    bool ok = true;
+    for(int i = 0; i < 11 ; i++){
+       auto lineedit = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(i)->widget());
+        if(lineedit->text().isEmpty()){
+            ok = false;
+            break;
+        }
+
+    }    
+
+    if(ok){ 
+       Graphe * graphe = Graphe::get();
+
+        //Récuperer les noeuds
+        auto Noeud1 = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(0)->widget());
+        auto Noeud2 = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(1)->widget());
+        auto portsrc = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(2)->widget());
+        auto portdest = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(3)->widget());
+        auto syn = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(4)->widget());
+        auto ack = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(5)->widget());
+        auto nseq = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(6)->widget());
+        auto nack = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(7)->widget());
+        auto ipid = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(8)->widget());
+        auto df = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(9)->widget());
+        auto data = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(10)->widget());
+        std::string s(data->text().toStdString());
+        Data* sendData = new Data(s);
+        std::cout << graphe->getSommets()[Noeud1->text().toInt()] << "|" <<  graphe->getSommets()[Noeud2->text().toInt()] << "|" <<  portsrc->text().toInt() << "|" <<  portdest->text().toInt() << "|" <<  syn->text().toInt() << "|" <<  ack->text().toInt() << "|" <<  nseq->text().toInt() << "|" <<  nack->text().toInt() << "|" <<  ipid->text().toInt() << "|" <<  df->text().toInt() << "|" <<  s << std::endl;
+
+
+        //envoyer(graphe->getSommets()[n1], graphe->getSommets()[n2], 1025, 80, false, false, st->getNextNumSeq(), 0, 100, false, data)
+        envoyer(graphe->getSommets()[Noeud1->text().toInt()] ,  graphe->getSommets()[Noeud2->text().toInt()] ,  portsrc->text().toInt() ,  portdest->text().toInt() ,  syn->text().toInt() ,  ack->text().toInt() ,  nseq->text().toInt() ,  nack->text().toInt() ,  ipid->text().toInt() ,  df->text().toInt() ,  sendData);
+        
+    
+    }else{
+       QMessageBox errorbox;
+       errorbox.setText("Veuillez entrer des paramères valides");
+       errorbox.exec();
+    }
+
+    formulaire->close();
 }

@@ -16,9 +16,12 @@ void ThreadManager::sendConcurrent(int i){
 }
 
 void ThreadManager::initStation(){
+	
 	for(auto item : Graphe::get()->getSommets()){
 		Station* tmp = dynamic_cast<Station*>(item);
 		if(tmp){
+			std::cout << "Initialisation du thread de la station "<< item->getIdNoeud() << std::endl;
+			//auto controleur = tmp->getControleur();
 			WorkingThreads.push_back(std::thread(&Station::mainlocal,tmp, mutexmap["Cable"]));
 		}
 	}

@@ -12,10 +12,8 @@ int main ( int argc, char ** argv) {
     int n2 = atoi(argv[3]);
     Graphe * graphe = Graphe::get();
     lireXml("test.xml");
-
-
     gSimulation * gestionnaire = new gSimulation;
-   
+    gestionnaire->getManager()->initStation();
 
     QApplication app ( argc, argv);
     simulaGui g ( gestionnaire);
@@ -31,8 +29,14 @@ int main ( int argc, char ** argv) {
     app.setStyleSheet(StyleSheet);
     g.show();
 
-
-
-
+    /*
+ 
+    delete data;
+    delete data2;
+    delete graphe;
+    delete st2;
+    delete st;
+    delete gestionnaire;
+    */
     return app.exec();
 }

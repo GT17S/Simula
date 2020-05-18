@@ -107,9 +107,9 @@ void Congestion::congestionAvoidance(){
 }
 
 void Congestion::verifieNbrSegment(Noeud * src){
-
+    std::cout << "Je suis parralélisé " << std::endl;
     if(mapFileEnvoyer.empty()){
-        cout<<"fin de l'envoie 1"<<endl;
+        cout<<"fin de l'envoie " <<endl;
         //PanneauEvents::affichage("fin de l'envoie 1 ");
 
         //resamblahe(segRecu());
@@ -142,9 +142,9 @@ void Congestion::verifieNbrSegment(Noeud * src){
         //std::thread emetteur(src::envoyerMessage(int, destination), key,ds);
         
        src->envoyerMessage(key, ds);
-
-
     }
+
+    //var = false
 }
 void Congestion::retrnasmission(int key){
 
@@ -162,7 +162,7 @@ void Congestion::verifieNumSegment(Noeud * src,Noeud * dest, int nAck){//pc rece
         ipId = 100;
     envoyer(src, dest, 0, 0,false, true, nSeq, nAck,ipId,false, ndata);
     verifieNbrSegment(st);
-
+    //remplacer verifieNbrSegment(st) par var == true
 }
 
 void Congestion::verifieNumAck(Noeud * n, int nAck){

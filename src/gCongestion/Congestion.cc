@@ -27,7 +27,7 @@ Congestion::Congestion() :  mapFileEnvoyer(), mapFileACK(){
     cpt=0;
     nbrAcksRecu=0;
     nbrAcksDuplique=0;
-
+    envoiok = false;
 }
 Congestion::Congestion(Congestion &c){
     cwnd=c.cwnd;
@@ -111,7 +111,7 @@ void Congestion::verifieNbrSegment(Noeud * src){
     if(mapFileEnvoyer.empty()){
         cout<<"fin de l'envoie " <<endl;
         //PanneauEvents::affichage("fin de l'envoie 1 ");
-
+        envoiok = false;
         //resamblahe(segRecu());
         return;
     }
@@ -121,7 +121,7 @@ void Congestion::verifieNbrSegment(Noeud * src){
         if(i > mapFileEnvoyer.size()){
             cout<<"fin de l'envoie 2"<<endl;
             //PanneauEvents::affichage("fin de l'envoie de pc : "+src.getNom());
-
+            envoiok = false;
             return;
         }
 
@@ -144,7 +144,7 @@ void Congestion::verifieNbrSegment(Noeud * src){
        src->envoyerMessage(key, ds);
     }
 
-    //var = false
+    envoiok = false;
 }
 void Congestion::retrnasmission(int key){
 
@@ -161,8 +161,9 @@ void Congestion::verifieNumSegment(Noeud * src,Noeud * dest, int nAck){//pc rece
     int nSeq = st->getNextNumSeq(),
         ipId = 100;
     envoyer(src, dest, 0, 0,false, true, nSeq, nAck,ipId,false, ndata);
-    verifieNbrSegment(st);
+    //verifieNbrSegment(st);
     //remplacer verifieNbrSegment(st) par var == true
+    envoiok = true;
 }
 
 void Congestion::verifieNumAck(Noeud * n, int nAck){
@@ -179,6 +180,7 @@ void Congestion::verifieNumAck(Noeud * n, int nAck){
     if(cwnd==nbrAcksRecu){
         nbrAcksRecu=0;
         slowStart();
-        verifieNbrSegment(st);
+        //verifieNbrSegment(st);
+        envoiok = true;
     }
 }

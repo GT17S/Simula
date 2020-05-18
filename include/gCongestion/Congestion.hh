@@ -45,6 +45,9 @@ private:
 
     //mutex de vérouillage
     std::mutex* mutexcable;
+
+    bool envoiok;
+
 public:
     /*!
      * \brief Constructeur par défaut
@@ -240,6 +243,9 @@ public:
    void setMapFileACK(std::map<int, destination> _map);
    void setlatence(float f){ this->latenceLastSend = f;};
 
+
+   bool getok(){return envoiok;};
+   void setok(bool b){ this->envoiok = b;};
 };
 
 #endif

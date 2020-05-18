@@ -6,11 +6,9 @@
 #include "simulaGui.hh"
 #include "Graphe.hh"
 
+
 int main ( int argc, char ** argv) {
-    string message = argv[1];
-    int n1 = atoi(argv[2]);
-    int n2 = atoi(argv[3]);
-    Graphe * graphe = Graphe::get();
+
     lireXml("test.xml");
     gSimulation * gestionnaire = new gSimulation;
     gestionnaire->getManager()->initStation();
@@ -24,19 +22,17 @@ int main ( int argc, char ** argv) {
     if(File.isOpen()){
         StyleSheet = QLatin1String(File.readAll());
         File.close();
-    }else qDebug ()<<"probleme de lecture";
+    }else qDebug ()<<"Problème de lecture de la feuille de style";
 
     app.setStyleSheet(StyleSheet);
     g.show();
-
-    /*
- 
-    delete data;
-    delete data2;
-    delete graphe;
-    delete st2;
-    delete st;
-    delete gestionnaire;
-    */
+/*
+    auto lam =  [&] (gSimulation* g){ 
+        g->getManager()->joinall();
+        delete g;
+        return;
+    };
+    std::atexit(lam(gestionnaire));
+*/
     return app.exec();
 }

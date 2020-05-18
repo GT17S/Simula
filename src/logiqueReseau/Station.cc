@@ -290,9 +290,10 @@ void Station::mainlocal(std::mutex *m){
         std::cout << "Fonction principale du thread" << std::endl;
 
        while (1){
-        //if var == true 
-        //  verifiernbrseqgment()
-
+        if(this->getControleur()->getok()){
+            std::cout <<  getIdNoeud() << std::endl;
+            this->getControleur()->verifieNbrSegment(this);
+        }
 
         }
     

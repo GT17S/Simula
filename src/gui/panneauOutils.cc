@@ -25,8 +25,8 @@ PanneauOutils::PanneauOutils(gSimulation * g) {
 PanneauOutils::~PanneauOutils()
 {
 	delete gestSimulation;
-    delete formulaire;
 	/*
+    delete formulaire;
     delete nouveau;
     delete ouvrir;
     delete sauvegarder;
@@ -352,15 +352,23 @@ void PanneauOutils::preparenvoi(){
         std::cout << graphe->getSommets()[Noeud1->text().toInt()] << "|" <<  graphe->getSommets()[Noeud2->text().toInt()] << "|" <<  portsrc->text().toInt() << "|" <<  portdest->text().toInt() << "|" <<  syn->text().toInt() << "|" <<  ack->text().toInt() << "|" <<  nseq->text().toInt() << "|" <<  nack->text().toInt() << "|" <<  ipid->text().toInt() << "|" <<  df->text().toInt() << "|" <<  s << std::endl;
 
 
-        //envoyer(graphe->getSommets()[n1], graphe->getSommets()[n2], 1025, 80, false, false, st->getNextNumSeq(), 0, 100, false, data)
+        //  envoyer(graphe->getSommets()[n1], graphe->getSommets()[n2], 1025, 80, false, false, st->getNextNumSeq(), 0, 100, false, data)
         envoyer(graphe->getSommets()[Noeud1->text().toInt()] ,  graphe->getSommets()[Noeud2->text().toInt()] ,  portsrc->text().toInt() ,  portdest->text().toInt() ,  syn->text().toInt() ,  ack->text().toInt() ,  nseq->text().toInt() ,  nack->text().toInt() ,  ipid->text().toInt() ,  df->text().toInt() ,  sendData);
-        
-    
-    }else{
+        //Signaler que l'envoi est possible 
+        auto src = dynamic_cast<Station*>(graphe->getSommets()[Noeud1->text().toInt()]);
+        src->getControleur()->setok(true);
+
+       for (int i = 0; i < 11; ++i)
+       {
+           auto tmp = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(i)->widget());
+            tmp->setText("");
+       }
+
+        formulaire->close();
+       }else{
        QMessageBox errorbox;
        errorbox.setText("Veuillez entrer des paramères valides");
        errorbox.exec();
     }
 
-    formulaire->close();
 }

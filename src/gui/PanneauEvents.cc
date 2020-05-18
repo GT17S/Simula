@@ -5,24 +5,16 @@
 
 using namespace std;
 #include "QDebug"
-QTextEdit *PanneauEvents::txt;
+//QTextEdit *PanneauEvents::txt;
 QLCDNumber *PanneauEvents::timerSimulation;
- QTreeWidget *PanneauEvents::treeview;
- QTreeWidget *PanneauEvents::getTreeview()
- {
-     return treeview;
- }
+QTreeWidget *PanneauEvents::treeview;
 
- void PanneauEvents::setTreeview(QTreeWidget *value)
- {
-     treeview = value;
- }
 
- PanneauEvents::PanneauEvents(){
-     treeview=new QTreeWidget();
-     setMinimumSize(100,410);
-     setMaximumWidth(350);
-     this->setLayout(&layout);
+PanneauEvents::PanneauEvents(){
+    treeview=new QTreeWidget();
+    setMinimumSize(100,410);
+    setMaximumWidth(350);
+    this->setLayout(&layout);
     evenements=new QLabel(this);
     evenements->setText("Evenements");
     layout.addWidget(evenements);
@@ -49,26 +41,32 @@ QLCDNumber *PanneauEvents::timerSimulation;
     ColumnNames << "Équipements";
 
     treeview->setHeaderLabels(ColumnNames);
-
+    //treeview->setStyleSheet("background-color: red");//background
 }
 void PanneauEvents::afftime(){
 
-timerSimulation->display(gSimulation::getTime()->toString("hh:mm:ss"));
+    timerSimulation->display(gSimulation::getTime()->toString("hh:mm:ss"));
 
 }
 
 PanneauEvents::~PanneauEvents(){
 
 }
-
+/*
 void PanneauEvents::affichage(QString text){
     txt->append(gSimulation::getTime()->toString()+" "+text);
 
 }
+*/
+void PanneauEvents::setTreeview(QTreeWidget *value)
+{
+    treeview = value;
+}
+
 void PanneauEvents::addRoot(QTreeWidgetItem *pf ,QString nom){
     //QTreeWidgetItem *pf=new QTreeWidgetItem(treeview);
     pf->setText(0,nom);
-   treeview->addTopLevelItem(pf);
+    treeview->addTopLevelItem(pf);
 }
 
 

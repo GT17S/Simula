@@ -15,7 +15,6 @@
 #include "Graphe.hh"
 #include "Congestion.hh"
 #include "congestionOutil.hh"
-#include "QTreeWidgetItem"
 
 using std::string;
 using std::vector;
@@ -37,8 +36,7 @@ class Station : public virtual Noeud {
     int numSeq;
     bool isPasserelle;
     multimap<int, Data*> fragments;
-    QTreeWidgetItem *parent;
-   vector<Cable*> lastpath;/*!< la section ou tous les traitement d'une station seront affiche dans PanneauEvent */
+   vector<Cable*> lastpath;
 public:
     /*!
      * \brief Constructeur par défaut
@@ -70,12 +68,10 @@ public:
      * \brief getParent
      * \return la section ou tous les traitement d'une station seront affiche dans PanneauEvents
      */
-    QTreeWidgetItem *getParent(){return parent;}
     /*!
      * \brief setParent
      * \modifier la section ou tous les traitement d'une station seront affiche dans PanneauEvents
      */
-    void setParent(QTreeWidgetItem *value);
 
     /*!getN
      * \brief getPasserelle

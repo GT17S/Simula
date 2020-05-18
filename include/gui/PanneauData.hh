@@ -18,12 +18,8 @@ public slots:
 	void addData ( Data * d);
 
 
-    QTreeWidgetItem *getParentt() const;
-    void setParentt(QTreeWidgetItem *value);
-
 private:
     QMap <Data *, DataG *> onglets;
-    QTreeWidgetItem *parentt;
 
 };
 

@@ -15,8 +15,7 @@ Station::Station() : Noeud(){
     controleur = new Congestion();
     numSeq = 1;
     isPasserelle = false;
-    parent=new QTreeWidgetItem(PanneauEvents::getTreeview());
-    PanneauEvents::addRoot(parent,QString::fromStdString(nom));
+
 
 
 }
@@ -54,10 +53,7 @@ void Station::setIsPasserelle(bool _isPasserelle){
     isPasserelle = _isPasserelle;
 }
 
-void Station::setParent(QTreeWidgetItem *_parent)
-{
-    parent = _parent;
-}
+
 
 int Station::checkFragment(Data* data){
     if(data->getType() != DATA_PAQUET) return -1;

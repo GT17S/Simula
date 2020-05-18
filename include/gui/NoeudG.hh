@@ -18,6 +18,7 @@
 #include <QMouseEvent>
 #include <QGraphicsScene>
 #include <QGraphicsItem>
+#include "QTreeWidgetItem"
 
 class EspaceTravail;
 /*!
@@ -35,7 +36,9 @@ private:
     //fenetre en clickant sur l'un des noeuds
     QTabWidget *tabWidget;
     QDialogButtonBox *buttonBox;
-    EspaceTravail *parent;
+    EspaceTravail *espaceTravail;
+    QTreeWidgetItem *parent;/*!< la section ou tous les traitement d'une station seront affiche dans PanneauEvent */
+
 
 public:
 
@@ -44,9 +47,9 @@ public:
          *  Constructeur de la classe NoeudG
          *  Initialise un NoeudG par une scene ou le noeudG va t'etre afficher et une icon.
          * \param pixmap : voir #QPixmap
-         * \param parent : voir #QGraphicsScene
+         * \param espaceTravail : voir #QGraphicsScene
     */
-    NoeudG(EspaceTravail *parent, QPixmap pixmap= QPixmap("../../ressources/hub.png"));
+    NoeudG(EspaceTravail *espaceTravail, QPixmap pixmap= QPixmap("../../ressources/hub.png"));
 
 
     /*!
@@ -74,6 +77,9 @@ public:
 
     QDialogButtonBox *getButtonBox() const;
     void setButtonBox(QDialogButtonBox *value);
+
+    QTreeWidgetItem *getparent() {return parent;}
+    void setparent(QTreeWidgetItem *value);
 
 protected:
     //void mouseDoubleClickEvent( QMouseEvent * e );

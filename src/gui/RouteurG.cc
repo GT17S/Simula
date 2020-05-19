@@ -3,7 +3,9 @@
 #include <QMessageBox>
 #include <QGraphicsSceneMouseEvent>
 
-RouteurG::RouteurG(EspaceTravail *parent, QPixmap pixmap ): NoeudG(parent,pixmap){}
+RouteurG::RouteurG(EspaceTravail *parent): NoeudG(parent){
+    setPixmap(QPixmap(":/ressources/equipements/routeur.png"));
+}
 RouteurG::~RouteurG(){
 }
 /*

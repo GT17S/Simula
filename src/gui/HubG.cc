@@ -1,4 +1,6 @@
 #include <HubG.hh>
 
-HubG::HubG(EspaceTravail *parent, QPixmap pixmap ): NoeudG(parent,pixmap){}
+HubG::HubG(EspaceTravail *parent): NoeudG(parent){
+    setPixmap(QPixmap(":/ressources/equipements/hub.png"));
+}
 HubG::~HubG(){}

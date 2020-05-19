@@ -31,7 +31,7 @@ class SwitchG  :  public  virtual HubG
              * \param pixmap : voir #QPixmap
              * \param parent : voir #QGraphicsScene
         */
-        SwitchG(EspaceTravail * parent=nullptr, QPixmap pixmap = QPixmap(":/ressources/equipements/switch.png"));
+        SwitchG(EspaceTravail * parent=nullptr);
 
         /*!
              * \brief desctructeur

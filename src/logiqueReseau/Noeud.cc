@@ -27,7 +27,8 @@ Noeud::Noeud(string _nom, int _idNoeud, int _nbPort, NoeudG * _parent){
 
 Noeud::~Noeud(){
 
-    //std::cout << "Desutruction noeud "<< nom <<" "<<idNoeud<<std::endl;
+    std::cout << "Desutruction noeud "<< nom <<" "<<idNoeud<<std::endl;
+    delete parent;
     // Supprimer ID du noeud de la liste
     //idsNoeuds.erase(std::remove(idsNoeuds.begin(), idsNoeuds.end(), idNoeud), idsNoeuds.end());
 

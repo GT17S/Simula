@@ -30,7 +30,7 @@ class RouteurG  : public virtual NoeudG
          * \param pixmap : voir #QPixmap
          * \param parent : voir #QGraphicsScene
     */
-    RouteurG(EspaceTravail *parent = nullptr, QPixmap pixmap = QPixmap(":/ressources/equipements/routeur.png"));
+    RouteurG(EspaceTravail *parent = nullptr);
 
     /*!
          * \brief desctructeur

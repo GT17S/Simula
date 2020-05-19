@@ -2,7 +2,7 @@
 #include <QMessageBox>
 #include "PanneauEvents.hh"
 
-NoeudG::NoeudG(EspaceTravail * _espaceTravail, QPixmap pixmap) : QGraphicsPixmapItem(pixmap)
+NoeudG::NoeudG(EspaceTravail * _espaceTravail) : QGraphicsPixmapItem()
 {
     espaceTravail = _espaceTravail;
     child = nullptr;
@@ -24,25 +24,6 @@ NoeudG::~NoeudG()
     delete parent;
 }
 
-QGraphicsPixmapItem *NoeudG::getItem() const
-{
-    return item;
-}
-
-void NoeudG::setItem(QGraphicsPixmapItem *value)
-{
-    item = value;
-}
-
-QPixmap *NoeudG::getPixmap() const
-{
-    return pixmap;
-}
-
-void NoeudG::setPixmap(QPixmap *value)
-{
-    pixmap = value;
-}
 
 void NoeudG::setChild(Noeud * _child){
     child = _child;
@@ -65,8 +46,12 @@ void NoeudG::mousePressEvent(QGraphicsSceneMouseEvent *event)
                                         "Voulez-vous vraiment supprimer l'éuipement ?",
                                         QMessageBox::Yes | QMessageBox::No);
 
-        if(ret == QMessageBox::Yes)
-            this->~NoeudG();
+        if(ret == QMessageBox::Yes){
+            if(child)
+                child->~Noeud();
+            else
+                this->~NoeudG();
+        }
         break;
     }
     case ROUTEUR_MODE: { break;}

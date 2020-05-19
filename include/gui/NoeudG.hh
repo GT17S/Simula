@@ -59,19 +59,13 @@ public:
          * \param pixmap : voir #QPixmap
          * \param espaceTravail : voir #QGraphicsScene
     */
-    NoeudG(EspaceTravail *_espaceTravail = nullptr, QPixmap pixmap= QPixmap("../../ressources/hub.png"));
+    NoeudG(EspaceTravail *_espaceTravail = nullptr);
 
     /*!
          * \brief Destructeur
          * Destructeur de la classe NoeudG
      */
     ~NoeudG();
-
-    QPixmap *getPixmap() const;
-    void setPixmap(QPixmap *value);
-
-    QGraphicsPixmapItem *getItem() const;
-    void setItem(QGraphicsPixmapItem *value);
 
     Noeud * getChild(){return child;}
     void setChild(Noeud * child);
@@ -80,8 +74,6 @@ public:
     void setTreeItem(QTreeWidgetItem *parent);
 
 protected:
-    QPixmap *pixmap;
-    QGraphicsPixmapItem* item;
     vector<cableG_extremite> extremiteG;
     //fenetre en clickant sur l'un des noeuds
     EspaceTravail *espaceTravail;

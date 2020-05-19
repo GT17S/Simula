@@ -1,15 +1,17 @@
 #include "ThreadManager.hh"
 
 
-ThreadManager::ThreadManager(gSimulation* _gestionnaire): QObject(){
+ThreadManager::ThreadManager(gSimulation* _gestionnaire){
 	mutexmap["Cable"] = new std::mutex();
 	gestionnaire = _gestionnaire;
 }
 
 
 ThreadManager::~ThreadManager(){
+	joinall();
 	MovingData.clear();
 	WorkingThreads.clear();
+
 
 }
 

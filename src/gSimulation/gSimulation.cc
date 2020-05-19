@@ -60,6 +60,7 @@ gSimulation::~gSimulation()
 {
     delete timer;
     delete time;
+    delete tm;
 }
 QTime *gSimulation::time;
 QTimer *gSimulation::timer;

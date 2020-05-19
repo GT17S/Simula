@@ -7,10 +7,14 @@
 #include "Graphe.hh"
 
 
+void cleanup(){
+    return;
+}
+
 int main ( int argc, char ** argv) {
 
     lireXml("test.xml");
-    gSimulation * gestionnaire = new gSimulation;
+    gSimulation * gestionnaire = new gSimulation();
     gestionnaire->getManager()->initStation();
 
     QApplication app ( argc, argv);
@@ -26,13 +30,7 @@ int main ( int argc, char ** argv) {
 
     app.setStyleSheet(StyleSheet);
     g.show();
-/*
-    auto lam =  [&] (gSimulation* g){ 
-        g->getManager()->joinall();
-        delete g;
-        return;
-    };
-    std::atexit(lam(gestionnaire));
-*/
+
+    std::atexit(cleanup);
     return app.exec();
 }

@@ -14,9 +14,9 @@
 
 class gSimulation;
 
-class ThreadManager : QObject
+class ThreadManager
 {
-	Q_OBJECT
+
 private:
 	std::vector<Data*> MovingData;
 	std::vector<std::thread> WorkingThreads;
@@ -30,10 +30,6 @@ public:
 
 	
 	void joinall();
-
-public slots:
- 	void envoieD(){};
-
 };
 
 #endif

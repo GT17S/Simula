@@ -4,9 +4,10 @@
 #include <QApplication>
 #include <QTabWidget>
 #include <QMap>
-
+#include "PanneauEvents.hh"
 #include "Data.hh"
 #include "DataG.hh"
+#include "QTreeWidgetItem"
 
 class PanneauData : public QTabWidget {
 Q_OBJECT
@@ -15,8 +16,10 @@ public:
 	~PanneauData();
 public slots:
 	void addData ( Data * d);
+
+
 private:
-	QMap <Data *, DataG *> onglets;
+    QMap <Data *, DataG *> onglets;
 
 };
 

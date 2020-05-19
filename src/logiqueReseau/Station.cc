@@ -1,5 +1,6 @@
 #include "Station.hh"
 #include "DataOutils.hh"
+#include "QString"
 
 
 
@@ -14,6 +15,8 @@ Station::Station() : Noeud(){
     controleur = new Congestion();
     numSeq = 1;
     isPasserelle = false;
+
+
 
 }
 

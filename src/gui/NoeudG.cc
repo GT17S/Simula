@@ -1,5 +1,6 @@
 #include <NoeudG.hh>
 #include <QMessageBox>
+#include "PanneauEvents.hh"
 
 NoeudG::NoeudG(EspaceTravail * _espaceTravail, QPixmap pixmap) : QGraphicsPixmapItem(pixmap)
 {
@@ -7,15 +8,22 @@ NoeudG::NoeudG(EspaceTravail * _espaceTravail, QPixmap pixmap) : QGraphicsPixmap
     child = nullptr;
     setFlag(QGraphicsItem::ItemIsMovable);
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges);
-
-
+    
+    parent=new QTreeWidgetItem(PanneauEvents::getTreeview());
+    PanneauEvents::addRoot(parent,"Noeud");
 }
+void NoeudG::setparent(QTreeWidgetItem *value)
+{
+    parent = value;
+}
+
 NoeudG::~NoeudG()
 {
     //delete tabWidget;
     //delete buttonBox;
     //delete item;
     //delete pixmap; Sert à rien de delete c'est passé statiquement au super constructeur
+    delete parent;
 }
 
 QGraphicsPixmapItem *NoeudG::getItem() const
@@ -45,7 +53,8 @@ void NoeudG::setChild(Noeud * _child){
 
 void NoeudG::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    qDebug() <<"mouse pressed NoeudG";
+    //qDebug() <<"mouse pressed NoeudG";
+    PanneauEvents::addCh(parent,"Clic ok");
     switch(espaceTravail->getMode()){
     case SELECT_MODE:  { break;}
     case DELETE_MODE:  {
@@ -54,6 +63,7 @@ void NoeudG::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 = QMessageBox::question(espaceTravail, "Supprimer equipement",
                                         "Voulez-vous vraiment supprimer l'éuipement ?",
                                         QMessageBox::Yes | QMessageBox::No);
+
         if(ret == QMessageBox::Yes)
             this->~NoeudG();
         break;

@@ -16,13 +16,14 @@ simulaGui::simulaGui(){
         widgets.append(new QLabel());
    }
 */
+    PanneauEvents * panneauevents = new PanneauEvents;
+
     EspaceTravail * espaceTravail = new EspaceTravail;
     widgets.append(new PanneauOutils(espaceTravail)); //0
     widgets.append(espaceTravail);
     widgets.append(new PanneauData());
     widgets.append(new ToolBarEquipement(espaceTravail));
-    widgets.append(new PanneauEvents());
- 	
+    widgets.append(panneauevents);
 
     //Modifier les tailles de chaque widget
     mainlayout->addWidget(widgets[0], 0, 0, 1, 4); //Barre menu (0)

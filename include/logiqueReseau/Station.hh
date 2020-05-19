@@ -32,11 +32,10 @@ class Station : public virtual Noeud {
   private:
     string adressePasserelle; /*!< adresse de passerelle de la station*/
     vector<int> numSegmentsEnvoye; /*!< liste des numeros de séquences des segments envoyés */
-    Congestion * controleur;
+    Congestion * controleur;/*!< le contrôle de congestion qui gere l'envoie des messages et la recpetion des ACKS */
     int numSeq;
     bool isPasserelle;
     multimap<int, Data*> fragments;
-
    vector<Cable*> lastpath;
 public:
     /*!
@@ -65,9 +64,16 @@ public:
       * Destructeur de la classe Station
       */
     ~Station(){}
-
-
     /*!
+     * \brief getParent
+     * \return la section ou tous les traitement d'une station seront affiche dans PanneauEvents
+     */
+    /*!
+     * \brief setParent
+     * \modifier la section ou tous les traitement d'une station seront affiche dans PanneauEvents
+     */
+
+    /*!getN
      * \brief getPasserelle
      * \return voir #adressePasserelle
      */
@@ -105,6 +111,7 @@ public:
     int  checkFragment(Data* data);
     void envoyerMessage(int key, destination dest);
     void recevoirMessage(int key, int dest_i, destination dest);
+
 
 
 };

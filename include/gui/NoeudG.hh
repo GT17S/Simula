@@ -18,6 +18,7 @@
 #include <QMouseEvent>
 #include <QGraphicsScene>
 #include <QGraphicsItem>
+#include "QTreeWidgetItem"
 #include <vector>
 
 class Noeud;
@@ -49,9 +50,11 @@ private:
     //fenetre en clickant sur l'un des noeuds
     EspaceTravail *espaceTravail;
     Noeud * child;
+    QTreeWidgetItem *parent;/*!< la section ou tous les traitement d'une station seront affiche dans PanneauEvent */
 
     void addLine(CableG * cable, bool isPoint1);
     void moveCable(QPointF newPos);
+
 
 public:
 
@@ -60,7 +63,7 @@ public:
          *  Constructeur de la classe NoeudG
          *  Initialise un NoeudG par une scene ou le noeudG va t'etre afficher et une icon.
          * \param pixmap : voir #QPixmap
-         * \param parent : voir #QGraphicsScene
+         * \param espaceTravail : voir #QGraphicsScene
     */
     NoeudG(EspaceTravail *_espaceTravail, QPixmap pixmap= QPixmap("../../ressources/hub.png"));
 
@@ -78,6 +81,9 @@ public:
 
     Noeud * getChild(){return child;}
     void setChild(Noeud * child);
+
+    QTreeWidgetItem *getparent() {return parent;}
+    void setparent(QTreeWidgetItem *value);
 
 protected:
     //void mouseDoubleClickEvent( QMouseEvent * e );

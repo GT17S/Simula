@@ -35,6 +35,8 @@ void Station::setPasserelle(string _adresse){
 void Station::setControleur(Congestion *_controleur){
     controleur = _controleur;
 }
+
+// Section critique ? 
 int Station::getNextNumSeq()
 {
     numSeq++;
@@ -93,7 +95,7 @@ void Station::envoyerMessage(int key, destination dest){
         return;
     }
 
-    
+    this->mutexcabl->lock();
     //Une fois que le paquet est envoyé on met à jour le rtt
     controleur->setBaseRtt(CalculRTT(controleur));
     //On calcule la latence de l'envoi dans le contrôleur
@@ -103,7 +105,7 @@ void Station::envoyerMessage(int key, destination dest){
             float tmpcableBP = path[i]->getDebitAcc();
             path[i]->setDebitAcc(tmpcableBP - (float)dest.data->getOriginialStringSize()*8);
     }    
-
+    this->mutexcabl->unlock();
     // prochaine destination
     extremite * extNext = path[size_p -1]->getInverseExt(this);
     extNext->noeud->recevoirMessage(key, extNext->interface, dest);
@@ -112,11 +114,12 @@ void Station::envoyerMessage(int key, destination dest){
 
 void Station::recevoirMessage(int key, int dest_i, destination dest){
      //Libèration de la bande passante dans les cas particuliers de reception
+    this->mutexcabl->lock();
     for (int i = 0; i < lastpath.size(); ++i){   
         float tmpcableBP = lastpath[i]->getDebitAcc();
         lastpath[i]->setDebitAcc(tmpcableBP + (float)dest.data->getOriginialStringSize()*8);
     }    
-
+    this->mutexcabl->unlock();
     std::cout <<"Je suis une station "<< idNoeud<<std::endl;
     // std::cout <<"TYPE DATA = "<< dest.data->getType() << std::endl;
     if(dest.data->getType() < 3){
@@ -179,11 +182,13 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
                 desencapsule_segment(dest.data);
                 std::cout <<"Jai recu le message :"<<std::endl<<showMessage(dest.data) <<std::endl;
                 delete dest.data;
+			    this->mutexcabl->lock();
                 //Libèration de la bande passante 
                 for (int i = 0; i < lastpath.size(); ++i){   
                     float tmpcableBP = lastpath[i]->getDebitAcc();
                     lastpath[i]->setDebitAcc(tmpcableBP + (float)dest.data->getOriginialStringSize()*8);
                 }    
+			    this->mutexcabl->unlock();
                 // envoi nouveau ack
                 controleur->verifieNumSegment(this, n2, nSeq+1);
             }
@@ -281,16 +286,26 @@ mf = 1 et offset != 0 : fragments
 
 */
 
-
-
-
 void Station::mainlocal(std::mutex *m){
         this->mutexcabl = m;
         controleur->setMutex(m);
+        std::mutex * mfe = new std::mutex();
+        std::mutex * mfa = new std::mutex();
+        std::mutex * meo = new std::mutex();
+        
+        this->mutexEnvoiOk = meo;
+        this->mutexFileEnvoyer = mfe;
+        controleur->setMutexFileEnvoyer ( mfe);
+        controleur->setMutexFileACK ( mfa);
+        controleur->setMutexEnvoiOk ( meo);
+        
         std::cout << "Fonction principale du thread" << std::endl;
 
        while (1){
-        if(this->getControleur()->getok()){
+		   meo->lock();
+		   bool bok = this->getControleur()->getok();
+		   meo->unlock();
+        if(bok){
             std::cout <<  getIdNoeud() << std::endl;
             this->getControleur()->verifieNbrSegment(this);
         }

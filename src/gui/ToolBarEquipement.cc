@@ -76,7 +76,6 @@ void ToolBarEquipement::createSignals(){
     QSignalMapper* mapper = new QSignalMapper(this);
     connect(mapper, SIGNAL(mapped(int)), this, SLOT(ajouterNoeud(int)));
 
-    connect(cableAction, SIGNAL(clicked()), this, SLOT(ajouterCable()));
     connect(selectAction, SIGNAL(clicked()), this, SLOT(selectItem()));
     connect(supprAction, SIGNAL(clicked()), this, SLOT(supprimerEquipement()));
     mapper->setMapping(routeurAction, 1);
@@ -90,7 +89,13 @@ void ToolBarEquipement::createSignals(){
     connect(stationAction, SIGNAL(clicked()), mapper, SLOT(map()));
     connect(switchAction, SIGNAL(clicked()), mapper, SLOT(map()));
 
+    QSignalMapper* mapperCable = new QSignalMapper(this);
+    connect(mapperCable, SIGNAL(mapped(int)), this, SLOT(ajouterCable(int)));
+    mapperCable->setMapping(cableDAction, 1);
+    mapperCable->setMapping(cableCAction, 2);
 
+    connect(cableDAction, SIGNAL(triggered()), mapperCable, SLOT(map()));
+    connect(cableCAction, SIGNAL(triggered()), mapperCable, SLOT(map()));
 }
 
 void ToolBarEquipement::createShortcuts(){
@@ -102,24 +107,14 @@ void ToolBarEquipement::selectItem(){
     espaceTravail->setMode(SELECT_MODE);
 }
 
-void ToolBarEquipement::ajouterCable(){
-   auto s  = this->parent();
-   simulaGui* ss = dynamic_cast<simulaGui*>(s);
-   auto ss2 = dynamic_cast<EspaceTravail*>(ss->getMainlayout()->itemAtPosition(1,1)->widget());
-   assert(ss && ss2);  
-  // ss2->addCatPos();
+void ToolBarEquipement::ajouterCable(int n){
+  //  qDebug()<< "cable clicked "<<n;
+    espaceTravail->setMode(CABLE_MODE);
 }
 
 void ToolBarEquipement::ajouterNoeud(int n){
-   auto s  = this->parent();
-   simulaGui* ss = dynamic_cast<simulaGui*>(s);
-   auto ss2 = dynamic_cast<EspaceTravail*>(ss->getMainlayout()->itemAtPosition(1,1)->widget());
-   assert(ss && ss2); 
-
     switch(n){
-    case 1:{ //Routour
-                //NoeudG* tmpRouteur = new RouteurG(ss2->getScene());
-               // ss2->addNoeud(new RouteurG(ss2->getScene()));
+    case 1:{
                 espaceTravail->setMode(ROUTEUR_MODE);
                 break;
             }

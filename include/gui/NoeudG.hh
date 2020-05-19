@@ -19,8 +19,22 @@
 #include <QGraphicsScene>
 #include <QGraphicsItem>
 #include "QTreeWidgetItem"
+#include <vector>
 
+class Noeud;
 class EspaceTravail;
+class CableG;
+
+
+#ifndef CABLEG_EXTREMITE_H
+#define CABLEG_EXTREMITE_H
+struct cableG_extremite{
+    CableG * cable;
+    bool isP1;
+};
+#endif
+
+using std::vector;
 /*!
  * \class NoeudG
  * \brief La classe NoeudG représentant un noeud (equipement) sur l'interface graphique
@@ -32,12 +46,14 @@ private:
     //pour les icons afficher les differents noeuds
     QPixmap *pixmap;
     QGraphicsPixmapItem* item;
-
+    vector<cableG_extremite> extremiteG;
     //fenetre en clickant sur l'un des noeuds
-    QTabWidget *tabWidget;
-    QDialogButtonBox *buttonBox;
     EspaceTravail *espaceTravail;
+    Noeud * child;
     QTreeWidgetItem *parent;/*!< la section ou tous les traitement d'une station seront affiche dans PanneauEvent */
+
+    void addLine(CableG * cable, bool isPoint1);
+    void moveCable(QPointF newPos);
 
 
 public:
@@ -49,16 +65,7 @@ public:
          * \param pixmap : voir #QPixmap
          * \param espaceTravail : voir #QGraphicsScene
     */
-    NoeudG(EspaceTravail *espaceTravail, QPixmap pixmap= QPixmap("../../ressources/hub.png"));
-
-
-    /*!
-         * \brief Construceur d'initialisation
-         *  Constructeur de la classe NoeudG
-         *  Initialise un NoeudG par une icon.
-         * \param pixmap : voir #QPixmap
-    */
-    NoeudG(QPixmap pixmap);
+    NoeudG(EspaceTravail *_espaceTravail, QPixmap pixmap= QPixmap("../../ressources/hub.png"));
 
     /*!
          * \brief Destructeur
@@ -72,11 +79,8 @@ public:
     QGraphicsPixmapItem *getItem() const;
     void setItem(QGraphicsPixmapItem *value);
 
-    QTabWidget *getTabWidget() const;
-    void setTabWidget(QTabWidget *value);
-
-    QDialogButtonBox *getButtonBox() const;
-    void setButtonBox(QDialogButtonBox *value);
+    Noeud * getChild(){return child;}
+    void setChild(Noeud * child);
 
     QTreeWidgetItem *getparent() {return parent;}
     void setparent(QTreeWidgetItem *value);
@@ -84,6 +88,8 @@ public:
 protected:
     //void mouseDoubleClickEvent( QMouseEvent * e );
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+
     //void mouseMoveEvent( QMouseEvent *e );
     //void mouseReleaseEvent( QMouseEvent *e );
 };

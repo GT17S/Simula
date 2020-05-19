@@ -14,6 +14,7 @@
 #include <iostream>
 #include "InterfaceFE.hh"
 #include "Data.hh"
+#include "NoeudG.hh"
 
 using std::string;
 using std::vector;
@@ -57,6 +58,7 @@ typedef enum {
 
 class InterfaceFE;
 class Cable;
+class NoeudG;
 /*!
  * \class Noeud
  * \brief La classe Noeud représentant un noeud.
@@ -73,7 +75,7 @@ protected:
   vector<string> fileDattente; /*< File d'attente des données */
   vector<Route*> tableRoutage; /*!< Table de routage */
   typeNoeud type; /*!< Le type du noeud #typeNoeud*/
-
+  NoeudG * parent; /*!< Parent , composant graphique */
 
 public:
     /*!
@@ -85,7 +87,7 @@ public:
      * \param idNoeud : voir #idNoeud
      * \param nbPort : voir #nbPort
      */
-    Noeud(string nom, int idNoeud, int nbPort);
+    Noeud(string nom, int idNoeud, int nbPort, NoeudG * parent = nullptr);
 
     /*!
      * \brief Constructeur par défaut
@@ -95,7 +97,7 @@ public:
      * Initialise une interface réseau
      * Initialise la file d'attente des données #fileDattente.
      */
-    Noeud();
+    Noeud(NoeudG * parent = nullptr);
 
     /*!
      * \brief Destructeur
@@ -150,9 +152,15 @@ public:
 
     /*!
      * \brief getTableRoutage
-     * \return  #voir tableRoutage
+     * \return  voir #tableRoutage
      */
     vector<Route*>  getTableRoutage(){return tableRoutage;}
+    /*!
+     * \brief getParent
+     *
+     * \return voir #parent
+     */
+    NoeudG * getParent(){return parent;}
 
     /*!
      * \brief setNom
@@ -226,6 +234,8 @@ public:
      */
     void setTableRoutage(Route* route);
 
+
+    void setParent(NoeudG * _parent);
     /*!
      * \brief getPasserelleTableRoutage
      * Retourner l'adresse de passerelle d'une adresse réseau dans la table de routage

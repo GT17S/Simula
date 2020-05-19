@@ -7,7 +7,6 @@
 #include "StationG.hh"
 #include "HubG.hh"
 #include "SwitchG.hh"
-#include "CableG.hh"
 
 QCursor EspaceTravail::SELECT_CURSOR,
 EspaceTravail::DELETE_CURSOR,
@@ -19,6 +18,7 @@ EspaceTravail::CABLE_CURSOR;
 
 EspaceTravail::EspaceTravail(){
 
+    currentCable = nullptr;
     this->setMinimumSize(450,430);
     createCursors();
     scene = new QGraphicsScene(this);
@@ -82,7 +82,7 @@ void EspaceTravail::mouseDoubleClickEvent(QMouseEvent *event)
 }
 
 void EspaceTravail::mousePressEvent(QMouseEvent *event)
-{   qDebug() <<"mouse pressed";
+{   //qDebug() <<"mouse pressed";
     QPoint origin = vue->mapFromGlobal(QCursor::pos());
     QPointF p = vue->mapToScene(origin);
     switch(mode){

@@ -22,6 +22,7 @@
 #include <QMainWindow>
 #include <iostream>
 #include "NoeudG.hh"
+#include "CableG.hh"
 
 class NoeudG;
 
@@ -124,11 +125,14 @@ public:
 
     cursor_mode getMode(){return mode;}
     void setMode(cursor_mode);
+    CableG * currentCable;
+
 protected:
     void mouseDoubleClickEvent( QMouseEvent * e );
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent( QMouseEvent *e );
     void mouseReleaseEvent( QMouseEvent *e );
+
 
 
 };

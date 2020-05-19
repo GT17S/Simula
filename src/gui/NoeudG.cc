@@ -6,6 +6,7 @@ NoeudG::NoeudG(EspaceTravail * _espaceTravail, QPixmap pixmap) : QGraphicsPixmap
 {
     espaceTravail = _espaceTravail;
     child = nullptr;
+    configuration = new Dialog(child);
     setFlag(QGraphicsItem::ItemIsMovable);
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges);
     
@@ -81,7 +82,7 @@ void NoeudG::mousePressEvent(QGraphicsSceneMouseEvent *event)
             qDebug() << "first click";
         }else{
             CableG * i = espaceTravail->currentCable;
-           // *i = * (espaceTravail->currentCable);
+            // *i = * (espaceTravail->currentCable);
             qDebug() << "second click";
             //i->setLine(QLineF(espaceTravail->origPoint, event->scenePos()-boundingRect().center()));
             i->setPen(QPen(Qt::black, 3, Qt::SolidLine));
@@ -98,6 +99,13 @@ void NoeudG::mousePressEvent(QGraphicsSceneMouseEvent *event)
     default: return;
     }
 }
+void NoeudG::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event){
+    configuration->show();
+
+
+
+}
+
 
 void NoeudG::addLine(CableG * _cable, bool isPoint1) {
     cableG_extremite e;
@@ -109,10 +117,10 @@ void NoeudG::addLine(CableG * _cable, bool isPoint1) {
 
 void NoeudG::moveCable(QPointF newPos){
     for(cableG_extremite e : extremiteG){
-    if(e.isP1)
-        e.cable->setLine(QLineF(newPos+boundingRect().center(), e.cable->line().p2()));
-    else
-        e.cable->setLine(QLineF(e.cable->line().p1(), newPos+boundingRect().center()));
+        if(e.isP1)
+            e.cable->setLine(QLineF(newPos+boundingRect().center(), e.cable->line().p2()));
+        else
+            e.cable->setLine(QLineF(e.cable->line().p1(), newPos+boundingRect().center()));
     }
 }
 
@@ -125,5 +133,4 @@ QVariant NoeudG::itemChange(GraphicsItemChange change, const QVariant &value)
     }
     return QGraphicsItem::itemChange(change, value);
 }
-
 

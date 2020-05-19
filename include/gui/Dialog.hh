@@ -7,14 +7,16 @@
 #include <QToolBox>
 #include <QMainWindow>
 #include <QGridLayout>
+#include "Noeud.hh"
 
+class Noeud;
 class Dialog : public QDialog
 {
     Q_OBJECT
 
 public:
 
-    Dialog(QWidget *parent);
+    Dialog(Noeud * parent);
     ~Dialog();
 
 

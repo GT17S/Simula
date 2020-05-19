@@ -30,6 +30,7 @@ private :
     QAction     *exporterDot,
                 *exporterPng;
 
+
 void createButtons();
 void createSignals();
 void createShortCuts();
@@ -59,6 +60,8 @@ public slots:
     */
     void toPng();
 
+    QTreeWidgetItem *getParent() const;
+    void setParent(QTreeWidgetItem *value);
 };
 
 #endif

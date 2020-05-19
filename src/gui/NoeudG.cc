@@ -1,31 +1,39 @@
 #include <NoeudG.hh>
 #include <QMessageBox>
+#include "PanneauEvents.hh"
 
-NoeudG::NoeudG(EspaceTravail *_parent, QPixmap pixmap) : QGraphicsPixmapItem(pixmap)
+
+NoeudG::NoeudG(EspaceTravail * _espaceTravail, QPixmap pixmap) : QGraphicsPixmapItem(pixmap)
 {
-    parent = _parent;
+    espaceTravail = _espaceTravail;
     this->setFlag(QGraphicsItem::ItemIsMovable);
-    //parent->addItem(this);
+    //espaceTravail->addItem(this);
 
     this->setTabWidget(new QTabWidget);
     //tabWidget->addTab("GENERAL");
+    parent=new QTreeWidgetItem(PanneauEvents::getTreeview());
+    PanneauEvents::addRoot(parent,"Noeud");
+}
+void NoeudG::setparent(QTreeWidgetItem *value)
+{
+    parent = value;
 }
 
 /*
-NoeudG::NoeudG(QGraphicsScene *parent, QPixmap pixmap): QGraphicsPixmapItem(pixmap)
+NoeudG::NoeudG(QGraphicsScene *espaceTravail, QPixmap pixmap): QGraphicsPixmapItem(pixmap)
 {
 
-    //this = parent->addPixmap(new QPixmap("../../ressources/station.png"));
+    //this = espaceTravail->addPixmap(new QPixmap("../../ressources/station.png"));
 
     QPixmap *pix=new QPixmap("../../ressources/routeur.png");
     setPixmap(pix);
-    //QGraphicsPixmapItem* item3 = parent->addPixmap(pixmap3);
-    //this =parent->addPixmap(pix);
+    //QGraphicsPixmapItem* item3 = espaceTravail->addPixmap(pixmap3);
+    //this =espaceTravail->addPixmap(pix);
 
 
     this->moveBy(qrand()%200-100, qrand()%200-100);
     this->setFlag(QGraphicsItem::ItemIsMovable);
-    //parent->addItem(this);
+    //espaceTravail->addItem(this);
 
 
     this->setTabWidget(new QTabWidget) ;
@@ -38,6 +46,7 @@ NoeudG::~NoeudG()
     //delete buttonBox;
     //delete item;
     //delete pixmap; Sert à rien de delete c'est passé statiquement au super constructeur
+    delete parent;
 }
 
 QGraphicsPixmapItem *NoeudG::getItem() const
@@ -83,12 +92,13 @@ void NoeudG::setPixmap(QPixmap *value)
 void NoeudG::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     qDebug() <<"mouse pressed NoeudG";
-    switch(parent->getMode()){
+    PanneauEvents::addCh(parent,"Clic ok");
+    switch(espaceTravail->getMode()){
     case SELECT_MODE:  { break;}
     case DELETE_MODE:  {
 
         const QMessageBox::StandardButton ret
-                = QMessageBox::question(parent, "Supprimer equipement",
+                = QMessageBox::question(espaceTravail, "Supprimer equipement",
                                        "Voulez-vous vraiment supprimer l'éuipement ?",
                                        QMessageBox::Yes | QMessageBox::No);
         if(ret == QMessageBox::Yes)
@@ -97,8 +107,8 @@ void NoeudG::mousePressEvent(QGraphicsSceneMouseEvent *event)
     }
     case ROUTEUR_MODE: { break;}
     case STATION_MODE: { break;}
-    case SWITCH_MODE:  { break;}
-    case HUB_MODE:     { break;}
+    case SWITCH_MODE:  {break;}
+    case HUB_MODE:     {break;}
     case CABLE_MODE:   { break;}
     default: return;
     }

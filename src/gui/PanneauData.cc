@@ -18,3 +18,4 @@ void PanneauData::addData ( Data * d)	{
 	this->addTab( od,QString("Envoie n°%1").arg( onglets.size()+1));
 	onglets.insert ( d,od);
 }
+

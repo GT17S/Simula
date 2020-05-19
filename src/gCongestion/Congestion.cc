@@ -9,18 +9,6 @@ using namespace std;
 
 
 
-void Congestion::setMapFileEnvoyer(const std::map<int, destination> _map)
-{
-    mapFileEnvoyer = _map;
-}
-
-
-
-void Congestion::setMapFileACK(std::map<int, destination> _map)
-{
-    mapFileACK =  _map;
-}
-
 Congestion::Congestion() :  mapFileEnvoyer(), mapFileACK(){
     cwnd=1;
     ssthresh=32;
@@ -79,6 +67,19 @@ void Congestion::setBaseRtt(int _baseRtt){
     else return;
 }
 
+
+void Congestion::setMapFileEnvoyer(const std::map<int, destination> _map)
+{
+    mapFileEnvoyer = _map;
+}
+
+
+
+void Congestion::setMapFileACK(std::map<int, destination> _map)
+{
+    mapFileACK =  _map;
+}
+
 void Congestion::slowStart(){
     if(cwnd < ssthresh){
         cwnd=cwnd*2;
@@ -102,7 +103,6 @@ void Congestion::congestionAvoidance(){
 
     cwnd =cwnd+1;
     cpt++;
-    //PanneauEvents::affichage("congestionAvoidance est lance");
 
 }
 
@@ -110,9 +110,7 @@ void Congestion::verifieNbrSegment(Noeud * src){
 
     if(mapFileEnvoyer.empty()){
         cout<<"fin de l'envoie 1"<<endl;
-        //PanneauEvents::affichage("fin de l'envoie 1 ");
 
-        //resamblahe(segRecu());
         return;
     }
 
@@ -120,7 +118,6 @@ void Congestion::verifieNbrSegment(Noeud * src){
 
         if(i > mapFileEnvoyer.size()){
             cout<<"fin de l'envoie 2"<<endl;
-            //PanneauEvents::affichage("fin de l'envoie de pc : "+src.getNom());
 
             return;
         }

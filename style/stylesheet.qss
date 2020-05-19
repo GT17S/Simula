@@ -123,6 +123,25 @@ image : url(:/ressources/equiBar/routeurAction.png);
 QPushButton#hubAction{
 image : url(:/ressources/equiBar/hubAction.png);
 }
+/*
+QTreeView{
+font: bold 12px;
+}
+QTreeView::item {
+    border: 3px solid #d9d9d9;
+  border-top-color:black;
+  border-bottom-color: black;
+}
+QTreeView::item:hover {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #e7effd, stop: 1 #cbdaf1);
+    border: 5px solid #bfcde4;
+}
+QTreeView::item:selected {
+    border: 1px solid red;
+    background-color:red;
+}
+*/
+
 QPushButton#switchAction{
  image : url(:/ressources/equiBar/switchAction.png);
 }

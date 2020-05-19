@@ -356,8 +356,9 @@ void PanneauOutils::preparenvoi(){
         envoyer(graphe->getSommets()[Noeud1->text().toInt()] ,  graphe->getSommets()[Noeud2->text().toInt()] ,  portsrc->text().toInt() ,  portdest->text().toInt() ,  syn->text().toInt() ,  ack->text().toInt() ,  nseq->text().toInt() ,  nack->text().toInt() ,  ipid->text().toInt() ,  df->text().toInt() ,  sendData);
         //Signaler que l'envoi est possible 
         auto src = dynamic_cast<Station*>(graphe->getSommets()[Noeud1->text().toInt()]);
+		src->getMutexEnvoiOk()->lock();
         src->getControleur()->setok(true);
-
+		src->getMutexEnvoiOk()->unlock();
        for (int i = 0; i < 11; ++i)
        {
            auto tmp = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(i)->widget());

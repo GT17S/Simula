@@ -44,8 +44,10 @@ private:
     float latenceLastSend; /*!<  Latence d'un envoie entre A et B  en ms */
 
     //mutex de vérouillage
-    std::mutex* mutexcable;
-
+    std::mutex* mutexcable; // A voir si beosin ici
+	std::mutex* mutexFileEnvoyer;
+	std::mutex* mutexFileACK;
+	std::mutex* mutexEnvoiOk;
     bool envoiok;
 
 public:
@@ -145,6 +147,27 @@ public:
       * \param le mutex du threadManager
     */
     void setMutex(std::mutex* _m){this->mutexcable = _m;};
+    
+    /*!
+      * \brief setMutexFileEnvoyer
+      * initialise le Mutex qui va sécuriser la manipulation de la liste des data a envoyer
+      * \param le mutex de la station
+    */
+    void setMutexFileEnvoyer(std::mutex* _m){this->mutexFileEnvoyer = _m;};
+
+    /*!
+      * \brief setMutexFileACK
+      * initialise le Mutex qui va sécuriser la manipulation de la liste des ACK
+      * \param le mutex de la station
+    */
+    void setMutexFileACK(std::mutex* _m){this->mutexFileACK = _m;};
+
+    /*!
+      * \brief setMutexEnvoiOk
+      * initialise le Mutex qui va sécuriser la manipulation du booléen d'envoie
+      * \param le mutex dz la station
+    */
+    void setMutexEnvoiOk(std::mutex* _m){this->mutexEnvoiOk = _m;};
 
     /*!
       * \brief setBaseRtt

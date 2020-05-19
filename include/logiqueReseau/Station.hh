@@ -39,6 +39,8 @@ class Station : public virtual Noeud {
     multimap<int, Data*> fragments;
     //mutex sur cables
     std::mutex* mutexcabl;
+    std::mutex* mutexEnvoiOk;
+    std::mutex* mutexFileEnvoyer;
     vector<Cable*> lastpath;
 public:
     /*!

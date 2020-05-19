@@ -18,10 +18,22 @@
 #include <QMouseEvent>
 #include <QGraphicsScene>
 #include <QGraphicsItem>
+#include <vector>
 
 class Noeud;
-
 class EspaceTravail;
+class CableG;
+
+
+#ifndef CABLEG_EXTREMITE_H
+#define CABLEG_EXTREMITE_H
+struct cableG_extremite{
+    CableG * cable;
+    bool isP1;
+};
+#endif
+
+using std::vector;
 /*!
  * \class NoeudG
  * \brief La classe NoeudG représentant un noeud (equipement) sur l'interface graphique
@@ -33,10 +45,13 @@ private:
     //pour les icons afficher les differents noeuds
     QPixmap *pixmap;
     QGraphicsPixmapItem* item;
-
+    vector<cableG_extremite> extremiteG;
     //fenetre en clickant sur l'un des noeuds
     EspaceTravail *espaceTravail;
     Noeud * child;
+
+    void addLine(CableG * cable, bool isPoint1);
+    void moveCable(QPointF newPos);
 
 public:
 
@@ -67,6 +82,8 @@ public:
 protected:
     //void mouseDoubleClickEvent( QMouseEvent * e );
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+
     //void mouseMoveEvent( QMouseEvent *e );
     //void mouseReleaseEvent( QMouseEvent *e );
 };

@@ -82,9 +82,6 @@ public:
     Noeud * getChild(){return child;}
     void setChild(Noeud * child);
 
-    QTreeWidgetItem *getparent() {return parent;}
-    void setparent(QTreeWidgetItem *value);
-
 protected:
     //void mouseDoubleClickEvent( QMouseEvent * e );
     void mousePressEvent(QGraphicsSceneMouseEvent *event);

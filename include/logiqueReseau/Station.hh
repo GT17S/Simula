@@ -15,6 +15,7 @@
 #include "Graphe.hh"
 #include "Congestion.hh"
 #include "congestionOutil.hh"
+#include "StationG.hh"
 
 using std::string;
 using std::vector;
@@ -24,6 +25,7 @@ class Noeud;
 class Data;
 class InterfaceFE;
 class Congestion;
+class StationG;
 /*!
  * \class Station
  * \brief La classe Station représentant une station (machine).
@@ -47,7 +49,7 @@ public:
      * Initialise #numSegmentsEnvoye vide
      *
      */
-    Station();
+    Station(StationG * parent = nullptr);
     /*!
      * \brief Constructeur
      * Constructeur de la classe Station,
@@ -58,7 +60,7 @@ public:
      * \param adressePasserelle : voir #adressePasserelle
      */
     Station(string nom,int idNoeud,int nbPort,
-            string adressePasserelle, bool isPasserelle = false);
+            string adressePasserelle, bool isPasserelle = false, StationG * parent = nullptr);
     /*!
       * \brief Destructeur
       * Destructeur de la classe Station

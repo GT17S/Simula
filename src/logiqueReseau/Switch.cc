@@ -3,13 +3,13 @@
 #include "DataOutils.hh"
 
 
-Switch::Switch(string  _nom,int _idNoeud,int _nbPort) :
-    Hub(_nom, _idNoeud, _nbPort)
+Switch::Switch(string  _nom,int _idNoeud,int _nbPort, SwitchG * parent) :
+    Hub(_nom, _idNoeud, _nbPort, parent)
 {
     type = SWITCH;
 }
 
-Switch::Switch() : Hub() {
+Switch::Switch(SwitchG * parent) : Hub(parent) {
     // ID automatique
     // nb port =1
     // filedattente vide

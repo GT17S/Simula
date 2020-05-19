@@ -281,7 +281,7 @@ void PanneauOutils::toPng(){
     else{
         QPixmap pixMap = QPixmap::grabWidget(espaceTravail->getVue());
         int a=espaceTravail->getVue()->verticalScrollBar()->width();
-        int b=espaceTravail->getVue()->horizontalScrollBar()->width();
+        //int b=espaceTravail->getVue()->horizontalScrollBar()->width();
         int c=espaceTravail->getVue()->rect().height();
         int d=espaceTravail->getVue()->rect().width();
 

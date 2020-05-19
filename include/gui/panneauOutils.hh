@@ -59,9 +59,6 @@ public slots:
          * slot qui permet d'exporter l'espace de travail en image png
     */
     void toPng();
-
-    QTreeWidgetItem *getParent() const;
-    void setParent(QTreeWidgetItem *value);
 };
 
 #endif

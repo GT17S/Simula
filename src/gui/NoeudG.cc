@@ -13,10 +13,7 @@ NoeudG::NoeudG(EspaceTravail * _espaceTravail, QPixmap pixmap) : QGraphicsPixmap
     parent=new QTreeWidgetItem(PanneauEvents::getTreeview());
     PanneauEvents::addRoot(parent,"Noeud");
 }
-void NoeudG::setparent(QTreeWidgetItem *value)
-{
-    parent = value;
-}
+
 
 NoeudG::~NoeudG()
 {
@@ -51,6 +48,9 @@ void NoeudG::setChild(Noeud * _child){
     child = _child;
 }
 
+void NoeudG::setTreeItem(QTreeWidgetItem * _parent){
+    parent = _parent;
+}
 
 void NoeudG::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
@@ -105,6 +105,7 @@ void NoeudG::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event){
 
 
 }
+
 
 
 void NoeudG::addLine(CableG * _cable, bool isPoint1) {

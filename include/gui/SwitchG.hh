@@ -8,16 +8,17 @@
  * \version 0.1
  */
 
-#include "NoeudG.hh"
+#include "HubG.hh"
 
-class NoeudG;
+class EspaceTravail;
+class HubG;
 
 /*!
  * \class SwitchG
  * \brief La classe SwitchG représentant un Switch sur l'interface graphique
  * lors de la simulation du protocole TCP/IP.
  */
-class SwitchG  :  public  NoeudG
+class SwitchG  :  public  virtual HubG
 {
 
     private:
@@ -30,7 +31,7 @@ class SwitchG  :  public  NoeudG
              * \param pixmap : voir #QPixmap
              * \param parent : voir #QGraphicsScene
         */
-        SwitchG(EspaceTravail *parent=nullptr, QPixmap pixmap = QPixmap(":/ressources/equipements/switch.png"));
+        SwitchG(EspaceTravail * parent=nullptr, QPixmap pixmap = QPixmap(":/ressources/equipements/switch.png"));
 
         /*!
              * \brief desctructeur

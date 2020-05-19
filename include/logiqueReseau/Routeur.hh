@@ -13,13 +13,13 @@
 #include <vector>
 #include "Noeud.hh"
 #include "Graphe.hh"
+#include "RouteurG.hh"
 
 using std::string;
 using std::vector;
 
-
 class Noeud;
-
+class RouteurG;
 /*!
  * \class Routeur
  * \brief La classe Routeur représentant un routeur
@@ -34,7 +34,7 @@ public:
      * Initialise un noeud #Noeud()
      * Génére un #nom automatiquement ( "Station + #idNoeud")
      */
-    Routeur();
+    Routeur(RouteurG * parent = nullptr);
     /*!
      * \brief Constructeur
      * Constructeur de la classe Routeur,
@@ -43,7 +43,7 @@ public:
      * \param idNoeud : voir #idNoeud
      * \param nbPort : voir #nbPort
      */
-    Routeur(string nom,int idNoeud,int nbPort);
+    Routeur(string nom,int idNoeud,int nbPort, RouteurG * parent = nullptr);
     /*!
       * \brief Destructeur
       * Destructeur de la classe Routeur

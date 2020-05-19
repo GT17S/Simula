@@ -9,7 +9,7 @@ Noeud::Noeud(NoeudG *_parent) : nbPort(1){
     // Initialisation d'une seule interface
     Graphe::ajoutNoeudMatrice(this);
     interfaces.push_back(new InterfaceFE(idNoeud));
-    parent = _parent;
+    setParent(_parent);
 }
 
 Noeud::Noeud(string _nom, int _idNoeud, int _nbPort, NoeudG * _parent){
@@ -151,7 +151,8 @@ void Noeud::setInterfaces(vector<InterfaceFE *> _interfaces){
 
 void Noeud::setParent(NoeudG * _parent){
     parent = _parent;
-    parent->setChild(this);
+    if(_parent)
+        parent->setChild(this);
 }
 
 void Noeud::setInterfaces(InterfaceFE * _interface){

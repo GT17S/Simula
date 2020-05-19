@@ -46,14 +46,6 @@ class NoeudG  :  public QGraphicsPixmapItem
 {
 private:
     //pour les icons afficher les differents noeuds
-    QPixmap *pixmap;
-    QGraphicsPixmapItem* item;
-    vector<cableG_extremite> extremiteG;
-    //fenetre en clickant sur l'un des noeuds
-    EspaceTravail *espaceTravail;
-    Noeud * child;
-    QTreeWidgetItem *parent;/*!< la section ou tous les traitement d'une station seront affiche dans PanneauEvent */
-    Dialog * configuration;
     void addLine(CableG * cable, bool isPoint1);
     void moveCable(QPointF newPos);
 
@@ -67,7 +59,7 @@ public:
          * \param pixmap : voir #QPixmap
          * \param espaceTravail : voir #QGraphicsScene
     */
-    NoeudG(EspaceTravail *_espaceTravail, QPixmap pixmap= QPixmap("../../ressources/hub.png"));
+    NoeudG(EspaceTravail *_espaceTravail = nullptr, QPixmap pixmap= QPixmap("../../ressources/hub.png"));
 
     /*!
          * \brief Destructeur
@@ -84,7 +76,19 @@ public:
     Noeud * getChild(){return child;}
     void setChild(Noeud * child);
 
+    QTreeWidgetItem * getTreeItem(){return parent;}
+    void setTreeItem(QTreeWidgetItem *parent);
+
 protected:
+    QPixmap *pixmap;
+    QGraphicsPixmapItem* item;
+    vector<cableG_extremite> extremiteG;
+    //fenetre en clickant sur l'un des noeuds
+    EspaceTravail *espaceTravail;
+    Noeud * child;
+    QTreeWidgetItem *parent;/*!< la section ou tous les traitement d'une station seront affiche dans PanneauEvent */
+    Dialog * configuration;
+
     //void mouseDoubleClickEvent( QMouseEvent * e );
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);

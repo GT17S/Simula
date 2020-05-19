@@ -4,7 +4,8 @@
 #include <QGraphicsSceneMouseEvent>
 
 RouteurG::RouteurG(EspaceTravail *parent, QPixmap pixmap ): NoeudG(parent,pixmap){}
-RouteurG::~RouteurG(){}
+RouteurG::~RouteurG(){
+}
 /*
 void RouteurG::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {

@@ -1,8 +1,8 @@
-#include "Route.hh"
+#include "RouteG.hh"
 #include <QDebug>
 #include "Dialog.hh"
 
-Route::Route()
+RouteG::RouteG()
 {
      gridLayoutinterface = new QGridLayout();
      nextHope	 = new QLineEdit ();
@@ -30,7 +30,7 @@ Route::Route()
     connect(supprimer,SIGNAL(clicked()),SLOT(deleteroute()));
 }
 
-Route::~Route()
+RouteG::~RouteG()
 {
     delete gridLayoutinterface ;
     delete nextHope;
@@ -44,8 +44,8 @@ Route::~Route()
 
 }
 
-void Route::deleteroute()
+void RouteG::deleteroute()
 {
     qDebug()<<"kaka";
-    this->~Route();
+    this->~RouteG();
 }

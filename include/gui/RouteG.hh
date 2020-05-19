@@ -1,5 +1,5 @@
-#ifndef ROUTE_H
-#define ROUTE_H
+#ifndef ROUTEG_H
+#define ROUTEG_H
 #include <QObject>
 
 #include <QGridLayout>
@@ -11,7 +11,7 @@
 #include <QWidget>
 #include <QToolBox>
 
-class Route : public QWidget
+class RouteG: public QWidget
 {
     Q_OBJECT
 private:
@@ -28,8 +28,8 @@ public:
     QFormLayout *layout ;
     static int key;
 
-    Route();
-    ~Route();
+    RouteG();
+    ~RouteG();
 
 private slots:
     void deleteroute();

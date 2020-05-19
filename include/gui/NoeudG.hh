@@ -20,6 +20,7 @@
 #include <QGraphicsItem>
 #include "QTreeWidgetItem"
 #include <vector>
+#include <Dialog.hh>
 
 class Noeud;
 class EspaceTravail;
@@ -40,6 +41,7 @@ using std::vector;
  * \brief La classe NoeudG représentant un noeud (equipement) sur l'interface graphique
  * pendant la simulation de protocole TCP/IP.
  */
+class Dialog;
 class NoeudG  :  public QGraphicsPixmapItem
 {
 private:
@@ -51,7 +53,7 @@ private:
     EspaceTravail *espaceTravail;
     Noeud * child;
     QTreeWidgetItem *parent;/*!< la section ou tous les traitement d'une station seront affiche dans PanneauEvent */
-
+    Dialog * configuration;
     void addLine(CableG * cable, bool isPoint1);
     void moveCable(QPointF newPos);
 
@@ -89,6 +91,7 @@ protected:
     //void mouseDoubleClickEvent( QMouseEvent * e );
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
 
     //void mouseMoveEvent( QMouseEvent *e );
     //void mouseReleaseEvent( QMouseEvent *e );

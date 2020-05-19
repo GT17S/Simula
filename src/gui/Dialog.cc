@@ -11,10 +11,10 @@
 #include <QToolBox>
 #include <QCheckBox>
 #include <QMainWindow>
-#include "Route.hh"
+#include "RouteG.hh"
 #include <QSignalMapper>
 
-Dialog::Dialog(QWidget *parent) : QDialog(parent)
+Dialog::Dialog(Noeud *parent)
 {
     //TABWWDGET
         tabWidget = new QTabWidget;
@@ -233,10 +233,9 @@ void Dialog::addRoute()
 
     */
 
-    Route *road=new Route();
+    RouteG *road=new RouteG();
     QString Num=QString::number(toolRoutage->count());
-    toolRoutage->insertItem(toolRoutage->count(),road,"Route"+Num);
-
+    toolRoutage->insertItem(toolRoutage->count(),road, "Route");
     //mainly changes
     routeLayout->addWidget(toolRoutage);
     routeWidget->setLayout(routeLayout);

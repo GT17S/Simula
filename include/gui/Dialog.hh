@@ -46,7 +46,10 @@ private:
 private slots:
     void ked(int i);
     void addRoute();
+    void addInterface();
+    void deleteInterface();
     void deleteRoute(int s);
+    void deleteRoute();
 };
 
 #endif // DIALOG_H

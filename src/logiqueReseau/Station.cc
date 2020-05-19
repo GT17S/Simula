@@ -285,14 +285,19 @@ mf = 1 et offset != 0 : fragments
 
 
 */
-
-void Station::mainlocal(std::mutex *m){
+//1
+//mfe 4 
+///2
+///mfe 6
+///
+void Station::mainlocal(std::mutex *m, gSimulation* g){
         this->mutexcabl = m;
         controleur->setMutex(m);
         std::mutex * mfe = new std::mutex();
         std::mutex * mfa = new std::mutex();
         std::mutex * meo = new std::mutex();
         
+
         this->mutexEnvoiOk = meo;
         this->mutexFileEnvoyer = mfe;
         controleur->setMutexFileEnvoyer ( mfe);
@@ -300,16 +305,21 @@ void Station::mainlocal(std::mutex *m){
         controleur->setMutexEnvoiOk ( meo);
         
         std::cout << "Fonction principale du thread" << std::endl;
+        std::chrono::seconds sec(1);
 
        while (1){
-		   meo->lock();
+        if(g->getEtat() == DEMARRER){
+           meo->lock();
 		   bool bok = this->getControleur()->getok();
 		   meo->unlock();
-        if(bok){
-            std::cout <<  getIdNoeud() << std::endl;
-            this->getControleur()->verifieNbrSegment(this);
+           if(bok){
+                std::cout <<  getIdNoeud() << std::endl;
+                this->getControleur()->verifieNbrSegment(this);
+            }
         }
 
+        if(g->getEtat() == PAUSE || g->getEtat() == ARRET)
+            std::this_thread::sleep_for(sec);
         }
     
 }

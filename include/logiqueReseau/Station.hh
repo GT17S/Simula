@@ -12,7 +12,9 @@
 #include <vector>
 #include <map>
 #include <mutex>
+#include <chrono>
 #include "Noeud.hh"
+#include "gSimulation.hh"
 #include "Graphe.hh"
 #include "Congestion.hh"
 #include "congestionOutil.hh"
@@ -25,6 +27,7 @@ class Noeud;
 class Data;
 class InterfaceFE;
 class Congestion;
+class gSimulation;
 /*!
  * \class Station
  * \brief La classe Station représentant une station (machine).
@@ -111,8 +114,8 @@ public:
     void recevoirMessage(int key, int dest_i, destination dest);
 
 
-
-    void mainlocal(std::mutex* m);
+    std::mutex* getMutexEnvoiOk(){  return mutexEnvoiOk;};
+    void mainlocal(std::mutex* m, gSimulation* s);
 
 };
 

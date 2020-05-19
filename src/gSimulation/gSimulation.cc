@@ -4,7 +4,7 @@ gSimulation::gSimulation()
 {
     timer= new QTimer();
     time= new QTime(0,0);
-    tm = new ThreadManager();
+    tm = new ThreadManager(this);
 }
 
 gSimulation::gSimulation(etat_s _etat, QTimer *_timer)

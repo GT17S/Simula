@@ -1,17 +1,15 @@
 #include "ThreadManager.hh"
 
 
-ThreadManager::ThreadManager(): QObject(){
+ThreadManager::ThreadManager(gSimulation* _gestionnaire): QObject(){
 	mutexmap["Cable"] = new std::mutex();
+	gestionnaire = _gestionnaire;
 }
 
 
 ThreadManager::~ThreadManager(){
 	MovingData.clear();
 	WorkingThreads.clear();
-
-}
-void ThreadManager::sendConcurrent(int i){
 
 }
 
@@ -22,7 +20,7 @@ void ThreadManager::initStation(){
 		if(tmp){
 			std::cout << "Initialisation du thread de la station "<< item->getIdNoeud() << std::endl;
 			//auto controleur = tmp->getControleur();
-			WorkingThreads.push_back(std::thread(&Station::mainlocal,tmp, mutexmap["Cable"]));
+			WorkingThreads.push_back(std::thread(&Station::mainlocal,tmp, mutexmap["Cable"], gestionnaire));
 		}
 	}
 }

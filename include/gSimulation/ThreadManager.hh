@@ -7,8 +7,12 @@
 #include <mutex>
 #include <condition_variable>
 
+
 #include "Data.hh"
 #include "Graphe.hh"
+#include "gSimulation.hh"
+
+class gSimulation;
 
 class ThreadManager : QObject
 {
@@ -17,14 +21,14 @@ private:
 	std::vector<Data*> MovingData;
 	std::vector<std::thread> WorkingThreads;
 	std::map<std::string, std::mutex*> mutexmap;	
-
+	gSimulation* gestionnaire;
 public:
-	ThreadManager();
+	ThreadManager(gSimulation* gestionnaire);
 	~ThreadManager();
 
 	void initStation();
 
-	void sendConcurrent(int i);
+	
 	void joinall();
 
 public slots:

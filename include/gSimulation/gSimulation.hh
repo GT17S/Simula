@@ -30,19 +30,6 @@ PAUSE
 
 #endif
 
-#ifndef MESSAGE_H
-#define MESSAGE_H
-
-typedef struct{
-	std::string ipSrc;
-	std::string ipDest;
-	int pSrc, pDest;
-	bool df;
-	std::string message;
-}arg_t;
-
-#endif
-
 class ThreadManager;
 
 /*!
@@ -53,7 +40,7 @@ class gSimulation{
 
 private:
         etat_s etat;/*!< Etat de la simulation */
-        static  QTimer *timer;/*!< Timer de la simulation */
+        static QTimer *timer;/*!< Timer de la simulation */
         static QTime *time;/*!< Le temps de la simulation */
         ThreadManager* tm; /*!< Gère les envois concurents*/
 

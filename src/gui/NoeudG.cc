@@ -72,8 +72,9 @@ void NoeudG::mousePressEvent(QGraphicsSceneMouseEvent *event)
     }
 }
 void NoeudG::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event){
-    configuration->show();
+    configuration->showConfig(child);
 
+configuration->show();
 
 
 }

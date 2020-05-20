@@ -17,6 +17,12 @@ NoeudG::NoeudG(EspaceTravail * _espaceTravail) : QGraphicsPixmapItem()
 
 NoeudG::~NoeudG()
 {
+
+    //delete tabWidget;
+    //delete buttonBox;
+    //delete item;
+    //delete pixmap; Sert à rien de delete c'est passé statiquement au super constructeur
+
     delete parent;
 }
 

@@ -6,6 +6,7 @@
 #include <QPixmap>
 #include <QStateMachine>
 #include <cstring>
+
 #include "GFichier.hh"
 
 
@@ -147,8 +148,6 @@ void PanneauOutils::createSignals(){
     connect(changerMode,SIGNAL(clicked()),this,SLOT(changeMode()));
 
     connect(benvoyer,SIGNAL(clicked()),this,SLOT(envoieD()));
-
-    //connect(envoyer,SIGNAL(clicked()),this,SLOT(envoieD()));
     connect(zoomIn,SIGNAL(clicked()),this,SLOT(zoomer()));
     connect(zoomOut,SIGNAL(clicked()),this,SLOT(dezoomer()));
 
@@ -238,11 +237,23 @@ void PanneauOutils::sauvegarderFichier(){
     }
 }
 void PanneauOutils::exportDot(){
-    qDebug() << "DOT";
+   if(curFile.isEmpty()){
+             QString fileName=QFileDialog::getSaveFileName(this,
+                                                      tr("Sauvegarder le fichier de configuration"), "",
+                                                      tr("Fichier dot (*.dot)"));
+
+        if(!fileName.isEmpty()){
+            curFile = fileName;
+            ecrireDot(curFile.toStdString());
+            curFile.clear();
+        }else{
+            QMessageBox::critical(this, "Export vers Dot", "Veuillez entrer des paramétres valides");
+        }     
+   }
 }
 
 void PanneauOutils::exportPng(){
-    qDebug() << "PNG";
+    toPng();
 }
 
 
@@ -319,25 +330,33 @@ void PanneauOutils::dezoomer(){
 
 
 void PanneauOutils::envoieD(){
-	std::cout << "Envoi D" << std::endl;
+/*
+ * @medish c'est ici que tu dois attendre les deux clics sur l'interface ensuite faut décommenter la 
+ * ligne 344 et 347 et passer le noeuds que tu veux en constructeur des QLineEdit
+ */
     formulaire = new QWidget();
     formulaire->setWindowTitle(QString("Paramètres d'envoi"));
     formulaire->setMinimumSize(50,100);
-    formulaire->resize(300,600);
+    formulaire->resize(250, 350);
     formulaire->setLayout(new QVBoxLayout());
-
-    for (int i = 0; i < 12; ++i)
-    {  
-         
-        if(i > 10)
-            widgets.push_back(new QPushButton("Envoyer"));
-        widgets.push_back(new QLineEdit());
-    }
+    widgets.push_back(new QLabel("Equipement 1:"));//0
+    widgets.push_back(new QLineEdit());//1
+    //widgets[1]->setEnabled(false);
+    widgets.push_back(new QLabel("Equipement 2:"));//2
+    widgets.push_back(new QLineEdit());//3
+    //widgets[3]->setEnabled(false);
+    widgets.push_back(new QLabel("Port source:"));//4
+    widgets.push_back(new QLineEdit());//5
+    widgets.push_back(new QLabel("Port destination:"));//6
+    widgets.push_back(new QLineEdit());//7
+    widgets.push_back(new QCheckBox("Attendre retour (ACK) :")); //8
+    widgets.push_back(new QCheckBox("Autoriser fragmentation :")); //9
+    widgets.push_back(new QLineEdit("Message")); //10
+    widgets.push_back(new QPushButton("Envoyer"));//11
 
 
     for (int i = 0; i < 12; ++i)
     {
-       
         formulaire->layout()->addWidget(widgets[i]);
     }
 
@@ -346,55 +365,53 @@ void PanneauOutils::envoieD(){
     auto benvoyer = dynamic_cast<QPushButton*>(formulaire->layout()->itemAt(11)->widget());
     if(benvoyer)
         connect(benvoyer, SIGNAL(clicked()),this , SLOT(preparenvoi()));
-    
+
 }
 
 
 void PanneauOutils::preparenvoi(){
-    //Vérifier que les info sont bonnes 
+   //Vérifier que les info sont bonnes 
     bool ok = true;
     for(int i = 0; i < 11 ; i++){
        auto lineedit = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(i)->widget());
-        if(lineedit->text().isEmpty()){
-            ok = false;
-            break;
-        }
-
+        if(lineedit)
+         if(lineedit->text().isEmpty()){
+                ok = false;
+                break;
+            }
     }    
 
     if(ok){ 
        Graphe * graphe = Graphe::get();
 
         //Récuperer les noeuds
-        auto Noeud1 = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(0)->widget());
-        auto Noeud2 = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(1)->widget());
-        auto portsrc = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(2)->widget());
-        auto portdest = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(3)->widget());
-        auto syn = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(4)->widget());
-        auto ack = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(5)->widget());
-        auto nseq = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(6)->widget());
-        auto nack = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(7)->widget());
-        auto ipid = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(8)->widget());
-        auto df = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(9)->widget());
+        auto Noeud1 = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(1)->widget());
+        Station* s1 = dynamic_cast<Station*>(graphe->getSommets()[Noeud1->text().toInt()]);
+        auto Noeud2 = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(3)->widget());
+        Station* s2 = dynamic_cast<Station*>(graphe->getSommets()[Noeud2->text().toInt()]);
+        auto portsrc = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(5)->widget());
+        auto portdest = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(7)->widget());
+       
+
+        auto syn = dynamic_cast<QCheckBox*>(formulaire->layout()->itemAt(8)->widget());
+        auto ack = (syn->isChecked() ?  0 : 1);
+    
+        auto nseq = s1->getNextNumSeq();
+        auto nack = 0;
+        auto ipid = nseq + 100;
+        auto df = dynamic_cast<QCheckBox*>(formulaire->layout()->itemAt(9)->widget());
         auto data = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(10)->widget());
         std::string s(data->text().toStdString());
         Data* sendData = new Data(s);
-        std::cout << graphe->getSommets()[Noeud1->text().toInt()] << "|" <<  graphe->getSommets()[Noeud2->text().toInt()] << "|" <<  portsrc->text().toInt() << "|" <<  portdest->text().toInt() << "|" <<  syn->text().toInt() << "|" <<  ack->text().toInt() << "|" <<  nseq->text().toInt() << "|" <<  nack->text().toInt() << "|" <<  ipid->text().toInt() << "|" <<  df->text().toInt() << "|" <<  s << std::endl;
-
-
-        //  envoyer(graphe->getSommets()[n1], graphe->getSommets()[n2], 1025, 80, false, false, st->getNextNumSeq(), 0, 100, false, data)
-        envoyer(graphe->getSommets()[Noeud1->text().toInt()] ,  graphe->getSommets()[Noeud2->text().toInt()] ,  portsrc->text().toInt() ,  portdest->text().toInt() ,  syn->text().toInt() ,  ack->text().toInt() ,  nseq->text().toInt() ,  nack->text().toInt() ,  ipid->text().toInt() ,  df->text().toInt() ,  sendData);
+        //Préparer l'envoi
+        envoyer(s1,  s2 ,  portsrc->text().toInt() ,  portdest->text().toInt() ,  syn->isChecked() ,  ack ,  nseq ,  nack,  ipid,  df->isChecked() ,  sendData);
         //Signaler que l'envoi est possible 
         auto src = dynamic_cast<Station*>(graphe->getSommets()[Noeud1->text().toInt()]);
 		src->getMutexEnvoiOk()->lock();
         src->getControleur()->setok(true);
 		src->getMutexEnvoiOk()->unlock();
-       for (int i = 0; i < 11; ++i)
-       {
-           auto tmp = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(i)->widget());
-            tmp->setText("");
-       }
-
+  
+        widgets.clear();
         formulaire->close();
        }else{
        QMessageBox errorbox;

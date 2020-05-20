@@ -406,6 +406,8 @@ void PanneauOutils::preparenvoi(){
         //Préparer l'envoi
         envoyer(s1,  s2 ,  portsrc->text().toInt() ,  portdest->text().toInt() ,  syn->isChecked() ,  ack ,  nseq ,  nack,  ipid,  df->isChecked() ,  sendData);
         //Signaler que l'envoi est possible 
+        if ( sendData)
+			emit addedData ( sendData);
         auto src = dynamic_cast<Station*>(graphe->getSommets()[Noeud1->text().toInt()]);
 		src->getMutexEnvoiOk()->lock();
         src->getControleur()->setok(true);

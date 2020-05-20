@@ -48,6 +48,14 @@ int Data::operator[](int index){
 	return (int)seq[i].to_ulong();
 }
 
+Data& Data::operator=( Data& d){   
+
+	if ( this->seq != nullptr) delete seq;
+	seq = new boost::dynamic_bitset<> (*(d.getSeq()));
+	type = d.getType();
+	return *this;
+}
+
 std::ostream& operator<<(std::ostream &os, Data& d){	
 	boost::dynamic_bitset<> tmp = *d.getSeq();
 	os << "Contenu : \n" ;

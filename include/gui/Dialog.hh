@@ -23,12 +23,8 @@ public:
     void generalWidget();
     void configurationWidget();
     void interfaceWidget(int nbPorts);
-    void portsWidget();
     void routageWidget(int nbres);
-    void delSignal();
-
-    std::vector<QWidget *> getPorts() const;
-    void setPorts(const std::vector<QWidget *> &value);
+    void showConfig(Noeud *src);
 
 private:
 
@@ -39,14 +35,25 @@ private:
     QWidget *routeWidget,*intWidget;
     QGridLayout *routeLayout,*interfaceLayout;
     int numberRoutes=0;
+    QLineEdit 	*NomStation;
+    QSignalMapper* mapperInterface,*mapperRoute,*mapperRouteAp,*mapperInterfaceAp;
+    Noeud *src;
 
+
+    void createWidget();
+    void createSignals();
 
     std::vector<QPushButton *> buttons;
     std::vector<QWidget *> ports;
 private slots:
-    void ked(int i);
     void addRoute();
-    void deleteRoute(int s);
+    void deleteRouteG(int i);
+    void deleteInterfaceG();
+    void addInterface();
+    void appliquerInterface(int );
+    void appliquerRoute(int );
+    void onExitDialog(int );
+
 };
 
 #endif // DIALOG_H

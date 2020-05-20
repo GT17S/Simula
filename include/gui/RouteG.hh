@@ -10,26 +10,39 @@
 #include <QLabel>
 #include <QWidget>
 #include <QToolBox>
-
+#include "QSignalMapper"
 class RouteG: public QWidget
 {
+    friend class Dialog;
+
     Q_OBJECT
 private:
-
+QGridLayout *gridLayoutinterface ;
+QLineEdit 	*nextHope	;
+QLineEdit 	*AdresseRes	;
+QLineEdit     *mask ;
+QLineEdit     *resName ;
+QPushButton *supprimer ;
+QPushButton *appliquer ;
+QGroupBox *portGroupBox ;
+QFormLayout *layout ;
+static int key;
+void createInputs(QString _nextHope,QString _AdresseRes,QString _mask);
+void createLabels();
 public:
-    QGridLayout *gridLayoutinterface ;
-    QLineEdit 	*nextHope	;
-    QLineEdit 	*AdresseRes	;
-    QLineEdit     *mask ;
-    QLineEdit     *resName ;
-    QPushButton *supprimer ;
-    QPushButton *appliquer ;
-    QGroupBox *portGroupBox ;
-    QFormLayout *layout ;
-    static int key;
 
-    RouteG();
+    RouteG(QString _nextHope=QString(),QString _AdresseRes=QString(),QString _mask=QString());
+
     ~RouteG();
+
+    QLineEdit *getNextHope() const;
+    void setNextHope(QLineEdit *value);
+
+    QLineEdit *getAdresseRes() const;
+    void setAdresseRes(QLineEdit *value);
+
+    QLineEdit *getMask() const;
+    void setMask(QLineEdit *value);
 
 private slots:
     void deleteroute();

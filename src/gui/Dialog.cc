@@ -12,276 +12,51 @@
 #include <QCheckBox>
 #include <QMainWindow>
 #include "RouteG.hh"
-#include <QSignalMapper>
+#include "InterfaceG.hh"
+
 
 Dialog::Dialog(Noeud *parent)
 {
-    //TABWWDGET
-        tabWidget = new QTabWidget;
-        toolRoutage = new QToolBox();
-        toolInterface = new QToolBox();
-        ajouterRoute = new QPushButton("Ajout");
-        supprimerRoute = new QPushButton("Suppression");
-        ajouterInterface = new QPushButton("Ajout");
-        supprimerInterface = new QPushButton("Suppression");
-
-        routeWidget = new QWidget();
-        intWidget = new QWidget();
-
-
-        routeLayout = new QGridLayout;
-              routeLayout->addWidget(ajouterRoute);
-
-        routeWidget->setLayout(routeLayout);
-        connect(ajouterRoute,SIGNAL(clicked()),this,SLOT(addRoute()));
-
-        QPushButton* button = toolRoutage->currentWidget()->findChild<QPushButton*>("supprimer");
-
-        interfaceLayout = new QGridLayout;
-              interfaceLayout->addWidget(ajouterInterface,0,0);
-              interfaceLayout->addWidget(supprimerInterface,0,1);
-
-        intWidget->setLayout(interfaceLayout);
-
-          generalWidget();
-          configurationWidget();
-
-          //inetfaceWidget donner le nombre d'interfaces dans ce cas 4
-          interfaceWidget(4);
-
-          routeLayout->addWidget(toolRoutage);
-
-          routeWidget->setLayout(routeLayout);
-          tabWidget->addTab(routeWidget,"Routage");
-
-
-        tabWidget->setMovable(true);
-        tabWidget->setDocumentMode(true);
-
-
-        buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
-           connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
-           connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
-
-           QVBoxLayout *mainLayout = new QVBoxLayout;
-               mainLayout->addWidget(tabWidget);
-               mainLayout->addWidget(buttonBox);
-
-        setLayout(mainLayout);
-        setWindowTitle(tr("Configuration Tab"));
-
-        update();
+    src=parent;
+  createWidget();
+  createSignals();
 }
 
 Dialog::~Dialog(){}
 
-void Dialog::interfaceWidget(int nbPorts)
-{
-    //INTERFACE
-    for(int i=0;i<nbPorts;i++)
-    {
-        QGridLayout *gridLayoutinterface = new QGridLayout();
-        QLineEdit 	*AdresseIP	 = new QLineEdit ();
-        QLineEdit 	*AdresseMac	 = new QLineEdit ();
-        QLineEdit 	*AdresseRes	 = new QLineEdit ();
-        QLineEdit   *mask = new QLineEdit ();
-        QLineEdit   *interfaceName = new QLineEdit ();
-        QCheckBox   *liaison = new QCheckBox("liaison", this);
 
-        QGroupBox *portGroupBox = new QGroupBox("Form Port");
-        QFormLayout *layout = new QFormLayout;
-
-        layout->addRow(new QLabel("Nom interface:"), interfaceName);
-        layout->addRow(new QLabel("Adresse machine:"), AdresseMac);
-        layout->addRow(new QLabel("Adresse IP:"), AdresseIP);
-        layout->addRow(new QLabel("Adresse reseau:"), AdresseRes);
-        layout->addRow(new QLabel("Masque:"), mask);
-        layout->addRow(new QLabel("Liaison:"), liaison);
-
-        portGroupBox->setLayout(layout);
-        gridLayoutinterface->addWidget(portGroupBox);
-
-        QWidget *p= new QWidget();
-        p->setLayout(gridLayoutinterface);
-
-        QString o=QString::number(i);
-        toolInterface->insertItem(i,p,"Interface "+o);
-    }
-    tabWidget->addTab(toolInterface,"interface");
-}
-
-//UNUSED
-void Dialog::portsWidget()
-{
-    QWidget *interfaceWidget = new QWidget();
-    QGridLayout *gridLayoutinterface = new QGridLayout();
-
-    QLineEdit 	*AdresseIP	 = new QLineEdit ();
-    QLineEdit 	*AdresseMac	 = new QLineEdit ();
-    QLineEdit 	*AdresseRes	 = new QLineEdit ();
-    QLineEdit   *mask = new QLineEdit ();
-    QLineEdit   *interfaceName = new QLineEdit ();
-
-    gridLayoutinterface->setVerticalSpacing (0);
-    interfaceWidget->setFixedSize( 400, 450);
-
-    QGroupBox *portGroupBox = new QGroupBox(tr("Form Port"));
-    QFormLayout *layout = new QFormLayout;
-
-    layout->addRow(new QLabel(tr("Nom interface:")), interfaceName);
-    layout->addRow(new QLabel(tr("Adresse machine:")), AdresseMac);
-    layout->addRow(new QLabel(tr("Adresse IP:")), AdresseIP);
-    layout->addRow(new QLabel(tr("Adresse reseau:")), AdresseRes);
-    layout->addRow(new QLabel(tr("Masque:")), mask);
-
-    portGroupBox->setLayout(layout);
-    gridLayoutinterface->addWidget(portGroupBox);
-
-    interfaceWidget->setLayout(gridLayoutinterface);
-    interfaceWidget->show();
-    //tabWidget->addTab(interfaceWidget,tr("Interface"));
-}
-
-//UNUSED
-void Dialog::routageWidget(int nbres)
-{
-    //Routage
-    for(int i=0;i<nbres;i++)
-    {
-        QGridLayout *gridLayoutinterface = new QGridLayout();
-        QLineEdit 	*nextHope	 = new QLineEdit ();
-        QLineEdit 	*AdresseRes	 = new QLineEdit ();
-        QLineEdit   *mask = new QLineEdit ();
-        QLineEdit   *resName = new QLineEdit ();
-
-        QGroupBox *portGroupBox = new QGroupBox("Form Routage");
-        QFormLayout *layout = new QFormLayout;
-
-        layout->addRow(new QLabel("Nom de reseau:"), resName);
-        layout->addRow(new QLabel("Adresse reseau:"), AdresseRes);
-        layout->addRow(new QLabel("Masque:"), mask);
-        layout->addRow(new QLabel("Next hope:"), nextHope);
-
-        portGroupBox->setLayout(layout);
-        gridLayoutinterface->addWidget(portGroupBox);
-
-        QWidget *p= new QWidget();
-        p->setLayout(gridLayoutinterface);
-
-        QString o=QString::number(i);
-        toolRoutage->insertItem(i,p,"Table Routage "+o);
-    }
-    QGridLayout *lay=new  QGridLayout;
-    lay->addWidget(toolRoutage);
-
-    routeWidget->setLayout(lay);
-    tabWidget->addTab(routeWidget,"Routage");
-}
-
-//UNUSED
-std::vector<QWidget *> Dialog::getPorts() const
-{
-    return ports;
-}
-//UNUSED
-void Dialog::setPorts(const std::vector<QWidget *> &value)
-{
-    ports = value;
-}
-//UNUSED
-void Dialog::ked(int i)
-{
-    this->getPorts().at(i)->show();
-}
 
 void Dialog::addRoute()
 {
-    /*
-        QGridLayout *gridLayoutinterface = new QGridLayout();
-        QLineEdit 	*nextHope	 = new QLineEdit ();
-        QLineEdit 	*AdresseRes	 = new QLineEdit ();
-        QLineEdit     *mask = new QLineEdit ();
-        QLineEdit     *resName = new QLineEdit ();
-
-        QPushButton *supprimer = new QPushButton("Supprimer");
-        QPushButton *appliquer = new QPushButton("Appliquer");
-
-        QGroupBox *portGroupBox = new QGroupBox("Form Routage");
-        QFormLayout *layout = new QFormLayout;
-
-        layout->addRow(new QLabel("Nom de reseau:"), resName);
-        layout->addRow(new QLabel("Adresse reseau:"), AdresseRes);
-        layout->addRow(new QLabel("Masque:"), mask);
-        layout->addRow(new QLabel("Next hope:"), nextHope);
-
-        portGroupBox->setLayout(layout);
-        gridLayoutinterface->addWidget(portGroupBox);
-        gridLayoutinterface->addWidget(appliquer);
-        gridLayoutinterface->addWidget(supprimer);
-
-        QWidget *p= new QWidget();
-        p->setLayout(gridLayoutinterface);
-
-        QString o=QString::number(toolRoutage->count());
-        toolRoutage->insertItem(toolRoutage->count(),p,"Route"+o);
-
-
-    //mainly changes
-    routeLayout->addWidget(toolRoutage);
-    routeWidget->setLayout(routeLayout);
-    update();
-
-    */
-
-    RouteG *road=new RouteG();
-    QString Num=QString::number(toolRoutage->count());
-    toolRoutage->insertItem(toolRoutage->count(),road, "Route");
-    //mainly changes
-    routeLayout->addWidget(toolRoutage);
-    routeWidget->setLayout(routeLayout);
+int a=src->getTableRoutage().size();
+Route *newRoute=new Route();
+src->setTableRoutage(newRoute);
+if(a==src->getTableRoutage().size()){
+   QMessageBox::warning(this, "Erreur d'ajout de route",
+                            "La route existe deja !",
+                            QMessageBox::Yes);
+}
+    showConfig(src);
 
     update();
-/*
-    //recuperer le bouton supprimer:
-    QLayoutItem* item = toolRoutage->currentWidget()->layout()->itemAt(2);
-    QWidget* widget = item->widget();
-    QPushButton* button5 = dynamic_cast<QPushButton*>(widget);
-    connect(button5,SIGNAL(clicked()),this,SLOT(deleteRoute(toolRoutage->count())));
-*/
 }
 
-//USED BUT NOT WORKING INSTEAD SUPPRESSION IN ROUTE deleteroute SLOT.
-void Dialog::deleteRoute(int s)
+void Dialog::addInterface()
 {
-    //toolRoutage->removeItem(s);
-    toolRoutage->currentWidget()->~QWidget();
-     update();
+
+    int nbPort=src->getNbPort();
+    src->setNbPort(nbPort+1);
+    if(nbPort==src->getNbPort()){
+       QMessageBox::warning(this, "Erreur d'ajout de route",
+                                "La route existe deja !",
+                                QMessageBox::Yes);
+    }
+    showConfig(src);
+
+    update();
 }
 
-void Dialog::configurationWidget()
-{
-    //CONFIGURATION
-    QWidget *confWidget = new QWidget();
-    QGridLayout *gridLayoutconf = new QGridLayout();
-    QLineEdit 	*AdressePasserelle	 = new QLineEdit ();
-    QLineEdit   *AdresseMAC = new QLineEdit ();
-    QLineEdit   *nbPort = new QLineEdit ();
 
-    gridLayoutconf->setVerticalSpacing (0);
-    confWidget->setFixedSize( 400, 450);
-
-    QGroupBox *confGroupBox = new QGroupBox(tr("Form Configuration"));
-    QFormLayout *layout = new QFormLayout;
-    layout->addRow(new QLabel(tr("Adresse MAC:")), AdresseMAC);
-    layout->addRow(new QLabel(tr("Passerelle:")), AdressePasserelle);
-    layout->addRow(new QLabel(tr("Nombres de ports:")), nbPort);
-
-    confGroupBox->setLayout(layout);
-    gridLayoutconf->addWidget(confGroupBox);
-    confWidget->setLayout(gridLayoutconf);
-
-    tabWidget->addTab(confWidget,tr("Configuration"));
-}
 
 void Dialog::generalWidget()
 {
@@ -291,16 +66,15 @@ void Dialog::generalWidget()
     //GENERALLAYOUT
     QGridLayout *gridLayoutGeneral = new QGridLayout();
     //GENERALEDITLINES
-    QLineEdit 	*AdressePasserelle	 = new QLineEdit ();
-    QLineEdit   *AdresseMAC = new QLineEdit ();
+   NomStation	 = new QLineEdit ();
+
 
     gridLayoutGeneral->setVerticalSpacing (0);
     generalWidget->setFixedSize( 400, 450);
 
     QGroupBox *generalGroupBox = new QGroupBox(tr("Form General"));
     QFormLayout *layout = new QFormLayout;
-    layout->addRow(new QLabel(tr("Adresse MAC:")), AdresseMAC);
-    layout->addRow(new QLabel(tr("Passerelle:")), AdressePasserelle);
+    layout->addRow(new QLabel(tr("Nom station:")), NomStation);
 
     generalGroupBox->setLayout(layout);
     gridLayoutGeneral->addWidget(generalGroupBox);
@@ -308,16 +82,180 @@ void Dialog::generalWidget()
 
     tabWidget->addTab(generalWidget,tr("General"));
 }
+void Dialog::deleteRouteG(int i){
+    int a=src->getTableRoutage().size();
+    src->supprimerRoute(i);
 
-//UNUSED
-void Dialog::delSignal()
-{
-    QPushButton* button2 =toolRoutage->currentWidget()->layout()->findChild<QPushButton*>("supprimer");
-    connect(button2,SIGNAL(clicked()),this,SLOT(deleteRoute()));
+    if(a==src->getTableRoutage().size()){
+       QMessageBox::warning(this, "Erreur de suppression",
+                                "Erreur de suppression de la route !",
+                                QMessageBox::Yes);
+    }
+    showConfig(src);
 
-    QPushButton* button3 =(QPushButton*)toolRoutage->currentWidget()->layout()->itemAt(2);
-    QLayoutItem* item = toolRoutage->currentWidget()->layout()->itemAt(2);
-    QWidget* widget = item->widget();
-    QPushButton* button = dynamic_cast<QPushButton*>(widget);
-    connect(button,SIGNAL(clicked()),this,SLOT(deleteRoute()));
+}
+void Dialog::deleteInterfaceG(){
+   int nbPort=src->getNbPort();
+
+   src->setNbPort(nbPort-1);
+   if(nbPort==src->getNbPort()){
+      QMessageBox::warning(this, "Erreur de suppression",
+                               "Erreur de suppression de la l'interface !",
+                               QMessageBox::Yes);
+   }
+   showConfig(src);
+  update();
+
+}
+
+void Dialog::createWidget(){
+    buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+
+    tabWidget = new QTabWidget;
+    toolRoutage = new QToolBox();
+    toolInterface = new QToolBox();
+    ajouterRoute = new QPushButton("Ajout");
+    supprimerRoute = new QPushButton("Suppression");
+    ajouterInterface = new QPushButton("Ajout");
+    supprimerInterface = new QPushButton("Suppression");
+    routeWidget = new QWidget();
+    intWidget = new QWidget();
+    routeLayout = new QGridLayout;
+    routeLayout->addWidget(ajouterRoute);
+    routeWidget->setLayout(routeLayout);
+    interfaceLayout = new QGridLayout;
+    interfaceLayout->addWidget(ajouterInterface);
+    interfaceLayout->addWidget(supprimerInterface);
+
+    intWidget->setLayout(interfaceLayout);
+    generalWidget();
+    interfaceLayout->addWidget(toolInterface);
+    intWidget->setLayout(interfaceLayout);
+    tabWidget->addTab(intWidget,"Interface");
+    routeLayout->addWidget(toolRoutage);
+    routeWidget->setLayout(routeLayout);
+    tabWidget->addTab(routeWidget,"Routage");
+    tabWidget->setMovable(true);
+    tabWidget->setDocumentMode(true);
+    QVBoxLayout *mainLayout = new QVBoxLayout;
+    setLayout(mainLayout);
+    setWindowTitle(tr("Configuration Tab"));
+    mainLayout->addWidget(tabWidget);
+    mainLayout->addWidget(buttonBox);
+
+    mapperInterface = new QSignalMapper(this);
+    mapperRoute = new QSignalMapper(this);
+
+    mapperInterfaceAp = new QSignalMapper(this);
+    mapperRouteAp = new QSignalMapper(this);
+    update();
+
+
+
+}
+void Dialog::createSignals(){
+    connect(ajouterRoute,SIGNAL(clicked()),this,SLOT(addRoute()));
+    connect(ajouterInterface,SIGNAL(clicked()),this,SLOT(addInterface()));
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+
+    connect(supprimerInterface, SIGNAL(clicked()), this, SLOT(deleteInterfaceG()));
+
+    connect(mapperRoute, SIGNAL(mapped(int)), this, SLOT(deleteRouteG(int )));
+
+    connect(mapperInterfaceAp, SIGNAL(mapped(int)), this, SLOT(appliquerInterface(int )));
+    connect(mapperRouteAp, SIGNAL(mapped(int)), this, SLOT(appliquerRoute(int )));
+    connect(this,SIGNAL(finished(int)),this,SLOT(onExitDialog(int)));
+
+}
+void Dialog::showConfig(Noeud *src){
+    onExitDialog(0);
+    NomStation->setText(QString::fromStdString(src->getNom()));
+    for(InterfaceFE *i:src->getInterfaces()){
+        QString AdresseIP=QString::fromStdString(i->getAdresseIP()),
+                AdresseMac=QString::fromStdString(i->getAdresseMac()),
+                AdresseRes=QString::fromStdString(i->getAdresseRes()),
+                mask=QString::fromStdString(i->getMasque()),
+                interfaceName=QString::fromStdString(i->getNomInterface());
+        bool liaison= i->getCable() != nullptr ? true : false;
+        InterfaceG *ig=new InterfaceG(AdresseIP,AdresseMac,AdresseRes,mask,interfaceName,liaison);
+       // mapperInterface->setMapping(supprimerInterface,toolInterface->count());
+     //  connect(supprimerInterface, SIGNAL(clicked()), mapperInterface, SLOT(map()));
+
+        mapperInterfaceAp->setMapping(ig->appliquer,toolInterface->count());
+        connect(ig->appliquer, SIGNAL(clicked()), mapperInterfaceAp, SLOT(map()));
+
+        toolInterface->addItem(ig,"Interface");
+    }
+
+    for(Route *r: src->getTableRoutage()){
+        int a=src->getTableRoutage().size();
+        QString nextHope=QString::fromStdString(r->passerelle),
+               AdresseRes=QString::fromStdString(r->adresseReseau),
+                mask=QString::fromStdString(r->masque);
+        RouteG *rg=new RouteG(nextHope,AdresseRes,mask);
+        mapperRoute->setMapping(rg->supprimer,toolRoutage->count());
+        connect(rg->supprimer, SIGNAL(clicked()), mapperRoute, SLOT(map()));
+
+        mapperRouteAp->setMapping(rg->appliquer,toolRoutage->count());
+        connect(rg->appliquer, SIGNAL(clicked()), mapperRouteAp, SLOT(map()));
+
+        toolRoutage->addItem(rg,"Route");
+}
+}
+void Dialog::appliquerInterface(int i){
+
+    InterfaceG *ig=dynamic_cast<InterfaceG*>(toolInterface->widget(i));
+    QString AdresseIPApp=ig->AdresseIP->text(),
+            AdresseMacApp=ig->AdresseMac->text(),
+            AdresseResApp=ig->AdresseRes->text(),
+            maskApp=ig->mask->text(),
+            interfaceNameApp=ig->interfaceName->text();
+   bool liaisonApp=ig->liaison->checkState();
+
+   if(AdresseIPApp.isEmpty() || AdresseMacApp.isEmpty() ||  AdresseResApp.isEmpty() ||
+           maskApp.isEmpty() ||     interfaceNameApp.isEmpty()) return ;
+
+    InterfaceFE *iF = src->getInterface(i);
+    if(!iF)return ;
+    iF->setAdresseIP(AdresseIPApp.toStdString());
+    iF->setAdresseMac(AdresseMacApp.toStdString());
+    iF->setAdresseRes(AdresseResApp.toStdString());
+    iF->setMasque(maskApp.toStdString());
+    iF->setNomInterface(interfaceNameApp.toStdString());
+
+    showConfig(src);
+
+
+}
+void Dialog::appliquerRoute(int i){
+    int size_table = src->getTableRoutage().size();
+    qDebug()<<"la taille est :"<<size_table;
+    RouteG *ig=dynamic_cast<RouteG*>(toolRoutage->widget(i));
+    QString AdresseIPApp=ig->getNextHope()->text(),
+            AdresseResApp=ig->getAdresseRes()->text(),
+            mask=ig->getMask()->text();
+            if(AdresseIPApp.isEmpty() || AdresseResApp.isEmpty() ||  mask.isEmpty()) return ;
+    Route *routeNew=new Route();
+    routeNew->adresseReseau=AdresseResApp.toStdString();
+    routeNew->adresseReseau=AdresseResApp.toStdString();
+    routeNew->masque=mask.toStdString();
+    src->modifierRoute(i,routeNew);
+    qDebug()<<"la taille apres  est :"<<src->getTableRoutage().size();
+
+
+
+    showConfig(src);
+
+}
+void Dialog::onExitDialog(int i){
+    NomStation->clear();
+
+    while(toolInterface->count())
+        delete toolInterface->widget(toolInterface->currentIndex());
+
+    while(toolRoutage->count())
+        delete toolRoutage->widget(toolRoutage->currentIndex());
+
+
 }

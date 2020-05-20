@@ -5,10 +5,16 @@
 #include <QMessageBox>
 #include <QPixmap>
 #include <QStateMachine>
+#include <cstring>
+
 #include "GFichier.hh"
 
-PanneauOutils::PanneauOutils(EspaceTravail * _espaceTravail){
+
+
+PanneauOutils::PanneauOutils(EspaceTravail * _espaceTravail, gSimulation * g){
     espaceTravail = _espaceTravail;
+    this->gestSimulation = g;
+
     this->setMinimumHeight(60);
     this->setMaximumHeight(70);
     this->setOrientation(Qt::Horizontal);
@@ -20,7 +26,10 @@ PanneauOutils::PanneauOutils(EspaceTravail * _espaceTravail){
 }
 
 PanneauOutils::~PanneauOutils()
-{/*
+{
+	delete gestSimulation;
+	/*
+    delete formulaire;
     delete nouveau;
     delete ouvrir;
     delete sauvegarder;
@@ -99,12 +108,12 @@ void PanneauOutils::createButtons(){
     changerMode->setToolTip("Mode");
     addWidget(changerMode);
 
-    envoyer = new QPushButton(this);
-    envoyer->setObjectName("envoyerAction");
-    envoyer->setProperty("outilsBar", true);
-    envoyer->setToolTip("Envoyer");
+    benvoyer = new QPushButton(this);
+    benvoyer->setObjectName("envoyerAction");
+    benvoyer->setProperty("outilsBar", true);
+    benvoyer->setToolTip("Envoyer");
 
-    addWidget(envoyer);
+    addWidget(benvoyer);
 
     addSeparator();
     zoomIn = new QPushButton(this);
@@ -119,7 +128,7 @@ void PanneauOutils::createButtons(){
     zoomOut->setToolTip("Dé-zoomer");
     addWidget(zoomOut);
 
-    //connect(exportButton, SIGNAL(triggered(QAction*)), exportButton, SLOT(setDefaultAction(QAction*)));
+//connect(exportButton, SIGNAL(triggered(QAction*)), exportButton, SLOT(setDefaultAction(QAction*)));
 }
 void PanneauOutils::createSignals(){
 
@@ -128,16 +137,20 @@ void PanneauOutils::createSignals(){
     connect(ouvrir,SIGNAL(clicked()),this,SLOT(ouvrirFichier()));
     connect(sauvegarder,SIGNAL(clicked()),this,SLOT(sauvegarderFichier()));
     connect(exporterDot,SIGNAL(triggered()),this,SLOT(exportDot()));
-    connect(exporterPng,SIGNAL(triggered()),this,SLOT(toPng()));
-    connect(gestSimulation.getTimer(),SIGNAL(timeout()),this,SLOT(timer()));
+
+    connect(exporterPng,SIGNAL(triggered()),this,SLOT(exportPng()));
+    connect(gestSimulation->getTimer(),SIGNAL(timeout()),this,SLOT(timer()));
+
     connect(simDemPause,SIGNAL(clicked()),this,SLOT(demarrerPauseSimulation()));
     // connect(pause,SIGNAL(triggered()),this,SLOT(pauseSimulation()));
     connect(arreter,SIGNAL(clicked()),this,SLOT(arreterSimulation()));
     connect(relancer,SIGNAL(clicked()),this,SLOT(resetSimulation()));
     connect(changerMode,SIGNAL(clicked()),this,SLOT(changeMode()));
-    connect(envoyer,SIGNAL(clicked()),this,SLOT(envoieD()));
+
+    connect(benvoyer,SIGNAL(clicked()),this,SLOT(envoieD()));
     connect(zoomIn,SIGNAL(clicked()),this,SLOT(zoomer()));
     connect(zoomOut,SIGNAL(clicked()),this,SLOT(dezoomer()));
+
 
 }
 void PanneauOutils::createShortCuts(){
@@ -224,32 +237,44 @@ void PanneauOutils::sauvegarderFichier(){
     }
 }
 void PanneauOutils::exportDot(){
-    qDebug() << "DOT";
+   if(curFile.isEmpty()){
+             QString fileName=QFileDialog::getSaveFileName(this,
+                                                      tr("Sauvegarder le fichier de configuration"), "",
+                                                      tr("Fichier dot (*.dot)"));
+
+        if(!fileName.isEmpty()){
+            curFile = fileName;
+            ecrireDot(curFile.toStdString());
+            curFile.clear();
+        }else{
+            QMessageBox::critical(this, "Export vers Dot", "Veuillez entrer des paramétres valides");
+        }     
+   }
 }
 
 void PanneauOutils::exportPng(){
-    qDebug() << "PNG";
+    toPng();
 }
 
 
 void PanneauOutils::demarrerPauseSimulation(){
     if(simDemPause->isChecked()){
         simDemPause->setToolTip("Pause");
-        this->gestSimulation.demarrer();
+        this->gestSimulation->demarrer();
     }
 
     else{
         simDemPause->setToolTip("Demarrer");
-        this->gestSimulation.pause();
+        this->gestSimulation->pause();
     }
 
 }
 void PanneauOutils::arreterSimulation(){
-    this->gestSimulation.arreter();
+    this->gestSimulation->arreter();
     simDemPause->setChecked(false);
 }
 void PanneauOutils::resetSimulation(){
-    this->gestSimulation.reset();
+    this->gestSimulation->reset();
 
 }
 
@@ -264,11 +289,11 @@ void PanneauOutils::changeMode(){
 }
 
 void PanneauOutils::timer(){
-    QTime *t = this->gestSimulation.getTime();
+    QTime *t = this->gestSimulation->getTime();
     qDebug()<<t->toString("hh:mm:ss");
-    this->gestSimulation.demarrer();
+    this->gestSimulation->demarrer();
     *t=t->addSecs(1);
-    this->gestSimulation.getTimer()->setInterval(1000);
+    this->gestSimulation->getTimer()->setInterval(1000);
     PanneauEvents::afftime();
 }
 
@@ -304,7 +329,96 @@ void PanneauOutils::dezoomer(){
 
 
 
+void PanneauOutils::envoieD(){
+/*
+ * @medish c'est ici que tu dois attendre les deux clics sur l'interface ensuite faut décommenter la 
+ * ligne 344 et 347 et passer le noeuds que tu veux en constructeur des QLineEdit
+ */
+    formulaire = new QWidget();
+    formulaire->setWindowTitle(QString("Paramètres d'envoi"));
+    formulaire->setMinimumSize(50,100);
+    formulaire->resize(250, 350);
+    formulaire->setLayout(new QVBoxLayout());
+    widgets.push_back(new QLabel("Equipement 1:"));//0
+    widgets.push_back(new QLineEdit());//1
+    //widgets[1]->setEnabled(false);
+    widgets.push_back(new QLabel("Equipement 2:"));//2
+    widgets.push_back(new QLineEdit());//3
+    //widgets[3]->setEnabled(false);
+    widgets.push_back(new QLabel("Port source:"));//4
+    widgets.push_back(new QLineEdit());//5
+    widgets.push_back(new QLabel("Port destination:"));//6
+    widgets.push_back(new QLineEdit());//7
+    widgets.push_back(new QCheckBox("Attendre retour (ACK) :")); //8
+    widgets.push_back(new QCheckBox("Autoriser fragmentation :")); //9
+    widgets.push_back(new QLineEdit("Message")); //10
+    widgets.push_back(new QPushButton("Envoyer"));//11
 
 
+    for (int i = 0; i < 12; ++i)
+    {
+        formulaire->layout()->addWidget(widgets[i]);
+    }
+
+    formulaire->show();
+    
+    auto benvoyer = dynamic_cast<QPushButton*>(formulaire->layout()->itemAt(11)->widget());
+    if(benvoyer)
+        connect(benvoyer, SIGNAL(clicked()),this , SLOT(preparenvoi()));
+
+}
 
 
+void PanneauOutils::preparenvoi(){
+   //Vérifier que les info sont bonnes 
+    bool ok = true;
+    for(int i = 0; i < 11 ; i++){
+       auto lineedit = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(i)->widget());
+        if(lineedit)
+         if(lineedit->text().isEmpty()){
+                ok = false;
+                break;
+            }
+    }    
+
+    if(ok){ 
+       Graphe * graphe = Graphe::get();
+
+        //Récuperer les noeuds
+        auto Noeud1 = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(1)->widget());
+        Station* s1 = dynamic_cast<Station*>(graphe->getSommets()[Noeud1->text().toInt()]);
+        auto Noeud2 = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(3)->widget());
+        Station* s2 = dynamic_cast<Station*>(graphe->getSommets()[Noeud2->text().toInt()]);
+        auto portsrc = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(5)->widget());
+        auto portdest = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(7)->widget());
+       
+
+        auto syn = dynamic_cast<QCheckBox*>(formulaire->layout()->itemAt(8)->widget());
+        auto ack = (syn->isChecked() ?  0 : 1);
+    
+        auto nseq = s1->getNextNumSeq();
+        auto nack = 0;
+        auto ipid = nseq + 100;
+        auto df = dynamic_cast<QCheckBox*>(formulaire->layout()->itemAt(9)->widget());
+        auto data = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(10)->widget());
+        std::string s(data->text().toStdString());
+        Data* sendData = new Data(s);
+        //Préparer l'envoi
+        envoyer(s1,  s2 ,  portsrc->text().toInt() ,  portdest->text().toInt() ,  syn->isChecked() ,  ack ,  nseq ,  nack,  ipid,  df->isChecked() ,  sendData);
+        //Signaler que l'envoi est possible 
+        if ( sendData)
+			emit addedData ( sendData);
+        auto src = dynamic_cast<Station*>(graphe->getSommets()[Noeud1->text().toInt()]);
+		src->getMutexEnvoiOk()->lock();
+        src->getControleur()->setok(true);
+		src->getMutexEnvoiOk()->unlock();
+  
+        widgets.clear();
+        formulaire->close();
+       }else{
+       QMessageBox errorbox;
+       errorbox.setText("Veuillez entrer des paramères valides");
+       errorbox.exec();
+    }
+
+}

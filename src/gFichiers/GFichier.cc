@@ -295,7 +295,7 @@ void ecrireDot(std::string filename){
     }
 
     //Ouvrir le fichier en écriture
-    std::ofstream outfile("autosave.dot", std::ofstream::out);
+    std::ofstream outfile(filename, std::ofstream::out);
     if(outfile.is_open()){
         //On écrit dans le fichier, l'en tête d'un fichier dot
         outfile << "graph G{ " << std::endl;
@@ -306,25 +306,22 @@ void ecrireDot(std::string filename){
         {
            if(dynamic_cast<Routeur*>(nodes[i]))
                 outfile << i << " [shape=box , color=red , fontcolor=black , label = \" " << nodes[i]->getNom() << "\" ] ;";
-           if(dynamic_cast<Switch*>(nodes[i]))
+           if(dynamic_cast<Switch*>(nodes[i]) || dynamic_cast<Hub*>(nodes[i]))
                 outfile << i << " [shape=ellipse , color=blue , fontcolor=black , label = \" " << nodes[i]->getNom() << "\" ] ;";
            if(dynamic_cast<Station*>(nodes[i]))
                 outfile << i << " [shape=octagon , color=green , fontcolor=black , label = \" " << nodes[i]->getNom() << "\" ] ;";
-           if(dynamic_cast<Hub*>(nodes[i]))
-                outfile << i << " [shape=ellipse , color=pink , fontcolor=black , label = \" " << nodes[i]->getNom() << "\" ] ;";    
-
 
             outfile << std::endl;    
         }   
 
         //Ecrire les arcs
         auto  mat = Graphe::getMatrice();
-        for (auto i = 0; i < mat.size(); ++i)
+        for (auto i = 0; i < (mat.size()); ++i)
         {
-           for (auto j = 0; j < mat[i].size(); ++j)
+           for (auto j = 0; j < (mat[i].size()); ++j)
            {
                 if(mat[i][j]){
-                     outfile << i << "--" << j << "[label =\" " << mat[i][j]->getLatence() <<"\" , weight ="  <<  mat[i][j] << "  ,  color =\"green\" , style=dashed ] ;";
+                     outfile << i << "--" << j << "[label =\" " << mat[i][j]->getLatence() <<"\" , weight ="  <<  mat[i][j]->getDebitAcc() << "  ,  color =\"green\" , style=dashed ] ;";
                      outfile << std::endl;
                 }
            }

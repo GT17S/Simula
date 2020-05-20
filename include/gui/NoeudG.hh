@@ -71,7 +71,7 @@ public:
     ~NoeudG();
 
     Noeud * getChild(){return child;}
-    void setChild(Noeud * _child){child = _child;}
+    void setChild(Noeud * _child);
 
     QTreeWidgetItem * getTreeItem(){return parent;}
     void setTreeItem(QTreeWidgetItem *_parent){ parent = _parent;}

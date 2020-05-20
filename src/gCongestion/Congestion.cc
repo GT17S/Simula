@@ -15,7 +15,7 @@ Congestion::Congestion() :  mapFileEnvoyer(), mapFileACK(){
     cpt=0;
     nbrAcksRecu=0;
     nbrAcksDuplique=0;
-
+    envoiok = false;
 }
 Congestion::Congestion(Congestion &c){
     cwnd=c.cwnd;
@@ -34,6 +34,7 @@ void Congestion::setCwnd(int _cwnd){
 void Congestion:: setSsthresh(float _ssthresh){
     if(_ssthresh >0)
         ssthresh = _ssthresh ;
+
     else return;
 }
 
@@ -80,44 +81,66 @@ void Congestion::setMapFileACK(std::map<int, destination> _map)
     mapFileACK =  _map;
 }
 
-void Congestion::slowStart(){
+void Congestion::slowStart(Noeud *src){
     if(cwnd < ssthresh){
         cwnd=cwnd*2;
         cpt++;
     }else{
-        congestionAvoidance();
+        congestionAvoidance(src);
     }
-    std::cout<<"CWND = "<<cwnd<<std::endl;
-    //PanneauEvents::affichage("CWND est a :"+ QString::number(cwnd););
+    PanneauEvents::addCh(src->getParent()->getTreeItem(),QString::fromStdString("slowStart:La taille de la fentre de congestion est :  ")+QString::number(cwnd));
+
 
 }
-void Congestion::fastRecovery(){
+void Congestion::fastRecovery(Noeud *src){
     ssthresh=ssthresh/2;
     cwnd= ssthresh+3;
     cpt++;
     //PanneauEvents::affichage("fastRecovery est lance");
+    PanneauEvents::addCh(src->getParent()->getTreeItem(),QString::fromStdString("fastRecovery:La taille de la fentre de congestion est :  ")+QString::number(cwnd));
+
+    PanneauEvents::addCh(src->getParent()->getTreeItem(),QString::fromStdString("fastRecovery:le ssthresh :  ")+QString::number(ssthresh));
 
 }
 
-void Congestion::congestionAvoidance(){
-
-    cwnd =cwnd+1;
+void Congestion::congestionAvoidance(Noeud *src){
+cwnd=cwnd+1;
     cpt++;
+    PanneauEvents::addCh(src->getParent()->getTreeItem(),QString::fromStdString("congestionAvoidance: fastRecovery:La taille de la fentre de congestion est :  ")+QString::number(cwnd));
+
 
 }
 
 void Congestion::verifieNbrSegment(Noeud * src){
-
+    std::cout << "Je suis parralélisé " << std::endl;
+/**		May be here */
+//    this->mutexEnvoiOk->lock();
+	this->mutexFileEnvoyer->lock();
     if(mapFileEnvoyer.empty()){
-        cout<<"fin de l'envoie 1"<<endl;
+
+      //  cout<<"fin de l'envoie " <<endl;
+    PanneauEvents::addCh(src->getParent()->getTreeItem(),QString::fromStdString("Rien a envoyer  "));
+
+        //PanneauEvents::affichage("fin de l'envoie 1 ");
+/**		May be not here */
+        this->mutexEnvoiOk->lock();
+        envoiok = false;
+        this->mutexEnvoiOk->unlock();
+        //resamblahe(segRecu());
+		this->mutexFileEnvoyer->unlock();
 
         return;
     }
 
     for(int i = 0; i< cwnd; i++){
-
         if(i > mapFileEnvoyer.size()){
-            cout<<"fin de l'envoie 2"<<endl;
+           // cout<<"fin de l'envoie 2"<<endl;
+            PanneauEvents::addCh(src->getParent()->getTreeItem(),QString::fromStdString("Fin de l'envoie  "));
+
+            this->mutexEnvoiOk->lock();
+            envoiok = false;
+            this->mutexEnvoiOk->unlock();
+            this->mutexFileEnvoyer->unlock();
 
             return;
         }
@@ -129,22 +152,25 @@ void Congestion::verifieNbrSegment(Noeud * src){
         //
         // si syn = 1 alors doit attendre!
         int flags = lireFlagSegment(ds.data);
-
         if(flags == 2 || flags == 18){
             mapFileACK.insert ({key,ds});
 
         }
 
         mapFileEnvoyer.erase (it);
-        src->envoyerMessage(key, ds);
-
-
+       src->envoyerMessage(key, ds);
     }
+/**		May be not here */    
+	this->mutexEnvoiOk->lock();
+    envoiok = false;
+	this->mutexEnvoiOk->lock();
+	this->mutexFileEnvoyer->lock();
 }
 void Congestion::retrnasmission(int key){
-
+	bool locked = this->mutexFileACK->try_lock();
     mapFileEnvoyer.insert (mapFileEnvoyer.begin(), mapFileACK.find(key));
     mapFileACK.erase(mapFileACK.find(key));
+    if (locked) this->mutexFileACK->unlock();
 }
 
 
@@ -155,25 +181,41 @@ void Congestion::verifieNumSegment(Noeud * src,Noeud * dest, int nAck){//pc rece
 
     int nSeq = st->getNextNumSeq(),
         ipId = 100;
-    envoyer(src, dest, 0, 0,false, true, nSeq, nAck,ipId,false, ndata);
-    verifieNbrSegment(st);
+    //PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Je connais pas le chemin vers ")+QString::number(ext->noeud->getNom()));
 
+    envoyer(src, dest, 0, 0,false, true, nSeq, nAck,ipId,false, ndata);
+    //verifieNbrSegment(st);
+    //remplacer verifieNbrSegment(st) par var == true
+	this->mutexEnvoiOk->lock();
+    envoiok = true;
+	this->mutexEnvoiOk->unlock();
 }
 
 void Congestion::verifieNumAck(Noeud * n, int nAck){
+    PanneauEvents::addCh(n->getParent()->getTreeItem(),QString::fromStdString("Verfication d'ack recu  "));
+
     Station * st = dynamic_cast<Station*>(n);
     if(!st ) return;
 
     int oldNseq = nAck - 1;
+    this->mutexFileACK->lock();
     map<int, destination>::iterator it = mapFileACK.find(oldNseq);
-    if(it == mapFileACK.end()) return;
+    if(it == mapFileACK.end())	{
+		this->mutexFileACK->unlock();
+		return;
+	}
     mapFileACK.erase(it);
-
+    this->mutexFileACK->unlock();
     nbrAcksRecu++;
 
     if(cwnd==nbrAcksRecu){
+    PanneauEvents::addCh(n->getParent()->getTreeItem(),QString::fromStdString("La taille de la fentre de congestion = NombreAckRecu "));
+
         nbrAcksRecu=0;
-        slowStart();
-        verifieNbrSegment(st);
+        slowStart( n);
+        //verifieNbrSegment(st);
+    	this->mutexEnvoiOk->lock();
+        envoiok = true;
+    	this->mutexEnvoiOk->unlock();
     }
 }

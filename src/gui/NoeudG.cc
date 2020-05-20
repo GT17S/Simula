@@ -12,12 +12,20 @@ NoeudG::NoeudG(EspaceTravail * _espaceTravail) : QGraphicsPixmapItem()
 //    toolTipShow();
 
     parent=new QTreeWidgetItem(PanneauEvents::getTreeview());
-    PanneauEvents::addRoot(parent,"Noeud");
-}
+    //PanneauEvents::addRoot(parent,"Noeud");
+    //PanneauEvents::addRoot(parent,QString::fromStdString());
 
+}
+    void NoeudG::setChild(Noeud * _child){child = _child; configuration=new Dialog (_child);}
 
 NoeudG::~NoeudG()
 {
+
+    //delete tabWidget;
+    //delete buttonBox;
+    //delete item;
+    //delete pixmap; Sert à rien de delete c'est passé statiquement au super constructeur
+
     delete parent;
 }
 
@@ -95,9 +103,9 @@ void NoeudG::mousePressEvent(QGraphicsSceneMouseEvent *event)
     }
 }
 void NoeudG::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event){
-   if(espaceTravail->getMode() == SELECT_MODE)
-        configuration->show();
-
+    if(espaceTravail->getMode()==SELECT_MODE){
+    configuration->showConfig(child);
+    configuration->show();}
 }
 
 QVariant NoeudG::itemChange(GraphicsItemChange change, const QVariant &value)

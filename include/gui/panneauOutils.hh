@@ -7,15 +7,28 @@
 #include <QMenu>
 #include <QPushButton>
 #include <QAction>
+
+#include <QFormLayout>
+#include <QInputDialog>
+#include <QTextEdit>
+#include <QCheckBox>
+
+#include <stdio.h>
+#include <string.h>
+
 #include "EspaceTravail.hh"
 #include "gSimulation.hh"
 #include "PanneauEvents.hh"
+#include "DataOutils.hh"
+
 class PanneauOutils : public QToolBar{
 	Q_OBJECT
 private :
     EspaceTravail * espaceTravail;
     QString curFile;
-    gSimulation gestSimulation;
+    QWidget* formulaire;
+    std::vector<QWidget*> widgets;
+    gSimulation *gestSimulation;
     QPushButton *nouveau,
                 *ouvrir,
                 *sauvegarder,
@@ -23,7 +36,7 @@ private :
                 *arreter,
                 *relancer,
                 *changerMode,
-                *envoyer,
+                *benvoyer,
                 *zoomIn,
                 *zoomOut,
                 *exportButton;
@@ -34,13 +47,17 @@ private :
 void createButtons();
 void createSignals();
 void createShortCuts();
-
 public:
 
-    PanneauOutils(EspaceTravail * e);
+
+    PanneauOutils(EspaceTravail * e,  gSimulation * g);
+
     virtual ~PanneauOutils();
+	gSimulation* getGestionnaire(){ return gestSimulation;};
+	void setGestionnaire ( gSimulation * g){gestSimulation = g;};
 
 public slots:
+    void preparenvoi();
     void timer();
     void nouveauFichier();
     void ouvrirFichier();
@@ -51,14 +68,19 @@ public slots:
     void arreterSimulation();
     void resetSimulation();
     void changeMode();
-    void envoieD(){std::cout<< "envoieD"<<std::endl;}
+    void envoieD();
+
     void zoomer();
     void dezoomer();
+
     /*!
          * \brief toPng
          * slot qui permet d'exporter l'espace de travail en image png
     */
     void toPng();
+
+signals:
+	void addedData ( Data *d);
 };
 
 #endif

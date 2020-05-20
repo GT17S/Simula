@@ -40,6 +40,7 @@ public:
 	void setType (data_t _type);
 	void setSeq (boost::dynamic_bitset<>* _seq);
 	int operator[](int index);
+	Data& operator=( Data& d);
 	friend std::ostream& operator<<(std::ostream &os, Data& d);
 };
 

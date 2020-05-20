@@ -11,7 +11,10 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <mutex>
+#include <chrono>
 #include "Noeud.hh"
+#include "gSimulation.hh"
 #include "Graphe.hh"
 #include "Congestion.hh"
 #include "congestionOutil.hh"
@@ -25,7 +28,12 @@ class Noeud;
 class Data;
 class InterfaceFE;
 class Congestion;
+
+
+class gSimulation;
+
 class StationG;
+
 /*!
  * \class Station
  * \brief La classe Station représentant une station (machine).
@@ -38,7 +46,13 @@ class Station : public virtual Noeud {
     int numSeq;
     bool isPasserelle;
     multimap<int, Data*> fragments;
-   vector<Cable*> lastpath;
+
+    //mutex sur cables
+    std::mutex* mutexcabl;
+    std::mutex* mutexEnvoiOk;
+    std::mutex* mutexFileEnvoyer;
+    vector<Cable*> lastpath;
+
 public:
     /*!
      * \brief Constructeur par défaut
@@ -115,6 +129,9 @@ public:
     void recevoirMessage(int key, int dest_i, destination dest);
 
 
+
+    std::mutex* getMutexEnvoiOk(){  return mutexEnvoiOk;};
+    void mainlocal(std::mutex* m, gSimulation* s);
 
 };
 

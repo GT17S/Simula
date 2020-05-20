@@ -7,6 +7,7 @@
 #include "PanneauEvents.hh"
 #include "Data.hh"
 #include "DataG.hh"
+#include "Graphe.hh"
 #include "QTreeWidgetItem"
 
 class PanneauData : public QTabWidget {

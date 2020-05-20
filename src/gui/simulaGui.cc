@@ -1,6 +1,6 @@
 #include "simulaGui.hh"
 
-simulaGui::simulaGui(){
+simulaGui::simulaGui( gSimulation * g){
 
     //Initialisation de la fenetre principale
 	this->setWindowTitle("Simula");
@@ -16,12 +16,15 @@ simulaGui::simulaGui(){
         widgets.append(new QLabel());
    }
 */
+	EspaceTravail * espaceTravail = new EspaceTravail;
     PanneauEvents * panneauevents = new PanneauEvents;
-
-    EspaceTravail * espaceTravail = new EspaceTravail;
-    widgets.append(new PanneauOutils(espaceTravail)); //0
+	PanneauOutils	* panneauoutils = new PanneauOutils(espaceTravail, g);
+	PanneauData		* panneaudata	= new PanneauData();
+	connect ( panneauoutils, SIGNAL(addedData(Data*)), panneaudata, SLOT(addData(Data*))); 	
+    widgets.append( panneauoutils); //0
     widgets.append(espaceTravail);
-    widgets.append(new PanneauData());
+
+    widgets.append( panneaudata);
     widgets.append(new ToolBarEquipement(espaceTravail));
     widgets.append(panneauevents);
 

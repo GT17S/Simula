@@ -13,7 +13,7 @@ Switch::Switch(SwitchG * parent) : Hub(parent) {
     // ID automatique
     // nb port =1
     // filedattente vide
-    nom = "Switch"+std::to_string(idNoeud);
+    setNom("Switch"+std::to_string(idNoeud));
     type = SWITCH;
 
 }
@@ -33,11 +33,15 @@ void Switch::envoyerMessage(int key, destination dest){
 
     if(!size_p){
         std::cout<<"Je connais pas le chemin vers "<<id_dest<<std::endl;
+        PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Je connais pas le chemin vers "+ Graphe::getSommets()[id_dest]->getNom()));
+
         return;
     }
 
     extremite * extNext = path[size_p -1]->getInverseExt(this);
     //std::cout <<"J'envoie le message à "<<ext->noeud->getIdNoeud()<< std::endl;
+    PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Je connais pas le chemin vers ")+QString::fromStdString(extNext->noeud->getNom()));
+
     extNext->noeud->recevoirMessage(key, extNext->interface, dest);
 }
 

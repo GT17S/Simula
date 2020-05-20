@@ -8,8 +8,8 @@
  * \version 0.1
  */
 
-#include <Routeur.hh>
-#include <NoeudG.hh>
+#include "Routeur.hh"
+#include "NoeudG.hh"
 
 
 /*!
@@ -18,7 +18,7 @@
  * lors de la simulation du protocole TCP/IP.
  */
 
-class RouteurG  : public virtual NoeudG
+class RouteurG  : public  NoeudG
 {
     private:
 
@@ -30,7 +30,7 @@ class RouteurG  : public virtual NoeudG
          * \param pixmap : voir #QPixmap
          * \param parent : voir #QGraphicsScene
     */
-    RouteurG(EspaceTravail *parent = nullptr);
+    RouteurG(EspaceTravail *parent);
 
     /*!
          * \brief desctructeur

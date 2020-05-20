@@ -8,8 +8,8 @@
  * \version 0.1
  */
 
-#include <Station.hh>
-#include <NoeudG.hh>
+#include "Station.hh"
+#include "NoeudG.hh"
 
 class NoeudG;
 class Station;
@@ -19,7 +19,7 @@ class Station;
  * \brief La classe StationG représentant une Station sur l'interface graphique
  * lors de la simulation du protocole TCP/IP.
  */
-class StationG  :  public virtual NoeudG
+class StationG  :  public  NoeudG
 {
 
     private:
@@ -32,7 +32,7 @@ class StationG  :  public virtual NoeudG
              * \param pixmap : voir #QPixmap
              * \param parent : voir #QGraphicsScene
         */
-        StationG(EspaceTravail *parent=nullptr);
+        StationG(EspaceTravail *parent);
 
         /*!
              * \brief desctructeur

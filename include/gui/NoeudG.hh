@@ -8,9 +8,10 @@
  * \version 0.1
  */
 
-#include <Noeud.hh>
+#include "Noeud.hh"
 #include "CableG.hh"
 #include "EspaceTravail.hh"
+#include "Dialog.hh"
 #include <QPixmap>
 #include <QGraphicsPixmapItem>
 #include <QDialog>
@@ -21,7 +22,6 @@
 #include <QGraphicsItem>
 #include "QTreeWidgetItem"
 #include <vector>
-#include <Dialog.hh>
 
 class Noeud;
 class EspaceTravail;
@@ -42,8 +42,9 @@ using std::vector;
  * pendant la simulation de protocole TCP/IP.
  */
 class Dialog;
-class NoeudG  :  public QGraphicsPixmapItem
+class NoeudG  :  public QObject, public QGraphicsPixmapItem
 {
+    Q_OBJECT
 private:
     //pour les icons afficher les differents noeuds
     void addLine(CableG * cable, bool isPoint1);
@@ -53,6 +54,7 @@ private:
 
 public:
 
+    //NoeudG(){ qDebug("hello switch!");}
     /*!
          * \brief Construceur d'initialisation
          *  Constructeur de la classe NoeudG
@@ -60,7 +62,7 @@ public:
          * \param pixmap : voir #QPixmap
          * \param espaceTravail : voir #QGraphicsScene
     */
-    NoeudG(EspaceTravail *_espaceTravail = nullptr);
+    NoeudG(EspaceTravail *_espaceTravail);
 
     /*!
          * \brief Destructeur
@@ -81,14 +83,19 @@ protected:
     Noeud * child;
     QTreeWidgetItem *parent;/*!< la section ou tous les traitement d'une station seront affiche dans PanneauEvent */
     Dialog * configuration;
+    QMenu * interfacesMenu;
 
     //void mouseDoubleClickEvent( QMouseEvent * e );
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
-
+    void showInterfacesMenu();
     //void mouseMoveEvent( QMouseEvent *e );
     //void mouseReleaseEvent( QMouseEvent *e );
+
+ public slots :
+    void interfaceAction(QAction*);
+    void onCloseMenu();
 };
 
 #endif

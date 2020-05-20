@@ -205,6 +205,7 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
             }else {
 
                 desencapsule_segment(dest.data);
+
                 std::cout <<"Jai recu le message :"<<std::endl<<showMessage(dest.data) <<std::endl;
                 delete dest.data;
                 return;

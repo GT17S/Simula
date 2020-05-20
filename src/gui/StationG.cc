@@ -1,7 +1,4 @@
-#include <StationG.hh>
-#include <QDebug>
-#include <QMessageBox>
-#include <QGraphicsSceneMouseEvent>
+#include "StationG.hh"
 
 StationG::StationG(EspaceTravail *parent): NoeudG(parent){
    setPixmap(QPixmap(":/ressources/equipements/station.png"));

@@ -52,9 +52,6 @@ class Station : public virtual Noeud {
     std::mutex* mutexEnvoiOk;
     std::mutex* mutexFileEnvoyer;
     vector<Cable*> lastpath;
-
-   vector<Cable*> lastpath;
-
 public:
     /*!
      * \brief Constructeur par défaut

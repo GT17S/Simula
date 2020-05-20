@@ -12,7 +12,8 @@
 #include <QCheckBox>
 #include <QMainWindow>
 #include "RouteG.hh"
-#include <QSignalMapper>
+#include "InterfaceG.hh"
+
 
 Dialog::Dialog(Noeud *parent)
 {
@@ -35,24 +36,28 @@ Dialog::Dialog(Noeud *parent)
         routeWidget->setLayout(routeLayout);
         connect(ajouterRoute,SIGNAL(clicked()),this,SLOT(addRoute()));
 
-        QPushButton* button = toolRoutage->currentWidget()->findChild<QPushButton*>("supprimer");
+        //QPushButton* button = toolRoutage->currentWidget()->findChild<QPushButton*>("supprimer");
 
         interfaceLayout = new QGridLayout;
-              interfaceLayout->addWidget(ajouterInterface,0,0);
-              interfaceLayout->addWidget(supprimerInterface,0,1);
+              interfaceLayout->addWidget(ajouterInterface);
+
 
         intWidget->setLayout(interfaceLayout);
+        connect(ajouterInterface,SIGNAL(clicked()),this,SLOT(addInterface()));
 
           generalWidget();
-          configurationWidget();
 
-          //inetfaceWidget donner le nombre d'interfaces dans ce cas 4
-          interfaceWidget(4);
+          interfaceLayout->addWidget(toolInterface);
+
+          intWidget->setLayout(interfaceLayout);
+          tabWidget->addTab(intWidget,"Interface");
+
 
           routeLayout->addWidget(toolRoutage);
 
           routeWidget->setLayout(routeLayout);
           tabWidget->addTab(routeWidget,"Routage");
+
 
 
         tabWidget->setMovable(true);
@@ -235,7 +240,7 @@ void Dialog::addRoute()
 
     RouteG *road=new RouteG();
     QString Num=QString::number(toolRoutage->count());
-    toolRoutage->insertItem(toolRoutage->count(),road, "Route");
+    toolRoutage->insertItem(toolRoutage->count(),road, "Route"+Num);
     //mainly changes
     routeLayout->addWidget(toolRoutage);
     routeWidget->setLayout(routeLayout);
@@ -248,6 +253,18 @@ void Dialog::addRoute()
     QPushButton* button5 = dynamic_cast<QPushButton*>(widget);
     connect(button5,SIGNAL(clicked()),this,SLOT(deleteRoute(toolRoutage->count())));
 */
+}
+
+void Dialog::addInterface()
+{
+    InterfaceG *inter=new InterfaceG();
+    QString Num=QString::number(toolInterface->count());
+    toolInterface->insertItem(toolInterface->count(),inter, "Interface"+Num);
+    //mainly changes
+    interfaceLayout->addWidget(toolInterface);
+    intWidget->setLayout(interfaceLayout);
+
+    update();
 }
 
 //USED BUT NOT WORKING INSTEAD SUPPRESSION IN ROUTE deleteroute SLOT.
@@ -291,16 +308,15 @@ void Dialog::generalWidget()
     //GENERALLAYOUT
     QGridLayout *gridLayoutGeneral = new QGridLayout();
     //GENERALEDITLINES
-    QLineEdit 	*AdressePasserelle	 = new QLineEdit ();
-    QLineEdit   *AdresseMAC = new QLineEdit ();
+    QLineEdit 	*NomStation	 = new QLineEdit ();
+
 
     gridLayoutGeneral->setVerticalSpacing (0);
     generalWidget->setFixedSize( 400, 450);
 
     QGroupBox *generalGroupBox = new QGroupBox(tr("Form General"));
     QFormLayout *layout = new QFormLayout;
-    layout->addRow(new QLabel(tr("Adresse MAC:")), AdresseMAC);
-    layout->addRow(new QLabel(tr("Passerelle:")), AdressePasserelle);
+    layout->addRow(new QLabel(tr("Nom station:")), NomStation);
 
     generalGroupBox->setLayout(layout);
     gridLayoutGeneral->addWidget(generalGroupBox);

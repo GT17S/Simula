@@ -31,13 +31,18 @@ void Dialog::addRoute()
 {
 
 
-    RouteG *road=new RouteG("","","");
+    RouteG *road=new RouteG();
+    mapperRoute->setMapping(road->supprimer,toolRoutage->count());
+    mapperRouteAp->setMapping(road->appliquer,toolRoutage->count());
+
     QString Num=QString::number(toolRoutage->count());
-    toolRoutage->insertItem(toolRoutage->count(),road, "Route"+Num);
+    toolRoutage->addItem(road, "Route"+Num);
     //mainly changes
     routeLayout->addWidget(toolRoutage);
     routeWidget->setLayout(routeLayout);
 
+    connect(road->supprimer, SIGNAL(clicked()), mapperRoute, SLOT(map()));
+    connect(road->appliquer, SIGNAL(clicked()), mapperRouteAp, SLOT(map()));
 
     update();
 
@@ -45,12 +50,18 @@ void Dialog::addRoute()
 
 void Dialog::addInterface()
 {
-    InterfaceG *inter=new InterfaceG("","","","","",false);
+    InterfaceG *inter=new InterfaceG();
+    mapperInterface->setMapping(inter->supprimer,toolInterface->count());
+    mapperInterfaceAp->setMapping(inter->appliquer,toolInterface->count());
+
     QString Num=QString::number(toolInterface->count());
-    toolInterface->insertItem(toolInterface->count(),inter, "Interface"+Num);
+    toolInterface->addItem(inter,"Interface"+Num);
     //mainly changes
     interfaceLayout->addWidget(toolInterface);
     intWidget->setLayout(interfaceLayout);
+
+    connect(inter->supprimer, SIGNAL(clicked()), mapperInterface, SLOT(map()));
+    connect(inter->appliquer, SIGNAL(clicked()), mapperInterfaceAp, SLOT(map()));
 
     update();
 }
@@ -125,6 +136,8 @@ void Dialog::createWidget(){
     mapperInterface = new QSignalMapper(this);
     mapperRoute = new QSignalMapper(this);
 
+    mapperInterfaceAp = new QSignalMapper(this);
+    mapperRouteAp = new QSignalMapper(this);
     update();
 
 
@@ -137,7 +150,8 @@ void Dialog::createSignals(){
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
     connect(mapperInterface, SIGNAL(mapped(int)), this, SLOT(deleteInterfaceG(int )));
     connect(mapperRoute, SIGNAL(mapped(int)), this, SLOT(deleteRouteG(int )));
-
+    connect(mapperInterfaceAp, SIGNAL(mapped(int)), this, SLOT(appliquerInterface(int )));
+    connect(mapperRouteAp, SIGNAL(mapped(int)), this, SLOT(appliquerRoute(int )));
 
 }
 void Dialog::showConfig(Noeud *src){
@@ -151,6 +165,11 @@ void Dialog::showConfig(Noeud *src){
         bool liaison= i->getCable() != nullptr ? true : false;
         InterfaceG *ig=new InterfaceG(AdresseIP,AdresseMac,AdresseRes,mask,interfaceName,liaison);
         mapperInterface->setMapping(ig->supprimer,toolInterface->count());
+        connect(ig->supprimer, SIGNAL(clicked()), mapperInterface, SLOT(map()));
+
+        mapperInterfaceAp->setMapping(ig->appliquer,toolInterface->count());
+        connect(ig->appliquer, SIGNAL(clicked()), mapperInterfaceAp, SLOT(map()));
+
         toolInterface->addItem(ig,"Interface");
     }
 
@@ -160,9 +179,17 @@ void Dialog::showConfig(Noeud *src){
                 mask=QString::fromStdString(r->masque);
         RouteG *rg=new RouteG(nextHope,AdresseRes,mask);
         mapperRoute->setMapping(rg->supprimer,toolRoutage->count());
+        connect(rg->supprimer, SIGNAL(clicked()), mapperRoute, SLOT(map()));
+
+        mapperRouteAp->setMapping(rg->appliquer,toolRoutage->count());
+        connect(rg->appliquer, SIGNAL(clicked()), mapperRouteAp, SLOT(map()));
+
         toolRoutage->addItem(rg,"Route");
 }
 }
-void Dialog::appliquer(int i){
-    qDebug()<<"TESTTT"<<i;
+void Dialog::appliquerInterface(int i){
+    qDebug()<<"appliquer Interface numero"<<i;
+}
+void Dialog::appliquerRoute(int i){
+    qDebug()<<"applique Routeeeee numero"<<i;
 }

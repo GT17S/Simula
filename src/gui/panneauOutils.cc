@@ -6,9 +6,9 @@
 #include <QPixmap>
 #include <QStateMachine>
 #include <cstring>
+
 #include "GFichier.hh"
 
-#include "ConstantsRessources.hh"
 
 
 PanneauOutils::PanneauOutils(EspaceTravail * _espaceTravail, gSimulation * g){
@@ -148,8 +148,6 @@ void PanneauOutils::createSignals(){
     connect(changerMode,SIGNAL(clicked()),this,SLOT(changeMode()));
 
     connect(benvoyer,SIGNAL(clicked()),this,SLOT(envoieD()));
-
-    connect(envoyer,SIGNAL(clicked()),this,SLOT(envoieD()));
     connect(zoomIn,SIGNAL(clicked()),this,SLOT(zoomer()));
     connect(zoomOut,SIGNAL(clicked()),this,SLOT(dezoomer()));
 
@@ -239,7 +237,19 @@ void PanneauOutils::sauvegarderFichier(){
     }
 }
 void PanneauOutils::exportDot(){
-    qDebug() << "DOT";
+   if(curFile.isEmpty()){
+             QString fileName=QFileDialog::getSaveFileName(this,
+                                                      tr("Sauvegarder le fichier de configuration"), "",
+                                                      tr("Fichier dot (*.dot)"));
+
+        if(!fileName.isEmpty()){
+            curFile = fileName;
+            ecrireDot(curFile.toStdString());
+            curFile.clear();
+        }else{
+            QMessageBox::critical(this, "Export vers Dot", "Veuillez entrer des paramétres valides");
+        }     
+   }
 }
 
 void PanneauOutils::exportPng(){

@@ -230,7 +230,6 @@ void Dialog::appliquerInterface(int i){
 }
 void Dialog::appliquerRoute(int i){
     int size_table = src->getTableRoutage().size();
-    qDebug()<<"la taille est :"<<size_table;
     RouteG *ig=dynamic_cast<RouteG*>(toolRoutage->widget(i));
     QString AdresseIPApp=ig->getNextHope()->text(),
             AdresseResApp=ig->getAdresseRes()->text(),
@@ -241,7 +240,6 @@ void Dialog::appliquerRoute(int i){
     routeNew->adresseReseau=AdresseResApp.toStdString();
     routeNew->masque=mask.toStdString();
     src->modifierRoute(i,routeNew);
-    qDebug()<<"la taille apres  est :"<<src->getTableRoutage().size();
 
 
 

@@ -18,7 +18,7 @@ class HubG;
  * \brief La classe SwitchG représentant un Switch sur l'interface graphique
  * lors de la simulation du protocole TCP/IP.
  */
-class SwitchG  :  public  virtual HubG
+class SwitchG  :  public  HubG
 {
 
     private:

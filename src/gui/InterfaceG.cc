@@ -1,18 +1,8 @@
 #include "InterfaceG.hh"
-
+#include "QDebug"
 
 InterfaceG::~InterfaceG()
 {
-    delete gridLayoutinterface ;
-    delete AdresseIP	;
-    delete AdresseMac	;
-    delete AdresseRes	;
-    delete mask ;
-    delete interfaceName ;
-    delete liaison ;
-    delete appliquer;
-    delete supprimer;
-
 }
 
 void InterfaceG::deleteInterfaceG()
@@ -38,6 +28,7 @@ void InterfaceG::createInputs(QString _AdresseIP, QString _AdresseMac, QString _
     mask = new QLineEdit (_mask);
     interfaceName = new QLineEdit (_interfaceName);
     liaison = new QCheckBox("liaison", this);
+    liaison->setEnabled(false);
     if(_liaison){
         liaison->setChecked(true);
     }else{
@@ -47,7 +38,7 @@ void InterfaceG::createInputs(QString _AdresseIP, QString _AdresseMac, QString _
 void InterfaceG::createLabels(){
     gridLayoutinterface = new QGridLayout();
 
-    supprimer = new QPushButton("Supprimer");
+    //supprimer = new QPushButton("Supprimer");
     appliquer = new QPushButton("Appliquer");
 
     QGroupBox *portGroupBox = new QGroupBox("Form Port");
@@ -63,7 +54,7 @@ void InterfaceG::createLabels(){
     portGroupBox->setLayout(layout);
     gridLayoutinterface->addWidget(portGroupBox);
     gridLayoutinterface->addWidget(appliquer);
-    gridLayoutinterface->addWidget(supprimer);
+   // gridLayoutinterface->addWidget(supprimer);
 
     this->setLayout(gridLayoutinterface);
 

@@ -13,7 +13,7 @@ NoeudG::NoeudG(EspaceTravail * _espaceTravail) : QGraphicsPixmapItem()
     parent=new QTreeWidgetItem(PanneauEvents::getTreeview());
     PanneauEvents::addRoot(parent,"Noeud");
 }
-
+    void NoeudG::setChild(Noeud * _child){child = _child; configuration=new Dialog (_child);}
 
 NoeudG::~NoeudG()
 {
@@ -78,8 +78,9 @@ void NoeudG::mousePressEvent(QGraphicsSceneMouseEvent *event)
     }
 }
 void NoeudG::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event){
-    configuration->show();
-
+    if(espaceTravail->getMode()==SELECT_MODE){
+    configuration->showConfig(child);
+    configuration->show();}
 
 
 }

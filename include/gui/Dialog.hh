@@ -37,20 +37,22 @@ private:
     int numberRoutes=0;
     QLineEdit 	*NomStation;
     QSignalMapper* mapperInterface,*mapperRoute,*mapperRouteAp,*mapperInterfaceAp;
+    Noeud *src;
 
 
+    void createWidget();
+    void createSignals();
 
     std::vector<QPushButton *> buttons;
     std::vector<QWidget *> ports;
 private slots:
     void addRoute();
     void deleteRouteG(int i);
-    void deleteInterfaceG(int i);
+    void deleteInterfaceG();
     void addInterface();
-    void createWidget();
-    void createSignals();
     void appliquerInterface(int );
     void appliquerRoute(int );
+    void onExitDialog(int );
 
 };
 

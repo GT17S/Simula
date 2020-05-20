@@ -10,6 +10,7 @@ Noeud::Noeud(NoeudG *_parent) : nbPort(1){
     Graphe::ajoutNoeudMatrice(this);
     interfaces.push_back(new InterfaceFE(idNoeud));
     setParent(_parent);
+
 }
 
 Noeud::Noeud(string _nom, int _idNoeud, int _nbPort, NoeudG * _parent){
@@ -80,6 +81,8 @@ InterfaceFE * Noeud::getInterface(Cable * _cable){
 
 void Noeud::setNom(string _nom){
     nom = _nom;
+    PanneauEvents::addRoot(parent->getTreeItem(),QString::fromStdString(nom));
+
 }
 
 void Noeud::setIdNoeud(int _idNoeud){
@@ -97,6 +100,7 @@ void Noeud::setNbPort(int _nbPort){
     if(_nbPort > nbPort){
         for (int i = nbPort; i < _nbPort; i++) {
             interfaces.push_back(new InterfaceFE(idNoeud));
+
         }
         nbPort = _nbPort;
 

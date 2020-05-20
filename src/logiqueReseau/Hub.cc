@@ -8,8 +8,9 @@ Hub::Hub(string _nom, int _idNoeud, int _nbPort, HubG *parent)
 }
 
 Hub::Hub(HubG *parent) : Noeud(parent){
-	nom = "Hub"+std::to_string(idNoeud);	
+    setNom( "Hub"+std::to_string(idNoeud));
     type = HUB;
+
 }
 
 Hub::~Hub(){
@@ -28,7 +29,9 @@ void Hub::envoyerMessage(int key,destination dest){
         if(!cable) return; // pas liaison
         extremite * ext = cable->getInverseExt(this);
         if(ext && ext->noeud->getIdNoeud() != id_src){
-            std::cout <<"J'envoie le message à "<<ext->noeud->getIdNoeud()<< std::endl;
+            //std::cout <<"J'envoie le message à "<<ext->noeud->getIdNoeud()<< std::endl;
+        PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Envoie de message vers  ")+QString::fromStdString(ext->noeud->getNom()));
+
             ext->noeud->recevoirMessage(key, ext->interface, dest);
         }
     }

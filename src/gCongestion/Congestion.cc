@@ -34,6 +34,8 @@ void Congestion::setCwnd(int _cwnd){
 void Congestion:: setSsthresh(float _ssthresh){
     if(_ssthresh >0)
         ssthresh = _ssthresh ;
+    //PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Je connais pas le chemin vers ")+QString::number(ext->noeud->getNom()));
+
     else return;
 }
 
@@ -82,13 +84,15 @@ void Congestion::setMapFileACK(std::map<int, destination> _map)
 
 void Congestion::slowStart(){
     if(cwnd < ssthresh){
-        cwnd=cwnd*2;
+        setCwnd(cwnd*2);
         cpt++;
     }else{
         congestionAvoidance();
     }
     std::cout<<"CWND = "<<cwnd<<std::endl;
     //PanneauEvents::affichage("CWND est a :"+ QString::number(cwnd););
+    //PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Je connais pas le chemin vers ")+QString::number(ext->noeud->getNom()));
+
 
 }
 void Congestion::fastRecovery(){
@@ -96,13 +100,17 @@ void Congestion::fastRecovery(){
     cwnd= ssthresh+3;
     cpt++;
     //PanneauEvents::affichage("fastRecovery est lance");
+    //PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Je connais pas le chemin vers ")+QString::number(ext->noeud->getNom()));
+
 
 }
 
 void Congestion::congestionAvoidance(){
+    //PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Je connais pas le chemin vers ")+QString::number(ext->noeud->getNom()));
 
-    cwnd =cwnd+1;
+    setCwnd(cwnd+1);
     cpt++;
+
 
 }
 
@@ -114,6 +122,8 @@ void Congestion::verifieNbrSegment(Noeud * src){
     if(mapFileEnvoyer.empty()){
 
         cout<<"fin de l'envoie " <<endl;
+        //PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Je connais pas le chemin vers ")+QString::number(ext->noeud->getNom()));
+
         //PanneauEvents::affichage("fin de l'envoie 1 ");
 /**		May be not here */
         this->mutexEnvoiOk->lock();
@@ -128,6 +138,7 @@ void Congestion::verifieNbrSegment(Noeud * src){
     for(int i = 0; i< cwnd; i++){
         if(i > mapFileEnvoyer.size()){
             cout<<"fin de l'envoie 2"<<endl;
+            //PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Je connais pas le chemin vers ")+QString::number(ext->noeud->getNom()));
 
             this->mutexEnvoiOk->lock();
             envoiok = false;
@@ -173,6 +184,8 @@ void Congestion::verifieNumSegment(Noeud * src,Noeud * dest, int nAck){//pc rece
 
     int nSeq = st->getNextNumSeq(),
         ipId = 100;
+    //PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Je connais pas le chemin vers ")+QString::number(ext->noeud->getNom()));
+
     envoyer(src, dest, 0, 0,false, true, nSeq, nAck,ipId,false, ndata);
     //verifieNbrSegment(st);
     //remplacer verifieNbrSegment(st) par var == true
@@ -197,6 +210,8 @@ void Congestion::verifieNumAck(Noeud * n, int nAck){
     nbrAcksRecu++;
 
     if(cwnd==nbrAcksRecu){
+        //PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Je connais pas le chemin vers ")+QString::number(ext->noeud->getNom()));
+
         nbrAcksRecu=0;
         slowStart();
         //verifieNbrSegment(st);

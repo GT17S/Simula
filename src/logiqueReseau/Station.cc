@@ -9,7 +9,7 @@ Station::Station(StationG * parent) : Noeud(parent){
     // ID automatique
     // nb port =1
     // filedattente vide
-    nom = "Station"+std::to_string(idNoeud);
+    setNom( "Station"+std::to_string(idNoeud));
     adressePasserelle = DEFAULT_IP;
     type = STATION;
     controleur = new Congestion();
@@ -85,6 +85,8 @@ void Station::envoyerMessage(int key, destination dest){
     int id_dest = lireAdresseMac(dest.data, 1);
     if(id_src < 0 || id_dest < 0){
         std::cout <<"Lecture @mac probleme "<<id_src<<" "<<id_dest<< std::endl;
+        //PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Je connais pas le chemin vers ")+QString::number(ext->noeud->getNom()));
+
         return;
     }
 
@@ -95,6 +97,8 @@ void Station::envoyerMessage(int key, destination dest){
 
     if(!size_p){
         std::cout << "Je connais pas le chemin vers "<<id_dest<<std::endl;
+        PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Je connais pas le chemin vers "+ Graphe::getSommets()[id_dest]->getNom()));
+
         return;
     }
 
@@ -111,6 +115,8 @@ void Station::envoyerMessage(int key, destination dest){
     this->mutexcabl->unlock();
     // prochaine destination
     extremite * extNext = path[size_p -1]->getInverseExt(this);
+   PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Je connais pas le chemin vers ")+QString::fromStdString(extNext->noeud->getNom()));
+
     extNext->noeud->recevoirMessage(key, extNext->interface, dest);
 
 }
@@ -127,6 +133,7 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
     // std::cout <<"TYPE DATA = "<< dest.data->getType() << std::endl;
     if(dest.data->getType() < 3){
         std::cout <<"Data non encapsuler"<<std::endl;
+
         return;
     }
 
@@ -135,6 +142,8 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
 
     if(mac_dest < 0 || mac_src < 0){
         std::cout << "Lecture @mac probleme "<<mac_src<<" "<<mac_dest<< std::endl;
+        PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Mac probelme "));
+
         return;
     }
     if(idNoeud == mac_dest){
@@ -143,11 +152,15 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
         string ipDest= lireAdresseIp(dest.data, 1);
         if(ipSrc == DEFAULT_IP || ipDest == DEFAULT_IP){
             std::cout<< "Probleme lecture @ip" <<std::endl;
+           PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("IP probelme "));
+
             return;
         }
 
         if(ipSrc == ipDest){
             std::cout <<"Cest moi la destination" <<std::endl;
+           PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Destination "));
+
             // verifier fragmentation ?
             int ipid = checkFragment(dest.data);
             if(ipid < 0) return; // nextfragment
@@ -160,18 +173,26 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
                     }else it++;
                 }
                 // reassemblage
+               PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Reassemblage de paquet "));
+
                 dest.data = reassemblagepaquet(res);
+
                 }
 
 
             desencapsule_paquet(dest.data);
+            PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Desencapsulation de paquet  "));
+
             // lire ack et syn
             int flags = lireFlagSegment(dest.data);
             if(flags == 2 || flags == 18){
                 // syn = 1, doit repondre ack
                 if(flags == 18){
+
                     std::cout <<"J'ai bien recu un ack"<<std::endl;
                     int nAck = lire_bits ( *(dest.data)->getSeq(), 64, 32).to_ulong();
+                    PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Ack recu ")+QString::number(nAck));
+
                     if(nAck < 0) return;
                     // supprimer de la file d'attente
                     controleur->verifieNumAck(this, nAck);
@@ -193,23 +214,34 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
                 }    
 			    this->mutexcabl->unlock();
                 // envoi nouveau ack
+        PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Envoie d'Ack ")+QString::number(nSeq+1));
+
                 controleur->verifieNumSegment(this, n2, nSeq+1);
+
             }
             else if(flags == 16){
                 // ack = 1, accusé ack
                 std::cout <<"J'ai bien recu un ack"<<std::endl;
+
                 int nAck = lire_bits ( *(dest.data)->getSeq(), 64, 32).to_ulong();
+                PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Ack recu  ")+QString::number(nAck));
+
                 if(nAck < 0) return;
 
                 desencapsule_segment(dest.data);
                 std::cout <<"Jai recu le message :"<<std::endl<<showMessage(dest.data) <<std::endl;
+          PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Message recu  ")+QString::fromStdString(showMessage(dest.data)));
+
                 delete dest.data;
+
                 // supprimer de la file d'attente
                 controleur->verifieNumAck(this, nAck);
             }else {
 
                 desencapsule_segment(dest.data);
                 std::cout <<"Jai recu le message :"<<std::endl<<showMessage(dest.data) <<std::endl;
+                PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Message recu  ")+QString::fromStdString(showMessage(dest.data)));
+
                 delete dest.data;
                 return;
             }
@@ -218,6 +250,7 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
             /// Station est une passerelle
             if(isPasserelle){
                 std::cout <<"Je suis une passerelle"<<std::endl;
+
                 // generer chemin complet, jusqua la destination
                 vector<Cable *> path;
                 string ip_dest_string = lireAdresseIp(dest.data, 1);
@@ -229,7 +262,9 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
                 int size_p = path.size();
                 // pas de chemin
                 if(!size_p){
-                    std::cout << "Je connais pas le chemin vers " <<ip_dest<<std::endl;
+                   // std::cout << "Je connais pas le chemin vers " <<Graphe::getSommets()[ip_dest]->getNom()<<std::endl;
+                PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Je connais pas le chemin vers "+ Graphe::getSommets()[ip_dest]->getNom()));
+
                     return;
                 }
 
@@ -256,6 +291,7 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
             else
                 std::cout <<"Je ne suis pas une passerelle"<<std::endl;
 
+
             return;
         }
     }
@@ -266,33 +302,10 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
 
 }
 
-/* TABLE DE VERITE ACK SYN FIN :
-    0	0	0	0	0	0   = 0
-    0	0	0	0	0	FIN = 1
-    0	0	0	0	SYN 0   = 2
-    0	0	0	0	SYN FIN = 3
-    0	ACK 0	0	0   0   = 16
-    0	ACK 0	0	0   FIN = 17
-    0	ACK 0	0	SYN 0   = 18
-    0	ACK 0	0	SYN FIN = 19
-*/
-
-/*
-//  unsigned int mf = (unsigned int) lire_bits ( p, 50, 1).to_ulong();
-//  unsigned int df = (unsigned int) lire_bits ( p, 49, 1).to_ulong();
-//    unsigned int offset = (unsigned int)lire_bits ( p, 51, 13).to_ulong();
-mf = 0 et offset = 0 : paquet non fragmenté
-mf = 0 et offset != 0 : dernier fragment
-mf = 1 et offset = 0 : premier fragment
-mf = 1 et offset != 0 : fragments
 
 
-*/
-//1
-//mfe 4 
-///2
-///mfe 6
-///
+
+
 void Station::mainlocal(std::mutex *m, gSimulation* g){
         this->mutexcabl = m;
         controleur->setMutex(m);

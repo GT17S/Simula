@@ -79,6 +79,8 @@ public slots:
     */
     void toPng();
 
+signals:
+	void addedData ( Data *d);
 };
 
 #endif

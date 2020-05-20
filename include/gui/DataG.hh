@@ -20,19 +20,25 @@ class DataG : public QTabBar    {
 
 private :
 		Data * d;
-		QPushButton detail;
-		QHBoxLayout grid;
+		std::vector<Data *> send;
+		QPushButton detail, left, right;
+		QHBoxLayout * grid;
+		int curent;
 		void addMessage (void);
 		void addSegment (void);
 		void addPaquet (void);
 		void addTrame (void);
-
+		void predicateData (void);
+		void updatePanel(void);
+		
 public :
         DataG( Data *d, QWidget* parent = 0 );
 
 private slots:
 //		void dataChanged();
         void detailPanel();
+        void displayLeft();
+        void displayRight();
 };
 
 

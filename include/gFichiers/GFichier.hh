@@ -15,12 +15,32 @@
 
 
 class Graphe;
-
+/*!
+ * \brief verifier_schema
+ * \param fichier_xml : ficher a lire
+ * \return bool : si fichier est valide
+ */
 bool verifier_schema(QFile * fichier_xml);
+/*!
+ * \brief ouvrirlXml
+ * \param nomfichier : le nom de fichier
+ * \param mode :mode d'ouvrir le fichier(lecture ou ecriteur)
+ * \return QFile : le fichier
+ */
 
 QFile * ouvrirlXml(QString nomfichier, QIODevice::OpenMode mode);
+/*!
+ * \brief lireXml
+ * lecture d'un fichier xml
+ * \param nomfichier : le nom de fichier
+ */
 
 void lireXml(QString nomfichier);
+/*!
+ * \brief ecrireXml
+ * ecrire dansun  fichier xml
+ * \param fichier : le nom de fichier
+ */
 
 void ecrireXml(QString fichier);
 

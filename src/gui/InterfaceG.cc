@@ -38,6 +38,7 @@ void InterfaceG::createInputs(QString _AdresseIP, QString _AdresseMac, QString _
     mask = new QLineEdit (_mask);
     interfaceName = new QLineEdit (_interfaceName);
     liaison = new QCheckBox("liaison", this);
+    liaison->setEnabled(false);
     if(_liaison){
         liaison->setChecked(true);
     }else{

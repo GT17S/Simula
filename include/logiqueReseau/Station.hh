@@ -53,7 +53,6 @@ class Station : public virtual Noeud {
     std::mutex* mutexFileEnvoyer;
     vector<Cable*> lastpath;
 
-   vector<Cable*> lastpath;
 
 public:
     /*!

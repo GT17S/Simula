@@ -37,6 +37,7 @@ private:
     int numberRoutes=0;
     QLineEdit 	*NomStation;
     QSignalMapper* mapperInterface,*mapperRoute,*mapperRouteAp,*mapperInterfaceAp;
+    Noeud *src;
 
 
 

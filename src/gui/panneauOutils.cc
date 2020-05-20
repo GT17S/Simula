@@ -8,7 +8,6 @@
 #include <cstring>
 #include "GFichier.hh"
 
-#include "ConstantsRessources.hh"
 
 
 PanneauOutils::PanneauOutils(EspaceTravail * _espaceTravail, gSimulation * g){
@@ -149,7 +148,7 @@ void PanneauOutils::createSignals(){
 
     connect(benvoyer,SIGNAL(clicked()),this,SLOT(envoieD()));
 
-    connect(envoyer,SIGNAL(clicked()),this,SLOT(envoieD()));
+    //connect(envoyer,SIGNAL(clicked()),this,SLOT(envoieD()));
     connect(zoomIn,SIGNAL(clicked()),this,SLOT(zoomer()));
     connect(zoomOut,SIGNAL(clicked()),this,SLOT(dezoomer()));
 

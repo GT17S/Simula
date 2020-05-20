@@ -17,6 +17,7 @@
 
 Dialog::Dialog(Noeud *parent)
 {
+    src=parent;
   createWidget();
   createSignals();
 }
@@ -47,6 +48,9 @@ void Dialog::addRoute()
 
 void Dialog::addInterface()
 {
+    int nbPort=src->getNbPort();
+    src->setNbPort(nbPort);
+/*
     InterfaceG *inter=new InterfaceG();
     mapperInterface->setMapping(inter->supprimer,toolInterface->count());
     mapperInterfaceAp->setMapping(inter->appliquer,toolInterface->count());
@@ -60,6 +64,8 @@ void Dialog::addInterface()
     connect(inter->supprimer, SIGNAL(clicked()), mapperInterface, SLOT(map()));
     connect(inter->appliquer, SIGNAL(clicked()), mapperInterfaceAp, SLOT(map()));
 
+*/
+     showConfig(src);
     update();
 }
 
@@ -185,7 +191,27 @@ void Dialog::showConfig(Noeud *src){
 }
 }
 void Dialog::appliquerInterface(int i){
-    qDebug()<<"appliquer Interface numero"<<i;
+    InterfaceG *ig=dynamic_cast<InterfaceG*>(toolInterface->widget(i));
+    QString AdresseIPApp=ig->AdresseIP->text(),
+            AdresseMacApp=ig->AdresseMac->text(),
+            AdresseResApp=ig->AdresseRes->text(),
+            maskApp=ig->mask->text(),
+            interfaceNameApp=ig->interfaceName->text();
+   bool liaisonApp=ig->liaison->checkState();
+
+   if(AdresseIPApp.isEmpty() || AdresseMacApp.isEmpty() ||  AdresseResApp.isEmpty() ||
+           maskApp.isEmpty() ||     interfaceNameApp.isEmpty()) return ;
+
+    InterfaceFE *iF = src->getInterface(i);
+    if(!iF)return ;
+    iF->setAdresseIP(AdresseIPApp.toStdString());
+    iF->setAdresseMac(AdresseMacApp.toStdString());
+    iF->setAdresseRes(AdresseResApp.toStdString());
+    iF->setMasque(maskApp.toStdString());
+    iF->setNomInterface(interfaceNameApp.toStdString());
+
+
+
 }
 void Dialog::appliquerRoute(int i){
     qDebug()<<"applique Routeeeee numero"<<i;

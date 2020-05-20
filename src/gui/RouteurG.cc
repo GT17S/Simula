@@ -5,6 +5,7 @@
 
 RouteurG::RouteurG(EspaceTravail *parent): NoeudG(parent){
     setPixmap(QPixmap(":/ressources/equipements/routeur.png"));
+
 }
 RouteurG::~RouteurG(){
 }

@@ -34,6 +34,7 @@ void Congestion::setCwnd(int _cwnd){
 void Congestion:: setSsthresh(float _ssthresh){
     if(_ssthresh >0)
         ssthresh = _ssthresh ;
+
     else return;
 }
 
@@ -80,29 +81,33 @@ void Congestion::setMapFileACK(std::map<int, destination> _map)
     mapFileACK =  _map;
 }
 
-void Congestion::slowStart(){
+void Congestion::slowStart(Noeud *src){
     if(cwnd < ssthresh){
         cwnd=cwnd*2;
         cpt++;
     }else{
-        congestionAvoidance();
+        congestionAvoidance(src);
     }
-    std::cout<<"CWND = "<<cwnd<<std::endl;
-    //PanneauEvents::affichage("CWND est a :"+ QString::number(cwnd););
+    PanneauEvents::addCh(src->getParent()->getTreeItem(),QString::fromStdString("slowStart:La taille de la fentre de congestion est :  ")+QString::number(cwnd));
+
 
 }
-void Congestion::fastRecovery(){
+void Congestion::fastRecovery(Noeud *src){
     ssthresh=ssthresh/2;
     cwnd= ssthresh+3;
     cpt++;
     //PanneauEvents::affichage("fastRecovery est lance");
+    PanneauEvents::addCh(src->getParent()->getTreeItem(),QString::fromStdString("fastRecovery:La taille de la fentre de congestion est :  ")+QString::number(cwnd));
+
+    PanneauEvents::addCh(src->getParent()->getTreeItem(),QString::fromStdString("fastRecovery:le ssthresh :  ")+QString::number(ssthresh));
 
 }
 
-void Congestion::congestionAvoidance(){
-
-    cwnd =cwnd+1;
+void Congestion::congestionAvoidance(Noeud *src){
+cwnd=cwnd+1;
     cpt++;
+    PanneauEvents::addCh(src->getParent()->getTreeItem(),QString::fromStdString("congestionAvoidance: fastRecovery:La taille de la fentre de congestion est :  ")+QString::number(cwnd));
+
 
 }
 
@@ -113,7 +118,9 @@ void Congestion::verifieNbrSegment(Noeud * src){
 	this->mutexFileEnvoyer->lock();
     if(mapFileEnvoyer.empty()){
 
-        cout<<"fin de l'envoie " <<endl;
+      //  cout<<"fin de l'envoie " <<endl;
+    PanneauEvents::addCh(src->getParent()->getTreeItem(),QString::fromStdString("Rien a envoyer  "));
+
         //PanneauEvents::affichage("fin de l'envoie 1 ");
 /**		May be not here */
         this->mutexEnvoiOk->lock();
@@ -127,7 +134,8 @@ void Congestion::verifieNbrSegment(Noeud * src){
 
     for(int i = 0; i< cwnd; i++){
         if(i > mapFileEnvoyer.size()){
-            cout<<"fin de l'envoie 2"<<endl;
+           // cout<<"fin de l'envoie 2"<<endl;
+            PanneauEvents::addCh(src->getParent()->getTreeItem(),QString::fromStdString("Fin de l'envoie  "));
 
             this->mutexEnvoiOk->lock();
             envoiok = false;
@@ -173,6 +181,8 @@ void Congestion::verifieNumSegment(Noeud * src,Noeud * dest, int nAck){//pc rece
 
     int nSeq = st->getNextNumSeq(),
         ipId = 100;
+    //PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Je connais pas le chemin vers ")+QString::number(ext->noeud->getNom()));
+
     envoyer(src, dest, 0, 0,false, true, nSeq, nAck,ipId,false, ndata);
     //verifieNbrSegment(st);
     //remplacer verifieNbrSegment(st) par var == true
@@ -182,6 +192,8 @@ void Congestion::verifieNumSegment(Noeud * src,Noeud * dest, int nAck){//pc rece
 }
 
 void Congestion::verifieNumAck(Noeud * n, int nAck){
+    PanneauEvents::addCh(n->getParent()->getTreeItem(),QString::fromStdString("Verfication d'ack recu  "));
+
     Station * st = dynamic_cast<Station*>(n);
     if(!st ) return;
 
@@ -197,8 +209,10 @@ void Congestion::verifieNumAck(Noeud * n, int nAck){
     nbrAcksRecu++;
 
     if(cwnd==nbrAcksRecu){
+    PanneauEvents::addCh(n->getParent()->getTreeItem(),QString::fromStdString("La taille de la fentre de congestion = NombreAckRecu "));
+
         nbrAcksRecu=0;
-        slowStart();
+        slowStart( n);
         //verifieNbrSegment(st);
     	this->mutexEnvoiOk->lock();
         envoiok = true;

@@ -182,21 +182,26 @@ public:
      * Méthode : Méthode qui va augmenter la taille de la fenêtre de congestion de une façon exponentielle et augmenter
         le cpt.
      * Vérifier si cwnd supérieur au ssthresh.
+     * param \n : la station ou se trouve le controleur
+
      */
 
-    void slowStart();
+    void slowStart(Noeud * n);
 
     /*!
      * \brief fastRecovery
      * Méthode : Méthode qui va décroître la taille de la fenêtre de congestion et le ssthresh
         pour augmenter le compteur
+     * param \n : la station ou se trouve le controleur
+
      */
-    void fastRecovery();
+    void fastRecovery(Noeud * n);
     /*!
      * \brief congestionAvoidance
      * Méthode : Méthode qui va augmenter la fenêtre de congestion linéairement
+     * param \n : la station ou se trouve le controleur
      */
-    void congestionAvoidance();
+    void congestionAvoidance(Noeud * n);
 
     /*!
      * \brief verifieNumSegment

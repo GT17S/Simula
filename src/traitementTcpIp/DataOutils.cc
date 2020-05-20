@@ -557,7 +557,7 @@ void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, bool syn, bool ac
 
     // get next
     extremite * srcExt = path[size_p -1]->getExt(n1); // source
-    extremite * destExt; // destination finale
+    extremite * destExt; // destination finale 5
     Cable * cable;
     Noeud * n = n1;
     extremite * nextExt = nullptr; // prochaine destination
@@ -581,7 +581,8 @@ void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, bool syn, bool ac
         destination dest;
         dest.data = data;
         dest.interface_src = srcExt->interface;
+		st->getControleur()->mutexFileEnvoyer->lock();
         st->getControleur()->mapFileEnvoyer.insert({nSeq,dest});  // inserer dans la file d'attente
-
+		st->getControleur()->mutexFileEnvoyer->unlock();
     }else return;
 }

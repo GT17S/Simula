@@ -9,7 +9,7 @@ NoeudG::NoeudG(EspaceTravail * _espaceTravail) : QGraphicsPixmapItem()
     configuration = new Dialog(child);
     setFlag(QGraphicsItem::ItemIsMovable);
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges);
-    
+    toolTipShow();
     parent=new QTreeWidgetItem(PanneauEvents::getTreeview());
     PanneauEvents::addRoot(parent,"Noeud");
 }
@@ -17,20 +17,7 @@ NoeudG::NoeudG(EspaceTravail * _espaceTravail) : QGraphicsPixmapItem()
 
 NoeudG::~NoeudG()
 {
-    //delete tabWidget;
-    //delete buttonBox;
-    //delete item;
-    //delete pixmap; Sert à rien de delete c'est passé statiquement au super constructeur
     delete parent;
-}
-
-
-void NoeudG::setChild(Noeud * _child){
-    child = _child;
-}
-
-void NoeudG::setTreeItem(QTreeWidgetItem * _parent){
-    parent = _parent;
 }
 
 void NoeudG::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -91,6 +78,16 @@ void NoeudG::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event){
 
 }
 
+void NoeudG::toolTipShow(){
+    setToolTip(
+                "<h2><b><font color='red'>MyList</font></b></h2>"
+                "<ol>"
+                "<li>First</li>"
+                "<li>Second</li>"
+                "<li>Third</li>"
+                "</ol>"
+                );
+}
 
 
 void NoeudG::addLine(CableG * _cable, bool isPoint1) {
@@ -109,6 +106,7 @@ void NoeudG::moveCable(QPointF newPos){
             e.cable->setLine(QLineF(e.cable->line().p1(), newPos+boundingRect().center()));
     }
 }
+
 
 QVariant NoeudG::itemChange(GraphicsItemChange change, const QVariant &value)
 {

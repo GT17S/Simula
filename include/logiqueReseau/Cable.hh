@@ -10,6 +10,7 @@
  */
 
 #include "Noeud.hh"
+#include "CableG.hh"
 #include <string>
 
 
@@ -28,6 +29,7 @@ typedef enum {
 #endif
 
 class Noeud;
+//class CableG;
 
 #ifndef EXTREMITE_H
 #define EXTREMITE_H
@@ -61,6 +63,7 @@ private:
   cableT type; /*!< Type du cable */
   extremite* ext1; /*!< Le Noeud à l'extremitie 1 */
   extremite* ext2; /*!< Le Noeud à l'extremitie 2*/
+  CableG * parent;
 public:
 
   /*!
@@ -70,7 +73,7 @@ public:
    * \param type : voir #type
    * \param debitMax : voir #debitMax
    */
-  Cable(cableT type = DROIT, int debitMax = 100, int MTU = 1500);
+  Cable(cableT type = DROIT, int debitMax = 100, int MTU = 1500, CableG * parent = nullptr);
 
   /*!
    * \brief Destructeur
@@ -132,7 +135,7 @@ public:
       return _noeud == ext1->noeud ?  ext2 : _noeud == ext2->noeud  ? ext1 : nullptr;
   }
 
-
+  CableG * getParent(){return parent;}
   /*!
    * \brief setNbCables
    * Modifier le nombre de cables
@@ -187,6 +190,8 @@ public:
    * \param noeud2 : noeud (Noeud).
    */
   void setExt2(extremite *noeud1);
+
+  void setParent(CableG * _parent);
 
   /*!
    * \brief estBienConnecte

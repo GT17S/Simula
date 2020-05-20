@@ -9,6 +9,7 @@
  */
 
 #include <Noeud.hh>
+#include "CableG.hh"
 #include "EspaceTravail.hh"
 #include <QPixmap>
 #include <QGraphicsPixmapItem>
@@ -24,7 +25,6 @@
 
 class Noeud;
 class EspaceTravail;
-class CableG;
 
 
 #ifndef CABLEG_EXTREMITE_H
@@ -48,6 +48,7 @@ private:
     //pour les icons afficher les differents noeuds
     void addLine(CableG * cable, bool isPoint1);
     void moveCable(QPointF newPos);
+    void toolTipShow();
 
 
 public:
@@ -68,10 +69,10 @@ public:
     ~NoeudG();
 
     Noeud * getChild(){return child;}
-    void setChild(Noeud * child);
+    void setChild(Noeud * _child){child = _child;}
 
     QTreeWidgetItem * getTreeItem(){return parent;}
-    void setTreeItem(QTreeWidgetItem *parent);
+    void setTreeItem(QTreeWidgetItem *_parent){ parent = _parent;}
 
 protected:
     vector<cableG_extremite> extremiteG;

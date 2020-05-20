@@ -29,42 +29,19 @@ Dialog::~Dialog(){}
 void Dialog::addRoute()
 {
 
+Route *newRoute=new Route();
+src->setTableRoutage(newRoute);
 
-    RouteG *road=new RouteG();
-    mapperRoute->setMapping(road->supprimer,toolRoutage->count());
-    mapperRouteAp->setMapping(road->appliquer,toolRoutage->count());
-
-    QString Num=QString::number(toolRoutage->count());
-    toolRoutage->addItem(road, "Route"+Num);
-    //mainly changes
-    routeLayout->addWidget(toolRoutage);
-    routeWidget->setLayout(routeLayout);
-
-    connect(road->supprimer, SIGNAL(clicked()), mapperRoute, SLOT(map()));
-    connect(road->appliquer, SIGNAL(clicked()), mapperRouteAp, SLOT(map()));
-
+    showConfig(src);
     update();
 }
 
 void Dialog::addInterface()
 {
     int nbPort=src->getNbPort();
-    src->setNbPort(nbPort);
-/*
-    InterfaceG *inter=new InterfaceG();
-    mapperInterface->setMapping(inter->supprimer,toolInterface->count());
-    mapperInterfaceAp->setMapping(inter->appliquer,toolInterface->count());
 
-    QString Num=QString::number(toolInterface->count());
-    toolInterface->addItem(inter,"Interface"+Num);
-    //mainly changes
-    interfaceLayout->addWidget(toolInterface);
-    intWidget->setLayout(interfaceLayout);
+    src->setNbPort(nbPort+1);
 
-    connect(inter->supprimer, SIGNAL(clicked()), mapperInterface, SLOT(map()));
-    connect(inter->appliquer, SIGNAL(clicked()), mapperInterfaceAp, SLOT(map()));
-
-*/
      showConfig(src);
     update();
 }
@@ -96,10 +73,16 @@ void Dialog::generalWidget()
     tabWidget->addTab(generalWidget,tr("General"));
 }
 void Dialog::deleteRouteG(int i){
-    qDebug()<<"delete route valeur de i est :"<<i;
+    src->supprimerRoute(i);
+    showConfig(src);
+
 }
-void Dialog::deleteInterfaceG(int i){
-    qDebug()<<"delete interface valeur de i est :"<<i;
+void Dialog::deleteInterfaceG(){
+   int nbPort=src->getNbPort();
+
+   src->setNbPort(nbPort-1);
+   showConfig(src);
+  update();
 
 }
 
@@ -120,6 +103,8 @@ void Dialog::createWidget(){
     routeWidget->setLayout(routeLayout);
     interfaceLayout = new QGridLayout;
     interfaceLayout->addWidget(ajouterInterface);
+    interfaceLayout->addWidget(supprimerInterface);
+
     intWidget->setLayout(interfaceLayout);
     generalWidget();
     interfaceLayout->addWidget(toolInterface);
@@ -151,13 +136,18 @@ void Dialog::createSignals(){
     connect(ajouterInterface,SIGNAL(clicked()),this,SLOT(addInterface()));
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
-    connect(mapperInterface, SIGNAL(mapped(int)), this, SLOT(deleteInterfaceG(int )));
+
+    connect(supprimerInterface, SIGNAL(clicked()), this, SLOT(deleteInterfaceG()));
+
     connect(mapperRoute, SIGNAL(mapped(int)), this, SLOT(deleteRouteG(int )));
+
     connect(mapperInterfaceAp, SIGNAL(mapped(int)), this, SLOT(appliquerInterface(int )));
     connect(mapperRouteAp, SIGNAL(mapped(int)), this, SLOT(appliquerRoute(int )));
+    connect(this,SIGNAL(finished(int)),this,SLOT(onExitDialog(int)));
 
 }
 void Dialog::showConfig(Noeud *src){
+    onExitDialog(0);
     NomStation->setText(QString::fromStdString(src->getNom()));
     for(InterfaceFE *i:src->getInterfaces()){
         QString AdresseIP=QString::fromStdString(i->getAdresseIP()),
@@ -167,8 +157,8 @@ void Dialog::showConfig(Noeud *src){
                 interfaceName=QString::fromStdString(i->getNomInterface());
         bool liaison= i->getCable() != nullptr ? true : false;
         InterfaceG *ig=new InterfaceG(AdresseIP,AdresseMac,AdresseRes,mask,interfaceName,liaison);
-        mapperInterface->setMapping(ig->supprimer,toolInterface->count());
-        connect(ig->supprimer, SIGNAL(clicked()), mapperInterface, SLOT(map()));
+       // mapperInterface->setMapping(supprimerInterface,toolInterface->count());
+     //  connect(supprimerInterface, SIGNAL(clicked()), mapperInterface, SLOT(map()));
 
         mapperInterfaceAp->setMapping(ig->appliquer,toolInterface->count());
         connect(ig->appliquer, SIGNAL(clicked()), mapperInterfaceAp, SLOT(map()));
@@ -177,6 +167,7 @@ void Dialog::showConfig(Noeud *src){
     }
 
     for(Route *r: src->getTableRoutage()){
+        int a=src->getTableRoutage().size();
         QString nextHope=QString::fromStdString(r->passerelle),
                AdresseRes=QString::fromStdString(r->adresseReseau),
                 mask=QString::fromStdString(r->masque);
@@ -210,9 +201,34 @@ void Dialog::appliquerInterface(int i){
     iF->setMasque(maskApp.toStdString());
     iF->setNomInterface(interfaceNameApp.toStdString());
 
+    showConfig(src);
 
 
 }
 void Dialog::appliquerRoute(int i){
-    qDebug()<<"applique Routeeeee numero"<<i;
+    int size_table = src->getTableRoutage().size();
+    RouteG *ig=dynamic_cast<RouteG*>(toolRoutage->widget(i));
+    QString AdresseIPApp=ig->getNextHope()->text(),
+            AdresseResApp=ig->getAdresseRes()->text(),
+            mask=ig->getMask()->text();
+            if(AdresseIPApp.isEmpty() || AdresseResApp.isEmpty() ||  mask.isEmpty()) return ;
+    Route *routeNew=new Route();
+    routeNew->adresseReseau=AdresseResApp.toStdString();
+    routeNew->adresseReseau=AdresseResApp.toStdString();
+    routeNew->masque=mask.toStdString();
+    src->modifierRoute(i,routeNew);
+     size_table = src->getTableRoutage().size();
+  showConfig(src);
+
+}
+void Dialog::onExitDialog(int i){
+    NomStation->clear();
+
+    while(toolInterface->count())
+        delete toolInterface->widget(toolInterface->currentIndex());
+
+    while(toolRoutage->count())
+        delete toolRoutage->widget(toolRoutage->currentIndex());
+
+
 }

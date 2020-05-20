@@ -4,17 +4,8 @@
 
 
 RouteG::~RouteG()
-{
-    delete gridLayoutinterface ;
-    delete nextHope;
-    delete AdresseRes;
-    delete mask ;
-    delete resName ;
-    delete supprimer;
-    delete appliquer;
-    delete portGroupBox ;
-    //delete layout ;
 
+{
 }
 
 void RouteG::deleteroute()
@@ -49,6 +40,36 @@ void RouteG::createLabels(){
    setLayout(gridLayoutinterface);
 
 }
+QLineEdit *RouteG::getNextHope() const
+{
+    return nextHope;
+}
+
+void RouteG::setNextHope(QLineEdit *value)
+{
+    nextHope = value;
+}
+
+QLineEdit *RouteG::getAdresseRes() const
+{
+    return AdresseRes;
+}
+
+void RouteG::setAdresseRes(QLineEdit *value)
+{
+    AdresseRes = value;
+}
+
+QLineEdit *RouteG::getMask() const
+{
+    return mask;
+}
+
+void RouteG::setMask(QLineEdit *value)
+{
+    mask = value;
+}
+
 void RouteG::createInputs(QString _nextHope,QString _AdresseRes,QString _mask){
     nextHope	 = new QLineEdit (_nextHope);
     AdresseRes	 = new QLineEdit (_AdresseRes);

@@ -35,6 +35,15 @@ public:
 
     ~RouteG();
 
+    QLineEdit *getNextHope() const;
+    void setNextHope(QLineEdit *value);
+
+    QLineEdit *getAdresseRes() const;
+    void setAdresseRes(QLineEdit *value);
+
+    QLineEdit *getMask() const;
+    void setMask(QLineEdit *value);
+
 private slots:
     void deleteroute();
 };

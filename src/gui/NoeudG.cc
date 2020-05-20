@@ -72,9 +72,9 @@ void NoeudG::mousePressEvent(QGraphicsSceneMouseEvent *event)
     }
 }
 void NoeudG::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event){
+    if(espaceTravail->getMode()==SELECT_MODE){
     configuration->showConfig(child);
-
-configuration->show();
+    configuration->show();}
 
 
 }

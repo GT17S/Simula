@@ -13,7 +13,7 @@ ToolBarEquipement::ToolBarEquipement(EspaceTravail * _espaceTravail){
 void ToolBarEquipement::createButtons(){
     //this->setStyleSheet("background-color: pink");
 
-	  this->setMinimumSize(50,430);
+	this->setMinimumSize(50,430);
     this->setMaximumWidth(100);
     this->setOrientation(Qt::Vertical);
     this->setObjectName("equiBarMain");

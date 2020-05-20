@@ -3,6 +3,8 @@
 #include <QMessageBox>
 #include <QGraphicsSceneMouseEvent>
 
-StationG::StationG(EspaceTravail *parent, QPixmap pixmap ): NoeudG(parent,pixmap){}
+StationG::StationG(EspaceTravail *parent): NoeudG(parent){
+   setPixmap(QPixmap(":/ressources/equipements/station.png"));
+}
 
 StationG::~StationG(){}

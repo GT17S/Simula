@@ -51,6 +51,7 @@ private slots:
     void createWidget();
     void createSignals();
     void appliquer(int );
+
 };
 
 #endif // DIALOG_H

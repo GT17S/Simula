@@ -4,10 +4,21 @@
 #include <QFile>
 #include <QDebug>
 #include "simulaGui.hh"
+#include "Graphe.hh"
+
+
+void cleanup(){
+    return;
+}
 
 int main ( int argc, char ** argv) {
+
+    lireXml("test.xml");
+    gSimulation * gestionnaire = new gSimulation();
+    gestionnaire->getManager()->initStation();
+
     QApplication app ( argc, argv);
-    simulaGui g;
+    simulaGui g ( gestionnaire);
     QFile File(":/style/stylesheet.qss");
     File.open(QFile::ReadOnly);
 
@@ -15,10 +26,11 @@ int main ( int argc, char ** argv) {
     if(File.isOpen()){
         StyleSheet = QLatin1String(File.readAll());
         File.close();
-    }else qDebug ()<<"probleme de lecture";
+    }else qDebug ()<<"Problème de lecture de la feuille de style";
 
     app.setStyleSheet(StyleSheet);
     g.show();
-    return app.exec();
 
+    std::atexit(cleanup);
+    return app.exec();
 }

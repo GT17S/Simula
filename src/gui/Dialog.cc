@@ -17,10 +17,8 @@
 
 Dialog::Dialog(Noeud *parent)
 {
-
-createWidget();
-createSignals();
-
+  createWidget();
+  createSignals();
 }
 
 Dialog::~Dialog(){}
@@ -40,7 +38,6 @@ void Dialog::addRoute()
 
 
     update();
-
 }
 
 void Dialog::addInterface()

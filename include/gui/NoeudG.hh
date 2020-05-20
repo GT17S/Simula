@@ -9,6 +9,7 @@
  */
 
 #include <Noeud.hh>
+#include "CableG.hh"
 #include "EspaceTravail.hh"
 #include <QPixmap>
 #include <QGraphicsPixmapItem>
@@ -24,7 +25,6 @@
 
 class Noeud;
 class EspaceTravail;
-class CableG;
 
 
 #ifndef CABLEG_EXTREMITE_H
@@ -46,16 +46,9 @@ class NoeudG  :  public QGraphicsPixmapItem
 {
 private:
     //pour les icons afficher les differents noeuds
-    QPixmap *pixmap;
-    QGraphicsPixmapItem* item;
-    vector<cableG_extremite> extremiteG;
-    //fenetre en clickant sur l'un des noeuds
-    EspaceTravail *espaceTravail;
-    Noeud * child;
-    QTreeWidgetItem *parent;/*!< la section ou tous les traitement d'une station seront affiche dans PanneauEvent */
-    Dialog * configuration;
     void addLine(CableG * cable, bool isPoint1);
     void moveCable(QPointF newPos);
+    void toolTipShow();
 
 
 public:
@@ -67,7 +60,7 @@ public:
          * \param pixmap : voir #QPixmap
          * \param espaceTravail : voir #QGraphicsScene
     */
-    NoeudG(EspaceTravail *_espaceTravail, QPixmap pixmap= QPixmap("../../ressources/hub.png"));
+    NoeudG(EspaceTravail *_espaceTravail = nullptr);
 
     /*!
          * \brief Destructeur
@@ -75,16 +68,20 @@ public:
      */
     ~NoeudG();
 
-    QPixmap *getPixmap() const;
-    void setPixmap(QPixmap *value);
-
-    QGraphicsPixmapItem *getItem() const;
-    void setItem(QGraphicsPixmapItem *value);
-
     Noeud * getChild(){return child;}
-    void setChild(Noeud * child);
+    void setChild(Noeud * _child){child = _child;}
+
+    QTreeWidgetItem * getTreeItem(){return parent;}
+    void setTreeItem(QTreeWidgetItem *_parent){ parent = _parent;}
 
 protected:
+    vector<cableG_extremite> extremiteG;
+    //fenetre en clickant sur l'un des noeuds
+    EspaceTravail *espaceTravail;
+    Noeud * child;
+    QTreeWidgetItem *parent;/*!< la section ou tous les traitement d'une station seront affiche dans PanneauEvent */
+    Dialog * configuration;
+
     //void mouseDoubleClickEvent( QMouseEvent * e );
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);

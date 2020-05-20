@@ -771,3 +771,5 @@ include/gui/moc_*
 doc/html/*
 
 .git-old
+
+include/gSimulation/moc_ThreadManager.cpp_parameters

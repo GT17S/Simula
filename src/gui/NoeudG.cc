@@ -2,55 +2,28 @@
 #include <QMessageBox>
 #include "PanneauEvents.hh"
 
-NoeudG::NoeudG(EspaceTravail * _espaceTravail, QPixmap pixmap) : QGraphicsPixmapItem(pixmap)
+NoeudG::NoeudG(EspaceTravail * _espaceTravail) : QGraphicsPixmapItem()
 {
     espaceTravail = _espaceTravail;
     child = nullptr;
     configuration = new Dialog(child);
     setFlag(QGraphicsItem::ItemIsMovable);
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges);
-    
+    toolTipShow();
     parent=new QTreeWidgetItem(PanneauEvents::getTreeview());
     PanneauEvents::addRoot(parent,"Noeud");
 }
-void NoeudG::setparent(QTreeWidgetItem *value)
-{
-    parent = value;
-}
+
 
 NoeudG::~NoeudG()
 {
-    //delete tabWidget;
+    delete tabWidget;
     //delete buttonBox;
-    //delete item;
+    delete item;
     //delete pixmap; Sert à rien de delete c'est passé statiquement au super constructeur
+
     delete parent;
 }
-
-QGraphicsPixmapItem *NoeudG::getItem() const
-{
-    return item;
-}
-
-void NoeudG::setItem(QGraphicsPixmapItem *value)
-{
-    item = value;
-}
-
-QPixmap *NoeudG::getPixmap() const
-{
-    return pixmap;
-}
-
-void NoeudG::setPixmap(QPixmap *value)
-{
-    pixmap = value;
-}
-
-void NoeudG::setChild(Noeud * _child){
-    child = _child;
-}
-
 
 void NoeudG::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
@@ -65,8 +38,12 @@ void NoeudG::mousePressEvent(QGraphicsSceneMouseEvent *event)
                                         "Voulez-vous vraiment supprimer l'éuipement ?",
                                         QMessageBox::Yes | QMessageBox::No);
 
-        if(ret == QMessageBox::Yes)
-            this->~NoeudG();
+        if(ret == QMessageBox::Yes){
+            if(child)
+                child->~Noeud();
+            else
+                this->~NoeudG();
+        }
         break;
     }
     case ROUTEUR_MODE: { break;}
@@ -106,6 +83,17 @@ void NoeudG::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event){
 
 }
 
+void NoeudG::toolTipShow(){
+    setToolTip(
+                "<h2><b><font color='red'>MyList</font></b></h2>"
+                "<ol>"
+                "<li>First</li>"
+                "<li>Second</li>"
+                "<li>Third</li>"
+                "</ol>"
+                );
+}
+
 
 void NoeudG::addLine(CableG * _cable, bool isPoint1) {
     cableG_extremite e;
@@ -123,6 +111,7 @@ void NoeudG::moveCable(QPointF newPos){
             e.cable->setLine(QLineF(e.cable->line().p1(), newPos+boundingRect().center()));
     }
 }
+
 
 QVariant NoeudG::itemChange(GraphicsItemChange change, const QVariant &value)
 {

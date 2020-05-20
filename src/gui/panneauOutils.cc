@@ -253,7 +253,7 @@ void PanneauOutils::exportDot(){
 }
 
 void PanneauOutils::exportPng(){
-    qDebug() << "PNG";
+    toPng();
 }
 
 

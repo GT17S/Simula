@@ -53,8 +53,6 @@ class Station : public virtual Noeud {
     std::mutex* mutexFileEnvoyer;
     vector<Cable*> lastpath;
 
-
-
 public:
     /*!
      * \brief Constructeur par défaut

@@ -36,8 +36,7 @@ private:
     QGridLayout *routeLayout,*interfaceLayout;
     int numberRoutes=0;
     QLineEdit 	*NomStation;
-    QSignalMapper* mapperInterface;
-    QSignalMapper* mapperRoute;
+    QSignalMapper* mapperInterface,*mapperRoute,*mapperRouteAp,*mapperInterfaceAp;
 
 
 
@@ -50,7 +49,8 @@ private slots:
     void addInterface();
     void createWidget();
     void createSignals();
-    void appliquer(int );
+    void appliquerInterface(int );
+    void appliquerRoute(int );
 
 };
 

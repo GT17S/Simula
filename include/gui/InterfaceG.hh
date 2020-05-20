@@ -11,19 +11,23 @@
 #include <QWidget>
 #include <QToolBox>
 #include <QCheckBox>
+#include "QString"
+#include "QSignalMapper"
 
 class InterfaceG : public QWidget
 {
+    friend class Dialog;
     Q_OBJECT
 
 public:
 
-    InterfaceG();
+    InterfaceG(QString _AdresseIP=QString(),QString _AdresseMac=QString(),QString _AdresseRes=QString(),QString _mask=QString(),QString _interfaceName=QString(),bool _liaison=false);
     ~InterfaceG();
 
 
 private:
-
+void createInputs(QString _AdresseIP,QString _AdresseMac,QString _AdresseRes,QString _mask,QString _interfaceName,bool _liaison);
+void createLabels();
 QGridLayout *gridLayoutinterface ;
 QLineEdit 	*AdresseIP	;
 QLineEdit 	*AdresseMac	;
@@ -34,6 +38,7 @@ QCheckBox   *liaison ;
 QPushButton *appliquer,*supprimer;
 QGroupBox *portGroupBox ;
 QFormLayout *layout ;
+
 private slots:
     void deleteInterfaceG();
 };

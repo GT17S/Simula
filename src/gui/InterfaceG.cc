@@ -1,15 +1,51 @@
 #include "InterfaceG.hh"
 
-InterfaceG::InterfaceG()
-{
 
-    gridLayoutinterface = new QGridLayout();
-    AdresseIP	 = new QLineEdit ();
-    AdresseMac	 = new QLineEdit ();
-    AdresseRes	 = new QLineEdit ();
-    mask = new QLineEdit ();
-    interfaceName = new QLineEdit ();
+InterfaceG::~InterfaceG()
+{
+    delete gridLayoutinterface ;
+    delete AdresseIP	;
+    delete AdresseMac	;
+    delete AdresseRes	;
+    delete mask ;
+    delete interfaceName ;
+    delete liaison ;
+    delete appliquer;
+    delete supprimer;
+
+}
+
+void InterfaceG::deleteInterfaceG()
+{
+    this->~InterfaceG();
+}
+InterfaceG::InterfaceG(QString _AdresseIP,QString _AdresseMac,QString _AdresseRes,
+           QString _mask,QString _interfaceName,bool _liaison){
+    createInputs( _AdresseIP, _AdresseMac, _AdresseRes,
+                  _mask, _interfaceName, _liaison);
+    createLabels();
+
+
+
+
+}
+void InterfaceG::createInputs(QString _AdresseIP, QString _AdresseMac, QString _AdresseRes, QString _mask,
+                              QString _interfaceName, bool _liaison){
+
+    AdresseIP	 = new QLineEdit (_AdresseIP);
+    AdresseMac	 = new QLineEdit (_AdresseMac);
+    AdresseRes	 = new QLineEdit (_AdresseRes);
+    mask = new QLineEdit (_mask);
+    interfaceName = new QLineEdit (_interfaceName);
     liaison = new QCheckBox("liaison", this);
+    if(_liaison){
+        liaison->setChecked(true);
+    }else{
+        liaison->setChecked(false);
+    }
+}
+void InterfaceG::createLabels(){
+    gridLayoutinterface = new QGridLayout();
 
     supprimer = new QPushButton("Supprimer");
     appliquer = new QPushButton("Appliquer");
@@ -31,24 +67,4 @@ InterfaceG::InterfaceG()
 
     this->setLayout(gridLayoutinterface);
 
-    connect(supprimer,SIGNAL(clicked()),this,SLOT(deleteInterfaceG()));
-}
-
-InterfaceG::~InterfaceG()
-{
-    delete gridLayoutinterface ;
-    delete AdresseIP	;
-    delete AdresseMac	;
-    delete AdresseRes	;
-    delete mask ;
-    delete interfaceName ;
-    delete liaison ;
-    delete appliquer;
-    delete supprimer;
-
-}
-
-void InterfaceG::deleteInterfaceG()
-{
-    this->~InterfaceG();
 }

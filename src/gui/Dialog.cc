@@ -28,21 +28,31 @@ Dialog::~Dialog(){}
 
 void Dialog::addRoute()
 {
-
+int a=src->getTableRoutage().size();
 Route *newRoute=new Route();
 src->setTableRoutage(newRoute);
-
+if(a==src->getTableRoutage().size()){
+   QMessageBox::warning(this, "Erreur d'ajout de route",
+                            "La route existe deja !",
+                            QMessageBox::Yes);
+}
     showConfig(src);
+
     update();
 }
 
 void Dialog::addInterface()
 {
+
     int nbPort=src->getNbPort();
-
     src->setNbPort(nbPort+1);
+    if(nbPort==src->getNbPort()){
+       QMessageBox::warning(this, "Erreur d'ajout de route",
+                                "La route existe deja !",
+                                QMessageBox::Yes);
+    }
+    showConfig(src);
 
-     showConfig(src);
     update();
 }
 
@@ -73,7 +83,14 @@ void Dialog::generalWidget()
     tabWidget->addTab(generalWidget,tr("General"));
 }
 void Dialog::deleteRouteG(int i){
+    int a=src->getTableRoutage().size();
     src->supprimerRoute(i);
+
+    if(a==src->getTableRoutage().size()){
+       QMessageBox::warning(this, "Erreur de suppression",
+                                "Erreur de suppression de la route !",
+                                QMessageBox::Yes);
+    }
     showConfig(src);
 
 }
@@ -81,6 +98,11 @@ void Dialog::deleteInterfaceG(){
    int nbPort=src->getNbPort();
 
    src->setNbPort(nbPort-1);
+   if(nbPort==src->getNbPort()){
+      QMessageBox::warning(this, "Erreur de suppression",
+                               "Erreur de suppression de la l'interface !",
+                               QMessageBox::Yes);
+   }
    showConfig(src);
   update();
 
@@ -182,6 +204,7 @@ void Dialog::showConfig(Noeud *src){
 }
 }
 void Dialog::appliquerInterface(int i){
+
     InterfaceG *ig=dynamic_cast<InterfaceG*>(toolInterface->widget(i));
     QString AdresseIPApp=ig->AdresseIP->text(),
             AdresseMacApp=ig->AdresseMac->text(),
@@ -207,6 +230,7 @@ void Dialog::appliquerInterface(int i){
 }
 void Dialog::appliquerRoute(int i){
     int size_table = src->getTableRoutage().size();
+    qDebug()<<"la taille est :"<<size_table;
     RouteG *ig=dynamic_cast<RouteG*>(toolRoutage->widget(i));
     QString AdresseIPApp=ig->getNextHope()->text(),
             AdresseResApp=ig->getAdresseRes()->text(),
@@ -217,8 +241,11 @@ void Dialog::appliquerRoute(int i){
     routeNew->adresseReseau=AdresseResApp.toStdString();
     routeNew->masque=mask.toStdString();
     src->modifierRoute(i,routeNew);
-     size_table = src->getTableRoutage().size();
-  showConfig(src);
+    qDebug()<<"la taille apres  est :"<<src->getTableRoutage().size();
+
+
+
+    showConfig(src);
 
 }
 void Dialog::onExitDialog(int i){

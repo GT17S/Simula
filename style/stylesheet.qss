@@ -1,10 +1,19 @@
 QWidget {
-
-background-color : white;
 }
-QToolBar#outilsBarMain{
-spacing : 7px;
-background : red;
+QToolBar{
+spacing : 6px;
+}
+QToolBar#hbar QPushButton{
+spacing : 2px;
+border : 2px groove lightgray;
+min-height : 35px;
+min-width  : 35px;
+margin : 3px;
+border-radius : 17px;
+}
+QToolBar#hbar QPushButton::hover{
+border: 1px inset gray;
+
 }
 QPushButton[outilsBar="true"]{
 border : 2px groove lightgray;
@@ -15,31 +24,30 @@ border-radius : 25px;
 }
 QPushButton[outilsBar="true"]::hover{
 border: 1px inset gray;
-
+}
+QPushButton[outilsBar="false"]{
+border : 2px groove lightgray;
+min-height : 50px;
+min-width  : 50px;
+margin: 0 20px 0 20px;
+border-radius : 25px;
+}
+QPushButton[outilsBar="false"]::hover{
+border: 1px inset gray;
 }
 QPushButton#nvAction{
-image : url(../../ressources/outilsBar/nvAction.png);
-}
-QPushButton#nvAction::hover{
-
+image : url(:/ressources/outilsBar/nvAction.png);
 }
 QPushButton#ouvrirAction{
 
-image : url(../../ressources/outilsBar/ouvrirAction.png);
-}
-QPushButton#ouvrirAction::hover{
+image : url(:/ressources/outilsBar/ouvrirAction.png);
 }
 QPushButton#svgdAction{
 
-image : url(../../ressources/outilsBar/svgdAction.png);
-}
-QPushButton#svgdAction::hover{
+image : url(:/ressources/outilsBar/svgdAction.png);
 }
 QPushButton#exportAction{
-image : url(../../ressources/outilsBar/exportAction.png);
-}
-QPushButton#exportAction::hover{
-
+image : url(:/ressources/outilsBar/exportAction.png);
 }
 QPushButton#exportAction::menu-indicator {
     subcontrol-position: center bottom;
@@ -50,66 +58,94 @@ QPushButton#exportAction::menu-indicator {
 
 QPushButton#simDP{
 
-image : url(../../ressources/outilsBar/simD.png);
+image : url(:/ressources/outilsBar/simD.png);
 }
-QPushButton#simDP::hover{
-}
+
 QPushButton#simDP::checked{
 
-image : url(../../ressources/outilsBar/simP.png);
-}
-QPushButton#simDP::checked::hover{
-
+image : url(:/ressources/outilsBar/simP.png);
 }
 QPushButton#arreterAction{
 
-image : url(../../ressources/outilsBar/arreterAction.png);
-}
-QPushButton#arreterAction::hover{
-
+image : url(:/ressources/outilsBar/arreterAction.png);
 }
 QPushButton#relancerAction{
 
-image : url(../../ressources/outilsBar/relancerAction.png);
+image : url(:/ressources/outilsBar/relancerAction.png);
 }
-QPushButton#relancerAction::hover{
-}
+
 QPushButton#changeAction{
 
-image : url(../../ressources/outilsBar/changeActionA.png);
+image : url(:/ressources/outilsBar/changeActionA.png);
 }
 
-QPushButton#changeAction::hover{
-
-}
 QPushButton#changeAction::checked{
 
-image : url(../../ressources/outilsBar/changeActionM.png);
+image : url(:/ressources/outilsBar/changeActionM.png);
 }
-QPushButton#changeAction::checked::hover{
 
-}
 QPushButton#envoyerAction{
 
-image : url(../../ressources/outilsBar/envoyerAction.png);
+image : url(:/ressources/outilsBar/envoyerAction.png);
 }
-QPushButton#envoyerAction::hover{
 
-}
 QPushButton#zoomInAction{
 
-image : url(../../ressources/outilsBar/zoomInAction.png);
+image : url(:/ressources/outilsBar/zoomInAction.png);
 }
-QPushButton#zoomInAction::hover{
 
-}
 QPushButton#zoomOutAction{
 
-image : url(../../ressources/outilsBar/zoomOutAction.png);
+image : url(:/ressources/outilsBar/zoomOutAction.png);
 }
-QPushButton#zoomOutAction::hover{
 
+QPushButton#selectAction{
+image : url(:/ressources/equiBar/selectAction.png);
 }
+QPushButton#supprAction{
+image : url(:/ressources/equiBar/supprAction.png);
+}
+QPushButton#cableAction{
+image : url(:/ressources/equiBar/cableAction.png);
+}
+QPushButton#cableAction::menu-indicator {
+    subcontrol-position: right center;
+    subcontrol-origin: padding;
+
+    width:10px;
+  }
+QPushButton#stationAction{
+ image : url(:/ressources/equiBar/stationAction.png);
+}
+QPushButton#routeurAction{
+image : url(:/ressources/equiBar/routeurAction.png);
+}
+QPushButton#hubAction{
+image : url(:/ressources/equiBar/hubAction.png);
+}
+/*
+QTreeView{
+font: bold 12px;
+}
+QTreeView::item {
+    border: 3px solid #d9d9d9;
+  border-top-color:black;
+  border-bottom-color: black;
+}
+QTreeView::item:hover {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #e7effd, stop: 1 #cbdaf1);
+    border: 5px solid #bfcde4;
+}
+QTreeView::item:selected {
+    border: 1px solid red;
+    background-color:red;
+}
+*/
+
+QPushButton#switchAction{
+ image : url(:/ressources/equiBar/switchAction.png);
+}
+
 QPushButton:pressed {
 
 }

@@ -18,6 +18,7 @@
 #include "Graphe.hh"
 #include "Congestion.hh"
 #include "congestionOutil.hh"
+#include "StationG.hh"
 
 using std::string;
 using std::vector;
@@ -27,7 +28,12 @@ class Noeud;
 class Data;
 class InterfaceFE;
 class Congestion;
+
+
 class gSimulation;
+
+class StationG;
+
 /*!
  * \class Station
  * \brief La classe Station représentant une station (machine).
@@ -36,15 +42,19 @@ class Station : public virtual Noeud {
   private:
     string adressePasserelle; /*!< adresse de passerelle de la station*/
     vector<int> numSegmentsEnvoye; /*!< liste des numeros de séquences des segments envoyés */
-    Congestion * controleur;
+    Congestion * controleur;/*!< le contrôle de congestion qui gere l'envoie des messages et la recpetion des ACKS */
     int numSeq;
     bool isPasserelle;
     multimap<int, Data*> fragments;
+
     //mutex sur cables
     std::mutex* mutexcabl;
     std::mutex* mutexEnvoiOk;
     std::mutex* mutexFileEnvoyer;
     vector<Cable*> lastpath;
+
+   vector<Cable*> lastpath;
+
 public:
     /*!
      * \brief Constructeur par défaut
@@ -55,7 +65,7 @@ public:
      * Initialise #numSegmentsEnvoye vide
      *
      */
-    Station();
+    Station(StationG * parent = nullptr);
     /*!
      * \brief Constructeur
      * Constructeur de la classe Station,
@@ -66,15 +76,22 @@ public:
      * \param adressePasserelle : voir #adressePasserelle
      */
     Station(string nom,int idNoeud,int nbPort,
-            string adressePasserelle, bool isPasserelle = false);
+            string adressePasserelle, bool isPasserelle = false, StationG * parent = nullptr);
     /*!
       * \brief Destructeur
       * Destructeur de la classe Station
       */
     ~Station(){}
-
-
     /*!
+     * \brief getParent
+     * \return la section ou tous les traitement d'une station seront affiche dans PanneauEvents
+     */
+    /*!
+     * \brief setParent
+     * \modifier la section ou tous les traitement d'une station seront affiche dans PanneauEvents
+     */
+
+    /*!getN
      * \brief getPasserelle
      * \return voir #adressePasserelle
      */
@@ -112,6 +129,7 @@ public:
     int  checkFragment(Data* data);
     void envoyerMessage(int key, destination dest);
     void recevoirMessage(int key, int dest_i, destination dest);
+
 
 
     std::mutex* getMutexEnvoiOk(){  return mutexEnvoiOk;};

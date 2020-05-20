@@ -16,13 +16,16 @@ simulaGui::simulaGui( gSimulation * g){
         widgets.append(new QLabel());
    }
 */
+    PanneauEvents * panneauevents = new PanneauEvents;
 
-    widgets.append(new PanneauOutils(g)); //0
-   	widgets.append(new EspaceTravail());
+
+    EspaceTravail * espaceTravail = new EspaceTravail;
+    widgets.append(new PanneauOutils(espaceTravail, g)); //0
+    widgets.append(espaceTravail);
+
     widgets.append(new PanneauData());
-    widgets.append(new ToolBarEquipement(this)); 
-    widgets.append(new PanneauEvents());
- 	
+    widgets.append(new ToolBarEquipement(espaceTravail));
+    widgets.append(panneauevents);
 
     //Modifier les tailles de chaque widget
     mainlayout->addWidget(widgets[0], 0, 0, 1, 4); //Barre menu (0)
@@ -30,10 +33,6 @@ simulaGui::simulaGui( gSimulation * g){
     mainlayout->addWidget(widgets[2], 4, 0, 1, 4); //Barre d'etat (2)
     mainlayout->addWidget(widgets[3], 1, 0, 3, 1); //Barre d'équipements (3)
     mainlayout->addWidget(widgets[4], 1, 3, 3, 1); //Panneau evenements (4)
-
-  widgets[1]->setStyleSheet("background-color: red");
-//    widgets[2]->setStyleSheet("background-color: blue");
-    //widgets[4]->setStyleSheet("background-color: black");
 
     //Stretch
 
@@ -49,7 +48,7 @@ simulaGui::simulaGui( gSimulation * g){
     mainlayout->setRowStretch(4,2);
 
     
-    widgets[1]->setMinimumSize(450,410);
+    //widgets[1]->setMinimumSize(450,410);
 //    widgets[2]->setMinimumHeight(80);
 //    widgets[2]->setMaximumHeight(100);
     widgets[4]->setMinimumSize(100,410);

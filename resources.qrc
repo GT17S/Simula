@@ -1,5 +1,43 @@
 <RCC>
     <qresource prefix="/">
         <file>style/stylesheet.qss</file>
+        <file>ressources/cursors/cableCursor.png</file>
+		<file>ressources/cursors/hubCursor.png</file>
+		<file>ressources/cursors/stationCursor.png</file>
+		<file>ressources/cursors/deleteCursor.png</file>
+		<file>ressources/cursors/routeurCursor.png</file>
+		<file>ressources/cursors/switchCursor.png</file>
+		<file>ressources/equiBar/cableAction.png</file>
+		<file>ressources/equiBar/hubAction.png</file>
+		<file>ressources/equiBar/routeurAction.png</file>
+		<file>ressources/equiBar/selectAction.png</file>
+		<file>ressources/equiBar/stationAction.png</file>
+		<file>ressources/equiBar/supprAction.png</file>
+		<file>ressources/equiBar/switchAction.png</file>
+		<file>ressources/outilsBar/arreterAction.png</file>
+		<file>ressources/outilsBar/changeActionA.png</file>
+		<file>ressources/outilsBar/changeActionM.png</file>
+		<file>ressources/outilsBar/envoyerAction.png</file>
+		<file>ressources/outilsBar/exportAction.png</file>
+		<file>ressources/outilsBar/exportImage.png</file>
+		<file>ressources/outilsBar/icons8-dézoomer-50-2.png</file>
+		<file>ressources/outilsBar/nvAction.png</file>
+		<file>ressources/outilsBar/ouvrirAction.png</file>
+		<file>ressources/outilsBar/relancerAction.png</file>
+		<file>ressources/outilsBar/simD.png</file>
+		<file>ressources/outilsBar/simP.png</file>
+		<file>ressources/outilsBar/svgdAction.png</file>
+		<file>ressources/outilsBar/zoomInAction.png</file>
+		<file>ressources/outilsBar/zoomOutAction.png</file>
+		<file>ressources/equipements/cross.png</file>
+		<file>ressources/equipements/cursorCable.png</file>
+		<file>ressources/equipements/hub2.png</file>
+		<file>ressources/equipements/hub.png</file>
+		<file>ressources/equipements/routeur2.png</file>
+		<file>ressources/equipements/routeur.png</file>
+		<file>ressources/equipements/station2.png</file>
+		<file>ressources/equipements/station.png</file>
+		<file>ressources/equipements/switch2.png</file>
+		<file>ressources/equipements/switch.png</file>
     </qresource>
 </RCC>

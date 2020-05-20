@@ -4,44 +4,38 @@
 
 #include <QToolBar>
 #include <QWidget>
-#include <QPixmap>
-#include <QAction>
 #include <QSignalMapper>
 #include <iostream>
-
-#include "Noeud.hh"
-#include "NoeudG.hh"
-#include "CableG.hh"
-#include "Cable.hh"
-#include "Hub.hh"
-#include "HubG.hh"
-#include "Switch.hh"
-#include "SwitchG.hh"
-#include "DataG.hh"
-#include "Station.hh"
-#include "StationG.hh"
 #include "simulaGui.hh"
-#include "Routeur.hh"
-#include "RouteurG.hh"
 
-class QToolBar;
-class simulaGui;
-class NoeudG;
-class RouteurG;
-class StationG;	
 
 class ToolBarEquipement : public QToolBar {
     Q_OBJECT
+private:
+    QPushButton *selectAction,
+                *supprAction,
+                *cableAction,
+                *stationAction,
+                *routeurAction,
+                *hubAction,
+                *switchAction;
+    QAction     *cableCAction,
+                *cableDAction;
+    void createButtons();
+    void createSignals();
+    void createShortcuts();
+    EspaceTravail * espaceTravail;
 public:
-    ToolBarEquipement(QWidget*);
-    virtual ~ToolBarEquipement(){};
+    ToolBarEquipement(EspaceTravail *);
+    virtual ~ToolBarEquipement(){}
 
 
     
 public slots:
   	//void selectionnerEquipement(){};
+    void selectItem();
     void ajouterNoeud(int n);
-    void ajouterCable();
+    void ajouterCable(int n);
     void supprimerEquipement();
 
 };

@@ -224,13 +224,24 @@ public:
 
     /*!
      * \brief verifieNbrSegment
-     * verfication nombre des segments a envoyer
+     * verfication nombre des segments à envoyer
      * \param stSrc : la station émettrice des datas;
      */
     void verifieNbrSegment(Noeud *stSrc);
 
-
+    /*!
+     * \brief CalculRTT
+     * calculer le Rtt
+     * \param g : controleur de congestion;
+     */
     friend float CalculRTT(Congestion *g);
+    /*!
+     * \brief CalculLatenceDynamique
+     * calculer la latence dynamique
+     * \param graphe : graphe de simulation  ;
+     * \param congestion : controleur de congestion;
+     * \param data : paquet à envoyer;
+     */
     friend float CalculLatenceDynamique(Graphe *graphe,Congestion *congestion,Data *data);
 
 
@@ -262,8 +273,12 @@ public:
      *  Modifier liste des Acks a recevoir
      * \param _map : liste des Acks a recevoir
      */
-
    void setMapFileACK(std::map<int, destination> _map);
+   /*!
+     * \brief setlatence
+     *  Modifier la valeur de la latence
+     * \param _f : latence à attribuer
+     */
    void setlatence(float f){ this->latenceLastSend = f;};
 
 

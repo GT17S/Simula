@@ -24,6 +24,7 @@
 class PanneauOutils : public QToolBar{
 	Q_OBJECT
 private :
+    EspaceTravail * espaceTravail;
     QString curFile;
     QWidget* formulaire;
     std::vector<QWidget*> widgets;
@@ -42,12 +43,15 @@ private :
     QAction     *exporterDot,
                 *exporterPng;
 
+
 void createButtons();
 void createSignals();
 void createShortCuts();
 public:
 
-    PanneauOutils( gSimulation * g);
+
+    PanneauOutils(EspaceTravail * e,  gSimulation * g);
+
     virtual ~PanneauOutils();
 	gSimulation* getGestionnaire(){ return gestSimulation;};
 	void setGestionnaire ( gSimulation * g){gestSimulation = g;};
@@ -65,13 +69,15 @@ public slots:
     void resetSimulation();
     void changeMode();
     void envoieD();
+
+    void zoomer();
+    void dezoomer();
+
     /*!
          * \brief toPng
          * slot qui permet d'exporter l'espace de travail en image png
     */
     void toPng();
-
-
 
 };
 

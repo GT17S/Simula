@@ -3,15 +3,16 @@
 
 #include <iostream>
 
-Noeud::Noeud() : nbPort(1){
+Noeud::Noeud(NoeudG *_parent) : nbPort(1){
     // Générer automatiquement un ID
     //setIdNoeud(1);
     // Initialisation d'une seule interface
     Graphe::ajoutNoeudMatrice(this);
     interfaces.push_back(new InterfaceFE(idNoeud));
+    setParent(_parent);
 }
 
-Noeud::Noeud(string _nom, int _idNoeud, int _nbPort){
+Noeud::Noeud(string _nom, int _idNoeud, int _nbPort, NoeudG * _parent){
 
     nom = _nom;
     //setIdNoeud(_idNoeud);
@@ -21,11 +22,13 @@ Noeud::Noeud(string _nom, int _idNoeud, int _nbPort){
     for (int i = 0; i < nbPort; i++) {
         interfaces.push_back(new InterfaceFE(_idNoeud));
     }
+    parent = _parent;
 }
 
 Noeud::~Noeud(){
 
-    //std::cout << "Desutruction noeud "<< nom <<" "<<idNoeud<<std::endl;
+    std::cout << "Desutruction noeud "<< nom <<" "<<idNoeud<<std::endl;
+    delete parent;
     // Supprimer ID du noeud de la liste
     //idsNoeuds.erase(std::remove(idsNoeuds.begin(), idsNoeuds.end(), idNoeud), idsNoeuds.end());
 
@@ -147,6 +150,11 @@ void Noeud::setInterfaces(vector<InterfaceFE *> _interfaces){
     interfaces = _interfaces;
 }
 
+void Noeud::setParent(NoeudG * _parent){
+    parent = _parent;
+    if(_parent)
+        parent->setChild(this);
+}
 
 void Noeud::setInterfaces(InterfaceFE * _interface){
     interfaces.push_back(_interface);

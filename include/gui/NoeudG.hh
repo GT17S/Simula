@@ -9,6 +9,8 @@
  */
 
 #include <Noeud.hh>
+#include "CableG.hh"
+#include "EspaceTravail.hh"
 #include <QPixmap>
 #include <QGraphicsPixmapItem>
 #include <QDialog>
@@ -17,66 +19,76 @@
 #include <QMouseEvent>
 #include <QGraphicsScene>
 #include <QGraphicsItem>
+#include "QTreeWidgetItem"
+#include <vector>
+#include <Dialog.hh>
 
+class Noeud;
+class EspaceTravail;
+
+
+#ifndef CABLEG_EXTREMITE_H
+#define CABLEG_EXTREMITE_H
+struct cableG_extremite{
+    CableG * cable;
+    bool isP1;
+};
+#endif
+
+using std::vector;
 /*!
  * \class NoeudG
  * \brief La classe NoeudG représentant un noeud (equipement) sur l'interface graphique
  * pendant la simulation de protocole TCP/IP.
  */
+class Dialog;
 class NoeudG  :  public QGraphicsPixmapItem
 {
-    private:
+private:
     //pour les icons afficher les differents noeuds
-    QPixmap *pixmap;
-    QGraphicsPixmapItem* item;
+    void addLine(CableG * cable, bool isPoint1);
+    void moveCable(QPointF newPos);
+    void toolTipShow();
 
-    //fenetre en clickant sur l'un des noeuds
-    QTabWidget *tabWidget;
-    QDialogButtonBox *buttonBox;
 
-    public:
+public:
 
     /*!
          * \brief Construceur d'initialisation
          *  Constructeur de la classe NoeudG
          *  Initialise un NoeudG par une scene ou le noeudG va t'etre afficher et une icon.
          * \param pixmap : voir #QPixmap
-         * \param parent : voir #QGraphicsScene
+         * \param espaceTravail : voir #QGraphicsScene
     */
-    NoeudG(QGraphicsScene *parent=nullptr ,QPixmap pixmap= QPixmap("../../ressources/hub.png"));
-
-
-    /*!
-         * \brief Construceur d'initialisation
-         *  Constructeur de la classe NoeudG
-         *  Initialise un NoeudG par une icon.
-         * \param pixmap : voir #QPixmap
-    */
-    NoeudG(QPixmap pixmap);
+    NoeudG(EspaceTravail *_espaceTravail = nullptr);
 
     /*!
          * \brief Destructeur
          * Destructeur de la classe NoeudG
      */
-      ~NoeudG();
+    ~NoeudG();
 
-        QPixmap *getPixmap() const;
-        void setPixmap(QPixmap *value);
+    Noeud * getChild(){return child;}
+    void setChild(Noeud * _child){child = _child;}
 
-        QGraphicsPixmapItem *getItem() const;
-        void setItem(QGraphicsPixmapItem *value);
+    QTreeWidgetItem * getTreeItem(){return parent;}
+    void setTreeItem(QTreeWidgetItem *_parent){ parent = _parent;}
 
-        QTabWidget *getTabWidget() const;
-        void setTabWidget(QTabWidget *value);
+protected:
+    vector<cableG_extremite> extremiteG;
+    //fenetre en clickant sur l'un des noeuds
+    EspaceTravail *espaceTravail;
+    Noeud * child;
+    QTreeWidgetItem *parent;/*!< la section ou tous les traitement d'une station seront affiche dans PanneauEvent */
+    Dialog * configuration;
 
-        QDialogButtonBox *getButtonBox() const;
-        void setButtonBox(QDialogButtonBox *value);
+    //void mouseDoubleClickEvent( QMouseEvent * e );
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
 
-     protected:
-        //void mouseDoubleClickEvent( QMouseEvent * e );
-        void mousePressEvent(QMouseEvent  *event);
-        //void mouseMoveEvent( QMouseEvent *e );
-        //void mouseReleaseEvent( QMouseEvent *e );
+    //void mouseMoveEvent( QMouseEvent *e );
+    //void mouseReleaseEvent( QMouseEvent *e );
 };
 
 #endif

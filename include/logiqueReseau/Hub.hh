@@ -10,8 +10,9 @@
 
 #include <string>
 #include "Noeud.hh"
-
+#include "HubG.hh"
 class Data;
+class HubG;
 using std::string;
 
 /*!
@@ -30,14 +31,14 @@ public:
      * \param idNoeud : voir #idNoeud
      * \param nbPort : voir #nbPort
      */
-    Hub(string nom,int idNoeud,int nbPort);
+    Hub(string nom,int idNoeud,int nbPort, HubG* parent = nullptr);
 
     /*!
      * \brief Constructeur par défaut
      * Initialise un noeud #Noeud()
      * Génére un #nom automatiquement ( "Hub + #idNoeud")
      */
-    Hub();
+    Hub(HubG *parent = nullptr);
 
     /*!
      * \brief Destructeur

@@ -10,9 +10,10 @@
 
 #include "Hub.hh"
 #include "Graphe.hh"
+#include "SwitchG.hh"
 
 class Hub;
-
+class SwitchG;
 using std::string;
 /*!
  * \class Switch
@@ -31,13 +32,13 @@ public:
      * \param idNoeud : voir #idNoeud
      * \param nbPort : voir #nbPort
      */
-    Switch(string nom,int idNoeud,int nbPort);
+    Switch(string nom,int idNoeud,int nbPort, SwitchG * parent = nullptr);
     /*!
      * \brief Constructeur par défaut
      * Initialise un noeud #Hub()
      * Génére un #nom automatiquement ( "Switch + #idNoeud")
      */
-    Switch();
+    Switch(SwitchG * parent = nullptr);
 
     /*!
      * \brief Destructeur

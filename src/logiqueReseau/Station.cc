@@ -5,7 +5,7 @@
 
 
 
-Station::Station() : Noeud(){
+Station::Station(StationG * parent) : Noeud(parent){
     // ID automatique
     // nb port =1
     // filedattente vide
@@ -20,8 +20,8 @@ Station::Station() : Noeud(){
 
 }
 
-Station::Station(string _nom, int _idNoeud, int _nbPort, string _adressePasserelle, bool _isPasserelle):
-    Noeud(_nom, _idNoeud, _nbPort){
+Station::Station(string _nom, int _idNoeud, int _nbPort, string _adressePasserelle, bool _isPasserelle, StationG *parent):
+    Noeud(_nom, _idNoeud, _nbPort, parent){
     // file dattente vide
     setPasserelle(_adressePasserelle);
     type = STATION;

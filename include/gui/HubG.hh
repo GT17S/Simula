@@ -32,7 +32,7 @@ class HubG :  public virtual NoeudG
              * \param pixmap : voir #QPixmap
              * \param parent : voir #QGraphicsScene
         */
-        HubG(EspaceTravail *parent=nullptr,QPixmap pixmap = QPixmap(":/ressources/equipements/hub.png"));
+        HubG(EspaceTravail *parent=nullptr);
 
         /*!
              * \brief desctructeur

@@ -22,9 +22,9 @@
 #include <QMainWindow>
 #include <iostream>
 #include "NoeudG.hh"
-#include "CableG.hh"
 
 class NoeudG;
+class CableG;
 
 #ifndef CURSOR_MODE
 #define CURSOR_MODE

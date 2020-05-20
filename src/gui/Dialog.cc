@@ -17,10 +17,8 @@
 
 Dialog::Dialog(Noeud *parent)
 {
-
-createWidget();
-createSignals();
-
+  createWidget();
+  createSignals();
 }
 
 Dialog::~Dialog(){}
@@ -45,7 +43,6 @@ void Dialog::addRoute()
     connect(road->appliquer, SIGNAL(clicked()), mapperRouteAp, SLOT(map()));
 
     update();
-
 }
 
 void Dialog::addInterface()

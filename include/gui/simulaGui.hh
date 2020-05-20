@@ -36,7 +36,7 @@ public:
          * \brief Constructeur par défaut
          * Constructeur par défaut de la classe simulaGui.
     */
-	simulaGui();
+	simulaGui( gSimulation * g);
 	/*!
          * \brief Destructeur
          * Destructeur de la classe simulaGui

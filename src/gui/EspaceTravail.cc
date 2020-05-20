@@ -89,23 +89,28 @@ void EspaceTravail::mousePressEvent(QMouseEvent *event)
     case SELECT_MODE:  { break;}
     case DELETE_MODE:  { break;}
     case ROUTEUR_MODE: {
+
         RouteurG * r = new RouteurG(this);
+        Routeur *r_l = new Routeur(r);
         addNoeud(r, p);
         break;
     }
     case STATION_MODE: {
-        StationG * r = new StationG(this);
-        addNoeud(r, p);
+        StationG * st = new StationG(this);
+        Station *st_l = new Station(st);
+        addNoeud(st, p);
         break;
     }
     case SWITCH_MODE:  {
-        SwitchG * r = new SwitchG(this);
-        addNoeud(r, p);
+        SwitchG * sw = new SwitchG(this);
+        Switch *sw_l = new Switch(sw);
+        addNoeud(sw, p);
         break;
     }
     case HUB_MODE:     {
-        HubG * r = new HubG(this);
-        addNoeud(r, p);
+        HubG * h = new HubG(this);
+        Hub *h_l = new Hub(h);
+        addNoeud(h, p);
         break;
     }
     case CABLE_MODE:   {

@@ -4,6 +4,7 @@ gSimulation::gSimulation()
 {
     timer= new QTimer();
     time= new QTime(0,0);
+    tm = new ThreadManager(this);
 }
 
 gSimulation::gSimulation(etat_s _etat, QTimer *_timer)
@@ -32,6 +33,8 @@ void gSimulation::arreter()
     setEtat(ARRET);
     time->setHMS(0,0,0);
     timer->stop();
+    //Bloquer la condition
+    //
 }
 
 void gSimulation::demarrer()
@@ -57,6 +60,7 @@ gSimulation::~gSimulation()
 {
     delete timer;
     delete time;
+    delete tm;
 }
 QTime *gSimulation::time;
 QTimer *gSimulation::timer;

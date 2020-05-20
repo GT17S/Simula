@@ -1,11 +1,15 @@
+#ifndef CABLEG_H
+#define CABLEG_H
+
 #include <QGraphicsLineItem>
 #include <QGraphicsSimpleTextItem>
 #include <QtGlobal>
 #include <sstream>
 #include <string>
 #include <QPen>
+#include "Cable.hh"
 
-
+class Cable;
 /*!
  * \file CableG.hh
  * \brief Representation graphique du cable
@@ -15,10 +19,8 @@
 class CableG: public QGraphicsLineItem
 {
 private:
-	std::stringstream tooltipstr; /*!< Chaine qui va servir à construire la tooltip*/
-	QPen pen; /*!< Style de la fleche en fonction du cable*/
+    Cable * child;
 public:
-
 	 /*!
          * \brief Constructeur paramétré
          * Constructeur qui prends deux points et initialise le cable a cette position
@@ -35,4 +37,9 @@ public:
          * Fonction qui met à jours l'affichage de la tooltip
     */
 	void updateaff();
+
+    Cable * getChild(){return child;}
+    void setChild(Cable * _child){ child = _child;}
 };
+
+#endif

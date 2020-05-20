@@ -2,7 +2,7 @@
 #include "DataOutils.hh"
 
 
-Routeur::Routeur() : Noeud(){
+Routeur::Routeur(RouteurG * parent) : Noeud(parent){
     // ID automatique
     // nb port = 1
     // filedattente vide
@@ -10,8 +10,8 @@ Routeur::Routeur() : Noeud(){
     type = ROUTEUR;
 }
 
-Routeur::Routeur(string _nom, int _idNoeud, int _nbPort) :
-    Noeud(_nom, _idNoeud, _nbPort){
+Routeur::Routeur(string _nom, int _idNoeud, int _nbPort, RouteurG *parent) :
+    Noeud(_nom, _idNoeud, _nbPort, parent){
     type = ROUTEUR;
 
 }

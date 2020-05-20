@@ -9,7 +9,7 @@ set(CMAKE_INSTALL_PREFIX ~/Bureau)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(EXECUTABLE_OUTPUT_PATH ./bin/${CMAKE_BUILD_TYPE})
-
+#set(CMAKE_CXX_FLAGS " -pthread -std=c++14 -funroll-loops -O3 -march=native")
 add_compile_options(
   "-Wall" "-Wpedantic" "-Wextra" "-fexceptions"
   "$<$<CONFIG:DEBUG>:-O0;-g3;-ggdb>"
@@ -83,13 +83,14 @@ file(
     GLOB_RECURSE
     HEADERSGUI
     "include/gui/*.hh"
+    "include/gSimulation/ThreadManager.hh"
        )
 
 qt5_wrap_cpp(SOURCES ${HEADERSGUI})
 add_executable (Simula ${SOURCES} ${HEADERS} ${header_list} resources.qrc)
-target_link_libraries(Simula ${Qt5Widgets_LIBRARIES} Qt5::Widgets Qt5::Xml ${Boost_LIBRARIES})	
+target_link_libraries(Simula ${Qt5Widgets_LIBRARIES} Qt5::Widgets Qt5::Xml ${Boost_LIBRARIES} pthread)	
 
 
-ADD_CUSTOM_TARGET(run COMMAND cd bin/Debug && ./Simula)
+ADD_CUSTOM_TARGET(run COMMAND cd bin/Debug && ./Simula azul 0 2)
 ADD_CUSTOM_TARGET(doc COMMAND doxygen doc/Doxyfile.in)
 ADD_CUSTOM_TARGET(sup COMMAND rm -rf bin/ doc/)

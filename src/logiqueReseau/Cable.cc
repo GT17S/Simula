@@ -37,6 +37,8 @@ Cable::~Cable(){
     //std::cout << "Desutruction ext2 "<<id <<std::endl;
     delete ext2;
     nbCables = nbCables-1;
+
+    delete parent;
 }
 
 

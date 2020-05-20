@@ -8,16 +8,17 @@
  * \version 0.1
  */
 
-#include <NoeudG.hh>
-
+#include "NoeudG.hh"
+#include "EspaceTravail.hh"
 class NoeudG;
+class EspaceTravail;
 
 /*!
  * \class HubG
  * \brief La classe HubG représentant un Hub sur l'interface graphique
  * lors de la simulation du protocole TCP/IP.
  */
-class HubG :  public virtual NoeudG
+class HubG :  public  NoeudG
 {
 
     private:
@@ -32,7 +33,7 @@ class HubG :  public virtual NoeudG
              * \param pixmap : voir #QPixmap
              * \param parent : voir #QGraphicsScene
         */
-        HubG(EspaceTravail *parent=nullptr);
+        HubG(EspaceTravail *parent);
 
         /*!
              * \brief desctructeur

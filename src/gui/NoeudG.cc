@@ -9,7 +9,8 @@ NoeudG::NoeudG(EspaceTravail * _espaceTravail) : QGraphicsPixmapItem()
     configuration = new Dialog(child);
     setFlag(QGraphicsItem::ItemIsMovable);
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges);
-    toolTipShow();
+//    toolTipShow();
+
     parent=new QTreeWidgetItem(PanneauEvents::getTreeview());
     //PanneauEvents::addRoot(parent,"Noeud");
     //PanneauEvents::addRoot(parent,QString::fromStdString());
@@ -30,7 +31,7 @@ NoeudG::~NoeudG()
 
 void NoeudG::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    //qDebug() <<"mouse pressed NoeudG";
+    qDebug() <<"mouse pressed NoeudG";
     PanneauEvents::addCh(parent,"Clic ok");
     switch(espaceTravail->getMode()){
     case SELECT_MODE:  { break;}
@@ -55,23 +56,45 @@ void NoeudG::mousePressEvent(QGraphicsSceneMouseEvent *event)
     case HUB_MODE:     { break;}
     case CABLE_MODE:   {
         if(!espaceTravail->currentCable){
-            CableG * i = new CableG();
-            addLine(i, true);
-            moveCable(event->scenePos() - boundingRect().center());
-            espaceTravail->currentCable = i;
-            qDebug() << "first click";
-        }else{
-            CableG * i = espaceTravail->currentCable;
-            // *i = * (espaceTravail->currentCable);
-            qDebug() << "second click";
-            //i->setLine(QLineF(espaceTravail->origPoint, event->scenePos()-boundingRect().center()));
-            i->setPen(QPen(Qt::black, 3, Qt::SolidLine));
-            addLine(i, false);
-            moveCable(event->scenePos() - boundingRect().center());
-            i->setZValue(-1);
-            espaceTravail->getScene()->addItem(i);
+            // select interface
+            // stock current extremite
 
+            CableG * cg = new CableG();
+            addLine(cg, true);
+            moveCable(event->scenePos() - boundingRect().center());
+            qDebug()<<event->scenePos();
+            espaceTravail->currentCable = cg;
+            /*showInterfacesMenu();
+            if(!espaceTravail->currentExtremite){
+                cg = nullptr;
+                extremiteG.pop_back();
+                espaceTravail->currentCable = nullptr;
+                return;
+            }*/
+            qDebug() << "first click";
+            return;
+        }else {
+            // select interface
+            //extremite * ext1 = espaceTravail->currentExtremite;
+            //espaceTravail->currentExtremite = nullptr;
+            CableG * cg = espaceTravail->currentCable;
             espaceTravail->currentCable = nullptr;
+            cg->setPen(QPen(Qt::black, 3, Qt::SolidLine));
+            addLine(cg, false);
+            qDebug()<<event->scenePos();
+            moveCable(event->scenePos() - boundingRect().center());
+            /*showInterfacesMenu();
+            if(!espaceTravail->currentExtremite){
+                extremiteG.pop_back();
+                espaceTravail->currentCable = nullptr;
+                cg = nullptr;
+                return;
+            }*/
+            cg->setZValue(-1);
+            espaceTravail->getScene()->addItem(cg);
+
+            qDebug() << "second click"<< cg->line();
+            return;
         }
 
         break;
@@ -83,10 +106,34 @@ void NoeudG::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event){
     if(espaceTravail->getMode()==SELECT_MODE){
     configuration->showConfig(child);
     configuration->show();}
-
-
 }
 
+QVariant NoeudG::itemChange(GraphicsItemChange change, const QVariant &value)
+{
+    if (change == ItemPositionChange && scene()) {
+        // value is the new position.
+        QPointF newPos = value.toPointF();
+        moveCable(newPos);
+    }
+    return QGraphicsItem::itemChange(change, value);
+}
+
+void NoeudG::showInterfacesMenu()
+{   qDebug()<<"menu open";
+    interfacesMenu = new QMenu();
+
+    QObject::connect(interfacesMenu, SIGNAL(triggered(QAction*)), this, SLOT(interfaceAction(QAction*)));
+    QObject::connect(interfacesMenu, SIGNAL(aboutToHide()), this, SLOT(onCloseMenu()));
+
+    for(int i = 0; i < child->getInterfaces().size(); i++){
+        QAction * ia = interfacesMenu->addAction("Interface");
+        ia->setToolTip(QString(i));
+    }
+
+    interfacesMenu->popup(QCursor::pos());
+    return;
+
+}
 void NoeudG::toolTipShow(){
     setToolTip(
                 "<h2><b><font color='red'>MyList</font></b></h2>"
@@ -98,7 +145,6 @@ void NoeudG::toolTipShow(){
                 );
 }
 
-
 void NoeudG::addLine(CableG * _cable, bool isPoint1) {
     cableG_extremite e;
     e.cable = _cable;
@@ -109,6 +155,7 @@ void NoeudG::addLine(CableG * _cable, bool isPoint1) {
 
 void NoeudG::moveCable(QPointF newPos){
     for(cableG_extremite e : extremiteG){
+        qDebug() <<"MOVE CABLE "<< e.cable->line() <<" "<<child->getIdNoeud();
         if(e.isP1)
             e.cable->setLine(QLineF(newPos+boundingRect().center(), e.cable->line().p2()));
         else
@@ -116,14 +163,18 @@ void NoeudG::moveCable(QPointF newPos){
     }
 }
 
-
-QVariant NoeudG::itemChange(GraphicsItemChange change, const QVariant &value)
-{
-    if (change == ItemPositionChange && scene()) {
-        // value is the new position.
-        QPointF newPos = value.toPointF();
-        moveCable(newPos);
-    }
-    return QGraphicsItem::itemChange(change, value);
+void NoeudG::interfaceAction(QAction* action){
+    extremite * ext = new extremite;
+    ext->noeud = child;
+    ext->interface = action->toolTip().toInt();
+    espaceTravail->currentExtremite = ext;
 }
+
+void NoeudG::onCloseMenu(){
+    qDebug()<<"menu closed";
+    interfacesMenu = nullptr;
+}
+
+
+
 

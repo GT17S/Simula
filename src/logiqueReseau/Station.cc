@@ -239,6 +239,7 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
             }else {
 
                 desencapsule_segment(dest.data);
+
                 std::cout <<"Jai recu le message :"<<std::endl<<showMessage(dest.data) <<std::endl;
                 PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Message recu  ")+QString::fromStdString(showMessage(dest.data)));
 

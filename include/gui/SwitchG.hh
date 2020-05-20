@@ -7,18 +7,21 @@
  * \author GT17S
  * \version 0.1
  */
-
+#include "NoeudG.hh"
 #include "HubG.hh"
+#include "EspaceTravail.hh"
 
 class EspaceTravail;
+class NoeudG;
 class HubG;
+
 
 /*!
  * \class SwitchG
  * \brief La classe SwitchG représentant un Switch sur l'interface graphique
  * lors de la simulation du protocole TCP/IP.
  */
-class SwitchG  :  public  HubG
+class SwitchG  :  public HubG
 {
 
     private:
@@ -31,7 +34,7 @@ class SwitchG  :  public  HubG
              * \param pixmap : voir #QPixmap
              * \param parent : voir #QGraphicsScene
         */
-        SwitchG(EspaceTravail * parent=nullptr);
+        SwitchG(EspaceTravail * parent);
 
         /*!
              * \brief desctructeur

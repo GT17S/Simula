@@ -19,6 +19,8 @@ EspaceTravail::CABLE_CURSOR;
 EspaceTravail::EspaceTravail(){
 
     currentCable = nullptr;
+    currentExtremite= nullptr;
+
     this->setMinimumSize(450,430);
     createCursors();
     scene = new QGraphicsScene(this);
@@ -136,4 +138,7 @@ void EspaceTravail::addNoeud(NoeudG* noeud, QPointF p){
     noeud->setPos(p);
     scene->addItem(noeud);
 }
+
+
+
 

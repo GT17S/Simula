@@ -38,10 +38,10 @@ class Noeud;
  * \brief Extremité du cable
  */
 
-typedef struct {
+struct extremite{
     Noeud * noeud; /*!< Noeud */
     int interface; /*!< interface liée*/
-} extremite;
+};
 
 #endif
 /*!

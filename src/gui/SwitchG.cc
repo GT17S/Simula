@@ -1,7 +1,6 @@
-#include <SwitchG.hh>
+#include "SwitchG.hh"
 
-
-SwitchG::SwitchG(EspaceTravail *parent): HubG(parent){
+SwitchG::SwitchG(EspaceTravail *_parent): HubG(_parent){
     setPixmap(QPixmap(":/ressources/equipements/switch.png"));
 }
 SwitchG::~SwitchG(){}

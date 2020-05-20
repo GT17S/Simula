@@ -22,9 +22,7 @@
 #include <QMainWindow>
 #include <iostream>
 #include "NoeudG.hh"
-
-class NoeudG;
-class CableG;
+#include "Cable.hh"
 
 #ifndef CURSOR_MODE
 #define CURSOR_MODE
@@ -36,6 +34,10 @@ enum cursor_mode {SELECT_MODE,
                   HUB_MODE,
                   CABLE_MODE};
 #endif
+
+class NoeudG;
+class CableG;
+struct extremite;
 /*!
  * \class EspaceTravail
  * \brief La classe EspaceTravail représentant l'Espace de Travail de l'utilisateur sur le protocole TCP/IP.
@@ -105,14 +107,7 @@ public:
     void setVue(QGraphicsView *_vue){vue=_vue;}
 
     void deleteScene();
-    bool mousePressed = false;
 
-    /*!
-         * \brief AddCatPos
-         * Dessine une cable entre deux points entrés par l'utilisateur
-         * \param  _vue : voir #vue
-    */
-    //void addCatPos();
     void addNoeud(NoeudG* noeud, QPointF p);
 
     static  QCursor DELETE_CURSOR,
@@ -125,6 +120,7 @@ public:
 
     cursor_mode getMode(){return mode;}
     void setMode(cursor_mode);
+    extremite *currentExtremite;
     CableG * currentCable;
 
 protected:
@@ -132,6 +128,7 @@ protected:
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent( QMouseEvent *e );
     void mouseReleaseEvent( QMouseEvent *e );
+
 
 
 

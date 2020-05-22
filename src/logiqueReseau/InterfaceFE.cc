@@ -56,15 +56,6 @@ void InterfaceFE::setCable(Cable * _cable){
 }
 
 
-
-
-
-
-
-
-
-
-
 bool InterfaceFE::regexValide(string adresse, string _regex){
     std::regex regex_ip(_regex, std::regex::ECMAScript);
 

@@ -20,7 +20,7 @@ using std::string;
  * \brief La classe Hub dérivée de la classe Noeud .
  */
 
-class Hub: public virtual Noeud{
+class Hub: public Noeud{
 
 public:
     /*!

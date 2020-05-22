@@ -2,18 +2,15 @@
 #define __H_SWITCHG_
 
 /*!
- * \file SwitchG.h
+ * \file SwitchG.hh
  * \brief SwitchG
  * \author GT17S
  * \version 0.1
  */
-#include "NoeudG.hh"
 #include "HubG.hh"
 #include "EspaceTravail.hh"
 
 class EspaceTravail;
-class NoeudG;
-class HubG;
 
 
 /*!

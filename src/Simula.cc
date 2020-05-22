@@ -13,7 +13,7 @@ void cleanup(){
 
 int main ( int argc, char ** argv) {
 
-    lireXml("test.xml");
+    //lireXml("test.xml");
     gSimulation * gestionnaire = new gSimulation();
     gestionnaire->getManager()->initStation();
 

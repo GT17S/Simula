@@ -2,7 +2,7 @@
 #define __H_NOEUDG_
 
 /*!
- * \file NoeudG.h
+ * \file NoeudG.hh
  * \brief NoeudG
  * \author GT17S & Medish & Khalimoh
  * \version 0.1

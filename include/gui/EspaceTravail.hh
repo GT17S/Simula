@@ -3,7 +3,7 @@
 
 
 /*!
- * \file EspaceTravail.h
+ * \file EspaceTravail.hh
  * \brief EspaceTravail
  * \author GT17S & Medish
  * \version 0.1

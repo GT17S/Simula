@@ -2,7 +2,7 @@
 #define __H_STATIONG_
 
 /*!
- * \file StationG.h
+ * \file StationG.hh
  * \brief StationG
  * \author GT17S & Medish & Khalimoh
  * \version 0.1

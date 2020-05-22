@@ -3,7 +3,7 @@
 
 
 /*!
- * \file Cable.h
+ * \file Cable.hh
  * \brief Cable
  * \author Nadjibian
  * \version 0.1

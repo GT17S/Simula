@@ -2,7 +2,7 @@
 #define __H_ROUTEURG_
 
 /*!
- * \file RouteurG.h
+ * \file RouteurG.hh
  * \brief RouteurG
  * \author GT17S & Medish & Khalimoh
  * \version 0.1

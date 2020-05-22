@@ -25,7 +25,7 @@ class RouteurG;
  * \brief La classe Routeur représentant un routeur
  */
 
-class Routeur : public virtual Noeud{
+class Routeur : public Noeud{
 
 public:
     /*!

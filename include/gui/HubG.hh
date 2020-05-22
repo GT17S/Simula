@@ -2,7 +2,7 @@
 #define __H_HUBG_
 
 /*!
- * \file HubG.h
+ * \file HubG.hh
  * \brief HubG
  * \author GT17S
  * \version 0.1

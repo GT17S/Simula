@@ -2,7 +2,7 @@
 #define DIALOGCABLE_H
 
 /*!
- * \file DialogCable.h
+ * \file DialogCable.hh
  * \brief DialogCable
  * \author GT17S & Medish
  * \version 0.1

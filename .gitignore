@@ -780,3 +780,10 @@ bin/Debug/*.png
 
 bin/Release/*.dot
 bin/Release/*.png
+
+
+#ninja
+.ninja_deps
+.ninja_log
+build.ninja
+rules.ninja

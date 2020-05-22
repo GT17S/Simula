@@ -21,7 +21,7 @@ using std::string;
  */
 
 
-class Switch : public virtual Hub {
+class Switch : public Hub {
 
 public:
     /*!

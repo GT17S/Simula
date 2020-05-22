@@ -2,8 +2,8 @@
 #define GSIMULATION_H
 
 /*!
- * \file G_Simulation.h
- * \brief G_Simulation
+ * \file gSimulation.hh
+ * \brief gSimulation
  * \author GT17S
  * \version 0.1
  */

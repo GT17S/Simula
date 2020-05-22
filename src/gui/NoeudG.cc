@@ -32,7 +32,6 @@ NoeudG::~NoeudG()
 void NoeudG::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     qDebug() <<"mouse pressed NoeudG";
-    PanneauEvents::addCh(parent,"Clic ok");
     switch(espaceTravail->getMode()){
     case SELECT_MODE:  { break;}
     case DELETE_MODE:  {

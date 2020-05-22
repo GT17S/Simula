@@ -75,6 +75,7 @@ void Dialog::generalWidget()
     QGroupBox *generalGroupBox = new QGroupBox(tr("Form General"));
     QFormLayout *layout = new QFormLayout;
     layout->addRow(new QLabel(tr("Nom station:")), NomStation);
+    layout->addRow(changerNom);
 
     generalGroupBox->setLayout(layout);
     gridLayoutGeneral->addWidget(generalGroupBox);
@@ -118,6 +119,7 @@ void Dialog::createWidget(){
     supprimerRoute = new QPushButton("Suppression");
     ajouterInterface = new QPushButton("Ajout");
     supprimerInterface = new QPushButton("Suppression");
+    changerNom = new QPushButton("Changer");
     routeWidget = new QWidget();
     intWidget = new QWidget();
     routeLayout = new QGridLayout;
@@ -148,6 +150,7 @@ void Dialog::createWidget(){
 
     mapperInterfaceAp = new QSignalMapper(this);
     mapperRouteAp = new QSignalMapper(this);
+    maapperNom=new QSignalMapper(this);
     update();
 
 
@@ -165,12 +168,16 @@ void Dialog::createSignals(){
 
     connect(mapperInterfaceAp, SIGNAL(mapped(int)), this, SLOT(appliquerInterface(int )));
     connect(mapperRouteAp, SIGNAL(mapped(int)), this, SLOT(appliquerRoute(int )));
+    connect(changerNom, SIGNAL(clicked()), this, SLOT(appliquerChangerNom()));
+
     connect(this,SIGNAL(finished(int)),this,SLOT(onExitDialog(int)));
+
 
 }
 void Dialog::showConfig(Noeud *src){
     onExitDialog(0);
     NomStation->setText(QString::fromStdString(src->getNom()));
+
     for(InterfaceFE *i:src->getInterfaces()){
         QString AdresseIP=QString::fromStdString(i->getAdresseIP()),
                 AdresseMac=QString::fromStdString(i->getAdresseMac()),
@@ -202,9 +209,10 @@ void Dialog::showConfig(Noeud *src){
 
         toolRoutage->addItem(rg,"Route");
 }
+
 }
 void Dialog::appliquerInterface(int i){
-
+    int count=0;
     InterfaceG *ig=dynamic_cast<InterfaceG*>(toolInterface->widget(i));
     QString AdresseIPApp=ig->AdresseIP->text(),
             AdresseMacApp=ig->AdresseMac->text(),
@@ -219,16 +227,58 @@ void Dialog::appliquerInterface(int i){
     InterfaceFE *iF = src->getInterface(i);
     if(!iF)return ;
     iF->setAdresseIP(AdresseIPApp.toStdString());
+    if(iF->getAdresseIP()==DEFAULT_IP){
+        ig->AdresseIP->setStyleSheet("color:red");
+        count++;
+    }else{
+        ig->AdresseIP->setStyleSheet("color:black");
+
+    }
     iF->setAdresseMac(AdresseMacApp.toStdString());
+    if(iF->getAdresseMac()==DEFAULT_MAC){
+        ig->AdresseMac->setStyleSheet("color:red");
+        count++;
+
+    }else{
+        ig->AdresseMac->setStyleSheet("color:black");
+    }
     iF->setAdresseRes(AdresseResApp.toStdString());
+    if(iF->getAdresseRes()==DEFAULT_IP){
+        ig->AdresseRes->setStyleSheet("color:red");
+        count++;
+
+    }else{
+        ig->AdresseRes->setStyleSheet("color:black");
+
+    }
     iF->setMasque(maskApp.toStdString());
+    if(iF->getMasque()==DEFAULT_IP){
+        ig->mask->setStyleSheet("color:red");
+        count++;
+
+    }else{
+        ig->mask->setStyleSheet("color:black");
+
+    }
     iF->setNomInterface(interfaceNameApp.toStdString());
+    if(iF->getMasque()==DEFAULT_IP ||iF->getMasque()==DEFAULT_IP || iF->getAdresseMac()==DEFAULT_MAC
+            ||iF->getAdresseIP()==DEFAULT_IP ){
+        if(count==1){
+        QMessageBox::warning(this, "Invalide ",
+                                 "Invalide adresse !",
+                             QMessageBox::Ok);}else{
+            QMessageBox::warning(this, "Invalide ",
+                                     "Invalide adresses !",  QMessageBox::Ok);
+        }
+
+        return;}
 
     showConfig(src);
 
 
 }
 void Dialog::appliquerRoute(int i){
+    int count=0;
     int size_table = src->getTableRoutage().size();
     RouteG *ig=dynamic_cast<RouteG*>(toolRoutage->widget(i));
     QString AdresseIPApp=ig->getNextHope()->text(),
@@ -237,12 +287,52 @@ void Dialog::appliquerRoute(int i){
             if(AdresseIPApp.isEmpty() || AdresseResApp.isEmpty() ||  mask.isEmpty()) return ;
     Route *routeNew=new Route();
     routeNew->adresseReseau=AdresseResApp.toStdString();
-    routeNew->adresseReseau=AdresseResApp.toStdString();
+    if(routeNew->adresseReseau==DEFAULT_IP){
+        count++;
+        ig->AdresseRes->setStyleSheet("color:red");
+    }else{
+        ig->AdresseRes->setStyleSheet("color:black");
+
+    }
+    routeNew->passerelle=AdresseIPApp.toStdString();
+    if(routeNew->passerelle==DEFAULT_IP){
+        count++;
+
+        ig->nextHope->setStyleSheet("color:red");
+    }else{
+        ig->nextHope->setStyleSheet("color:black");
+    }
     routeNew->masque=mask.toStdString();
+    if(routeNew->masque==DEFAULT_IP){
+        count++;
+
+        ig->mask->setStyleSheet("color:red");
+    }else{
+        ig->mask->setStyleSheet("color:black");
+
+    }
+    if(routeNew->passerelle==DEFAULT_IP || routeNew->adresseReseau==DEFAULT_IP
+            || routeNew->masque==DEFAULT_IP){
+        if(count==1){
+            QMessageBox::warning(this, "Invalide ",
+                                     "Invalide adresse !",  QMessageBox::Ok);
+
+        }else{
+        QMessageBox::warning(this, "Invalide ",
+                                 "Invalide adresses !",  QMessageBox::Ok);}
+      return ;
+
+    }
     src->modifierRoute(i,routeNew);
 
 
 
+    showConfig(src);
+
+}
+void Dialog::appliquerChangerNom(){
+    QString nom=NomStation->text();
+    src->setNom(nom.toStdString());
     showConfig(src);
 
 }

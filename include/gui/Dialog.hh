@@ -67,14 +67,14 @@ private:
     QDialogButtonBox *buttonBox;/*!Une box regroupant la validation et l'annulation de choix saisi*/
     QToolBox *toolRoutage;/*!ToolBox contenant tous les routes de l'équipement sur des widgets*/
     QToolBox *toolInterface;/*!< ToolBox contenant tous les interface de l'équipement sur des widgets*/
-    QPushButton *ajouterRoute,*supprimerRoute,*ajouterInterface,*supprimerInterface;/*!<Buttons d'ajout et de suppression d'interfaces et route de l'equipement selectionne*/
+    QPushButton *ajouterRoute,*supprimerRoute,*ajouterInterface,*supprimerInterface,*changerNom;/*!<Buttons d'ajout et de suppression d'interfaces et route de l'equipement selectionne*/
     QWidget *routeWidget;/*!< QWidget contenant la toolroutage*/
     QWidget *intWidget;/*!< QWidget contenant la toolinterface*/
     QGridLayout *routeLayout;/*!< Layout contenant le widget principale des routes */
     QGridLayout *interfaceLayout;/*!< Layout contenant le widget principale des interfaces*/
     int numberRoutes=0;
     QLineEdit 	*NomStation;/*!< Champs de saisi de nom de la station*/
-    QSignalMapper* mapperInterface,*mapperRoute,*mapperRouteAp,*mapperInterfaceAp;/*!< Un signalMapper qui sera utile pour traiter les signaux des suppressions des interfaces & routes*/
+    QSignalMapper* mapperInterface,*mapperRoute,*mapperRouteAp,*mapperInterfaceAp,*maapperNom;/*!< Un signalMapper qui sera utile pour traiter les signaux des suppressions des interfaces & routes*/
     Noeud *src;/*! Noeud au quel la configuration est effectue*/
 
 
@@ -95,6 +95,13 @@ private:
     std::vector<QPushButton *> buttons;
     std::vector<QWidget *> ports;
 private slots:
+    /*!
+         * \brief appliquerChangerNom
+         *  changement de nom de l'équipements.
+     */
+
+    void appliquerChangerNom( );
+
 
     /*!
          * \brief addRoute

@@ -1,4 +1,5 @@
 #include "panneauOutils.hh"
+
 #include <iostream>
 #include <QWidgetAction>
 #include <QFileDialog>
@@ -8,7 +9,7 @@
 #include <cstring>
 
 #include "GFichier.hh"
-
+#include "DialogEnvoi.hh"
 
 
 PanneauOutils::PanneauOutils(EspaceTravail * _espaceTravail, gSimulation * g){
@@ -326,99 +327,8 @@ void PanneauOutils::dezoomer(){
      espaceTravail->getVue()->scale(1/1.2,1/1.2);
 }
 
-
-
-
 void PanneauOutils::envoieD(){
-/*
- * @medish c'est ici que tu dois attendre les deux clics sur l'interface ensuite faut décommenter la 
- * ligne 344 et 347 et passer le noeuds que tu veux en constructeur des QLineEdit
- */
-    formulaire = new QWidget();
-    formulaire->setWindowTitle(QString("Paramètres d'envoi"));
-    formulaire->setMinimumSize(50,100);
-    formulaire->resize(250, 350);
-    formulaire->setLayout(new QVBoxLayout());
-    widgets.push_back(new QLabel("Equipement 1:"));//0
-    widgets.push_back(new QLineEdit());//1
-    //widgets[1]->setEnabled(false);
-    widgets.push_back(new QLabel("Equipement 2:"));//2
-    widgets.push_back(new QLineEdit());//3
-    //widgets[3]->setEnabled(false);
-    widgets.push_back(new QLabel("Port source:"));//4
-    widgets.push_back(new QLineEdit());//5
-    widgets.push_back(new QLabel("Port destination:"));//6
-    widgets.push_back(new QLineEdit());//7
-    widgets.push_back(new QCheckBox("Attendre retour (ACK) :")); //8
-    widgets.push_back(new QCheckBox("Autoriser fragmentation :")); //9
-    widgets.push_back(new QLineEdit("Message")); //10
-    widgets.push_back(new QPushButton("Envoyer"));//11
-
-
-    for (int i = 0; i < 12; ++i)
-    {
-        formulaire->layout()->addWidget(widgets[i]);
-    }
-
-    formulaire->show();
-    
-    auto benvoyer = dynamic_cast<QPushButton*>(formulaire->layout()->itemAt(11)->widget());
-    if(benvoyer)
-        connect(benvoyer, SIGNAL(clicked()),this , SLOT(preparenvoi()));
-
+    DialogEnvoi * d = new DialogEnvoi;
+    d->show();
 }
 
-
-void PanneauOutils::preparenvoi(){
-   //Vérifier que les info sont bonnes 
-    bool ok = true;
-    for(int i = 0; i < 11 ; i++){
-       auto lineedit = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(i)->widget());
-        if(lineedit)
-         if(lineedit->text().isEmpty()){
-                ok = false;
-                break;
-            }
-    }    
-
-    if(ok){ 
-       Graphe * graphe = Graphe::get();
-
-        //Récuperer les noeuds
-        auto Noeud1 = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(1)->widget());
-        Station* s1 = dynamic_cast<Station*>(graphe->getSommets()[Noeud1->text().toInt()]);
-        auto Noeud2 = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(3)->widget());
-        Station* s2 = dynamic_cast<Station*>(graphe->getSommets()[Noeud2->text().toInt()]);
-        auto portsrc = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(5)->widget());
-        auto portdest = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(7)->widget());
-       
-
-        auto syn = dynamic_cast<QCheckBox*>(formulaire->layout()->itemAt(8)->widget());
-        auto ack = (syn->isChecked() ?  0 : 1);
-    
-        auto nseq = s1->getNextNumSeq();
-        auto nack = 0;
-        auto ipid = nseq + 100;
-        auto df = dynamic_cast<QCheckBox*>(formulaire->layout()->itemAt(9)->widget());
-        auto data = dynamic_cast<QLineEdit*>(formulaire->layout()->itemAt(10)->widget());
-        std::string s(data->text().toStdString());
-        Data* sendData = new Data(s);
-        //Préparer l'envoi
-        envoyer(s1,  s2 ,  portsrc->text().toInt() ,  portdest->text().toInt() ,  syn->isChecked() ,  ack ,  nseq ,  nack,  ipid,  df->isChecked() ,  sendData);
-        //Signaler que l'envoi est possible 
-        if ( sendData)
-			emit addedData ( sendData);
-        auto src = dynamic_cast<Station*>(graphe->getSommets()[Noeud1->text().toInt()]);
-		src->getMutexEnvoiOk()->lock();
-        src->getControleur()->setok(true);
-		src->getMutexEnvoiOk()->unlock();
-  
-        widgets.clear();
-        formulaire->close();
-       }else{
-       QMessageBox errorbox;
-       errorbox.setText("Veuillez entrer des paramères valides");
-       errorbox.exec();
-    }
-
-}

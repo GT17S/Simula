@@ -185,7 +185,11 @@ void PanneauOutils::nouveauFichier(){
             break;
         }
     }
+
     // nouveau fichier
+    Graphe * graphe = Graphe::get();
+    graphe->~Graphe();
+    curFile = "";
 }
 void PanneauOutils::ouvrirFichier(){
     // verifier si un fichier est déja ouvert
@@ -215,7 +219,7 @@ void PanneauOutils::ouvrirFichier(){
                                                   tr("Fichier xml (*.xml)"));
     if(!fileName.isEmpty()){
         curFile = fileName;
-        qDebug() << curFile;
+        lireXml(fileName, espaceTravail);
 
     }
 
@@ -230,11 +234,11 @@ void PanneauOutils::sauvegarderFichier(){
                                                       tr("Sauvegarder le fichier de configuration"), "",
                                                       tr("Fichier xml (*.xml)"));
         if(!fileName.isEmpty()){
-            curFile = fileName;
-            ecrireXml(fileName+".xml");
+            curFile = fileName+".xml";
+            ecrireXml(fileName);
         }
 
-    }
+    }else ecrireXml(curFile);
 }
 void PanneauOutils::exportDot(){
    if(curFile.isEmpty()){

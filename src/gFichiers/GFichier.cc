@@ -1,5 +1,4 @@
 #include "GFichier.hh"
-#include "EspaceTravail.hh"
 
 bool verifier_schema(QFile *fichier_xml){
 
@@ -15,7 +14,7 @@ QFile * ouvrirlXml(QString nomFichier, QIODevice::OpenMode mode){
     return fichier;
 }
 
-void lireXml(QString nomFichier){
+void lireXml(QString nomFichier, EspaceTravail * espaceTravail){
     Graphe * graphe = Graphe::get();
     graphe->~Graphe();
 
@@ -27,8 +26,8 @@ void lireXml(QString nomFichier){
         return;
     }
 
-   // if(! verifier_schema(fichier))
-   //     return;
+    // if(! verifier_schema(fichier))
+    //     return;
 
     QDomDocument document;
     if(!document.setContent(fichier)){
@@ -46,24 +45,33 @@ void lireXml(QString nomFichier){
     while(!noeud.isNull()){
         QDomElement ne = noeud.toElement();
         Noeud * n;
-
+        NoeudG * nG;
         QString type = ne.toElement().attribute("type");
         if(type.compare("STATION", Qt::CaseInsensitive) == 0){
-              n=   new Station();
+            nG = new StationG(espaceTravail);
+            n  = new Station(dynamic_cast<StationG*>(nG));
         }
         else if(type.compare("ROUTEUR", Qt::CaseInsensitive) == 0){
-              n=   new Routeur();
+            nG = new RouteurG(espaceTravail);
+            n=   new Routeur(dynamic_cast<RouteurG*>(nG));
         }
         else if(type.compare("SWITCH", Qt::CaseInsensitive) == 0){
-              n = new Switch();
+            nG = new SwitchG(espaceTravail);
+            n = new Switch(dynamic_cast<SwitchG*>(nG));
         }
         else if(type.compare("HUB", Qt::CaseInsensitive) == 0){
-              n =  new Hub();
+            nG = new HubG(espaceTravail);
+            n =  new Hub(dynamic_cast<HubG*>(nG));
         }
 
         n->setIdNoeud(ne.attribute("id").toInt());
         n->setNbPort(ne.attribute("nbPort").toInt());
-        QDomNode element = noeud.firstChild(); //nom
+        QDomNode element = noeud.firstChild(); //position
+        QPointF position;
+        position.setX(element.toElement().attribute("x").toDouble());
+        position.setY(element.toElement().attribute("y").toDouble());
+        espaceTravail->addNoeud(nG, position);
+        element = element.nextSibling(); //nom
         n->setNom(element.toElement().text().toStdString());
         element = element.nextSibling(); // Interfaces
         QDomNode interface = element.firstChild(); // premiere interface
@@ -187,28 +195,28 @@ void ecrireXml(QString nomFichier){
         noeud.appendChild(interfaces);
 
         for(InterfaceFE * i : n->getInterfaces()){
-              QDomElement interface = document.createElement("Interface");
-              interfaces.appendChild(interface);
+            QDomElement interface = document.createElement("Interface");
+            interfaces.appendChild(interface);
 
-              QDomElement nomInterface = document.createElement("nomInterface");
-              nomInterface.appendChild(document.createTextNode(QString::fromStdString(i->getNomInterface())));
-              interface.appendChild(nomInterface);
+            QDomElement nomInterface = document.createElement("nomInterface");
+            nomInterface.appendChild(document.createTextNode(QString::fromStdString(i->getNomInterface())));
+            interface.appendChild(nomInterface);
 
-              QDomElement adresseIP = document.createElement("adresseIP");
-              adresseIP.appendChild(document.createTextNode(QString::fromStdString(i->getAdresseIP())));
-              interface.appendChild(adresseIP);
+            QDomElement adresseIP = document.createElement("adresseIP");
+            adresseIP.appendChild(document.createTextNode(QString::fromStdString(i->getAdresseIP())));
+            interface.appendChild(adresseIP);
 
-              QDomElement adresseRes = document.createElement("adresseRes");
-              adresseRes.appendChild(document.createTextNode(QString::fromStdString(i->getAdresseRes())));
-              interface.appendChild(adresseRes);
+            QDomElement adresseRes = document.createElement("adresseRes");
+            adresseRes.appendChild(document.createTextNode(QString::fromStdString(i->getAdresseRes())));
+            interface.appendChild(adresseRes);
 
-              QDomElement masque = document.createElement("masque");
-              masque.appendChild(document.createTextNode(QString::fromStdString(i->getMasque())));
-              interface.appendChild(masque);
+            QDomElement masque = document.createElement("masque");
+            masque.appendChild(document.createTextNode(QString::fromStdString(i->getMasque())));
+            interface.appendChild(masque);
 
-              QDomElement adresseMac = document.createElement("adresseMac");
-              adresseMac.appendChild(document.createTextNode(QString::fromStdString(i->getAdresseMac())));
-              interface.appendChild(adresseMac);
+            QDomElement adresseMac = document.createElement("adresseMac");
+            adresseMac.appendChild(document.createTextNode(QString::fromStdString(i->getAdresseMac())));
+            interface.appendChild(adresseMac);
 
         }
 
@@ -312,30 +320,30 @@ void ecrireDot(std::string filename){
         auto nodes = Graphe::getSommets();
         for (auto i = 0; i < (int)nodes.size(); ++i)
         {
-           if(dynamic_cast<Routeur*>(nodes[i]))
+            if(dynamic_cast<Routeur*>(nodes[i]))
                 outfile << i << " [shape=box , color=red , fontcolor=black , label = \" " << nodes[i]->getNom() << "\" ] ;";
-           if(dynamic_cast<Switch*>(nodes[i]) || dynamic_cast<Hub*>(nodes[i]))
+            if(dynamic_cast<Switch*>(nodes[i]) || dynamic_cast<Hub*>(nodes[i]))
                 outfile << i << " [shape=ellipse , color=blue , fontcolor=black , label = \" " << nodes[i]->getNom() << "\" ] ;";
-           if(dynamic_cast<Station*>(nodes[i]))
+            if(dynamic_cast<Station*>(nodes[i]))
                 outfile << i << " [shape=octagon , color=green , fontcolor=black , label = \" " << nodes[i]->getNom() << "\" ] ;";
 
-            outfile << std::endl;    
-        }   
+            outfile << std::endl;
+        }
 
         //Ecrire les arcs
         auto  mat = Graphe::getMatrice();
         for (auto i = 0; i < (mat.size()); ++i)
         {
-           for (auto j = 0; j < (mat[i].size()); ++j)
-           {
+            for (auto j = 0; j < (mat[i].size()); ++j)
+            {
                 if(mat[i][j]){
-                     outfile << i << "--" << j << "[label =\" " << mat[i][j]->getLatence() <<"\" , weight ="  <<  mat[i][j]->getDebitAcc() << "  ,  color =\"green\" , style=dashed ] ;";
-                     outfile << std::endl;
+                    outfile << i << "--" << j << "[label =\" " << mat[i][j]->getLatence() <<"\" , weight ="  <<  mat[i][j]->getDebitAcc() << "  ,  color =\"green\" , style=dashed ] ;";
+                    outfile << std::endl;
                 }
-           }
+            }
         }
 
-        outfile << "}"; 
+        outfile << "}";
         outfile.flush();
         outfile.close();
     }else{

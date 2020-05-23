@@ -12,7 +12,7 @@
 #include <fstream>
 #include <string>
 #include "Graphe.hh"
-
+#include "EspaceTravail.hh"
 
 class Graphe;
 /*!
@@ -35,7 +35,7 @@ QFile * ouvrirlXml(QString nomfichier, QIODevice::OpenMode mode);
  * \param nomfichier : le nom de fichier
  */
 
-void lireXml(QString nomfichier);
+void lireXml(QString nomfichier, EspaceTravail *espaceTravail);
 /*!
  * \brief ecrireXml
  * ecrire dansun  fichier xml

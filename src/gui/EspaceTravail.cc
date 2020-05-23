@@ -35,6 +35,8 @@ EspaceTravail::EspaceTravail(){
     vue->setAcceptDrops(true);
     scene->setSceneRect(0, 0, 2000, 1000);
     setCentralWidget(vue);
+
+    setMode(SELECT_MODE);
     vue->show();
     //scene->update();
 }

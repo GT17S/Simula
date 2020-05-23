@@ -275,6 +275,7 @@ void Dialog::appliquerInterface(int i){
                                      "Invalide adresses !",  QMessageBox::Ok);
         }
         return;}
+    src->getParent()->toolTipShow();
     showConfig(src);
 }
 void Dialog::appliquerRoute(int i){
@@ -328,6 +329,8 @@ void Dialog::appliquerRoute(int i){
 
     }
     src->modifierRoute(i,routeNew);
+    src->getParent()->toolTipShow();
+
     showConfig(src);
 
 }

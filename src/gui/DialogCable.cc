@@ -89,5 +89,6 @@ void DialogCable::onApplique()
   cableMemebre->setDebitMax(debitDialog.toInt());
   cableMemebre->setMTU(mtuDialog.toInt());
   showConfig(cableMemebre);
+  accept();
 
 }

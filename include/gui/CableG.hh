@@ -14,6 +14,7 @@
 class Cable;
 class NoeudG;
 class DialogCable;
+class EspaceTravail;
 /*!
  * \file CableG.hh
  * \brief Representation graphique du cable
@@ -27,6 +28,7 @@ private:
     Cable * child;
     NoeudG * extG1;
     NoeudG * extG2;
+    EspaceTravail *espaceTravail;
     DialogCable *configurationCable;
     static void createPen();
 
@@ -41,7 +43,7 @@ public:
          * Constructeur qui prends deux points et initialise le cable a cette position
          * \param qreal positions des points en 2D
     */
-    CableG(qreal x1 = 0, qreal x2 = 0, qreal x3 =0, qreal x4=0);
+    CableG(EspaceTravail * _espaceTravail,qreal x1 = 0, qreal x2 = 0, qreal x3 =0, qreal x4=0);
 	 /*!
          * \brief Destructeur
          * Destructeur de la classe CableG

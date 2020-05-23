@@ -116,7 +116,7 @@ public:
              * \brief demarrer
              * methode qui demarre la G_Simulation.
         */
-        void demarrer();
+         void demarrer();
         /*!
              * \brief pause
              * methode qui met en pause la G_Simulation.

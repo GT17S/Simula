@@ -38,7 +38,7 @@ NoeudG::~NoeudG()
 
 void NoeudG::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    qDebug() <<"mouse pressed NoeudG";
+    //qDebug() <<"mouse pressed NoeudG";
     switch(espaceTravail->getMode()){
     case SELECT_MODE:  { break;}
     case DELETE_MODE:  {
@@ -76,13 +76,14 @@ void NoeudG::mousePressEvent(QGraphicsSceneMouseEvent *event)
             addLine(cg, true);
             moveCable(event->scenePos() - boundingRect().center());
             espaceTravail->currentCable = cg;
-            qDebug() << "first click";
+            //qDebug() << "first click";
             event->ignore();
             break;
         }else {
-            qDebug() << "second click 0";
+            //qDebug() << "second click 0";
             // select interface
             extremite * ext1 = espaceTravail->currentExtremite;
+            if(ext1->noeud == child) break;
             espaceTravail->currentExtremite = nullptr;
             showInterfacesMenu();
             if(!espaceTravail->currentExtremite){
@@ -102,13 +103,13 @@ void NoeudG::mousePressEvent(QGraphicsSceneMouseEvent *event)
             extremite * ext2 = espaceTravail->currentExtremite;
             espaceTravail->currentExtremite = nullptr;
             if(!cable->connexionNoeuds(ext1->noeud, ext1->interface, ext2->noeud, ext2->interface)){
-                qDebug() << "second click 1";
+                //qDebug() << "second click 1";
                 event->ignore();
                 break;
             }
             cg->setZValue(-1);
             espaceTravail->getScene()->addItem(cg);
-            qDebug() << "second click 2";
+            //qDebug() << "second click 2";
             espaceTravail->setMode(SELECT_MODE);
             event->ignore();
             break;
@@ -119,15 +120,17 @@ void NoeudG::mousePressEvent(QGraphicsSceneMouseEvent *event)
     case MESSAGE_MODE  : {
         if(child->getTypeNoeud() != STATION) break;
         if(!espaceTravail->currentExtremite){
-            qDebug() << "first click message";
+            //qDebug() << "first click message";
             extremite * x = new extremite;
             x->noeud = child;
             espaceTravail->currentExtremite = x;
             event->ignore();
             break;
         }else {
-            qDebug() << "second click message";
             extremite *x = espaceTravail->currentExtremite;
+            // meme cable!
+            if(x->noeud == child) break;
+            //qDebug() << "second click message";
             extremite *x2 = new extremite;
             x2->noeud = child;
             espaceTravail->currentExtremite= nullptr;
@@ -214,7 +217,7 @@ void NoeudG::interfaceAction(int i){
     extremite * ext = new extremite;
     ext->noeud = child;
     ext->interface = i;
-    qDebug() << " Interface "<<ext->interface;
+    //qDebug() << " Interface "<<ext->interface;
     espaceTravail->currentExtremite = ext;
 }
 

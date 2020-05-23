@@ -50,7 +50,8 @@ void EspaceTravail::setMode(cursor_mode _mode){
     case SELECT_MODE:  {
         setCursor(SELECT_CURSOR);
         vue->setDragMode(QGraphicsView::RubberBandDrag);
-
+        currentCable = nullptr;
+        currentExtremite = nullptr;
         return;
     }
     case DELETE_MODE:  {setCursor(DELETE_CURSOR); break;}

@@ -14,6 +14,17 @@ Noeud::Noeud(NoeudG *_parent) : nbPort(1){
 
 }
 
+int Noeud::getCount()
+{
+    count++;
+    return count;
+}
+
+void Noeud::setCount(int value)
+{
+    count = value;
+}
+
 Noeud::Noeud(string _nom, int _idNoeud, int _nbPort, NoeudG * _parent){
 
     nom = _nom;

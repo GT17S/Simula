@@ -76,6 +76,7 @@ protected:
   vector<Route*> tableRoutage; /*!< Table de routage */
   typeNoeud type; /*!< Le type du noeud #typeNoeud*/
   NoeudG * parent; /*!< Parent , composant graphique */
+  int count=0; /*!<le nombre des interfaces */
 
 public:
     /*!
@@ -233,8 +234,17 @@ public:
      * \param route : voir #Route
      */
     void setTableRoutage(Route* route);
-
-
+    /*!
+     * \brief getCount
+     * \return:le nombre d'interfaces dans chaque équipement
+     */
+     int getCount();
+    /*!
+     * \brief setCount
+     * modfie le nombre d'interfaces dans chaque équipement
+     * \param count : nombre
+     */
+     void setCount(int count);
     void setParent(NoeudG * _parent);
     /*!
      * \brief getPasserelleTableRoutage
@@ -276,6 +286,7 @@ public:
 
     virtual void envoyerMessage(int key, destination dest) = 0;
     virtual void recevoirMessage(int key,int dest_i, destination dest) = 0;
+
 };
 
 #endif

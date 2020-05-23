@@ -226,12 +226,12 @@ void PanneauOutils::sauvegarderFichier(){
     //
     if(curFile.isEmpty()){
 
-        QString fileName=QFileDialog::getOpenFileName(this,
+        QString fileName=QFileDialog::getSaveFileName(this,
                                                       tr("Sauvegarder le fichier de configuration"), "",
                                                       tr("Fichier xml (*.xml)"));
         if(!fileName.isEmpty()){
             curFile = fileName;
-            qDebug() << curFile;
+            ecrireXml(fileName+".xml");
         }
 
     }
@@ -298,8 +298,9 @@ void PanneauOutils::timer(){
 }
 
 void PanneauOutils::toPng(){
-    QString fileName = QFileDialog::getSaveFileName(this,
-                                                    tr("Save PNG"));
+    QString fileName=QFileDialog::getSaveFileName(this,
+                                                  tr("Exporter le fichier en image"), "",
+                                                  tr("Image png (*.png)"));
 
     if (fileName.isEmpty())
         return;
@@ -327,8 +328,6 @@ void PanneauOutils::dezoomer(){
 }
 
 void PanneauOutils::envoieD(){
-    espaceTravail->setMode(MESSAGE_MODE);
-    // DialogEnvoi * d = new DialogEnvoi;
-   // d->show();
+    espaceTravail->setMode(MESSAGE_MODE);   
 }
 

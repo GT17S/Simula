@@ -11,7 +11,6 @@ NoeudG::NoeudG(EspaceTravail * _espaceTravail) : QGraphicsPixmapItem()
     configuration = new Dialog(child);
     setFlag(QGraphicsItem::ItemIsMovable);
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges);
-    //    toolTipShow();
 
     parent=new QTreeWidgetItem(PanneauEvents::getTreeview());
     //PanneauEvents::addRoot(parent,"Noeud");
@@ -28,15 +27,9 @@ NoeudG::~NoeudG()
 {
 
     delete parent;
-   // qDebug()<<"My size before destruction"<<extremiteG.size();
-    /*for(cableG_extremite c : extremiteG){
-        c.cable->getChild()->~Cable();
-        //delete c.cable;
-        //c.cable = 0;
-    }*/
+
     extremiteG.clear();
 
-   //qDebug()<<"My size after destruction"<< extremiteG.size();
 
 }
 
@@ -294,9 +287,9 @@ void NoeudG::toolTipShow(){
   }
 
 
-          qDebug()<<child->getIdNoeud();
-          qDebug()<<QString::fromStdString(child->getNom());
-          qDebug()<<equipementName;
+          //qDebug()<<child->getIdNoeud();
+          //qDebug()<<QString::fromStdString(child->getNom());
+          //qDebug()<<equipementName;
 
           setToolTip(s);
 

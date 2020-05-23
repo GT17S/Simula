@@ -1,5 +1,5 @@
 #include "GFichier.hh"
-
+#include "EspaceTravail.hh"
 
 bool verifier_schema(QFile *fichier_xml){
 
@@ -171,6 +171,14 @@ void ecrireXml(QString nomFichier){
         noeud.setAttribute("id", n->getIdNoeud());
         noeud.setAttribute("nbPort", n->getNbPort());
 
+        NoeudG *np = n->getParent();
+        if(np){
+            QDomElement position = document.createElement("Position");
+            noeud.appendChild(position);
+            position.setAttribute("x", np->pos().x());
+            position.setAttribute("y", np->pos().y());
+
+        }
         QDomElement nom = document.createElement("nom");
         nom.appendChild(document.createTextNode(QString::fromStdString(n->getNom())));
         noeud.appendChild(nom);

@@ -23,11 +23,11 @@ NoeudG::~NoeudG()
 
     delete parent;
    // qDebug()<<"My size before destruction"<<extremiteG.size();
-    for(cableG_extremite c : extremiteG){
-        c.cable->~CableG();
+    /*for(cableG_extremite c : extremiteG){
+        c.cable->getChild()->~Cable();
         //delete c.cable;
         //c.cable = 0;
-    }
+    }*/
     extremiteG.clear();
 
    //qDebug()<<"My size after destruction"<< extremiteG.size();
@@ -57,51 +57,57 @@ void NoeudG::mousePressEvent(QGraphicsSceneMouseEvent *event)
     }
     case ROUTEUR_MODE: { break;}
     case STATION_MODE: { break;}
-    case SWITCH_MODE:  { break;}
-    case HUB_MODE:     { break;}
-    case CABLE_MODE:   {
+    case SWITCH_MODE : { break;}
+    case HUB_MODE    : { break;}
+    case CABLE_MODE  : {
         if(!espaceTravail->currentCable){
             // select interface
-            // stock current extremite
+            showInterfacesMenu();
+            if(!espaceTravail->currentExtremite){
+                // aucune interface n'est choisie
+
+                event->ignore(); // ignorer l'event
+                break;
+            }
+
             CableG * cg = new CableG();
             addLine(cg, true);
             moveCable(event->scenePos() - boundingRect().center());
             espaceTravail->currentCable = cg;
-            showInterfacesMenu();
-            if(!espaceTravail->currentExtremite){
-                delete cg;
-                cg = nullptr;
-                extremiteG.pop_back();
-                espaceTravail->currentCable = nullptr;
-                event->ignore();
-                break;
-            }
-
             qDebug() << "first click";
             event->ignore();
             break;
         }else {
+            qDebug() << "second click 0";
             // select interface
             extremite * ext1 = espaceTravail->currentExtremite;
             espaceTravail->currentExtremite = nullptr;
-            CableG * cg = espaceTravail->currentCable;
-            espaceTravail->currentCable = nullptr;
-            cg->setPen(QPen(Qt::black, 3, Qt::SolidLine));
-            addLine(cg, false);
-            //qDebug()<<event->scenePos();
-            moveCable(event->scenePos() - boundingRect().center());
             showInterfacesMenu();
             if(!espaceTravail->currentExtremite){
-                delete cg;
-                cg = nullptr;
-                extremiteG.pop_back();
+                //delete cg;
+                //cg = nullptr;
+                //extremiteG.pop_back();
                 espaceTravail->currentCable = nullptr;
+                event->ignore();
+                break;
+            }
+            CableG * cg = espaceTravail->currentCable;
+            espaceTravail->currentCable = nullptr;
+            addLine(cg, false);
+            moveCable(event->scenePos() - boundingRect().center());
+            // Creation du cable logique!
+            Cable * cable = new Cable(cg);
+            extremite * ext2 = espaceTravail->currentExtremite;
+            espaceTravail->currentExtremite = nullptr;
+            if(!cable->connexionNoeuds(ext1->noeud, ext1->interface, ext2->noeud, ext2->interface)){
+                qDebug() << "second click 1";
                 event->ignore();
                 break;
             }
             cg->setZValue(-1);
             espaceTravail->getScene()->addItem(cg);
-            qDebug() << "second click"<< cg->line();
+            qDebug() << "second click 2";
+            espaceTravail->setMode(SELECT_MODE);
             event->ignore();
             break;
         }
@@ -131,12 +137,14 @@ void NoeudG::showInterfacesMenu()
 {
     QMenu interfacesMenu;
 
-    QObject::connect(&interfacesMenu, SIGNAL(triggered(QAction*)), this, SLOT(interfaceAction(QAction*)));
 
     for(int i = 0; i < child->getInterfaces().size(); i++){
-        QAction * ia = interfacesMenu.addAction("Interface "+QString::number(i));
+        QAction * ia = interfacesMenu.addAction("Interface "+QString::number(i), [this, i](bool) {this->interfaceAction(i);});
+        if(child->getInterface(i)->getCable())
+            ia->setEnabled(false);
         ia->setToolTip(QString(i));
     }
+   // QObject::connect(&interfacesMenu, SIGNAL(triggered(QAction*)), this, SLOT(interfaceAction(QAction*)));
 
     interfacesMenu.exec(QCursor::pos());
     return;
@@ -179,10 +187,11 @@ void NoeudG::moveCable(QPointF newPos){
     }
 }
 
-void NoeudG::interfaceAction(QAction* action){
+void NoeudG::interfaceAction(int i){
     extremite * ext = new extremite;
     ext->noeud = child;
-    ext->interface = action->toolTip().toInt();
+    ext->interface = i;
+    qDebug() << " Interface "<<ext->interface;
     espaceTravail->currentExtremite = ext;
 }
 

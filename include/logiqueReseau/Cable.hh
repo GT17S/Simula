@@ -73,7 +73,7 @@ public:
    * \param type : voir #type
    * \param debitMax : voir #debitMax
    */
-  Cable(cableT type = DROIT, int debitMax = 100, int MTU = 1500, CableG * parent = nullptr);
+  Cable(CableG * parent = nullptr, cableT type = DROIT, int debitMax = 100, int MTU = 1500);
 
   /*!
    * \brief Destructeur

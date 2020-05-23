@@ -7,7 +7,7 @@ int Cable::nbCables = 0;
 int Cable::i = 1;
 
 
-Cable::Cable(cableT _type, int _debitMax, int _MTU, CableG * _parent){
+Cable::Cable(CableG * _parent, cableT _type, int _debitMax, int _MTU){
     type = _type;
     debitMax = _debitMax;
     MTU = _MTU;

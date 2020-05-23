@@ -3,7 +3,9 @@
 CableG::CableG(qreal x1, qreal x2, qreal x3, qreal x4) 
     :   QGraphicsLineItem(x1,x2,x3,x4)
 {
-
+    child = nullptr;
+    extG1 = nullptr;
+    extG2 = nullptr;
 }
 
 CableG::~CableG(){

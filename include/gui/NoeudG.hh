@@ -96,7 +96,7 @@ protected:
     //void mouseReleaseEvent( QMouseEvent *e );
 
  public slots :
-    void interfaceAction(QAction*);
+    void interfaceAction(int i);
 };
 
 #endif

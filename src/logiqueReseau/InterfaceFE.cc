@@ -1,4 +1,5 @@
 #include "InterfaceFE.hh"
+#include "Graphe.hh"
 #include <iostream>
 
 const string IP_REGEX = "^(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$";
@@ -9,7 +10,7 @@ const string DEFAULT_MAC = "000000:111111";
 InterfaceFE::InterfaceFE(int idNoeud, string _nomInterface, string _adresseIP,
                          string _adresseRes, string _masque){
 
-    nomInterface = _nomInterface;
+    nomInterface = _nomInterface+std::to_string(Graphe::getSommets()[idNoeud]->getCount());
     cable = nullptr;
     setAdresseIP(_adresseIP);
     setAdresseRes(_adresseRes);

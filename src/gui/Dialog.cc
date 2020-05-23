@@ -13,6 +13,7 @@
 #include <QMainWindow>
 #include "RouteG.hh"
 #include "InterfaceG.hh"
+#include "InterfaceFE.hh"
 
 
 Dialog::Dialog(Noeud *parent)
@@ -226,40 +227,44 @@ void Dialog::appliquerInterface(int i){
 
     InterfaceFE *iF = src->getInterface(i);
     if(!iF)return ;
-    iF->setAdresseIP(AdresseIPApp.toStdString());
-    if(iF->getAdresseIP()==DEFAULT_IP){
-        ig->AdresseIP->setStyleSheet("color:red");
-        count++;
-    }else{
+    if(InterfaceFE::checkAdresse(AdresseIPApp.toStdString(),IP_REGEX,DEFAULT_IP) != DEFAULT_IP){
+        iF->setAdresseIP(AdresseIPApp.toStdString());
         ig->AdresseIP->setStyleSheet("color:black");
 
-    }
-    iF->setAdresseMac(AdresseMacApp.toStdString());
-    if(iF->getAdresseMac()==DEFAULT_MAC){
-        ig->AdresseMac->setStyleSheet("color:red");
-        count++;
-
     }else{
-        ig->AdresseMac->setStyleSheet("color:black");
-    }
-    iF->setAdresseRes(AdresseResApp.toStdString());
-    if(iF->getAdresseRes()==DEFAULT_IP){
-        ig->AdresseRes->setStyleSheet("color:red");
-        count++;
 
-    }else{
+        ig->AdresseIP->setStyleSheet("color:red");
+        count++;
+    }
+    if(InterfaceFE::checkAdresse(AdresseResApp.toStdString(),IP_REGEX,DEFAULT_IP) != DEFAULT_IP){
+        iF->setAdresseRes(AdresseResApp.toStdString());
         ig->AdresseRes->setStyleSheet("color:black");
 
+    }else{
+
+        ig->AdresseRes->setStyleSheet("color:red");
+        count++;
     }
-    iF->setMasque(maskApp.toStdString());
-    if(iF->getMasque()==DEFAULT_IP){
+    if(InterfaceFE::checkAdresse(maskApp.toStdString(),IP_REGEX,DEFAULT_IP) != DEFAULT_IP){
+        iF->setMasque(maskApp.toStdString());
+        ig->mask->setStyleSheet("color:black");
+
+    }else{
+
+        ig->mask->setStyleSheet("color:red");
+        count++;
+    }
+    if(InterfaceFE::checkAdresse(AdresseMacApp.toStdString(),MAC_REGEX,DEFAULT_MAC) != DEFAULT_MAC){
+    iF->setAdresseMac(AdresseMacApp.toStdString());
+        ig->AdresseMac->setStyleSheet("color:black");
+
+    }else{
+
         ig->mask->setStyleSheet("color:red");
         count++;
 
-    }else{
-        ig->mask->setStyleSheet("color:black");
-
     }
+
     iF->setNomInterface(interfaceNameApp.toStdString());
     if(iF->getMasque()==DEFAULT_IP ||iF->getMasque()==DEFAULT_IP || iF->getAdresseMac()==DEFAULT_MAC
             ||iF->getAdresseIP()==DEFAULT_IP ){
@@ -270,12 +275,8 @@ void Dialog::appliquerInterface(int i){
             QMessageBox::warning(this, "Invalide ",
                                      "Invalide adresses !",  QMessageBox::Ok);
         }
-
         return;}
-
     showConfig(src);
-
-
 }
 void Dialog::appliquerRoute(int i){
     int count=0;
@@ -286,31 +287,35 @@ void Dialog::appliquerRoute(int i){
             mask=ig->getMask()->text();
             if(AdresseIPApp.isEmpty() || AdresseResApp.isEmpty() ||  mask.isEmpty()) return ;
     Route *routeNew=new Route();
-    routeNew->adresseReseau=AdresseResApp.toStdString();
-    if(routeNew->adresseReseau==DEFAULT_IP){
-        count++;
-        ig->AdresseRes->setStyleSheet("color:red");
-    }else{
+
+
+    if(InterfaceFE::checkAdresse(AdresseIPApp.toStdString(),IP_REGEX,DEFAULT_IP) != DEFAULT_IP){
+        routeNew->adresseReseau=AdresseResApp.toStdString();
         ig->AdresseRes->setStyleSheet("color:black");
 
-    }
-    routeNew->passerelle=AdresseIPApp.toStdString();
-    if(routeNew->passerelle==DEFAULT_IP){
-        count++;
-
-        ig->nextHope->setStyleSheet("color:red");
     }else{
+
+        count++;
+        ig->AdresseRes->setStyleSheet("color:red");
+
+
+    }
+    if(InterfaceFE::checkAdresse(AdresseResApp.toStdString(),IP_REGEX,DEFAULT_IP) != DEFAULT_IP){
+        routeNew->passerelle=AdresseIPApp.toStdString();
         ig->nextHope->setStyleSheet("color:black");
-    }
-    routeNew->masque=mask.toStdString();
-    if(routeNew->masque==DEFAULT_IP){
-        count++;
-
-        ig->mask->setStyleSheet("color:red");
     }else{
-        ig->mask->setStyleSheet("color:black");
-
+        count++;
+        ig->nextHope->setStyleSheet("color:red");
     }
+
+    if(InterfaceFE::checkAdresse(mask.toStdString(),IP_REGEX,DEFAULT_IP) != DEFAULT_IP){
+        routeNew->masque=mask.toStdString();
+        ig->mask->setStyleSheet("color:black");
+    }else{
+        count++;
+        ig->mask->setStyleSheet("color:red");
+    }
+
     if(routeNew->passerelle==DEFAULT_IP || routeNew->adresseReseau==DEFAULT_IP
             || routeNew->masque==DEFAULT_IP){
         if(count==1){
@@ -324,9 +329,6 @@ void Dialog::appliquerRoute(int i){
 
     }
     src->modifierRoute(i,routeNew);
-
-
-
     showConfig(src);
 
 }

@@ -5,12 +5,15 @@ Hub::Hub(string _nom, int _idNoeud, int _nbPort, HubG *parent)
     : Noeud(_nom, _idNoeud, _nbPort, parent){
 
     type = HUB;
+    setParent(parent);
+
 }
 
 Hub::Hub(HubG *parent) : Noeud(parent){
+
     setNom( "Hub"+std::to_string(idNoeud));
     type = HUB;
-
+    setParent(parent);
 }
 
 Hub::~Hub(){

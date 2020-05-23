@@ -10,6 +10,7 @@ Noeud::Noeud(NoeudG *_parent) : nbPort(1){
     Graphe::ajoutNoeudMatrice(this);
     interfaces.push_back(new InterfaceFE(idNoeud));
     setParent(_parent);
+    parent->toolTipShow();
 
 }
 
@@ -96,12 +97,13 @@ InterfaceFE * Noeud::getInterface(Cable * _cable){
 void Noeud::setNom(string _nom){
     nom = _nom;
     PanneauEvents::addRoot(parent->getTreeItem(),QString::fromStdString(nom));
-
+    parent->toolTipShow();
 }
 
 void Noeud::setIdNoeud(int _idNoeud){
    //
    idNoeud = _idNoeud;
+   //parent->toolTipShow();
 }
 
 
@@ -148,6 +150,8 @@ void Noeud::setNbPort(int _nbPort){
         // Sinon interdit!
     }
     // Sinon meme nbrPort!
+    parent->toolTipShow();
+
 }
 
 void Noeud::setFileDattente(vector<string> _file){
@@ -166,6 +170,7 @@ void Noeud::setFileDattente(string _data){
 
 void Noeud::setInterfaces(vector<InterfaceFE *> _interfaces){
     interfaces = _interfaces;
+    parent->toolTipShow();
 }
 
 void Noeud::setParent(NoeudG * _parent){
@@ -176,6 +181,7 @@ void Noeud::setParent(NoeudG * _parent){
 
 void Noeud::setInterfaces(InterfaceFE * _interface){
     interfaces.push_back(_interface);
+    parent->toolTipShow();
 }
 
 bool Noeud::verifierPasserelle(string passerelle){
@@ -214,6 +220,7 @@ void Noeud::setTableRoutage(Route * route){
     tableRoutage.push_back(n_Route);
     // Pour vérfier plustard que la route à été ajoutée,
     // il suffit juste de vérifier que la table de routage à un élement de plus.
+    parent->toolTipShow();
 }
 
 string Noeud::getPasserelleTableRoutage(string _adresseReseau){
@@ -243,6 +250,7 @@ void Noeud::supprimerRoute(int id){
 
         tableRoutage.erase(i);
     }
+    parent->toolTipShow();
 }
 
 void Noeud::modifierRoute(int id, Route * route){
@@ -256,10 +264,12 @@ void Noeud::modifierRoute(int id, Route * route){
         tableRoutage.insert (tableRoutage.begin()+ id , *(tableRoutage.end()) );
         tableRoutage.pop_back();
     }
+    parent->toolTipShow();
 }
 
 void Noeud::setTableRoutage(vector<Route *> _tableRoutage){
     tableRoutage = _tableRoutage;
+    parent->toolTipShow();
 }
 
 bool Noeud::acceptCable(Cable * _cable, int _idInterface){
@@ -271,5 +281,3 @@ bool Noeud::acceptCable(Cable * _cable, int _idInterface){
         }
     return false;
 }
-
-

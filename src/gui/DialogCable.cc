@@ -46,8 +46,7 @@ void DialogCable::init()
     layout->addRow(new QLabel(tr("MTU:")), mtu);
     layout->addRow(appliquer);
 
-    buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
-    layout->addRow(buttonBox);
+
     generalGroupBox->setLayout(layout);
     setLayout(layout);
     setWindowTitle(tr("Configuration de Cable"));
@@ -56,8 +55,7 @@ void DialogCable::init()
 
 void DialogCable::createSignals()
 {
-    connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
-    connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+
     connect(this,SIGNAL(finished(int)),this,SLOT(onExitDialog(int)));
     connect(appliquer,SIGNAL(clicked()),this,SLOT(onApplique()));
 

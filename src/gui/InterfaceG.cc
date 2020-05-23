@@ -39,13 +39,14 @@ void InterfaceG::createLabels(){
     gridLayoutinterface = new QGridLayout();
 
     //supprimer = new QPushButton("Supprimer");
-    appliquer = new QPushButton("Appliquer");
+    appliquer = new QPushButton("Appliquer modifications ");
 
-    QGroupBox *portGroupBox = new QGroupBox("Form Port");
+    QGroupBox *portGroupBox = new QGroupBox(" Port");
     QFormLayout *layout = new QFormLayout;
 
     layout->addRow(new QLabel("Nom interface:"), interfaceName);
     layout->addRow(new QLabel("Adresse machine:"), AdresseMac);
+    AdresseMac->setEnabled(false);
     layout->addRow(new QLabel("Adresse IP:"), AdresseIP);
     layout->addRow(new QLabel("Adresse reseau:"), AdresseRes);
     layout->addRow(new QLabel("Masque:"), mask);

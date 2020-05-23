@@ -67,7 +67,7 @@ private:
     QDialogButtonBox *buttonBox;/*!Une box regroupant la validation et l'annulation de choix saisi*/
     QToolBox *toolRoutage;/*!ToolBox contenant tous les routes de l'équipement sur des widgets*/
     QToolBox *toolInterface;/*!< ToolBox contenant tous les interface de l'équipement sur des widgets*/
-    QPushButton *ajouterRoute,*supprimerRoute,*ajouterInterface,*supprimerInterface,*changerNom;/*!<Buttons d'ajout et de suppression d'interfaces et route de l'equipement selectionne*/
+    QPushButton *ajouterRoute,*ajouterInterface,*supprimerInterface,*changerNom;/*!<Buttons d'ajout et de suppression d'interfaces et route de l'equipement selectionne*/
     QWidget *routeWidget;/*!< QWidget contenant la toolroutage*/
     QWidget *intWidget;/*!< QWidget contenant la toolinterface*/
     QGridLayout *routeLayout;/*!< Layout contenant le widget principale des routes */

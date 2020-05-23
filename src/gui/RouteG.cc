@@ -10,7 +10,6 @@ RouteG::~RouteG()
 
 void RouteG::deleteroute()
 {
-    qDebug()<<"kaka";
     this->~RouteG();
 }
 RouteG::RouteG(QString _nextHope, QString _AdresseRes, QString _mask){
@@ -22,10 +21,10 @@ RouteG::RouteG(QString _nextHope, QString _AdresseRes, QString _mask){
 void RouteG::createLabels(){
     gridLayoutinterface = new QGridLayout();
 
-    supprimer = new QPushButton("Supprimer");
-    appliquer = new QPushButton("Appliquer");
+    supprimer = new QPushButton("Supprimer la route");
+    appliquer = new QPushButton("Appliquer modifications");
 
-    portGroupBox = new QGroupBox("Form Routage");
+    portGroupBox = new QGroupBox("Routage");
     layout = new QFormLayout;
 
    layout->addRow(new QLabel("Adresse reseau:"), AdresseRes);

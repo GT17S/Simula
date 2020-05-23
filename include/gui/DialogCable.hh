@@ -76,12 +76,11 @@ public:
 
 private:
 
-    QDialogButtonBox *buttonBox;/*!< ButtonBox contenant deux buttons reagissant sur la fenetre de configuration de cable*/
     QLineEdit 	*debit;/*!< Ligne affichant le debit du cable*/
     QLineEdit   *mtu; /*!< Ligne affichant le MTU du cable*/
     QComboBox   *type; /*!< Une boite permettant de choisir le type de cable (CROISE ou bien DROIT)*/
-    Cable *cableMemebre;
-    QPushButton *appliquer;
+    Cable *cableMemebre;/*!<Le cable sélectionne */
+    QPushButton *appliquer;/*!<bouton pour appliquer les changements */
 
 private slots:
     /*!
@@ -90,6 +89,11 @@ private slots:
          * \param  int : voir #DialogCable
     */
     void onExitDialog(int);
+    /*!
+     * \brief onApplique
+     * Methode qui vas appliquer les changements sur le cable
+     */
+
     void onApplique();
 
 

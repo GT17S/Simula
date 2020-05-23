@@ -65,20 +65,13 @@ void CableG::updateaff(){
 
     setToolTip(s);
 
-/*tooltipstr << "Cable: " << this->getId() << std::endl << "Bande Passante:"<< this->getDebitAcc() << std::endl \
-			   << "MTU :" <<  this->getMTU() << std::endl << "Type de cable: " << this->getType() << std::endl \
-			   << "Extremité 1 :" << this->getExt1()->interface << std::endl << "Extremité 2 :" << this->getExt1()->interface;
-	
-	std::string s = tooltipstr.str();
-	setToolTip(QString(s.c_str()));
-*/
+
 }
 void CableG::createPen(){
-    DROIT_TYPE=QPen (Qt::black,5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
-    CROISE_TYPE=QPen (Qt::black,5, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin);
-    DROIT_ERREUR_TYPE=QPen (Qt::red,5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
-    CROISE_ERREUR_TYPE=QPen (Qt::red,5, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin);
-    //setPen(DROIT_TYPE);
+    DROIT_TYPE=QPen (Qt::black,3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+    CROISE_TYPE=QPen (Qt::black,3, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin);
+    DROIT_ERREUR_TYPE=QPen (Qt::red,3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+    CROISE_ERREUR_TYPE=QPen (Qt::red,3, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin);
 }
 
 

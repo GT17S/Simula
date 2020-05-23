@@ -35,7 +35,7 @@ public slots:
   	//void selectionnerEquipement(){};
     void selectItem();
     void ajouterNoeud(int n);
-    void ajouterCable(int n);
+    void ajouterCable();
     void supprimerEquipement();
 
 };

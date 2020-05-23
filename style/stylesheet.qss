@@ -108,12 +108,6 @@ image : url(:/ressources/equiBar/supprAction.png);
 QPushButton#cableAction{
 image : url(:/ressources/equiBar/cableAction.png);
 }
-QPushButton#cableAction::menu-indicator {
-    subcontrol-position: right center;
-    subcontrol-origin: padding;
-
-    width:10px;
-  }
 QPushButton#stationAction{
  image : url(:/ressources/equiBar/stationAction.png);
 }

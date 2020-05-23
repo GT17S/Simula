@@ -787,3 +787,5 @@ bin/Release/*.png
 .ninja_log
 build.ninja
 rules.ninja
+
+Simula.cbp

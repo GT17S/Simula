@@ -3,10 +3,32 @@
 CableG::CableG(qreal x1, qreal x2, qreal x3, qreal x4) 
     :   QGraphicsLineItem(x1,x2,x3,x4)
 {
-
+    child = nullptr;
+    extG1 = nullptr;
+    extG2 = nullptr;
 }
 
 CableG::~CableG(){
+    if(extG1){
+        vector<cableG_extremite> v1 = extG1->getCablesG();
+        for(auto i = v1.begin(); i != v1.end(); i++){
+            if( (*i).cable == this){
+                (*i).cable = nullptr;
+                v1.erase(i);
+                break;
+            }
+        }extG1->setCableG(v1);
+     }
+    if(extG2){
+        vector<cableG_extremite> v2 = extG2->getCablesG();
+        for(auto i = v2.begin(); i != v2.end(); i++){
+            if( (*i).cable == this){
+                (*i).cable = nullptr;
+                v2.erase(i);
+                break;
+            }
+        }extG2->setCableG(v2);
+    }
 
 }
 

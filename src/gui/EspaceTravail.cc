@@ -9,12 +9,13 @@
 #include "SwitchG.hh"
 
 QCursor EspaceTravail::SELECT_CURSOR,
-EspaceTravail::DELETE_CURSOR,
-EspaceTravail::ROUTEUR_CURSOR,
-EspaceTravail::STATION_CURSOR,
-EspaceTravail::SWITCH_CURSOR,
-EspaceTravail::HUB_CURSOR,
-EspaceTravail::CABLE_CURSOR;
+        EspaceTravail::DELETE_CURSOR,
+        EspaceTravail::ROUTEUR_CURSOR,
+        EspaceTravail::STATION_CURSOR,
+        EspaceTravail::SWITCH_CURSOR,
+        EspaceTravail::HUB_CURSOR,
+        EspaceTravail::CABLE_CURSOR,
+        EspaceTravail::MESSAGE_CURSOR;
 
 EspaceTravail::EspaceTravail(){
 
@@ -49,7 +50,8 @@ void EspaceTravail::setMode(cursor_mode _mode){
     case SELECT_MODE:  {
         setCursor(SELECT_CURSOR);
         vue->setDragMode(QGraphicsView::RubberBandDrag);
-
+        currentCable = nullptr;
+        currentExtremite = nullptr;
         return;
     }
     case DELETE_MODE:  {setCursor(DELETE_CURSOR); break;}
@@ -58,6 +60,8 @@ void EspaceTravail::setMode(cursor_mode _mode){
     case SWITCH_MODE:  {setCursor(SWITCH_CURSOR); break;}
     case HUB_MODE:     {setCursor(HUB_CURSOR); break;}
     case CABLE_MODE:   {setCursor(CABLE_CURSOR); break;}
+    case MESSAGE_MODE:   {setCursor(MESSAGE_CURSOR); break;}
+
     }
     vue->setDragMode(QGraphicsView::NoDrag);
 }
@@ -70,6 +74,7 @@ void EspaceTravail::createCursors(){
     SWITCH_CURSOR  = QCursor(QPixmap(":/ressources/cursors/switchCursor.png")),
     HUB_CURSOR     = QCursor(QPixmap(":/ressources/cursors/hubCursor.png")),
     CABLE_CURSOR   = QCursor(QPixmap(":/ressources/cursors/cableCursor.png"));
+    MESSAGE_CURSOR = QCursor(QPixmap(":/ressources/cursors/messageCursor.png"));
 }
 
 void EspaceTravail::deleteScene()
@@ -116,6 +121,9 @@ void EspaceTravail::mousePressEvent(QMouseEvent *event)
         break;
     }
     case CABLE_MODE:   {
+        break;
+    }
+    case MESSAGE_MODE: {
         break;
     }
     default: return;

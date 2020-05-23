@@ -32,7 +32,8 @@ enum cursor_mode {SELECT_MODE,
                   STATION_MODE,
                   SWITCH_MODE,
                   HUB_MODE,
-                  CABLE_MODE};
+                  CABLE_MODE,
+                  MESSAGE_MODE};
 #endif
 
 class NoeudG;
@@ -116,7 +117,8 @@ public:
                    STATION_CURSOR,
                    SWITCH_CURSOR,
                    HUB_CURSOR,
-                   CABLE_CURSOR;
+                   CABLE_CURSOR,
+                   MESSAGE_CURSOR;
 
     cursor_mode getMode(){return mode;}
     void setMode(cursor_mode);

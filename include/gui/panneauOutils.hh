@@ -53,11 +53,10 @@ public:
     PanneauOutils(EspaceTravail * e,  gSimulation * g);
 
     virtual ~PanneauOutils();
-	gSimulation* getGestionnaire(){ return gestSimulation;};
-	void setGestionnaire ( gSimulation * g){gestSimulation = g;};
+    gSimulation* getGestionnaire(){ return gestSimulation;}
+    void setGestionnaire ( gSimulation * g){gestSimulation = g;}
 
 public slots:
-    void preparenvoi();
     void timer();
     void nouveauFichier();
     void ouvrirFichier();
@@ -78,9 +77,6 @@ public slots:
          * slot qui permet d'exporter l'espace de travail en image png
     */
     void toPng();
-
-signals:
-	void addedData ( Data *d);
 };
 
 #endif

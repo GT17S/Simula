@@ -20,7 +20,6 @@ simulaGui::simulaGui( gSimulation * g){
     PanneauEvents * panneauevents = new PanneauEvents;
 	PanneauOutils	* panneauoutils = new PanneauOutils(espaceTravail, g);
 	PanneauData		* panneaudata	= new PanneauData();
-	connect ( panneauoutils, SIGNAL(addedData(Data*)), panneaudata, SLOT(addData(Data*))); 	
     widgets.append( panneauoutils); //0
     widgets.append(espaceTravail);
 

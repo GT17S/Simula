@@ -22,7 +22,8 @@ void lireXml(QString nomFichier, EspaceTravail * espaceTravail){
     if(!fichier){
         // erreur
 
-        std::cout << "erreur lecture "<<std::endl;
+        //std::cout << "erreur lecture "<<std::endl;
+        espaceTravail->showDialogError("Erreur de lecture du fichier!");
         return;
     }
 
@@ -33,7 +34,8 @@ void lireXml(QString nomFichier, EspaceTravail * espaceTravail){
     if(!document.setContent(fichier)){
         // erreur parser
 
-        std::cout << "erreur parser "<<std::endl;
+        //std::cout << "erreur parser "<<std::endl;
+        espaceTravail->showDialogError("Erreur parser fichier");
         return;
     }
     //Simulateur

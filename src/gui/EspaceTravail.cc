@@ -148,3 +148,10 @@ void EspaceTravail::addNoeud(NoeudG* noeud, QPointF p){
     noeud->setPos(p);
     scene->addItem(noeud);
 }
+
+void EspaceTravail::showDialogError(const char * error){
+
+    const QMessageBox::StandardButton ret
+            = QMessageBox::critical(this, tr("Erreur"), tr(error), QMessageBox::Ok);
+
+}

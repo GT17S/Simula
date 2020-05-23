@@ -1,6 +1,8 @@
 #include <NoeudG.hh>
 #include <QMessageBox>
 #include "PanneauEvents.hh"
+#include "DialogEnvoi.hh"
+
 
 NoeudG::NoeudG(EspaceTravail * _espaceTravail) : QGraphicsPixmapItem()
 {
@@ -112,6 +114,27 @@ void NoeudG::mousePressEvent(QGraphicsSceneMouseEvent *event)
             break;
         }
 
+        break;
+    }
+    case MESSAGE_MODE  : {
+        if(child->getTypeNoeud() != STATION) break;
+        if(!espaceTravail->currentExtremite){
+            qDebug() << "first click message";
+            extremite * x = new extremite;
+            x->noeud = child;
+            espaceTravail->currentExtremite = x;
+            event->ignore();
+            break;
+        }else {
+            qDebug() << "second click message";
+            extremite *x = espaceTravail->currentExtremite;
+            extremite *x2 = new extremite;
+            x2->noeud = child;
+            espaceTravail->currentExtremite= nullptr;
+            DialogEnvoi * dEnvoi= new DialogEnvoi(x->noeud, x2->noeud);
+            dEnvoi->show();
+            espaceTravail->setMode(SELECT_MODE);
+        }
         break;
     }
     default: break;

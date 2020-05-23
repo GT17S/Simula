@@ -9,7 +9,6 @@
 #include <cstring>
 
 #include "GFichier.hh"
-#include "DialogEnvoi.hh"
 
 
 PanneauOutils::PanneauOutils(EspaceTravail * _espaceTravail, gSimulation * g){
@@ -328,7 +327,8 @@ void PanneauOutils::dezoomer(){
 }
 
 void PanneauOutils::envoieD(){
-    DialogEnvoi * d = new DialogEnvoi;
-    d->show();
+    espaceTravail->setMode(MESSAGE_MODE);
+    // DialogEnvoi * d = new DialogEnvoi;
+   // d->show();
 }
 

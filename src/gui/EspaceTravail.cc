@@ -93,13 +93,7 @@ void EspaceTravail::mousePressEvent(QMouseEvent *event)
     case ROUTEUR_MODE: {
 
         RouteurG * r = new RouteurG(this);
-        Routeur *r_l = new Routeur(r);
-        /*r_l->getInterface(0)->setAdresseIP("192.168.0.1");
-        r_l->getInterface(0)->setAdresseMac("00.00.00.00");
-        r_l->getInterface(0)->setAdresseRes("192.168.0.0");
-        r_l->getInterface(0)->setMasque("192.168.0.0");
-        r_l->getInterface(0)->setNomInterface("interface 0");
-        */
+        Routeur *r_l = new Routeur(r);        
         addNoeud(r, p);
         break;
     }

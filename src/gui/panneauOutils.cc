@@ -185,7 +185,11 @@ void PanneauOutils::nouveauFichier(){
             break;
         }
     }
+
     // nouveau fichier
+    Graphe * graphe = Graphe::get();
+    graphe->~Graphe();
+    curFile = "";
 }
 void PanneauOutils::ouvrirFichier(){
     // verifier si un fichier est déja ouvert
@@ -215,7 +219,7 @@ void PanneauOutils::ouvrirFichier(){
                                                   tr("Fichier xml (*.xml)"));
     if(!fileName.isEmpty()){
         curFile = fileName;
-        qDebug() << curFile;
+        lireXml(fileName, espaceTravail);
 
     }
 
@@ -226,15 +230,15 @@ void PanneauOutils::sauvegarderFichier(){
     //
     if(curFile.isEmpty()){
 
-        QString fileName=QFileDialog::getOpenFileName(this,
+        QString fileName=QFileDialog::getSaveFileName(this,
                                                       tr("Sauvegarder le fichier de configuration"), "",
                                                       tr("Fichier xml (*.xml)"));
         if(!fileName.isEmpty()){
-            curFile = fileName;
-            qDebug() << curFile;
+            curFile = fileName+".xml";
+            ecrireXml(fileName);
         }
 
-    }
+    }else ecrireXml(curFile);
 }
 void PanneauOutils::exportDot(){
    if(curFile.isEmpty()){
@@ -298,8 +302,9 @@ void PanneauOutils::timer(){
 }
 
 void PanneauOutils::toPng(){
-    QString fileName = QFileDialog::getSaveFileName(this,
-                                                    tr("Save PNG"));
+    QString fileName=QFileDialog::getSaveFileName(this,
+                                                  tr("Exporter le fichier en image"), "",
+                                                  tr("Image png (*.png)"));
 
     if (fileName.isEmpty())
         return;
@@ -327,8 +332,6 @@ void PanneauOutils::dezoomer(){
 }
 
 void PanneauOutils::envoieD(){
-    espaceTravail->setMode(MESSAGE_MODE);
-    // DialogEnvoi * d = new DialogEnvoi;
-   // d->show();
+    espaceTravail->setMode(MESSAGE_MODE);   
 }
 

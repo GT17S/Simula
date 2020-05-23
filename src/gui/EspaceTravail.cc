@@ -35,6 +35,8 @@ EspaceTravail::EspaceTravail(){
     vue->setAcceptDrops(true);
     scene->setSceneRect(0, 0, 2000, 1000);
     setCentralWidget(vue);
+
+    setMode(SELECT_MODE);
     vue->show();
     //scene->update();
 }
@@ -145,4 +147,11 @@ void EspaceTravail::addNoeud(NoeudG* noeud, QPointF p){
     assert(noeud && "Pointeur null");
     noeud->setPos(p);
     scene->addItem(noeud);
+}
+
+void EspaceTravail::showDialogError(const char * error){
+
+    const QMessageBox::StandardButton ret
+            = QMessageBox::critical(this, tr("Erreur"), tr(error), QMessageBox::Ok);
+
 }

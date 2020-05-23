@@ -111,6 +111,9 @@ public:
 
     void addNoeud(NoeudG* noeud, QPointF p);
 
+    void showDialogError(const char * error);
+
+
     static  QCursor DELETE_CURSOR,
                    SELECT_CURSOR,
                    ROUTEUR_CURSOR,

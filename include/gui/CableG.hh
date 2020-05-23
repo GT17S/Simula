@@ -9,9 +9,11 @@
 #include <QPen>
 #include "Cable.hh"
 #include "NoeudG.hh"
+#include "DialogCable.hh"
 
 class Cable;
 class NoeudG;
+class DialogCable;
 /*!
  * \file CableG.hh
  * \brief Representation graphique du cable
@@ -25,7 +27,15 @@ private:
     Cable * child;
     NoeudG * extG1;
     NoeudG * extG2;
+    DialogCable *configurationCable;
+    static void createPen();
+
 public:
+    static  QPen DROIT_TYPE,
+                    CROISE_TYPE,
+                    DROIT_ERREUR_TYPE,
+                    CROISE_ERREUR_TYPE;
+
 	 /*!
          * \brief Constructeur paramétré
          * Constructeur qui prends deux points et initialise le cable a cette position
@@ -44,7 +54,9 @@ public:
 	void updateaff();
 
     Cable * getChild(){return child;}
-    void setChild(Cable * _child){ child = _child;}
+    void setChild(Cable * _child);
+protected:
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
 };
 
 #endif

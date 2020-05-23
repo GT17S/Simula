@@ -73,7 +73,7 @@ void Dialog::generalWidget()
     gridLayoutGeneral->setVerticalSpacing (0);
     generalWidget->setFixedSize( 400, 450);
 
-    QGroupBox *generalGroupBox = new QGroupBox(tr("Form General"));
+    QGroupBox *generalGroupBox = new QGroupBox(tr(" General"));
     QFormLayout *layout = new QFormLayout;
     layout->addRow(new QLabel(tr("Nom station:")), NomStation);
     layout->addRow(changerNom);
@@ -116,11 +116,10 @@ void Dialog::createWidget(){
     tabWidget = new QTabWidget;
     toolRoutage = new QToolBox();
     toolInterface = new QToolBox();
-    ajouterRoute = new QPushButton("Ajout");
-    supprimerRoute = new QPushButton("Suppression");
-    ajouterInterface = new QPushButton("Ajout");
-    supprimerInterface = new QPushButton("Suppression");
-    changerNom = new QPushButton("Changer");
+    ajouterRoute = new QPushButton("Ajouter une route");
+    ajouterInterface = new QPushButton("Ajouter une interface");
+    supprimerInterface = new QPushButton("Supprimer une interface");
+    changerNom = new QPushButton("Changer le nom");
     routeWidget = new QWidget();
     intWidget = new QWidget();
     routeLayout = new QGridLayout;
@@ -142,7 +141,7 @@ void Dialog::createWidget(){
     tabWidget->setDocumentMode(true);
     QVBoxLayout *mainLayout = new QVBoxLayout;
     setLayout(mainLayout);
-    setWindowTitle(tr("Configuration Tab"));
+    setWindowTitle(tr("Configuration de l'equipement"));
     mainLayout->addWidget(tabWidget);
     mainLayout->addWidget(buttonBox);
 

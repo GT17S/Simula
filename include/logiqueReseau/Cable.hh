@@ -12,7 +12,7 @@
 #include "Noeud.hh"
 #include "CableG.hh"
 #include <string>
-
+#include <QCursor>
 
 #ifndef CABLET_H
 #define CABLET_H
@@ -27,6 +27,7 @@ typedef enum {
 } cableT;
 
 #endif
+
 
 class Noeud;
 //class CableG;
@@ -50,6 +51,7 @@ struct extremite{
  */
 
 
+
 class Cable{
 private:
   static int nbCables; /*!< Nombre de cables */
@@ -64,7 +66,10 @@ private:
   extremite* ext1; /*!< Le Noeud à l'extremitie 1 */
   extremite* ext2; /*!< Le Noeud à l'extremitie 2*/
   CableG * parent;
+
+
 public:
+
 
   /*!
    *

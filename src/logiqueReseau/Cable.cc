@@ -8,7 +8,6 @@ int Cable::i = 1;
 
 
 Cable::Cable(CableG * _parent, cableT _type, int _debitMax, int _MTU){
-    type = _type;
     debitMax = _debitMax;
     MTU = _MTU;
 
@@ -21,6 +20,7 @@ Cable::Cable(CableG * _parent, cableT _type, int _debitMax, int _MTU){
     ext2 = new extremite();
 
     setParent(_parent);
+    setType(_type);
 }
 
 Cable::~Cable(){
@@ -44,15 +44,24 @@ Cable::~Cable(){
 
 void Cable::setId(int _idCable){ id = _idCable;}
 
-void Cable::setDebitMax(int _debitMax){debitMax = _debitMax;}
+void Cable::setDebitMax(int _debitMax){debitMax = _debitMax;parent->updateaff();}
 
-void Cable::setDebitAcc(float _debitAcc){debitAcc = _debitAcc;}
+void Cable::setDebitAcc(float _debitAcc){debitAcc = _debitAcc;parent->updateaff();}
 
-void Cable::setLatence(float _latence){latence = _latence;}
+void Cable::setLatence(float _latence){latence = _latence;parent->updateaff();}
 
-void Cable::setMTU(int _MTU){ MTU = _MTU;}
+void Cable::setMTU(int _MTU){ MTU = _MTU;parent->updateaff();}
 
-void Cable::setType(const cableT & _type){type = _type;}
+void Cable::setType(const cableT & _type){
+    type = _type;
+    if(type==0){
+        parent->setPen(CableG::DROIT_TYPE);
+    }else{
+        parent->setPen(CableG::CROISE_TYPE);
+    }
+parent->updateaff();
+
+}
 
 void Cable::setExt1(extremite * _noeud1){ext1 = _noeud1;}
 
@@ -74,13 +83,27 @@ bool  Cable::estBienConnecte(){
 
     // Meme type, cable croisé
     if(typeNoeud1 == typeNoeud2){
+        if(type==1){
+            parent->setPen(CableG::CROISE_TYPE);
+
+        }else  parent->setPen(CableG::CROISE_ERREUR_TYPE);
         return type;
     // Switch & Hub, cable croisé
     }else if ((typeNoeud1 == HUB ||typeNoeud2 == HUB) && (typeNoeud1 == SWITCH ||typeNoeud2 == SWITCH)){
+        if(type==1){
+            parent->setPen(CableG::CROISE_TYPE);
+
+        }else  parent->setPen(CableG::CROISE_ERREUR_TYPE);
         return type;
 
     // Sinon cable droit
-    }else return 1 - type;
+    }else {
+        if(type==1){
+            parent->setPen(CableG::DROIT_ERREUR_TYPE);
+
+        }else  parent->setPen(CableG::DROIT_TYPE);
+
+        return 1 - type;}
 }
 
 bool Cable::connexionNoeuds(Noeud * N1, int interface1, Noeud * N2, int interface2){
@@ -94,6 +117,7 @@ bool Cable::connexionNoeuds(Noeud * N1, int interface1, Noeud * N2, int interfac
         ext2->interface = interface2;
 
         Graphe::ajoutCableMatrice(this);
+        estBienConnecte();
         return true;
 
     }
@@ -103,6 +127,4 @@ bool Cable::connexionNoeuds(Noeud * N1, int interface1, Noeud * N2, int interfac
     //this = NULL;
     return false;
 }
-
-
 

@@ -73,6 +73,9 @@ public:
     Noeud * getChild(){return child;}
     void setChild(Noeud * _child);
 
+    vector<cableG_extremite> getCablesG(){return extremiteG;}
+    void setCableG(vector<cableG_extremite> _extremiteG){ extremiteG = _extremiteG;}
+
     QTreeWidgetItem * getTreeItem(){return parent;}
     void setTreeItem(QTreeWidgetItem *_parent){ parent = _parent;}
 
@@ -83,7 +86,6 @@ protected:
     Noeud * child;
     QTreeWidgetItem *parent;/*!< la section ou tous les traitement d'une station seront affiche dans PanneauEvent */
     Dialog * configuration;
-    QMenu * interfacesMenu;
 
     //void mouseDoubleClickEvent( QMouseEvent * e );
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
@@ -94,8 +96,7 @@ protected:
     //void mouseReleaseEvent( QMouseEvent *e );
 
  public slots :
-    void interfaceAction(QAction*);
-    void onCloseMenu();
+    void interfaceAction(int i);
 };
 
 #endif

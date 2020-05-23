@@ -48,12 +48,6 @@ simulaGui::simulaGui( gSimulation * g){
     mainlayout->setRowStretch(3,1);
     mainlayout->setRowStretch(4,2);
 
-    
-    //widgets[1]->setMinimumSize(450,410);
-//    widgets[2]->setMinimumHeight(80);
-//    widgets[2]->setMaximumHeight(100);
-    widgets[4]->setMinimumSize(100,410);
-    widgets[4]->setMaximumWidth(350);
 
     for(int i = 0; i < 5; i++){
         widgets[i]->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);

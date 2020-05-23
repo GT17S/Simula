@@ -38,12 +38,7 @@ void ToolBarEquipement::createButtons(){
     cableAction = new QPushButton(this);
     cableAction->setObjectName("cableAction");
     cableAction->setProperty("outilsBar", false);
-    cableAction->setToolTip("Cable");
-    QMenu * menu = new QMenu;
-    cableDAction = menu->addAction(QIcon(QPixmap("")),"Cable droit");
-    cableCAction = menu->addAction(QIcon(QPixmap("")),"Cable croisé");
-    cableAction->setMenu(menu);
-    //exportButton->setPopupMode(QToolButton::MenuButtonPopup);
+    cableAction->setToolTip("Cable");    
     addWidget(cableAction);
 
     stationAction = new QPushButton(this);
@@ -79,6 +74,8 @@ void ToolBarEquipement::createSignals(){
 
     connect(selectAction, SIGNAL(clicked()), this, SLOT(selectItem()));
     connect(supprAction, SIGNAL(clicked()), this, SLOT(supprimerEquipement()));
+    connect(cableAction, SIGNAL(clicked()), this, SLOT(ajouterCable()));
+
     mapper->setMapping(routeurAction, 1);
     mapper->setMapping(hubAction, 2);
     mapper->setMapping(stationAction, 3);
@@ -89,14 +86,6 @@ void ToolBarEquipement::createSignals(){
     connect(hubAction, SIGNAL(clicked()), mapper, SLOT(map()));
     connect(stationAction, SIGNAL(clicked()), mapper, SLOT(map()));
     connect(switchAction, SIGNAL(clicked()), mapper, SLOT(map()));
-
-    QSignalMapper* mapperCable = new QSignalMapper(this);
-    connect(mapperCable, SIGNAL(mapped(int)), this, SLOT(ajouterCable(int)));
-    mapperCable->setMapping(cableDAction, 1);
-    mapperCable->setMapping(cableCAction, 2);
-
-    connect(cableDAction, SIGNAL(triggered()), mapperCable, SLOT(map()));
-    connect(cableCAction, SIGNAL(triggered()), mapperCable, SLOT(map()));
 }
 
 void ToolBarEquipement::createShortcuts(){
@@ -108,7 +97,7 @@ void ToolBarEquipement::selectItem(){
     espaceTravail->setMode(SELECT_MODE);
 }
 
-void ToolBarEquipement::ajouterCable(int n){
+void ToolBarEquipement::ajouterCable(){
   //  qDebug()<< "cable clicked "<<n;
     espaceTravail->setMode(CABLE_MODE);
 }

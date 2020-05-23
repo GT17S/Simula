@@ -8,8 +8,10 @@
 #include <string>
 #include <QPen>
 #include "Cable.hh"
+#include "NoeudG.hh"
 
 class Cable;
+class NoeudG;
 /*!
  * \file CableG.hh
  * \brief Representation graphique du cable
@@ -18,8 +20,11 @@ class Cable;
  */
 class CableG: public QGraphicsLineItem
 {
+    friend class NoeudG;
 private:
     Cable * child;
+    NoeudG * extG1;
+    NoeudG * extG2;
 public:
 	 /*!
          * \brief Constructeur paramétré

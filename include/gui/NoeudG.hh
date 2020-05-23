@@ -46,14 +46,9 @@ class NoeudG  :  public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
 private:
-    //pour les icons afficher les differents noeuds
-    void addLine(CableG * cable, bool isPoint1);
-    void moveCable(QPointF newPos);
 
 
 public:
-    void toolTipShow();
-    //NoeudG(){ qDebug("hello switch!");}
     /*!
          * \brief Construceur d'initialisation
          *  Constructeur de la classe NoeudG
@@ -78,6 +73,9 @@ public:
     QTreeWidgetItem * getTreeItem(){return parent;}
     void setTreeItem(QTreeWidgetItem *_parent){ parent = _parent;}
 
+    void addLine(CableG * cable, bool isPoint1);
+    void moveCable(QPointF newPos);
+    void toolTipShow();
 protected:
     vector<cableG_extremite> extremiteG;
     //fenetre en clickant sur l'un des noeuds

@@ -111,7 +111,8 @@ void lireXml(QString nomFichier, EspaceTravail * espaceTravail){
     QDomNode cables = noeuds.nextSibling();
     QDomNode cable = cables.firstChild();
     while(!cable.isNull()){
-        Cable * c = new Cable();
+        CableG * cG = new CableG();
+        Cable * c = new Cable(cG);
         c->setId(cable.toElement().attribute("id").toInt());
         cableT type = static_cast<cableT>(cable.toElement().attribute("type").toInt());
         c->setType(type);
@@ -126,11 +127,18 @@ void lireXml(QString nomFichier, EspaceTravail * espaceTravail){
         element = element.nextSiblingElement(); // Noeud A
         int interface1 = element.attribute("interface").toInt();
         Noeud * noeudA = Graphe::getSommets()[element.text().toInt()];
-
+        NoeudG * noeudAG = noeudA->getParent();
         element = element.nextSiblingElement(); // Noeud B
         int interface2 = element.attribute("interface").toInt();
         Noeud * noeudB = Graphe::getSommets()[element.text().toInt()];
+        NoeudG * noeudBG = noeudB->getParent();
+        noeudAG->addLine(cG, true);
+        noeudAG->moveCable(noeudAG->pos());
 
+        noeudBG->addLine(cG, false);
+        noeudBG->moveCable(noeudBG->pos());
+        cG->setZValue(-1);
+        espaceTravail->getScene()->addItem(cG);
         //std::cout << noeudB->getNom()<<" "<<interface1<<" "<<noeudB->getNom()<<" "<<interface2<<std::endl;
         c->connexionNoeuds(noeudA, interface1, noeudB, interface2);
 

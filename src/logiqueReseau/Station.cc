@@ -2,9 +2,6 @@
 #include "DataOutils.hh"
 #include "QString"
 
-
-
-
 Station::Station(StationG * parent) : Noeud(parent){
     // ID automatique
     // nb port =1
@@ -15,8 +12,7 @@ Station::Station(StationG * parent) : Noeud(parent){
     controleur = new Congestion();
     numSeq = 1;
     isPasserelle = false;
-
-
+    setParent(parent);
 
 }
 
@@ -26,6 +22,8 @@ Station::Station(string _nom, int _idNoeud, int _nbPort, string _adressePasserel
     setPasserelle(_adressePasserelle);
     type = STATION;
     isPasserelle = _isPasserelle;
+    setParent(parent);
+
 }
 
 

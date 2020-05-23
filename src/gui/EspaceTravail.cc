@@ -93,7 +93,7 @@ void EspaceTravail::mousePressEvent(QMouseEvent *event)
     case ROUTEUR_MODE: {
 
         RouteurG * r = new RouteurG(this);
-        Routeur *r_l = new Routeur(r);
+        Routeur *r_l = new Routeur(r);        
         addNoeud(r, p);
         break;
     }
@@ -138,7 +138,3 @@ void EspaceTravail::addNoeud(NoeudG* noeud, QPointF p){
     noeud->setPos(p);
     scene->addItem(noeud);
 }
-
-
-
-

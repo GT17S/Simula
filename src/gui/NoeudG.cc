@@ -16,7 +16,11 @@ NoeudG::NoeudG(EspaceTravail * _espaceTravail) : QGraphicsPixmapItem()
     //PanneauEvents::addRoot(parent,QString::fromStdString());
 
 }
-void NoeudG::setChild(Noeud * _child){child = _child; configuration=new Dialog (_child);}
+    void NoeudG::setChild(Noeud * _child){
+      child = _child;
+      configuration=new Dialog (_child);
+      toolTipShow();
+      }
 
 NoeudG::~NoeudG()
 {
@@ -151,14 +155,125 @@ void NoeudG::showInterfacesMenu()
 
 }
 void NoeudG::toolTipShow(){
-    setToolTip(
-                "<h2><b><font color='red'>MyList</font></b></h2>"
-                "<ol>"
-                "<li>First</li>"
-                "<li>Second</li>"
-                "<li>Third</li>"
-                "</ol>"
-                );
+  QString s,equipementName;
+  QTextStream stream(&s);
+
+
+  stream << "<h3> <b> <font color='red'>" << "Nom equipement: " <<QString::fromStdString(this->getChild()->getNom())<<" </font></b></h3>"<<"<br>";
+
+  switch(child->getTypeNoeud()){
+  case SWITCH: {
+       equipementName="Switch";
+       stream<<"<b>Interfaces voisines connectes: </b> <br>";
+       if(child->getInterfaces().size()==0)
+           stream<<"Pas d'interfaces voisines encore";
+
+       for(int i=0;i<child->getInterfaces().size();i++)
+       {
+           Cable *c=child->getInterface(i)->getCable();
+           if(c)
+           {
+               extremite *x=c->getInverseExt(child);
+               if(x)
+               {   InterfaceFE *f;
+                   f = x->noeud->getInterface(x->interface);
+                           stream<<
+                                   QString::fromStdString(f->getNomInterface())<<
+                                   QString::fromStdString(f->getAdresseIP())<<
+                                   QString::fromStdString(f->getAdresseMac())<<
+                                   QString::fromStdString(f->getAdresseRes())<<
+                                   QString::fromStdString(f->getMasque())<<"<br>";
+               }
+
+           }
+       }
+      break;
+  }
+  case STATION: {
+      equipementName="Station";
+      stream<<"<b>Interfaces:</b><br>";
+      for (int i=0;i<child->getInterfaces().size();i++ ) {
+              stream<<
+                      QString::fromStdString(child->getInterfaces().at(i)->getNomInterface())<<" "<<
+                      QString::fromStdString(child->getInterfaces().at(i)->getAdresseIP())<<" "<<
+                      QString::fromStdString(child->getInterfaces().at(i)->getAdresseMac())<<" "<<
+                      QString::fromStdString(child->getInterfaces().at(i)->getAdresseRes())<<" "<<
+                      QString::fromStdString(child->getInterfaces().at(i)->getMasque())<<"<br>";
+      }
+      stream<<"<br><b>Routes: </b><br>";
+      if(child->getTableRoutage().size()==0)
+          stream<<"Pas de routes encore";
+      else
+      for (int i=0;i<child->getTableRoutage().size();i++ ) {
+              stream<<
+                      QString::fromStdString(child->getTableRoutage().at(i)->adresseReseau)<<" "<<
+                      QString::fromStdString(child->getTableRoutage().at(i)->masque)<< " "<<
+                      QString::fromStdString(child->getTableRoutage().at(i)->passerelle)<< "<br>";
+      }
+      break;
+  }
+  case HUB:  {
+      equipementName="Hub";
+
+      stream<<"<b>Interfaces voisines connectes: </b> <br>";
+      if(child->getInterfaces().size()==0)
+          stream<<"Pas d'interfaces voisines encore";
+
+      for(int i=0;i<child->getInterfaces().size();i++)
+      {
+          Cable *c=child->getInterface(i)->getCable();
+          if(c)
+          {
+              extremite *x=c->getInverseExt(child);
+              if(x)
+              {   InterfaceFE *f;
+                  f = x->noeud->getInterface(x->interface);
+                          stream<<
+                                  QString::fromStdString(f->getNomInterface())<<
+                                  QString::fromStdString(f->getAdresseIP())<<
+                                  QString::fromStdString(f->getAdresseMac())<<
+                                  QString::fromStdString(f->getAdresseRes())<<
+                                  QString::fromStdString(f->getMasque())<<"<br>";
+
+              }
+
+          }
+      }
+
+      break;
+  }
+  case ROUTEUR: {
+      equipementName="Routeur";
+      stream<<"<b>Interfaces:</b><br>";
+      for (int i=0;i<child->getInterfaces().size();i++ ) {
+              stream<<
+                      QString::fromStdString(child->getInterfaces().at(i)->getNomInterface())<<" "<<
+                      QString::fromStdString(child->getInterfaces().at(i)->getAdresseIP())<<" "<<
+                      QString::fromStdString(child->getInterfaces().at(i)->getAdresseMac())<<" "<<
+                      QString::fromStdString(child->getInterfaces().at(i)->getAdresseRes())<<" "<<
+                      QString::fromStdString(child->getInterfaces().at(i)->getMasque())<<"<br>";
+      }
+      stream<<"<br><b>Routes: </b><br>";
+      if(child->getTableRoutage().size()==0)
+          stream<<"Pas de routes encore";
+      else
+      for (int i=0;i<child->getTableRoutage().size();i++ ) {
+              stream<<
+                      QString::fromStdString(child->getTableRoutage().at(i)->adresseReseau)<<" "<<
+                      QString::fromStdString(child->getTableRoutage().at(i)->masque)<< " "<<
+                      QString::fromStdString(child->getTableRoutage().at(i)->passerelle)<< "<br>";
+      }break;
+  }
+  default: return;
+  }
+
+
+          qDebug()<<child->getIdNoeud();
+          qDebug()<<QString::fromStdString(child->getNom());
+          qDebug()<<equipementName;
+
+          setToolTip(s);
+
 }
 
 void NoeudG::addLine(CableG * _cable, bool isPoint1) {
@@ -194,5 +309,3 @@ void NoeudG::interfaceAction(int i){
     qDebug() << " Interface "<<ext->interface;
     espaceTravail->currentExtremite = ext;
 }
-
-

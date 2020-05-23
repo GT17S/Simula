@@ -7,6 +7,8 @@ Switch::Switch(string  _nom,int _idNoeud,int _nbPort, SwitchG * parent) :
     Hub(_nom, _idNoeud, _nbPort, parent)
 {
     type = SWITCH;
+    setParent(parent);
+
 }
 
 Switch::Switch(SwitchG * parent) : Hub(parent) {
@@ -15,6 +17,7 @@ Switch::Switch(SwitchG * parent) : Hub(parent) {
     // filedattente vide
     setNom("Switch"+std::to_string(idNoeud));
     type = SWITCH;
+    setParent(parent);
 
 }
 

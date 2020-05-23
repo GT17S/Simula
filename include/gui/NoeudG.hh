@@ -49,11 +49,10 @@ private:
     //pour les icons afficher les differents noeuds
     void addLine(CableG * cable, bool isPoint1);
     void moveCable(QPointF newPos);
-    void toolTipShow();
 
 
 public:
-
+    void toolTipShow();
     //NoeudG(){ qDebug("hello switch!");}
     /*!
          * \brief Construceur d'initialisation

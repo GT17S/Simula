@@ -8,12 +8,13 @@ Routeur::Routeur(RouteurG * parent) : Noeud(parent){
     // filedattente vide
     setNom("Routeur"+std::to_string(idNoeud));
     type = ROUTEUR;
-
+    setParent(parent);
 }
 
 Routeur::Routeur(string _nom, int _idNoeud, int _nbPort, RouteurG *parent) :
     Noeud(_nom, _idNoeud, _nbPort, parent){
     type = ROUTEUR;
+    setParent(parent);
 
 }
 

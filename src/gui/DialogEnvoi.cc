@@ -41,12 +41,12 @@ void DialogEnvoi::createForm(){
 
     editPortSrc = new QLineEdit();
     editPortSrc->setPlaceholderText("Port source");
-    editPortSrc->setValidator( new QIntValidator(0, 100, this) );
+    editPortSrc->setValidator( new QIntValidator(0, 100000, this) );
     layout->addWidget(editPortSrc);
 
     editPortDest = new QLineEdit();
     editPortDest->setPlaceholderText("Port destination");
-    editPortSrc->setValidator( new QIntValidator(0, 100, this) );
+    editPortDest->setValidator( new QIntValidator(0, 100000, this) );
     layout->addWidget(editPortDest);
 
     checkAck = new QCheckBox("Attendre retour (ACK)");
@@ -116,12 +116,12 @@ void DialogEnvoi::preparenvoi(){
 
 
         bool syn = true;
-        bool ack = (checkAck->isChecked() ?  1 : 0);
+        bool ack = checkAck->isChecked() ?  1 : 0;
 
         int nseq = s1->getNextNumSeq();
         int nack = 0;
         int ipid = nseq + 100;
-        bool df = (checkFrag->isChecked() ?  1 : 0);
+        bool df = checkFrag->isChecked() ?  1 : 0;
 
         Data* sendData = new Data(editMessage->text().toStdString());
         //Préparer l'envoi
@@ -139,18 +139,20 @@ void DialogEnvoi::preparenvoi(){
        stream<<"</ul>";
        errorbox.setText(errorString);
        errorbox.exec();
+       reject();
     }
+    accept();
 
 }
 
 void DialogEnvoi::onExitDialog(int)
-{/*
+{
     editNoeud1->setText("");
     editNoeud2->setText("");
     editPortSrc->setText("");
     editPortDest->setText("");
     editMessage->setText("");
     checkAck->setChecked(false);
-    checkFrag->setChecked(false);*/
-    delete this;
+    checkFrag->setChecked(false);
+    //delete this;
 }

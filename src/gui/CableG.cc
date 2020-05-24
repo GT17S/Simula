@@ -61,7 +61,7 @@ void CableG::updateaff(){
     //double bb=std::setprecision(3) << bandPass;
     stream <<"Debit Max = "<<child->getDebitMax()<<"<br>"
           <<"MTU = "<<child->getMTU()<<"<br>"
-           <<"Bande passante = "<<fixed <<  qSetRealNumberPrecision(2)<<bandPass;
+           <<"Bande passante = "<<fixed <<  qSetRealNumberPrecision(0)<<bandPass;
           /*  if(bandPass){
         stream <<"Bande passente = "<<QString::number(bandPass,'f', 3)<<"<br>";
             }else{

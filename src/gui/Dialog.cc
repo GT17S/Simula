@@ -183,9 +183,9 @@ void Dialog::showConfig(Noeud *src){
 
     NomStation->setText(QString::fromStdString(src->getNom()));
     if(src->getTypeNoeud()==2 ||src->getTypeNoeud()==3 ){
-        qDebug()<<"ggggggg";
         return ;
-    }else {
+    }
+
         for(InterfaceFE *i:src->getInterfaces()){
             QString AdresseIP=QString::fromStdString(i->getAdresseIP()),
                     AdresseMac=QString::fromStdString(i->getAdresseMac()),
@@ -199,26 +199,25 @@ void Dialog::showConfig(Noeud *src){
 
             mapperInterfaceAp->setMapping(ig->appliquer,toolInterface->count());
             connect(ig->appliquer, SIGNAL(clicked()), mapperInterfaceAp, SLOT(map()));
-
             toolInterface->addItem(ig,"Interface");
+
         }
-
         for(Route *r: src->getTableRoutage()){
-            int a=src->getTableRoutage().size();
-            QString nextHope=QString::fromStdString(r->passerelle),
+             int a=src->getTableRoutage().size();
+             QString nextHope=QString::fromStdString(r->passerelle),
                     AdresseRes=QString::fromStdString(r->adresseReseau),
-                    mask=QString::fromStdString(r->masque);
-            RouteG *rg=new RouteG(nextHope,AdresseRes,mask);
-            mapperRoute->setMapping(rg->supprimer,toolRoutage->count());
-            connect(rg->supprimer, SIGNAL(clicked()), mapperRoute, SLOT(map()));
+                     mask=QString::fromStdString(r->masque);
+             RouteG *rg=new RouteG(nextHope,AdresseRes,mask);
+             mapperRoute->setMapping(rg->supprimer,toolRoutage->count());
+             connect(rg->supprimer, SIGNAL(clicked()), mapperRoute, SLOT(map()));
 
-            mapperRouteAp->setMapping(rg->appliquer,toolRoutage->count());
-            connect(rg->appliquer, SIGNAL(clicked()), mapperRouteAp, SLOT(map()));
+             mapperRouteAp->setMapping(rg->appliquer,toolRoutage->count());
+             connect(rg->appliquer, SIGNAL(clicked()), mapperRouteAp, SLOT(map()));
 
-            toolRoutage->addItem(rg,"Route");
-        }}
-
+             toolRoutage->addItem(rg,"Route");
+     }
 }
+
 void Dialog::appliquerInterface(int i){
     QString errorString;
     QTextStream stream(&errorString);
@@ -252,6 +251,8 @@ void Dialog::appliquerInterface(int i){
         QMessageBox::warning(this, "Bien ",
                              "adresses Sauvgardé ",
                              QMessageBox::Ok);
+        src->getParent()->toolTipShow();
+
         return;
 
     }else{
@@ -313,12 +314,20 @@ void Dialog::appliquerRoute(int i){
             && InterfaceFE::checkAdresse(AdresseResApp.toStdString(),IP_REGEX,DEFAULT_IP) != DEFAULT_IP
             && InterfaceFE::checkAdresse(mask.toStdString(),IP_REGEX,DEFAULT_IP) != DEFAULT_IP
             ){
+        qDebug()<<"adress rx"+AdresseResApp;
+        qDebug()<<"adress nexthopp"+AdresseIPApp;
+        qDebug()<<"adress masque"+mask;
+
         routeNew->adresseReseau=AdresseResApp.toStdString();
+         qDebug()<<"apres ajout "+QString::fromStdString(routeNew->adresseReseau);
         ig->AdresseRes->setStyleSheet("color:black");
         routeNew->passerelle=AdresseIPApp.toStdString();
         ig->nextHope->setStyleSheet("color:black");
         routeNew->masque=mask.toStdString();
         ig->mask->setStyleSheet("color:black");
+        src->getParent()->toolTipShow();
+        src->modifierRoute(i,routeNew);
+
         QMessageBox::warning(this, "Bien ",
                              "adresses Sauvgardé ",
                              QMessageBox::Ok);
@@ -328,7 +337,7 @@ void Dialog::appliquerRoute(int i){
         if(InterfaceFE::checkAdresse(AdresseIPApp.toStdString(),IP_REGEX,DEFAULT_IP) == DEFAULT_IP
                 || AdresseIPApp.isEmpty() ){
             ig->nextHope->setStyleSheet("color:red");
-            stream<<"<li>Adresse ip</li>";
+            stream<<"<li>Adresse nextHope</li>";
         }else
         {
             ig->nextHope->setStyleSheet("color:black");
@@ -338,7 +347,7 @@ void Dialog::appliquerRoute(int i){
         if(InterfaceFE::checkAdresse(AdresseResApp.toStdString(),IP_REGEX,DEFAULT_IP) == DEFAULT_IP
                  || AdresseResApp.isEmpty() ){
             ig->AdresseRes->setStyleSheet("color:red");
-            stream<<"<li>Adresse ip</li>";
+            stream<<"<li>Adresse reseau</li>";
         }else
         {
             ig->AdresseRes->setStyleSheet("color:black");
@@ -347,7 +356,7 @@ void Dialog::appliquerRoute(int i){
         if(InterfaceFE::checkAdresse(mask.toStdString(),IP_REGEX,DEFAULT_IP) == DEFAULT_IP
                  || mask.isEmpty() ){
             ig->mask->setStyleSheet("color:red");
-            stream<<"<li>Adresse ip</li>";
+            stream<<"<li>Masque reseau</li>";
         }else
         {
             ig->mask->setStyleSheet("color:black");
@@ -363,12 +372,8 @@ void Dialog::appliquerRoute(int i){
         errorbox.exec();
         return;
     }
-
-
-
-
-
     src->getParent()->toolTipShow();
+
 }
 void Dialog::appliquerChangerNom(){
     QString nom=NomStation->text();

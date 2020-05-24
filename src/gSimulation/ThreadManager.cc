@@ -1,7 +1,7 @@
 #include "ThreadManager.hh"
 
 
-ThreadManager::ThreadManager(gSimulation* _gestionnaire){
+ThreadManager::ThreadManager(gSimulation* _gestionnaire) : QObject (nullptr) {
 	mutexmap["Cable"] = new std::mutex();
 	gestionnaire = _gestionnaire;
 }
@@ -35,3 +35,20 @@ void ThreadManager::joinall(){
 	}
 }
 
+// Ajouté par Massi
+bool ThreadManager::findWorker ( Station * s)	{
+	bool found = false;
+	for (unsigned int i = 0; i < workingStations.size() && !found; i++)
+		if ( workingStations[i] == s)
+			found = true;
+	return found;
+}
+
+// Ajouté par Massi
+void ThreadManager::createWorker ( NoeudG * n)	{
+	Station * s = dynamic_cast <Station *> (n->getChild());
+	if ( s == nullptr) return;
+	if ( findWorker ( s)) return;
+	WorkingThreads.push_back(std::thread(&Station::mainlocal, s, mutexmap["Cable"], gestionnaire));	
+	workingStations.push_back(s);
+}

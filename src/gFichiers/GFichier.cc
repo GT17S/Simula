@@ -14,7 +14,7 @@ QFile * ouvrirlXml(QString nomFichier, QIODevice::OpenMode mode){
     return fichier;
 }
 
-void lireXml(QString nomFichier, EspaceTravail * espaceTravail){
+void lireXml(QString nomFichier, EspaceTravail * espaceTravail, ThreadManager * tm){
     Graphe * graphe = Graphe::get();
     graphe->~Graphe();
 
@@ -52,6 +52,7 @@ void lireXml(QString nomFichier, EspaceTravail * espaceTravail){
         if(type.compare("STATION", Qt::CaseInsensitive) == 0){
             nG = new StationG(espaceTravail);
             n  = new Station(dynamic_cast<StationG*>(nG));
+			tm->createWorker ( nG);
         }
         else if(type.compare("ROUTEUR", Qt::CaseInsensitive) == 0){
             nG = new RouteurG(espaceTravail);

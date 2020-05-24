@@ -76,6 +76,9 @@ public:
     void addLine(CableG * cable, bool isPoint1);
     void moveCable(QPointF newPos);
     void toolTipShow();
+	//Ajouté par Massi
+	EspaceTravail * getEspaceTravail ()	{ return espaceTravail;};
+
 protected:
     vector<cableG_extremite> extremiteG;
     //fenetre en clickant sur l'un des noeuds

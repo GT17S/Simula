@@ -9,11 +9,17 @@
 #include <cstring>
 
 #include "GFichier.hh"
+#include "NoeudG.hh"
 
 
 PanneauOutils::PanneauOutils(EspaceTravail * _espaceTravail, gSimulation * g){
     espaceTravail = _espaceTravail;
     this->gestSimulation = g;
+
+// Ajouté par Massi
+//	Connexion signals/slots 
+	QObject::connect ( espaceTravail, SIGNAL(createStation(NoeudG*)), g->getManager(), SLOT(createWorker(NoeudG*)));
+
 
     this->setMinimumHeight(60);
     this->setMaximumHeight(70);
@@ -219,7 +225,7 @@ void PanneauOutils::ouvrirFichier(){
                                                   tr("Fichier xml (*.xml)"));
     if(!fileName.isEmpty()){
         curFile = fileName;
-        lireXml(fileName, espaceTravail);
+        lireXml(fileName, espaceTravail, gestSimulation->getManager());
 
     }
 

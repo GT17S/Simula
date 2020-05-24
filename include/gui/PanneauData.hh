@@ -5,6 +5,7 @@
 #include <QTabWidget>
 #include <QMap>
 #include "PanneauEvents.hh"
+#include "EspaceTravail.hh"
 #include "Data.hh"
 #include "DataG.hh"
 #include "Graphe.hh"

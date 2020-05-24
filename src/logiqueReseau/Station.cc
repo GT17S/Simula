@@ -82,7 +82,7 @@ void Station::envoyerMessage(int key, destination dest){
     int id_src  = lireAdresseMac(dest.data, 0);
     int id_dest = lireAdresseMac(dest.data, 1);
     if(id_src < 0 || id_dest < 0){
-        std::cout <<"Lecture @mac probleme "<<id_src<<" "<<id_dest<< std::endl;
+        //std::cout <<"Lecture @mac probleme "<<id_src<<" "<<id_dest<< std::endl;
         //PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Je connais pas le chemin vers ")+QString::number(ext->noeud->getNom()));
 
         return;
@@ -94,7 +94,7 @@ void Station::envoyerMessage(int key, destination dest){
     int size_p = path.size();
 
     if(!size_p){
-        std::cout << "Je connais pas le chemin vers "<<id_dest<<std::endl;
+        //std::cout << "Je connais pas le chemin vers "<<id_dest<<std::endl;
         PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Je connais pas le chemin vers "+ Graphe::getSommets()[id_dest]->getNom()));
 
         return;
@@ -113,7 +113,7 @@ void Station::envoyerMessage(int key, destination dest){
     this->mutexcabl->unlock();
     // prochaine destination
     extremite * extNext = path[size_p -1]->getInverseExt(this);
-   PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Je connais pas le chemin vers ")+QString::fromStdString(extNext->noeud->getNom()));
+   PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Enovyé donnée vers ")+QString::fromStdString(extNext->noeud->getNom()));
 
     extNext->noeud->recevoirMessage(key, extNext->interface, dest);
 
@@ -127,7 +127,7 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
         lastpath[i]->setDebitAcc(tmpcableBP + (float)dest.data->getOriginialStringSize()*8);
     }    
     this->mutexcabl->unlock();
-    std::cout <<"Je suis une station "<< idNoeud<<std::endl;
+    //std::cout <<"Je suis une station "<< idNoeud<<std::endl;
     // std::cout <<"TYPE DATA = "<< dest.data->getType() << std::endl;
     if(dest.data->getType() < 3){
         std::cout <<"Data non encapsuler"<<std::endl;
@@ -140,7 +140,7 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
 
     if(mac_dest < 0 || mac_src < 0){
         std::cout << "Lecture @mac probleme "<<mac_src<<" "<<mac_dest<< std::endl;
-        PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Mac probelme "));
+        PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Erreur de lecture de l'adresse mac"));
 
         return;
     }
@@ -149,15 +149,15 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
         string ipSrc = getInterface(dest_i)->getAdresseIP();
         string ipDest= lireAdresseIp(dest.data, 1);
         if(ipSrc == DEFAULT_IP || ipDest == DEFAULT_IP){
-            std::cout<< "Probleme lecture @ip" <<std::endl;
-           PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("IP probelme "));
+            //std::cout<< "Probleme lecture @ip" <<std::endl;
+           PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Erreur de lecture de l'adresse IP"));
 
             return;
         }
 
         if(ipSrc == ipDest){
             std::cout <<"Cest moi la destination" <<std::endl;
-           PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Destination "));
+           PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Arrivé à destination"));
 
             // verifier fragmentation ?
             int ipid = checkFragment(dest.data);
@@ -171,15 +171,15 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
                     }else it++;
                 }
                 // reassemblage
-               PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Reassemblage de paquet "));
+               PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Reassemblage de paquets"));
 
                 dest.data = reassemblagepaquet(res);
 
                 }
 
 
+            PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Desencapsulation de paquet"));
             desencapsule_paquet(dest.data);
-            PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Desencapsulation de paquet  "));
 
             // lire ack et syn
             int flags = lireFlagSegment(dest.data);
@@ -200,8 +200,10 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
                 int nSeq = lire_bits ( *(dest.data)->getSeq(), 32, 32).to_ulong();
                 if(nSeq < 0) return;
 
-
+                PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Desencapsulation de segment"));
                 desencapsule_segment(dest.data);
+                PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Message recu :")+QString::fromStdString(showMessage(dest.data)));
+
                 std::cout <<"Jai recu le message :"<<std::endl<<showMessage(dest.data) <<std::endl;
                 delete dest.data;
 			    this->mutexcabl->lock();
@@ -212,7 +214,7 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
                 }    
 			    this->mutexcabl->unlock();
                 // envoi nouveau ack
-        PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Envoie d'Ack ")+QString::number(nSeq+1));
+                PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Envoie d'Ack ")+QString::number(nSeq+1)+" vers "+QString::fromStdString(n2->getNom()));
 
                 controleur->verifieNumSegment(this, n2, nSeq+1);
 
@@ -295,7 +297,9 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
         }
     }
     else {
-        std::cout <<"Mauvaise destination" <<std::endl;
+       // std::cout <<"Mauvaise destination" <<std::endl;
+        PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Mauvaise destination"));
+
         return;
     }
 

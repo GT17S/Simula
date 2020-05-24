@@ -32,8 +32,8 @@ void Routeur::envoyerMessage(int key, destination dest){
     int size_p = path.size();
 
     if(!size_p){
-        std::cout << "Je connais pas le chemin vers "<<id_dest<<std::endl;
-        //PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Je connais pas le chemin vers ")+QString::number(ext->noeud->getNom()));
+       // std::cout << "Je connais pas le chemin vers "<<id_dest<<std::endl;
+        PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Je connais pas le chemin vers ")+QString::fromStdString(Graphe::getSommets()[id_dest]->getNom()));
 
         return;
     }
@@ -42,7 +42,7 @@ void Routeur::envoyerMessage(int key, destination dest){
 
     //std::cout <<"J'envoie le message à "<<ext->noeud->getIdNoeud()<< std::endl;
     //_message = std::to_string(id_next)+"_"+std::to_string(id_dest);
-    PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Je connais pas le chemin vers ")+QString::fromStdString(extNext->noeud->getNom()));
+    PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Envoyer donnée vers :s")+QString::fromStdString(extNext->noeud->getNom()));
 
     extNext->noeud->recevoirMessage(key, extNext->interface,  dest);
 }
@@ -64,8 +64,8 @@ void Routeur::recevoirMessage(int key, int dest_i, destination dest){
         desencapsule_trame(dest.data);
         string ipSrc = getInterface(dest_i)->getAdresseIP();
         if(ipSrc == lireAdresseIp(dest.data, 1)){
-            std::cout <<"Cest moi la destination" <<std::endl;
-        PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Destination "));
+           // std::cout <<"Cest moi la destination" <<std::endl;
+        PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Arrivé à destination "));
 
             desencapsule_paquet(dest.data);
             desencapsule_segment(dest.data);
@@ -116,7 +116,7 @@ void Routeur::recevoirMessage(int key, int dest_i, destination dest){
             //std::cout <<"MTU = "<< mtu<<" TP  "<<tp_initial<< std::endl;
             if(mtu < tp_initial){
                 //fragmenter
-               PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Fragmentation "));
+               PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Fragmentation de paquet"));
 
                 unsigned int df = (unsigned int) lire_bits ( *(dest.data->getSeq()), 49, 1).to_ulong();
                 if(df) { delete dest.data; return;}
@@ -139,7 +139,7 @@ void Routeur::recevoirMessage(int key, int dest_i, destination dest){
         }
     }
     else {
-        std::cout <<"Mauvaise destination" <<std::endl;
+        //std::cout <<"Mauvaise destination" <<std::endl;
         PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Mauvaise destination"));
 
         return;

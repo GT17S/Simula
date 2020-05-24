@@ -2,10 +2,19 @@
 #include "DataOutils.hh"
 #include "gSimulation.hh"
 #include "PanneauData.hh"
+#include "simulaGui.hh"
 
 #include <QIntValidator>
 
-DialogEnvoi::DialogEnvoi(Noeud * n1, Noeud * n2){
+DialogEnvoi::DialogEnvoi(Noeud * n1, Noeud * n2, NoeudG * parent) {
+	// Ajouté par Massi
+	if (parent) {
+		simulaGui * sg = dynamic_cast <simulaGui *> (parent->getEspaceTravail()->parentWidget());
+		if ( sg)	{
+			PanneauData * pData = dynamic_cast <PanneauData *> ( sg->getMainlayout()->itemAtPosition( 4, 0)->widget());
+			QObject::connect ( this, SIGNAL (addedData(Data*)), pData, SLOT (addData(Data*)));
+		}
+	}
     createForm();
     connect(envoyerButton, SIGNAL(clicked()),this , SLOT(preparenvoi()));
     showForm(n1, n2);
@@ -32,12 +41,12 @@ void DialogEnvoi::createForm(){
 
     editPortSrc = new QLineEdit();
     editPortSrc->setPlaceholderText("Port source");
-    editPortSrc->setValidator( new QIntValidator(0, 100, this) );
+    editPortSrc->setValidator( new QIntValidator(0, 100000, this) );
     layout->addWidget(editPortSrc);
 
     editPortDest = new QLineEdit();
     editPortDest->setPlaceholderText("Port destination");
-    editPortSrc->setValidator( new QIntValidator(0, 100, this) );
+    editPortDest->setValidator( new QIntValidator(0, 100000, this) );
     layout->addWidget(editPortDest);
 
     checkAck = new QCheckBox("Attendre retour (ACK)");
@@ -104,25 +113,29 @@ void DialogEnvoi::preparenvoi(){
         Noeud* s2 = dynamic_cast<Station*>(graphe->getSommets()[editNoeud2->toolTip().toInt()]);
         int portsrc =  editPortSrc->text().toInt();
         int portdest = editPortDest->text().toInt();
-
-
-        bool syn = true;
-        bool ack = (checkAck->isChecked() ?  1 : 0);
+        bool syn, ack;
+        if(checkAck->isChecked()){
+            syn = true;
+            ack = false;
+        }else{
+            syn = false;
+            ack = false;
+        }
 
         int nseq = s1->getNextNumSeq();
         int nack = 0;
         int ipid = nseq + 100;
-        bool df = (checkFrag->isChecked() ?  1 : 0);
+        bool df = checkFrag->isChecked() ?  1 : 0;
 
         Data* sendData = new Data(editMessage->text().toStdString());
         //Préparer l'envoi
         envoyer(s1,  s2 ,  portsrc ,  portdest ,  syn ,  ack ,  nseq ,  nack,  ipid,  df ,  sendData);
         //Signaler que l'envoi est possible
-        //if ( sendData)
-          //  emit addedData ( sendData);
+        if ( sendData)
+            emit addedData ( sendData);
 
         s1->getMutexEnvoiOk()->lock();
-        s1->getControleur()->setok(true);
+		s1->getControleur()->setok(true);
         s1->getMutexEnvoiOk()->unlock();
 
        }else{
@@ -130,18 +143,20 @@ void DialogEnvoi::preparenvoi(){
        stream<<"</ul>";
        errorbox.setText(errorString);
        errorbox.exec();
+       reject();
     }
+    accept();
 
 }
 
 void DialogEnvoi::onExitDialog(int)
-{/*
+{
     editNoeud1->setText("");
     editNoeud2->setText("");
     editPortSrc->setText("");
     editPortDest->setText("");
     editMessage->setText("");
     checkAck->setChecked(false);
-    checkFrag->setChecked(false);*/
-    delete this;
+    checkFrag->setChecked(false);
+    //delete this;
 }

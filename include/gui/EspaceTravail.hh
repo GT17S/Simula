@@ -23,6 +23,7 @@
 #include <iostream>
 #include "NoeudG.hh"
 #include "Cable.hh"
+#include "Data.hh"
 
 #ifndef CURSOR_MODE
 #define CURSOR_MODE
@@ -134,7 +135,9 @@ protected:
     void mouseMoveEvent( QMouseEvent *e );
     void mouseReleaseEvent( QMouseEvent *e );
 
-
+// Ajouté par Massi
+signals:
+		void createStation ( NoeudG * n);
 
 
 };

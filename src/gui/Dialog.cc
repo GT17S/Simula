@@ -19,8 +19,9 @@
 Dialog::Dialog(Noeud *parent)
 {
     src=parent;
-  createWidget();
-  createSignals();
+    createWidget();
+    createSignals();
+
 }
 
 Dialog::~Dialog(){}
@@ -29,14 +30,14 @@ Dialog::~Dialog(){}
 
 void Dialog::addRoute()
 {
-int a=src->getTableRoutage().size();
-Route *newRoute=new Route();
-src->setTableRoutage(newRoute);
-if(a==src->getTableRoutage().size()){
-   QMessageBox::warning(this, "Erreur d'ajout de route",
-                            "La route existe deja !",
-                            QMessageBox::Yes);
-}
+    int a=src->getTableRoutage().size();
+    Route *newRoute=new Route();
+    src->setTableRoutage(newRoute);
+    if(a==src->getTableRoutage().size()){
+        QMessageBox::warning(this, "Erreur d'ajout de route",
+                             "La route existe deja !",
+                             QMessageBox::Yes);
+    }
     showConfig(src);
 
     update();
@@ -48,9 +49,9 @@ void Dialog::addInterface()
     int nbPort=src->getNbPort();
     src->setNbPort(nbPort+1);
     if(nbPort==src->getNbPort()){
-       QMessageBox::warning(this, "Erreur d'ajout de route",
-                                "La route existe deja !",
-                                QMessageBox::Yes);
+        QMessageBox::warning(this, "Erreur d'ajout de route",
+                             "La route existe deja !",
+                             QMessageBox::Yes);
     }
     showConfig(src);
 
@@ -67,7 +68,7 @@ void Dialog::generalWidget()
     //GENERALLAYOUT
     QGridLayout *gridLayoutGeneral = new QGridLayout();
     //GENERALEDITLINES
-   NomStation	 = new QLineEdit ();
+    NomStation	 = new QLineEdit ();
 
 
     gridLayoutGeneral->setVerticalSpacing (0);
@@ -89,71 +90,74 @@ void Dialog::deleteRouteG(int i){
     src->supprimerRoute(i);
 
     if(a==src->getTableRoutage().size()){
-       QMessageBox::warning(this, "Erreur de suppression",
-                                "Erreur de suppression de la route !",
-                                QMessageBox::Yes);
+        QMessageBox::warning(this, "Erreur de suppression",
+                             "Erreur de suppression de la route !",
+                             QMessageBox::Yes);
     }
     showConfig(src);
 
 }
 void Dialog::deleteInterfaceG(){
-   int nbPort=src->getNbPort();
+    int nbPort=src->getNbPort();
 
-   src->setNbPort(nbPort-1);
-   if(nbPort==src->getNbPort()){
-      QMessageBox::warning(this, "Erreur de suppression",
-                               "Erreur de suppression de la l'interface !",
-                               QMessageBox::Yes);
-   }
-   showConfig(src);
-  update();
+    src->setNbPort(nbPort-1);
+    if(nbPort==src->getNbPort()){
+        QMessageBox::warning(this, "Erreur de suppression",
+                             "Erreur de suppression de la l'interface !",
+                             QMessageBox::Yes);
+    }
+    showConfig(src);
+    update();
 
 }
 
 void Dialog::createWidget(){
     buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
-
-    tabWidget = new QTabWidget;
-    toolRoutage = new QToolBox();
-    toolInterface = new QToolBox();
-    ajouterRoute = new QPushButton("Ajouter une route");
-    ajouterInterface = new QPushButton("Ajouter une interface");
-    supprimerInterface = new QPushButton("Supprimer une interface");
     changerNom = new QPushButton("Changer le nom");
-    routeWidget = new QWidget();
-    intWidget = new QWidget();
-    routeLayout = new QGridLayout;
-    routeLayout->addWidget(ajouterRoute);
-    routeWidget->setLayout(routeLayout);
-    interfaceLayout = new QGridLayout;
-    interfaceLayout->addWidget(ajouterInterface);
-    interfaceLayout->addWidget(supprimerInterface);
-
-    intWidget->setLayout(interfaceLayout);
-    generalWidget();
-    interfaceLayout->addWidget(toolInterface);
-    intWidget->setLayout(interfaceLayout);
-    tabWidget->addTab(intWidget,"Interface");
-    routeLayout->addWidget(toolRoutage);
-    routeWidget->setLayout(routeLayout);
-    tabWidget->addTab(routeWidget,"Routage");
-    tabWidget->setMovable(true);
-    tabWidget->setDocumentMode(true);
-    QVBoxLayout *mainLayout = new QVBoxLayout;
-    setLayout(mainLayout);
     setWindowTitle(tr("Configuration de l'equipement"));
-    mainLayout->addWidget(tabWidget);
-    mainLayout->addWidget(buttonBox);
+    tabWidget = new QTabWidget;
+    generalWidget();
 
-    mapperInterface = new QSignalMapper(this);
-    mapperRoute = new QSignalMapper(this);
 
-    mapperInterfaceAp = new QSignalMapper(this);
-    mapperRouteAp = new QSignalMapper(this);
-    maapperNom=new QSignalMapper(this);
+        toolRoutage = new QToolBox();
+        toolInterface = new QToolBox();
+        ajouterRoute = new QPushButton("Ajouter une route");
+        ajouterInterface = new QPushButton("Ajouter une interface");
+        supprimerInterface = new QPushButton("Supprimer une interface");
+        routeWidget = new QWidget();
+        intWidget = new QWidget();
+        routeLayout = new QGridLayout;
+        routeLayout->addWidget(ajouterRoute);
+        routeWidget->setLayout(routeLayout);
+        interfaceLayout = new QGridLayout;
+        interfaceLayout->addWidget(ajouterInterface);
+        interfaceLayout->addWidget(supprimerInterface);
+
+        intWidget->setLayout(interfaceLayout);
+
+
+        interfaceLayout->addWidget(toolInterface);
+        intWidget->setLayout(interfaceLayout);
+        tabWidget->addTab(intWidget,"Interface");
+        routeLayout->addWidget(toolRoutage);
+        routeWidget->setLayout(routeLayout);
+        tabWidget->addTab(routeWidget,"Routage");
+        tabWidget->setMovable(true);
+        tabWidget->setDocumentMode(true);
+        QVBoxLayout *mainLayout = new QVBoxLayout;
+        setLayout(mainLayout);
+        mainLayout->addWidget(tabWidget);
+        mainLayout->addWidget(buttonBox);
+
+        mapperInterface = new QSignalMapper(this);
+        mapperRoute = new QSignalMapper(this);
+
+        mapperInterfaceAp = new QSignalMapper(this);
+        mapperRouteAp = new QSignalMapper(this);
+        maapperNom=new QSignalMapper(this);
+
+
     update();
-
-
 
 }
 void Dialog::createSignals(){
@@ -176,8 +180,12 @@ void Dialog::createSignals(){
 }
 void Dialog::showConfig(Noeud *src){
     onExitDialog(0);
-    NomStation->setText(QString::fromStdString(src->getNom()));
 
+    NomStation->setText(QString::fromStdString(src->getNom()));
+    if(src->getTypeNoeud()==2 ||src->getTypeNoeud()==3 ){
+        qDebug()<<"ggggggg";
+        return ;
+    }else {
     for(InterfaceFE *i:src->getInterfaces()){
         QString AdresseIP=QString::fromStdString(i->getAdresseIP()),
                 AdresseMac=QString::fromStdString(i->getAdresseMac()),
@@ -186,8 +194,8 @@ void Dialog::showConfig(Noeud *src){
                 interfaceName=QString::fromStdString(i->getNomInterface());
         bool liaison= i->getCable() != nullptr ? true : false;
         InterfaceG *ig=new InterfaceG(AdresseIP,AdresseMac,AdresseRes,mask,interfaceName,liaison);
-       // mapperInterface->setMapping(supprimerInterface,toolInterface->count());
-     //  connect(supprimerInterface, SIGNAL(clicked()), mapperInterface, SLOT(map()));
+        // mapperInterface->setMapping(supprimerInterface,toolInterface->count());
+        //  connect(supprimerInterface, SIGNAL(clicked()), mapperInterface, SLOT(map()));
 
         mapperInterfaceAp->setMapping(ig->appliquer,toolInterface->count());
         connect(ig->appliquer, SIGNAL(clicked()), mapperInterfaceAp, SLOT(map()));
@@ -198,7 +206,7 @@ void Dialog::showConfig(Noeud *src){
     for(Route *r: src->getTableRoutage()){
         int a=src->getTableRoutage().size();
         QString nextHope=QString::fromStdString(r->passerelle),
-               AdresseRes=QString::fromStdString(r->adresseReseau),
+                AdresseRes=QString::fromStdString(r->adresseReseau),
                 mask=QString::fromStdString(r->masque);
         RouteG *rg=new RouteG(nextHope,AdresseRes,mask);
         mapperRoute->setMapping(rg->supprimer,toolRoutage->count());
@@ -208,76 +216,88 @@ void Dialog::showConfig(Noeud *src){
         connect(rg->appliquer, SIGNAL(clicked()), mapperRouteAp, SLOT(map()));
 
         toolRoutage->addItem(rg,"Route");
-}
+    }}
 
 }
 void Dialog::appliquerInterface(int i){
-    int count=0;
+    QString errorString;
+    QTextStream stream(&errorString);
+    stream<< "<h5><b><font color='red'>Veuillez entrer les parameres suivants :</font></b></h5><ul>";
+
     InterfaceG *ig=dynamic_cast<InterfaceG*>(toolInterface->widget(i));
     QString AdresseIPApp=ig->AdresseIP->text(),
             AdresseMacApp=ig->AdresseMac->text(),
             AdresseResApp=ig->AdresseRes->text(),
             maskApp=ig->mask->text(),
             interfaceNameApp=ig->interfaceName->text();
-   bool liaisonApp=ig->liaison->checkState();
+    bool liaisonApp=ig->liaison->checkState();
 
-   if(AdresseIPApp.isEmpty() || AdresseMacApp.isEmpty() ||  AdresseResApp.isEmpty() ||
-           maskApp.isEmpty() ||     interfaceNameApp.isEmpty()) return ;
+    if(AdresseIPApp.isEmpty() || AdresseMacApp.isEmpty() ||  AdresseResApp.isEmpty() ||
+            maskApp.isEmpty() ||     interfaceNameApp.isEmpty()) return ;
 
     InterfaceFE *iF = src->getInterface(i);
     if(!iF)return ;
-    if(InterfaceFE::checkAdresse(AdresseIPApp.toStdString(),IP_REGEX,DEFAULT_IP) != DEFAULT_IP){
+    iF->setNomInterface(interfaceNameApp.toStdString());
+
+    if(InterfaceFE::checkAdresse(AdresseIPApp.toStdString(),IP_REGEX,DEFAULT_IP) != DEFAULT_IP
+           && InterfaceFE::checkAdresse(AdresseResApp.toStdString(),IP_REGEX,DEFAULT_IP) != DEFAULT_IP
+           && InterfaceFE::checkAdresse(maskApp.toStdString(),IP_REGEX,DEFAULT_IP) != DEFAULT_IP
+                        ){
         iF->setAdresseIP(AdresseIPApp.toStdString());
         ig->AdresseIP->setStyleSheet("color:black");
-
-    }else{
-
-        ig->AdresseIP->setStyleSheet("color:red");
-        count++;
-    }
-    if(InterfaceFE::checkAdresse(AdresseResApp.toStdString(),IP_REGEX,DEFAULT_IP) != DEFAULT_IP){
         iF->setAdresseRes(AdresseResApp.toStdString());
         ig->AdresseRes->setStyleSheet("color:black");
-
-    }else{
-
-        ig->AdresseRes->setStyleSheet("color:red");
-        count++;
-    }
-    if(InterfaceFE::checkAdresse(maskApp.toStdString(),IP_REGEX,DEFAULT_IP) != DEFAULT_IP){
         iF->setMasque(maskApp.toStdString());
         ig->mask->setStyleSheet("color:black");
-
-    }else{
-
-        ig->mask->setStyleSheet("color:red");
-        count++;
-    }
-    if(InterfaceFE::checkAdresse(AdresseMacApp.toStdString(),MAC_REGEX,DEFAULT_MAC) != DEFAULT_MAC){
-    iF->setAdresseMac(AdresseMacApp.toStdString());
+        iF->setAdresseMac(AdresseMacApp.toStdString());
         ig->AdresseMac->setStyleSheet("color:black");
+        QMessageBox::warning(this, "Bien ",
+                             "adresses Sauvgardé ",
+                             QMessageBox::Ok);
+        return;
 
     }else{
+        if(InterfaceFE::checkAdresse(AdresseIPApp.toStdString(),IP_REGEX,DEFAULT_IP) == DEFAULT_IP){
+            ig->AdresseIP->setStyleSheet("color:red");
+            stream<<"<li>Adresse ip</li>";
 
-        ig->mask->setStyleSheet("color:red");
-        count++;
+        }else{
+            ig->AdresseIP->setStyleSheet("color:black");
 
+        }
+
+        if(InterfaceFE::checkAdresse(AdresseResApp.toStdString(),IP_REGEX,DEFAULT_IP) == DEFAULT_IP){
+            ig->AdresseRes->setStyleSheet("color:red");
+            stream<<"<li>Adresse reseau</li>";
+
+        }else{
+            ig->AdresseRes->setStyleSheet("color:black");
+
+        }
+
+        if(InterfaceFE::checkAdresse(maskApp.toStdString(),IP_REGEX,DEFAULT_IP) == DEFAULT_IP){
+            ig->mask->setStyleSheet("color:red");
+            stream<<"<li>Masque reseau</li>";
+
+        }else{
+            ig->mask->setStyleSheet("color:black");
+
+        }
+
+        QMessageBox errorbox;
+        stream<<"</ul>";
+        errorbox.setText(errorString);
+        errorbox.exec();
+        return;
     }
 
-    iF->setNomInterface(interfaceNameApp.toStdString());
-    if(iF->getMasque()==DEFAULT_IP ||iF->getMasque()==DEFAULT_IP || iF->getAdresseMac()==DEFAULT_MAC
-            ||iF->getAdresseIP()==DEFAULT_IP ){
-        if(count==1){
-        QMessageBox::warning(this, "Invalide ",
-                                 "Invalide adresse !",
-                             QMessageBox::Ok);}else{
-            QMessageBox::warning(this, "Invalide ",
-                                     "Invalide adresses !",  QMessageBox::Ok);
-        }
-        return;}
-    src->getParent()->toolTipShow();
-    showConfig(src);
-}
+
+
+
+
+        src->getParent()->toolTipShow();
+    }
+
 void Dialog::appliquerRoute(int i){
     int count=0;
     int size_table = src->getTableRoutage().size();
@@ -285,7 +305,7 @@ void Dialog::appliquerRoute(int i){
     QString AdresseIPApp=ig->getNextHope()->text(),
             AdresseResApp=ig->getAdresseRes()->text(),
             mask=ig->getMask()->text();
-            if(AdresseIPApp.isEmpty() || AdresseResApp.isEmpty() ||  mask.isEmpty()) return ;
+    if(AdresseIPApp.isEmpty() || AdresseResApp.isEmpty() ||  mask.isEmpty()) return ;
     Route *routeNew=new Route();
 
 
@@ -320,12 +340,12 @@ void Dialog::appliquerRoute(int i){
             || routeNew->masque==DEFAULT_IP){
         if(count==1){
             QMessageBox::warning(this, "Invalide ",
-                                     "Invalide adresse !",  QMessageBox::Ok);
+                                 "Invalide adresse !",  QMessageBox::Ok);
 
         }else{
-        QMessageBox::warning(this, "Invalide ",
+            QMessageBox::warning(this, "Invalide ",
                                  "Invalide adresses !",  QMessageBox::Ok);}
-      return ;
+        return ;
 
     }
     src->modifierRoute(i,routeNew);

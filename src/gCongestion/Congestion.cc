@@ -88,7 +88,7 @@ void Congestion::slowStart(Noeud *src){
     }else{
         congestionAvoidance(src);
     }
-    PanneauEvents::addCh(src->getParent()->getTreeItem(),QString::fromStdString("slowStart:La taille de la fentre de congestion est :  ")+QString::number(cwnd));
+    PanneauEvents::addCh(src->getParent()->getTreeItem(),QString::fromStdString("slowStart: CWND = ")+QString::number(cwnd));
 
 
 }
@@ -97,7 +97,7 @@ void Congestion::fastRecovery(Noeud *src){
     cwnd= ssthresh+3;
     cpt++;
     //PanneauEvents::affichage("fastRecovery est lance");
-    PanneauEvents::addCh(src->getParent()->getTreeItem(),QString::fromStdString("fastRecovery:La taille de la fentre de congestion est :  ")+QString::number(cwnd));
+    PanneauEvents::addCh(src->getParent()->getTreeItem(),QString::fromStdString("fastRecovery: CWND = ")+QString::number(cwnd));
 
     PanneauEvents::addCh(src->getParent()->getTreeItem(),QString::fromStdString("fastRecovery:le ssthresh :  ")+QString::number(ssthresh));
 
@@ -106,12 +106,13 @@ void Congestion::fastRecovery(Noeud *src){
 void Congestion::congestionAvoidance(Noeud *src){
 cwnd=cwnd+1;
     cpt++;
-    PanneauEvents::addCh(src->getParent()->getTreeItem(),QString::fromStdString("congestionAvoidance: fastRecovery:La taille de la fentre de congestion est :  ")+QString::number(cwnd));
+    PanneauEvents::addCh(src->getParent()->getTreeItem(),QString::fromStdString("congestionAvoidance: CWND = ")+QString::number(cwnd));
 
 
 }
 
 void Congestion::verifieNbrSegment(Noeud * src){
+    PanneauEvents::addCh(src->getParent()->getTreeItem(),QString::fromStdString("Vérification de la file d'attente"));
     std::cout << "Je suis parralélisé " << std::endl;
 /**		May be here */
 //    this->mutexEnvoiOk->lock();
@@ -119,7 +120,7 @@ void Congestion::verifieNbrSegment(Noeud * src){
     if(mapFileEnvoyer.empty()){
 
       //  cout<<"fin de l'envoie " <<endl;
-    PanneauEvents::addCh(src->getParent()->getTreeItem(),QString::fromStdString("Rien a envoyer  "));
+    PanneauEvents::addCh(src->getParent()->getTreeItem(),QString::fromStdString("File d'attente vide"));
 
         //PanneauEvents::affichage("fin de l'envoie 1 ");
 /**		May be not here */
@@ -180,8 +181,8 @@ void Congestion::verifieNumSegment(Noeud * src,Noeud * dest, int nAck){//pc rece
     if(!st ) return;
 
     int nSeq = st->getNextNumSeq(),
-        ipId = 100;
-    //PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Je connais pas le chemin vers ")+QString::number(ext->noeud->getNom()));
+        ipId = nSeq+100;
+    PanneauEvents::addCh(src->getParent()->getTreeItem(),QString::fromStdString("Envoyer ack vers ")+QString::fromStdString(dest->getNom()));
 
     envoyer(src, dest, 0, 0,false, true, nSeq, nAck,ipId,false, ndata);
     //verifieNbrSegment(st);
@@ -209,7 +210,7 @@ void Congestion::verifieNumAck(Noeud * n, int nAck){
     nbrAcksRecu++;
 
     if(cwnd==nbrAcksRecu){
-    PanneauEvents::addCh(n->getParent()->getTreeItem(),QString::fromStdString("La taille de la fentre de congestion = NombreAckRecu "));
+    PanneauEvents::addCh(n->getParent()->getTreeItem(),QString::fromStdString("CWND = NombreAckRecu "));
 
         nbrAcksRecu=0;
         slowStart( n);

@@ -5,6 +5,9 @@ PanneauData::PanneauData( QWidget *parent) : QTabWidget(parent) {
 	this->setMaximumHeight(100);
 	this->setTabsClosable(true);
 	compt = 0;
+
+    connect( this, SIGNAL(tabCloseRequested(int)), this, SLOT(askRemoveTab(int)));
+
 //	PanneauData::setPanneauData (this);
 //	this->setStyleSheet("background-color: blue");
 //	this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -19,33 +22,26 @@ void PanneauData::addData ( Data * d)	{
 //	od->setTabsClosable (true);
 	this->addTab( od,QString("Envoie n°%1").arg( onglets.size()));
 	onglets.insert ( d,od);
-	connect( this, SIGNAL(tabCloseRequested(int)), this, SLOT(askRemoveTab(int)));
-//	connect( od, SIGNAL( closedTab(DataG*)), this, SLOT( askRemoveTab(DataG*)));
 }
 
 void PanneauData::askRemoveTab( int index)	{
-	//DataG * cu = currentWidget( index);
-//	std::cout << "Index : " << index << " " << this->count() << std::endl;
-	DataG * cu = dynamic_cast<DataG *> (this->widget(index));
-	if ( cu && (compt == 0))	{
-		std::cout << "Compt S: " << compt << std::endl;
-		this->removeTab ( index);
-		compt++;
-	}
-	else if ( cu && compt != 0)	{
-		std::cout << "Compt NS: " << compt << std::endl;
-		compt++;
-	//	delete cu;
-	}
+   std::cout << "Index : " << index << std::endl;
+
+   delete widget(index);
 }
 
 void PanneauData::clearPanneauData()	{
-	QMap<Data *, DataG *>::iterator i;
-	for (int i = this->onglets.count(); i > -1 ; i--)	{
-		this->removeTab ( i);		
+    //QMap<Data *, DataG *>::iterator i;
+    onglets.clear();
+
+    int size_tabs = this->count();
+    if(!size_tabs)
+        return;
+    for (int i = size_tabs-1; i > -1 ; i--)	{
+        delete widget(i);
+
 	}
 /*	for (i = onglets.begin(); i != onglets.end(); ++i)	{
 		delete this->onglets.take ( i.key());
 	}*/		
-	onglets.clear();
 }

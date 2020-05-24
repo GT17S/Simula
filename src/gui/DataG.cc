@@ -19,10 +19,13 @@ DataG::DataG  ( Data * d, int index, QWidget* parent) : QTabBar(parent), detail(
 	this->grid->addWidget(&this->detail);
 	this->grid->addWidget(&this->left);
 	this->grid->addWidget(&this->right);
+
+    this->setTabsClosable(true);
 }
 
 DataG::~DataG()	{
 	this->send.clear();
+    qDebug()<<"Destruction DATAG";
 }
 
 void DataG::predicateData ()	{

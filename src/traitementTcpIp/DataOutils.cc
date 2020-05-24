@@ -545,9 +545,8 @@ void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, bool syn, bool ac
             id_n2 = n2->getIdNoeud();
 
     vector<Cable *> path;
-    // generer chemin complet, jusqua la destination
-    Graphe::genererChemin(id_n1, id_n1, id_n2, path, true);
 
+    Graphe::genererChemin(id_n1, id_n1, id_n2, path, true);
     int size_p = path.size();
     // pas de chemin
     if(!size_p){

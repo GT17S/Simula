@@ -194,6 +194,7 @@ int Graphe::genererChemin(int src, int n1, int n2, vector<Cable *> &path, bool a
        sommets[n2]->getTypeNoeud() == SWITCH || sommets[n2]->getTypeNoeud() == HUB ||
        verifierReseau(n1, n2)){
         // meme reseau
+        std::cout << "Je suis dans le même réseaux" << std::endl;
         if(parcourirVoisins(n1, n1, n2, path))
             // trouvée
             return 1;

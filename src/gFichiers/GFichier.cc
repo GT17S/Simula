@@ -113,7 +113,7 @@ void lireXml(QString nomFichier, EspaceTravail * espaceTravail){
     QDomNode cables = noeuds.nextSibling();
     QDomNode cable = cables.firstChild();
     while(!cable.isNull()){
-        CableG * cG = new CableG();
+        CableG * cG = new CableG(espaceTravail,0,0,0,0);
         Cable * c = new Cable(cG);
         c->setId(cable.toElement().attribute("id").toInt());
         cableT type = static_cast<cableT>(cable.toElement().attribute("type").toInt());

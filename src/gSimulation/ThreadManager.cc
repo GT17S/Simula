@@ -49,7 +49,6 @@ void ThreadManager::createWorker ( NoeudG * n)	{
 	Station * s = dynamic_cast <Station *> (n->getChild());
 	if ( s == nullptr) return;
 	if ( findWorker ( s)) return;
-	std::cout << "Création d'un thread\n";
 	WorkingThreads.push_back(std::thread(&Station::mainlocal, s, mutexmap["Cable"], gestionnaire));	
 	workingStations.push_back(s);
 }

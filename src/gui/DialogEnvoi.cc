@@ -11,7 +11,6 @@ DialogEnvoi::DialogEnvoi(Noeud * n1, Noeud * n2, NoeudG * parent) {
 	if (parent) {
 		simulaGui * sg = dynamic_cast <simulaGui *> (parent->getEspaceTravail()->parentWidget());
 		if ( sg)	{
-			std::cout << "On a un simulaGui" << std::endl;
 			PanneauData * pData = dynamic_cast <PanneauData *> ( sg->getMainlayout()->itemAtPosition( 4, 0)->widget());
 			QObject::connect ( this, SIGNAL (addedData(Data*)), pData, SLOT (addData(Data*)));
 		}
@@ -124,7 +123,6 @@ void DialogEnvoi::preparenvoi(){
         int ipid = nseq + 100;
         bool df = (checkFrag->isChecked() ?  1 : 0);
 
-		std::cout << s1->getInterface(0)->getAdresseIP() << " " << s2->getInterface(0)->getAdresseIP() << " " << portsrc << " " << portdest << std::endl; 
         Data* sendData = new Data(editMessage->text().toStdString());
         //Préparer l'envoi
         envoyer(s1,  s2 ,  portsrc ,  portdest ,  syn ,  ack ,  nseq ,  nack,  ipid,  df ,  sendData);

@@ -13,8 +13,10 @@
 #include <string>
 #include "Graphe.hh"
 #include "EspaceTravail.hh"
+#include "ThreadManager.hh"
 
 class Graphe;
+class ThreadManager;
 /*!
  * \brief verifier_schema
  * \param fichier_xml : ficher a lire
@@ -35,7 +37,7 @@ QFile * ouvrirlXml(QString nomfichier, QIODevice::OpenMode mode);
  * \param nomfichier : le nom de fichier
  */
 
-void lireXml(QString nomfichier, EspaceTravail *espaceTravail);
+void lireXml(QString nomfichier, EspaceTravail *espaceTravail, ThreadManager * tm);
 /*!
  * \brief ecrireXml
  * ecrire dansun  fichier xml

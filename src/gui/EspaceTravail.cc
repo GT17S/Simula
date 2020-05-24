@@ -108,6 +108,8 @@ void EspaceTravail::mousePressEvent(QMouseEvent *event)
         StationG * st = new StationG(this);
         Station *st_l = new Station(st);
         addNoeud(st, p);
+        // Ajouté par Massi
+        emit createStation ( st);
         break;
     }
     case SWITCH_MODE:  {

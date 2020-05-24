@@ -66,6 +66,7 @@ private:
   extremite* ext1; /*!< Le Noeud à l'extremitie 1 */
   extremite* ext2; /*!< Le Noeud à l'extremitie 2*/
   CableG * parent;
+  bool estBienConnecteCable;
 
 
 public:
@@ -214,5 +215,17 @@ public:
    * \return vrai si la connexion est établie, faux sinon (Destruction du cable)
    */
   bool connexionNoeuds(Noeud * N1, int interface1, Noeud * N2, int interface2);
+
+  /*!
+   * \brief getEstBienConnecteCable
+   * \return si la cable est bien connecte ou nn
+   */
+  bool getEstBienConnecteCable(){return estBienConnecteCable;}
+  /*!
+   * \brief setEstBienConnecte
+   * Modifier si un cable est bien connecte
+   * \param value : true ou false .
+   */
+  void setEstBienConnecteCable(bool value);
 };
 #endif

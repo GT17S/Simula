@@ -37,7 +37,7 @@ void gSimulation::arreter()
     //
 }
 
-void gSimulation::demarrer()
+ void gSimulation::demarrer()
 {
     setEtat(DEMARRER);
     timer->start(1000);

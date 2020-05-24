@@ -69,7 +69,7 @@ void NoeudG::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 break;
             }
 
-            CableG * cg = new CableG();
+            CableG * cg = new CableG(espaceTravail);
             addLine(cg, true);
             moveCable(event->scenePos() - boundingRect().center());
             espaceTravail->currentCable = cg;

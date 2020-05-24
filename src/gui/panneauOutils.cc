@@ -293,8 +293,8 @@ void PanneauOutils::changeMode(){
 }
 
 void PanneauOutils::timer(){
-    QTime *t = this->gestSimulation->getTime();
-    qDebug()<<t->toString("hh:mm:ss");
+   QTime *t = this->gestSimulation->getTime();
+    //qDebug()<<t->toString("hh:mm:ss");
     this->gestSimulation->demarrer();
     *t=t->addSecs(1);
     this->gestSimulation->getTimer()->setInterval(1000);

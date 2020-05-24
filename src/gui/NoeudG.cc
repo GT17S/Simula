@@ -131,7 +131,7 @@ void NoeudG::mousePressEvent(QGraphicsSceneMouseEvent *event)
             extremite *x2 = new extremite;
             x2->noeud = child;
             espaceTravail->currentExtremite= nullptr;
-            DialogEnvoi * dEnvoi= new DialogEnvoi(x->noeud, x2->noeud);
+            DialogEnvoi * dEnvoi= new DialogEnvoi(x->noeud, x2->noeud, this); // Modifié par Massi
             dEnvoi->show();
             espaceTravail->setMode(SELECT_MODE);
         }

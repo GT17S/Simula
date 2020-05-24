@@ -4,6 +4,7 @@ PanneauData::PanneauData( QWidget *parent) : QTabWidget(parent) {
 	this->setMinimumHeight(80);
 	this->setMaximumHeight(100);
 	this->setTabsClosable(true);
+//	PanneauData::setPanneauData (this);
 //	this->setStyleSheet("background-color: blue");
 //	this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }

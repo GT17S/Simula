@@ -110,7 +110,7 @@ void DialogEnvoi::preparenvoi(){
 
         //Récuperer les noeuds
         Station* s1 = dynamic_cast<Station*>(graphe->getSommets()[editNoeud1->toolTip().toInt()]);
-        Noeud* s2 = dynamic_cast<Station*>(graphe->getSommets()[editNoeud2->toolTip().toInt()]);
+        Station* s2 = dynamic_cast<Station*>(graphe->getSommets()[editNoeud2->toolTip().toInt()]);
         int portsrc =  editPortSrc->text().toInt();
         int portdest = editPortDest->text().toInt();
         bool syn, ack;

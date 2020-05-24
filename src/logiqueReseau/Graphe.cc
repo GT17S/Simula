@@ -6,7 +6,7 @@
 vector<Noeud*> Graphe::sommets;/*!< Liste des sommets du Graphe */
 vector<vector<Cable*>> Graphe::matrice; /*!< Matrice d'adjacences du Graphe */
 //vector<vector<extremite*>> Graphe::table;/*!< Table de chemins du Graphe */
-
+std::chrono::duration<float> Graphe::dur(2); /*! Durée d'attente des threads emetteurs */
 Graphe *Graphe::singlPtr = nullptr;
 
 
@@ -194,6 +194,7 @@ int Graphe::genererChemin(int src, int n1, int n2, vector<Cable *> &path, bool a
        sommets[n2]->getTypeNoeud() == SWITCH || sommets[n2]->getTypeNoeud() == HUB ||
        verifierReseau(n1, n2)){
         // meme reseau
+        std::cout << "Je suis dans le même réseaux" << std::endl;
         if(parcourirVoisins(n1, n1, n2, path))
             // trouvée
             return 1;

@@ -113,10 +113,14 @@ void DialogEnvoi::preparenvoi(){
         Noeud* s2 = dynamic_cast<Station*>(graphe->getSommets()[editNoeud2->toolTip().toInt()]);
         int portsrc =  editPortSrc->text().toInt();
         int portdest = editPortDest->text().toInt();
-
-
-        bool syn = true;
-        bool ack = checkAck->isChecked() ?  1 : 0;
+        bool syn, ack;
+        if(checkAck->isChecked()){
+            syn = true;
+            ack = false;
+        }else{
+            syn = false;
+            ack = false;
+        }
 
         int nseq = s1->getNextNumSeq();
         int nack = 0;

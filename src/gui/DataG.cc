@@ -27,7 +27,8 @@ void DataG::predicateData ()	{
 	vector<Cable *> path;
 	vector<int> id_path;
 	int ip_dest = id_dest;
-	if ( Graphe::genererChemin(id_src, id_src, ip_dest, path, true) < 0)	{
+    Graphe::genererChemin(id_src, id_src, ip_dest, path, true);
+    if (path.empty())	{
 		QMessageBox msgBox;
 		msgBox.setText("Pas de chemin!");
 		msgBox.exec();

@@ -33,6 +33,8 @@ void ThreadManager::joinall(){
 		if(WorkingThreads[i].joinable())
 			WorkingThreads[i].join();
 	}
+
+    WorkingThreads.clear();
 }
 
 // Ajouté par Massi

@@ -35,7 +35,7 @@ void Switch::envoyerMessage(int key, destination dest){
     int size_p = path.size();
 
     if(!size_p){
-        std::cout<<"Je connais pas le chemin vers "<<id_dest<<std::endl;
+       // std::cout<<"Je connais pas le chemin vers "<<id_dest<<std::endl;
         PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Je connais pas le chemin vers "+ Graphe::getSommets()[id_dest]->getNom()));
 
         return;
@@ -43,13 +43,13 @@ void Switch::envoyerMessage(int key, destination dest){
 
     extremite * extNext = path[size_p -1]->getInverseExt(this);
     //std::cout <<"J'envoie le message à "<<ext->noeud->getIdNoeud()<< std::endl;
-    PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Je connais pas le chemin vers ")+QString::fromStdString(extNext->noeud->getNom()));
+    PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Envoyer donnée vers :")+QString::fromStdString(extNext->noeud->getNom()));
 
     extNext->noeud->recevoirMessage(key, extNext->interface, dest);
 }
 
 void Switch::recevoirMessage(int key, int dest_i, destination dest){
-    std::cout <<"Je suis un switch"<< idNoeud<<std::endl;
+    //std::cout <<"Je suis un switch"<< idNoeud<<std::endl;
     if(dest.data->getType() < 3){
         std::cout <<"Data non encapsulée"<<std::endl;
         return;

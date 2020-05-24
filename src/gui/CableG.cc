@@ -1,4 +1,6 @@
 #include "CableG.hh"
+#include <bits/stdc++.h>
+#include <iomanip>
 QPen CableG::DROIT_TYPE,
 CableG::CROISE_TYPE,
 CableG::DROIT_ERREUR_TYPE,
@@ -54,11 +56,12 @@ void CableG::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 void CableG::updateaff(){
     QString s,equipementName;
     QTextStream stream(&s);
-    qreal bandPass= child->getDebitAcc();
-    QString::number(bandPass,'f', 3);
-
+    float bandPass= child->getDebitAcc();
+   //string texx=std::setprecision(3) << bandPass;
+    //double bb=std::setprecision(3) << bandPass;
     stream <<"Debit Max = "<<child->getDebitMax()<<"<br>"
-          <<"MTU = "<<child->getMTU()<<"<br>";
+          <<"MTU = "<<child->getMTU()<<"<br>"
+           <<"Bande passante = "<<fixed <<  qSetRealNumberPrecision(2)<<bandPass;
           /*  if(bandPass){
         stream <<"Bande passente = "<<QString::number(bandPass,'f', 3)<<"<br>";
             }else{

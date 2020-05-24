@@ -19,6 +19,7 @@ RouteG::RouteG(QString _nextHope, QString _AdresseRes, QString _mask){
 
 }
 void RouteG::createLabels(){
+
     gridLayoutinterface = new QGridLayout();
 
     supprimer = new QPushButton("Supprimer la route");
@@ -70,7 +71,13 @@ void RouteG::setMask(QLineEdit *value)
 }
 
 void RouteG::createInputs(QString _nextHope,QString _AdresseRes,QString _mask){
+    QRegExp rxIp(QString::fromStdString(IP_REGEX));
+    QValidator *ipValidator= new QRegExpValidator(rxIp,this);
     nextHope	 = new QLineEdit (_nextHope);
+    nextHope->setValidator(ipValidator);
     AdresseRes	 = new QLineEdit (_AdresseRes);
+    AdresseRes->setValidator(ipValidator);
     mask	 = new QLineEdit (_mask);
+    mask->setValidator(ipValidator);
+
 }

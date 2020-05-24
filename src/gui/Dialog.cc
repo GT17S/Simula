@@ -119,42 +119,42 @@ void Dialog::createWidget(){
     generalWidget();
 
 
-        toolRoutage = new QToolBox();
-        toolInterface = new QToolBox();
-        ajouterRoute = new QPushButton("Ajouter une route");
-        ajouterInterface = new QPushButton("Ajouter une interface");
-        supprimerInterface = new QPushButton("Supprimer une interface");
-        routeWidget = new QWidget();
-        intWidget = new QWidget();
-        routeLayout = new QGridLayout;
-        routeLayout->addWidget(ajouterRoute);
-        routeWidget->setLayout(routeLayout);
-        interfaceLayout = new QGridLayout;
-        interfaceLayout->addWidget(ajouterInterface);
-        interfaceLayout->addWidget(supprimerInterface);
+    toolRoutage = new QToolBox();
+    toolInterface = new QToolBox();
+    ajouterRoute = new QPushButton("Ajouter une route");
+    ajouterInterface = new QPushButton("Ajouter une interface");
+    supprimerInterface = new QPushButton("Supprimer une interface");
+    routeWidget = new QWidget();
+    intWidget = new QWidget();
+    routeLayout = new QGridLayout;
+    routeLayout->addWidget(ajouterRoute);
+    routeWidget->setLayout(routeLayout);
+    interfaceLayout = new QGridLayout;
+    interfaceLayout->addWidget(ajouterInterface);
+    interfaceLayout->addWidget(supprimerInterface);
 
-        intWidget->setLayout(interfaceLayout);
+    intWidget->setLayout(interfaceLayout);
 
 
-        interfaceLayout->addWidget(toolInterface);
-        intWidget->setLayout(interfaceLayout);
-        tabWidget->addTab(intWidget,"Interface");
-        routeLayout->addWidget(toolRoutage);
-        routeWidget->setLayout(routeLayout);
-        tabWidget->addTab(routeWidget,"Routage");
-        tabWidget->setMovable(true);
-        tabWidget->setDocumentMode(true);
-        QVBoxLayout *mainLayout = new QVBoxLayout;
-        setLayout(mainLayout);
-        mainLayout->addWidget(tabWidget);
-        mainLayout->addWidget(buttonBox);
+    interfaceLayout->addWidget(toolInterface);
+    intWidget->setLayout(interfaceLayout);
+    tabWidget->addTab(intWidget,"Interface");
+    routeLayout->addWidget(toolRoutage);
+    routeWidget->setLayout(routeLayout);
+    tabWidget->addTab(routeWidget,"Routage");
+    tabWidget->setMovable(true);
+    tabWidget->setDocumentMode(true);
+    QVBoxLayout *mainLayout = new QVBoxLayout;
+    setLayout(mainLayout);
+    mainLayout->addWidget(tabWidget);
+    mainLayout->addWidget(buttonBox);
 
-        mapperInterface = new QSignalMapper(this);
-        mapperRoute = new QSignalMapper(this);
+    mapperInterface = new QSignalMapper(this);
+    mapperRoute = new QSignalMapper(this);
 
-        mapperInterfaceAp = new QSignalMapper(this);
-        mapperRouteAp = new QSignalMapper(this);
-        maapperNom=new QSignalMapper(this);
+    mapperInterfaceAp = new QSignalMapper(this);
+    mapperRouteAp = new QSignalMapper(this);
+    maapperNom=new QSignalMapper(this);
 
 
     update();
@@ -186,37 +186,37 @@ void Dialog::showConfig(Noeud *src){
         qDebug()<<"ggggggg";
         return ;
     }else {
-    for(InterfaceFE *i:src->getInterfaces()){
-        QString AdresseIP=QString::fromStdString(i->getAdresseIP()),
-                AdresseMac=QString::fromStdString(i->getAdresseMac()),
-                AdresseRes=QString::fromStdString(i->getAdresseRes()),
-                mask=QString::fromStdString(i->getMasque()),
-                interfaceName=QString::fromStdString(i->getNomInterface());
-        bool liaison= i->getCable() != nullptr ? true : false;
-        InterfaceG *ig=new InterfaceG(AdresseIP,AdresseMac,AdresseRes,mask,interfaceName,liaison);
-        // mapperInterface->setMapping(supprimerInterface,toolInterface->count());
-        //  connect(supprimerInterface, SIGNAL(clicked()), mapperInterface, SLOT(map()));
+        for(InterfaceFE *i:src->getInterfaces()){
+            QString AdresseIP=QString::fromStdString(i->getAdresseIP()),
+                    AdresseMac=QString::fromStdString(i->getAdresseMac()),
+                    AdresseRes=QString::fromStdString(i->getAdresseRes()),
+                    mask=QString::fromStdString(i->getMasque()),
+                    interfaceName=QString::fromStdString(i->getNomInterface());
+            bool liaison= i->getCable() != nullptr ? true : false;
+            InterfaceG *ig=new InterfaceG(AdresseIP,AdresseMac,AdresseRes,mask,interfaceName,liaison);
+            // mapperInterface->setMapping(supprimerInterface,toolInterface->count());
+            //  connect(supprimerInterface, SIGNAL(clicked()), mapperInterface, SLOT(map()));
 
-        mapperInterfaceAp->setMapping(ig->appliquer,toolInterface->count());
-        connect(ig->appliquer, SIGNAL(clicked()), mapperInterfaceAp, SLOT(map()));
+            mapperInterfaceAp->setMapping(ig->appliquer,toolInterface->count());
+            connect(ig->appliquer, SIGNAL(clicked()), mapperInterfaceAp, SLOT(map()));
 
-        toolInterface->addItem(ig,"Interface");
-    }
+            toolInterface->addItem(ig,"Interface");
+        }
 
-    for(Route *r: src->getTableRoutage()){
-        int a=src->getTableRoutage().size();
-        QString nextHope=QString::fromStdString(r->passerelle),
-                AdresseRes=QString::fromStdString(r->adresseReseau),
-                mask=QString::fromStdString(r->masque);
-        RouteG *rg=new RouteG(nextHope,AdresseRes,mask);
-        mapperRoute->setMapping(rg->supprimer,toolRoutage->count());
-        connect(rg->supprimer, SIGNAL(clicked()), mapperRoute, SLOT(map()));
+        for(Route *r: src->getTableRoutage()){
+            int a=src->getTableRoutage().size();
+            QString nextHope=QString::fromStdString(r->passerelle),
+                    AdresseRes=QString::fromStdString(r->adresseReseau),
+                    mask=QString::fromStdString(r->masque);
+            RouteG *rg=new RouteG(nextHope,AdresseRes,mask);
+            mapperRoute->setMapping(rg->supprimer,toolRoutage->count());
+            connect(rg->supprimer, SIGNAL(clicked()), mapperRoute, SLOT(map()));
 
-        mapperRouteAp->setMapping(rg->appliquer,toolRoutage->count());
-        connect(rg->appliquer, SIGNAL(clicked()), mapperRouteAp, SLOT(map()));
+            mapperRouteAp->setMapping(rg->appliquer,toolRoutage->count());
+            connect(rg->appliquer, SIGNAL(clicked()), mapperRouteAp, SLOT(map()));
 
-        toolRoutage->addItem(rg,"Route");
-    }}
+            toolRoutage->addItem(rg,"Route");
+        }}
 
 }
 void Dialog::appliquerInterface(int i){
@@ -232,17 +232,15 @@ void Dialog::appliquerInterface(int i){
             interfaceNameApp=ig->interfaceName->text();
     bool liaisonApp=ig->liaison->checkState();
 
-    if(AdresseIPApp.isEmpty() || AdresseMacApp.isEmpty() ||  AdresseResApp.isEmpty() ||
-            maskApp.isEmpty() ||     interfaceNameApp.isEmpty()) return ;
 
     InterfaceFE *iF = src->getInterface(i);
     if(!iF)return ;
     iF->setNomInterface(interfaceNameApp.toStdString());
 
     if(InterfaceFE::checkAdresse(AdresseIPApp.toStdString(),IP_REGEX,DEFAULT_IP) != DEFAULT_IP
-           && InterfaceFE::checkAdresse(AdresseResApp.toStdString(),IP_REGEX,DEFAULT_IP) != DEFAULT_IP
-           && InterfaceFE::checkAdresse(maskApp.toStdString(),IP_REGEX,DEFAULT_IP) != DEFAULT_IP
-                        ){
+            && InterfaceFE::checkAdresse(AdresseResApp.toStdString(),IP_REGEX,DEFAULT_IP) != DEFAULT_IP
+            && InterfaceFE::checkAdresse(maskApp.toStdString(),IP_REGEX,DEFAULT_IP) != DEFAULT_IP
+            ){
         iF->setAdresseIP(AdresseIPApp.toStdString());
         ig->AdresseIP->setStyleSheet("color:black");
         iF->setAdresseRes(AdresseResApp.toStdString());
@@ -257,7 +255,8 @@ void Dialog::appliquerInterface(int i){
         return;
 
     }else{
-        if(InterfaceFE::checkAdresse(AdresseIPApp.toStdString(),IP_REGEX,DEFAULT_IP) == DEFAULT_IP){
+        if(InterfaceFE::checkAdresse(AdresseIPApp.toStdString(),IP_REGEX,DEFAULT_IP) == DEFAULT_IP
+                || AdresseIPApp.isEmpty()){
             ig->AdresseIP->setStyleSheet("color:red");
             stream<<"<li>Adresse ip</li>";
 
@@ -266,7 +265,8 @@ void Dialog::appliquerInterface(int i){
 
         }
 
-        if(InterfaceFE::checkAdresse(AdresseResApp.toStdString(),IP_REGEX,DEFAULT_IP) == DEFAULT_IP){
+        if(InterfaceFE::checkAdresse(AdresseResApp.toStdString(),IP_REGEX,DEFAULT_IP) == DEFAULT_IP
+                || AdresseResApp.isEmpty()){
             ig->AdresseRes->setStyleSheet("color:red");
             stream<<"<li>Adresse reseau</li>";
 
@@ -275,7 +275,8 @@ void Dialog::appliquerInterface(int i){
 
         }
 
-        if(InterfaceFE::checkAdresse(maskApp.toStdString(),IP_REGEX,DEFAULT_IP) == DEFAULT_IP){
+        if(InterfaceFE::checkAdresse(maskApp.toStdString(),IP_REGEX,DEFAULT_IP) == DEFAULT_IP
+                || maskApp.isEmpty()){
             ig->mask->setStyleSheet("color:red");
             stream<<"<li>Masque reseau</li>";
 
@@ -295,64 +296,79 @@ void Dialog::appliquerInterface(int i){
 
 
 
-        src->getParent()->toolTipShow();
-    }
+    src->getParent()->toolTipShow();
+}
 
 void Dialog::appliquerRoute(int i){
-    int count=0;
-    int size_table = src->getTableRoutage().size();
+    QString errorString;
+    QTextStream stream(&errorString);
+    stream<< "<h5><b><font color='red'>Veuillez entrer les parameres suivants :</font></b></h5><ul>";
     RouteG *ig=dynamic_cast<RouteG*>(toolRoutage->widget(i));
     QString AdresseIPApp=ig->getNextHope()->text(),
             AdresseResApp=ig->getAdresseRes()->text(),
             mask=ig->getMask()->text();
-    if(AdresseIPApp.isEmpty() || AdresseResApp.isEmpty() ||  mask.isEmpty()) return ;
     Route *routeNew=new Route();
 
-
-    if(InterfaceFE::checkAdresse(AdresseIPApp.toStdString(),IP_REGEX,DEFAULT_IP) != DEFAULT_IP){
+    if(InterfaceFE::checkAdresse(AdresseIPApp.toStdString(),IP_REGEX,DEFAULT_IP) != DEFAULT_IP
+            && InterfaceFE::checkAdresse(AdresseResApp.toStdString(),IP_REGEX,DEFAULT_IP) != DEFAULT_IP
+            && InterfaceFE::checkAdresse(mask.toStdString(),IP_REGEX,DEFAULT_IP) != DEFAULT_IP
+            ){
         routeNew->adresseReseau=AdresseResApp.toStdString();
         ig->AdresseRes->setStyleSheet("color:black");
-
-    }else{
-
-        count++;
-        ig->AdresseRes->setStyleSheet("color:red");
-
-
-    }
-    if(InterfaceFE::checkAdresse(AdresseResApp.toStdString(),IP_REGEX,DEFAULT_IP) != DEFAULT_IP){
         routeNew->passerelle=AdresseIPApp.toStdString();
         ig->nextHope->setStyleSheet("color:black");
-    }else{
-        count++;
-        ig->nextHope->setStyleSheet("color:red");
-    }
-
-    if(InterfaceFE::checkAdresse(mask.toStdString(),IP_REGEX,DEFAULT_IP) != DEFAULT_IP){
         routeNew->masque=mask.toStdString();
         ig->mask->setStyleSheet("color:black");
+        QMessageBox::warning(this, "Bien ",
+                             "adresses Sauvgardé ",
+                             QMessageBox::Ok);
+        return;
+
     }else{
-        count++;
-        ig->mask->setStyleSheet("color:red");
+        if(InterfaceFE::checkAdresse(AdresseIPApp.toStdString(),IP_REGEX,DEFAULT_IP) == DEFAULT_IP
+                || AdresseIPApp.isEmpty() ){
+            ig->nextHope->setStyleSheet("color:red");
+            stream<<"<li>Adresse ip</li>";
+        }else
+        {
+            ig->nextHope->setStyleSheet("color:black");
+
+        }
+
+        if(InterfaceFE::checkAdresse(AdresseResApp.toStdString(),IP_REGEX,DEFAULT_IP) == DEFAULT_IP
+                 || AdresseResApp.isEmpty() ){
+            ig->AdresseRes->setStyleSheet("color:red");
+            stream<<"<li>Adresse ip</li>";
+        }else
+        {
+            ig->AdresseRes->setStyleSheet("color:black");
+
+        }
+        if(InterfaceFE::checkAdresse(mask.toStdString(),IP_REGEX,DEFAULT_IP) == DEFAULT_IP
+                 || mask.isEmpty() ){
+            ig->mask->setStyleSheet("color:red");
+            stream<<"<li>Adresse ip</li>";
+        }else
+        {
+            ig->mask->setStyleSheet("color:black");
+
+        }
+
+
+
+
+        QMessageBox errorbox;
+        stream<<"</ul>";
+        errorbox.setText(errorString);
+        errorbox.exec();
+        return;
     }
 
-    if(routeNew->passerelle==DEFAULT_IP || routeNew->adresseReseau==DEFAULT_IP
-            || routeNew->masque==DEFAULT_IP){
-        if(count==1){
-            QMessageBox::warning(this, "Invalide ",
-                                 "Invalide adresse !",  QMessageBox::Ok);
 
-        }else{
-            QMessageBox::warning(this, "Invalide ",
-                                 "Invalide adresses !",  QMessageBox::Ok);}
-        return ;
 
-    }
-    src->modifierRoute(i,routeNew);
+
+
     src->getParent()->toolTipShow();
-
-    showConfig(src);
-
 }
 void Dialog::appliquerChangerNom(){
     QString nom=NomStation->text();

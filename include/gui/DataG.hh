@@ -23,7 +23,7 @@ private :
 		std::vector<Data *> send;
 		QPushButton detail, left, right;
 		QHBoxLayout * grid;
-		int curent;
+		int curent, index;
 		void addMessage (void);
 		void addSegment (void);
 		void addPaquet (void);
@@ -32,13 +32,20 @@ private :
 		void updatePanel(void);
 		
 public :
-        DataG( Data *d, QWidget* parent = 0 );
+        DataG( Data *d, int index, QWidget* parent = 0 );
+        ~DataG();
+        int getIndex()	{ return index;};
+        void setIndex( int i)	{ index = i;};
+        Data * getDataptr()	{ return d;};
 
+		
 private slots:
 //		void dataChanged();
         void detailPanel();
         void displayLeft();
         void displayRight();
+		
+
 };
 
 

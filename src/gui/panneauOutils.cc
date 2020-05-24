@@ -8,6 +8,8 @@
 #include <QStateMachine>
 #include <cstring>
 
+#include "simulaGui.hh"
+#include "PanneauData.hh"
 #include "GFichier.hh"
 #include "NoeudG.hh"
 
@@ -195,6 +197,15 @@ void PanneauOutils::nouveauFichier(){
     // nouveau fichier
     Graphe * graphe = Graphe::get();
     graphe->~Graphe();
+    simulaGui * gui = dynamic_cast <simulaGui * > (this->parentWidget());
+	if ( gui)	{
+		std::cout << "No segfault 1" << std::endl;
+		PanneauData * pData = dynamic_cast <PanneauData *> ( gui->getMainlayout()->itemAtPosition( 4, 0)->widget());
+		if ( pData)	{ 
+			std::cout << "No segfault 2" << std::endl;
+			pData->clearPanneauData();
+		}    
+	}
     curFile = "";
 }
 void PanneauOutils::ouvrirFichier(){

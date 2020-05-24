@@ -16,13 +16,15 @@ Q_OBJECT
 public:
 	PanneauData( QWidget *parent = nullptr);
 	~PanneauData();
+	void clearPanneauData();
+	
 public slots:
 	void addData ( Data * d);
-
+	void askRemoveTab( int index);
 
 private:
     QMap <Data *, DataG *> onglets;
-
+	int compt;
 };
 
 #endif // PANNEAU_DATA_HPP

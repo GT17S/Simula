@@ -193,8 +193,10 @@ void PanneauOutils::nouveauFichier(){
     }
 
     // nouveau fichier
+    gestSimulation->getManager()->joinall();
     Graphe * graphe = Graphe::get();
     graphe->~Graphe();
+    // Supprimer les working threads
     curFile = "";
 }
 void PanneauOutils::ouvrirFichier(){

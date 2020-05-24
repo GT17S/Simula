@@ -183,7 +183,9 @@ void Dialog::showConfig(Noeud *src){
 
     NomStation->setText(QString::fromStdString(src->getNom()));
     if(src->getTypeNoeud()==2 ||src->getTypeNoeud()==3 ){
-        return ;
+        toolInterface->setEnabled(false);
+        toolRoutage->setEnabled(false);
+
     }
 
         for(InterfaceFE *i:src->getInterfaces()){

@@ -28,7 +28,7 @@ class simulaGui: public QWidget {
 private:
 	//Grid
     QGridLayout* mainlayout; /*!< Grille de Layout pour le 5 Widgets*/
-	
+    PanneauOutils* pan;
     QVector<QWidget *> widgets;/*!< Tableau pour contenir les 5 widgets*/
 
 public:
@@ -44,6 +44,9 @@ public:
 	~simulaGui();
 
     QGridLayout* getMainlayout(void) const {return mainlayout;};
+
+protected:
+    void closeEvent(QCloseEvent* ev);
 
 };
 

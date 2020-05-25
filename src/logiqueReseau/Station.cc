@@ -349,6 +349,7 @@ void Station::mainlocal(std::mutex *m, gSimulation* g){
            if(bok){
                 std::cout <<  getIdNoeud() << std::endl;
                 this->getControleur()->verifieNbrSegment(this);
+
             }
         }
 

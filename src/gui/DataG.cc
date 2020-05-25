@@ -35,13 +35,9 @@ void DataG::predicateData ()	{
 	vector<int> id_path;
 	int ip_dest = id_dest;
 
-    Graphe::genererChemin(id_src, id_src, ip_dest, path, true);
-
+	Graphe::genererChemin(id_src, id_src, ip_dest, path, true);
 	if ( path.empty())	{
-		QMessageBox msgBox;
-		msgBox.setText("Pas de chemin!");
-		msgBox.exec();
-		return;
+      return;
 	}
 	int size_p = path.size();
 	extremite * destExt;

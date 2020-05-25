@@ -37,7 +37,6 @@ PanneauOutils::~PanneauOutils()
 {
 
    // qDebug() << "Cleanup";
-    gestSimulation->getManager()->joinall();
     delete gestSimulation;
 
 	/*

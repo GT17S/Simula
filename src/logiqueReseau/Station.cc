@@ -115,10 +115,10 @@ void Station::envoyerMessage(int key, destination dest){
     //Une fois que le paquet est envoyé on met à jour le rtt
     controleur->setBaseRtt(CalculRTT(controleur));
     //On calcule la latence de l'envoi dans le contrôleur
-    //controleur->setlatence(CalculLatenceDynamique(Graphe::get(), controleur, dest.data, id_src, id_dest));
+    controleur->setlatence(CalculLatenceDynamique(Graphe::get(), controleur, dest.data, id_src, id_dest));
     //Et on diminue la bande passante du cable à l'envoi pour chaque cable du chemin
      for (int i = 0; i < path.size(); ++i){   
-            float tmpcableBP = path[i]->getDebitAcc();
+            float tmpcableBP = path[i]->getDebitMax();
             path[i]->setDebitAcc(tmpcableBP - (float)dest.data->getOriginialStringSize()*8);
     }    
     this->mutexcabl->unlock();

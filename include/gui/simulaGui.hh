@@ -42,8 +42,7 @@ public:
          * Destructeur de la classe simulaGui
      */
 	~simulaGui();
-	
-	
+
     QGridLayout* getMainlayout(void) const {return mainlayout;};
 
 };

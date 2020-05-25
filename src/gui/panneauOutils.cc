@@ -33,7 +33,10 @@ PanneauOutils::PanneauOutils(EspaceTravail * _espaceTravail, gSimulation * g){
 
 PanneauOutils::~PanneauOutils()
 {
-	delete gestSimulation;
+
+   // qDebug() << "Cleanup";
+    nouveauFichier();
+    delete gestSimulation;
 	/*
     delete formulaire;
     delete nouveau;
@@ -230,6 +233,10 @@ void PanneauOutils::ouvrirFichier(){
         lireXml(fileName, espaceTravail, gestSimulation->getManager());
 
     }
+
+    gestSimulation->getManager()->joinall();
+    Graphe * graphe = Graphe::get();
+    graphe->~Graphe();
 
 }
 void PanneauOutils::sauvegarderFichier(){

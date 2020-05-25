@@ -2,6 +2,16 @@
 #include "DataOutils.hh"
 #include "QString"
 
+bool Station::getRun() const
+{
+    return run;
+}
+
+void Station::setRun(bool value)
+{
+    run = value;
+}
+
 Station::Station(StationG * parent) : Noeud(parent){
     // ID automatique
     // nb port =1
@@ -12,6 +22,7 @@ Station::Station(StationG * parent) : Noeud(parent){
     controleur = new Congestion();
     numSeq = 1;
     isPasserelle = false;
+    run = true;
     setParent(parent);
 
 }
@@ -330,7 +341,7 @@ void Station::mainlocal(std::mutex *m, gSimulation* g){
         std::cout << "Fonction principale du thread" << std::endl;
         std::chrono::seconds sec(1);
 
-       while (1){
+        while (run){
         if(g->getEtat() == DEMARRER){
            meo->lock();
 		   bool bok = this->getControleur()->getok();

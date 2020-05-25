@@ -90,6 +90,8 @@ protected:
         * \param *event: voir #QGraphicsSceneMouseEvent
    */
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
+
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
 };
 
 #endif

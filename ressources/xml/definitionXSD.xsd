@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<xsd:element name="Simulateur">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Equipements">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="Noeuds">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element maxOccurs="unbounded" minOccurs="0" name="Noeud">
+											<xsd:complexType>
+												<xsd:sequence>
+													<xsd:element name="Position">
+														<xsd:complexType>
+															<xsd:attribute name="x" type="xsd:int" use="required"/>
+															<xsd:attribute name="y" type="xsd:int" use="required"/>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="nom" type="xsd:string"/>
+													<xsd:element name="Interfaces">
+														<xsd:complexType>
+															<xsd:sequence>
+																<xsd:element maxOccurs="unbounded" minOccurs="0" name="Interface">
+																	<xsd:complexType>
+																		<xsd:sequence>
+																			<xsd:element name="nomInterface" type="xsd:string"/>
+																			<xsd:element name="adresseIP" type="xsd:string"/>
+																			<xsd:element name="adresseRes" type="xsd:string"/>
+																			<xsd:element name="masque" type="xsd:string"/>
+																			<xsd:element name="adresseMac" type="xsd:string"/>
+																		</xsd:sequence>
+																	</xsd:complexType>
+																</xsd:element>
+															</xsd:sequence>
+														</xsd:complexType>
+													</xsd:element>
+													<xsd:element name="TableRoutage">
+														<xsd:complexType>
+															<xsd:sequence>
+																<xsd:element maxOccurs="unbounded" minOccurs="0" name="Route">
+																	<xsd:complexType>
+																		<xsd:sequence>
+																			<xsd:element name="adresseRes" type="xsd:string"/>
+																			<xsd:element name="masque" type="xsd:string"/>
+																			<xsd:element name="adressePasserelle" type="xsd:string"/>
+																		</xsd:sequence>
+																	</xsd:complexType>
+																</xsd:element>
+															</xsd:sequence>
+														</xsd:complexType>
+													</xsd:element>
+												</xsd:sequence>
+												<xsd:attribute name="id" type="xsd:int" use="required"/>
+												<xsd:attribute name="type" use="required">
+													<xsd:simpleType>
+														<xsd:restriction base="xsd:string">
+															<xsd:enumeration value="STATION"/>
+															<xsd:enumeration value="ROUTEUR"/>
+															<xsd:enumeration value="SWITCH"/>
+															<xsd:enumeration value="HUB"/>
+														</xsd:restriction>
+													</xsd:simpleType>
+												</xsd:attribute>
+												<xsd:attribute name="nbPort" type="xsd:int" use="required"/>
+											</xsd:complexType>
+										</xsd:element>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<xsd:element name="Cables">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element maxOccurs="unbounded" minOccurs="0" name="Cable">
+											<xsd:complexType>
+												<xsd:sequence>
+													<xsd:element name="debitMax" type="xsd:int"/>
+													<xsd:element name="debitAcc" type="xsd:float"/>
+													<xsd:element name="latence" type="xsd:float"/>
+													<xsd:element name="MTU" type="xsd:int"/>
+													<xsd:element name="NoeudA">
+													  <xsd:complexType>
+													    <xsd:simpleContent>
+													      <xsd:extension base="xsd:int">
+													        <xsd:attribute name="interface" type="xsd:int"/>
+													      </xsd:extension>
+													    </xsd:simpleContent>
+													  </xsd:complexType>
+													</xsd:element>
+													<xsd:element name="NoeudB">
+													  <xsd:complexType>
+													    <xsd:simpleContent>
+													      <xsd:extension base="xsd:int">
+													        <xsd:attribute name="interface" type="xsd:int"/>
+													      </xsd:extension>
+													    </xsd:simpleContent>
+													  </xsd:complexType>
+													</xsd:element>
+												</xsd:sequence>
+												<xsd:attribute name="id" type="xsd:int" use="required"/>
+												<xsd:attribute name="type" type="xsd:int" use="required"/>
+											</xsd:complexType>
+										</xsd:element>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>

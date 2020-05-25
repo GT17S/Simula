@@ -118,7 +118,7 @@ public:
    */
     void toolTipShow();
 	//Ajouté par Massi
-	EspaceTravail * getEspaceTravail ()	{ return espaceTravail;};
+    EspaceTravail * getEspaceTravail ()	{ return espaceTravail;}
 
 protected:
     vector<cableG_extremite> extremiteG;/*!< Vecteur stockant les cablesG d'un NoeudG*/

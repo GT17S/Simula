@@ -30,18 +30,18 @@ class DataG : public QTabBar    {
     Q_OBJECT
 
 private :
-		Data * d;
-		std::vector<Data *> send;
-		QPushButton detail, left, right;
-		QHBoxLayout * grid;
-		int curent;
-		void addMessage (void);
-		void addSegment (void);
-		void addPaquet (void);
-		void addTrame (void);
-		void predicateData (void);
-		void updatePanel(void);
-		
+        Data * d;
+        std::vector<Data *> send;
+        QPushButton detail, left, right;
+        QHBoxLayout * grid;
+        int curent;
+        void addMessage (void);
+        void addSegment (void);
+        void addPaquet (void);
+        void addTrame (void);
+        void predicateData (void);
+        void updatePanel(void);
+
 public :
         /*!
              * \brief Construceur d'initialisation
@@ -51,17 +51,15 @@ public :
              * \param parent : voir #QWidget
         */
         DataG( Data *d, QWidget* parent = 0 );
-        ~DataG();
-        Data * getDataptr()	{ return d;};
 
-		
+        ~DataG();
+        Data * getDataptr()	{ return d;}
+
 private slots:
 //		void dataChanged();
         void detailPanel();
         void displayLeft();
         void displayRight();
-		
-
 };
 
 

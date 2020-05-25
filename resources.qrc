@@ -40,5 +40,6 @@
 		<file>ressources/equipements/station.png</file>
 		<file>ressources/equipements/switch2.png</file>
 		<file>ressources/equipements/switch.png</file>
+		<file>ressources/xml/definitionXSD.xsd</file>
     </qresource>
 </RCC>

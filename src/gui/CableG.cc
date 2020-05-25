@@ -46,6 +46,24 @@ CableG::~CableG(){
     }
 
 }
+
+void CableG::mousePressEvent(QGraphicsSceneMouseEvent *event){
+    if(espaceTravail->getMode() == DELETE_MODE){
+        const QMessageBox::StandardButton ret
+                = QMessageBox::question(espaceTravail, "Supprimer cable",
+                                        "Voulez-vous vraiment supprimer le cable ?",
+                                        QMessageBox::Yes | QMessageBox::No);
+
+        if(ret == QMessageBox::Yes){
+            if(child)
+                child->~Cable();
+            else
+                this->~CableG();
+        }
+    }
+
+}
+
 void CableG::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     if(espaceTravail->getMode()==SELECT_MODE){

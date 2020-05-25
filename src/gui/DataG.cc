@@ -34,9 +34,10 @@ void DataG::predicateData ()	{
 	vector<Cable *> path;
 	vector<int> id_path;
 	int ip_dest = id_dest;
+
 	Graphe::genererChemin(id_src, id_src, ip_dest, path, true);
 	if ( path.empty())	{
-		return;
+      return;
 	}
 	int size_p = path.size();
 	extremite * destExt;

@@ -16,10 +16,11 @@ Station::Station(StationG * parent) : Noeud(parent){
     // ID automatique
     // nb port =1
     // filedattente vide
+    controleur = new Congestion();
+
     setNom( "Station"+std::to_string(idNoeud));
     adressePasserelle = DEFAULT_IP;
     type = STATION;
-    controleur = new Congestion();
     numSeq = 1;
     isPasserelle = false;
     run = true;

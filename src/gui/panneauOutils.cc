@@ -19,7 +19,7 @@ PanneauOutils::PanneauOutils(EspaceTravail * _espaceTravail, gSimulation * g){
 // Ajouté par Massi
 //	Connexion signals/slots 
 	QObject::connect ( espaceTravail, SIGNAL(createStation(NoeudG*)), g->getManager(), SLOT(createWorker(NoeudG*)));
-
+    QObject::connect ( espaceTravail, SIGNAL(removeStation(QPointF)), g->getManager(), SLOT(removeStation(QPointF)));
 
     this->setMinimumHeight(60);
     this->setMaximumHeight(70);
@@ -35,8 +35,9 @@ PanneauOutils::~PanneauOutils()
 {
 
    // qDebug() << "Cleanup";
-    nouveauFichier();
+    gestSimulation->getManager()->joinall();
     delete gestSimulation;
+
 	/*
     delete formulaire;
     delete nouveau;
@@ -224,6 +225,10 @@ void PanneauOutils::ouvrirFichier(){
             break;
         }
     }
+    gestSimulation->getManager()->joinall();
+    Graphe * graphe = Graphe::get();
+    graphe->~Graphe();
+
     // lire le fichier
     QString fileName=QFileDialog::getOpenFileName(this,
                                                   tr("Ouvrir un fichier de configuration"), "",
@@ -234,9 +239,6 @@ void PanneauOutils::ouvrirFichier(){
 
     }
 
-    gestSimulation->getManager()->joinall();
-    Graphe * graphe = Graphe::get();
-    graphe->~Graphe();
 
 }
 void PanneauOutils::sauvegarderFichier(){

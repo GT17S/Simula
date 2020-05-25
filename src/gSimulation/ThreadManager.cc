@@ -40,6 +40,11 @@ void ThreadManager::joinall(){
     std::cout << "Destruction :" << WorkingThreads.size() << "    "  << workingStations.size() << std::endl;
 }
 
+void ThreadManager::removeStation(QPointF pos){
+       std::cout << "Je retire une station" << std::endl;
+}
+
+
 // Ajouté par Massi
 bool ThreadManager::findWorker ( Station * s)	{
 	bool found = false;
@@ -48,6 +53,7 @@ bool ThreadManager::findWorker ( Station * s)	{
 			found = true;
 	return found;
 }
+
 
 // Ajouté par Massi
 void ThreadManager::createWorker ( NoeudG * n)	{

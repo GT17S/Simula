@@ -95,8 +95,11 @@ void EspaceTravail::mousePressEvent(QMouseEvent *event)
     QPoint origin = vue->mapFromGlobal(QCursor::pos());
     QPointF p = vue->mapToScene(origin);
     switch(mode){
-    case SELECT_MODE:  { break;}
-    case DELETE_MODE:  { break;}
+    case SELECT_MODE:  {  break;}
+    case DELETE_MODE:  {
+
+        break;
+    }
     case ROUTEUR_MODE: {
 
         RouteurG * r = new RouteurG(this);

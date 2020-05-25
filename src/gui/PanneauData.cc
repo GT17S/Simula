@@ -4,7 +4,6 @@ PanneauData::PanneauData( QWidget *parent) : QTabWidget(parent) {
 	this->setMinimumHeight(80);
 	this->setMaximumHeight(100);
 	this->setTabsClosable(true);
-	compt = 0;
 
     connect( this, SIGNAL(tabCloseRequested(int)), this, SLOT(askRemoveTab(int)));
 
@@ -18,7 +17,7 @@ PanneauData::~PanneauData(){}
 
 void PanneauData::addData ( Data * d)	{
 
-	DataG * od = new DataG( d, onglets.size()+1, this);
+	DataG * od = new DataG( d, this);
 //	od->setTabsClosable (true);
 	this->addTab( od,QString("Envoie n°%1").arg( onglets.size()));
 	onglets.insert ( d,od);

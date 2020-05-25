@@ -1,8 +1,7 @@
 #include "DataG.hh"
 #include "PanneauData.hh"
-DataG::DataG  ( Data * d, int index, QWidget* parent) : QTabBar(parent), detail( QIcon("../../ressources/outilsBar/zoomInAction.png"), "",this), left (QIcon("../../ressources/outilsBar/left.jpg"), "",this), right( QIcon("../../ressources/outilsBar/right.jpg"), "",this)    {
+DataG::DataG  ( Data * d, QWidget* parent) : QTabBar(parent), detail( QIcon("../../ressources/outilsBar/zoomInAction.png"), "",this), left (QIcon("../../ressources/outilsBar/left.jpg"), "",this), right( QIcon("../../ressources/outilsBar/right.jpg"), "",this)    {
 	this->curent = 0;
-	this->index = index;
 	this->detail.setFixedSize( 30, 30);
 	this->left.setFixedSize( 30, 30);
 	this->right.setFixedSize( 30, 30);

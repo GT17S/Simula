@@ -42,9 +42,10 @@ void ThreadManager::joinall(){
 
 void ThreadManager::removeStation(NoeudG* n){
        std::cout << "Je retire une station" << std::endl;
-       Station * s = dynamic_cast <Station *> (n->getChild());
+       auto tmp = n->getChild();
+
        for (unsigned int i = 0; i < workingStations.size(); i++){
-               if ( workingStations[i] == s){
+               if ( workingStations[i] == tmp){
                     workingStations[i]->setRun(false);
                     if(WorkingThreads[i].joinable())
                           WorkingThreads[i].join();

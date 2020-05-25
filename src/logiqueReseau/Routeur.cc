@@ -43,8 +43,8 @@ void Routeur::envoyerMessage(int key, destination dest){
     //std::cout <<"J'envoie le message à "<<ext->noeud->getIdNoeud()<< std::endl;
     //_message = std::to_string(id_next)+"_"+std::to_string(id_dest);
     PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Envoyer donnée vers :s")+QString::fromStdString(extNext->noeud->getNom()));
-
-    extNext->noeud->recevoirMessage(key, extNext->interface,  dest);
+    if(path[size_p-1]->estBienConnecte())
+        extNext->noeud->recevoirMessage(key, extNext->interface,  dest);
 }
 
 void Routeur::recevoirMessage(int key, int dest_i, destination dest){

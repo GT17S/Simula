@@ -21,7 +21,7 @@ PanneauOutils::PanneauOutils(EspaceTravail * _espaceTravail, gSimulation * g){
 // Ajouté par Massi
 //	Connexion signals/slots 
 	QObject::connect ( espaceTravail, SIGNAL(createStation(NoeudG*)), g->getManager(), SLOT(createWorker(NoeudG*)));
-
+    QObject::connect ( espaceTravail, SIGNAL(removeStation(NoeudG*)), g->getManager(), SLOT(removeStation(NoeudG*)));
 
     this->setMinimumHeight(60);
     this->setMaximumHeight(70);
@@ -35,7 +35,11 @@ PanneauOutils::PanneauOutils(EspaceTravail * _espaceTravail, gSimulation * g){
 
 PanneauOutils::~PanneauOutils()
 {
-	delete gestSimulation;
+
+   // qDebug() << "Cleanup";
+    gestSimulation->getManager()->joinall();
+    delete gestSimulation;
+
 	/*
     delete formulaire;
     delete nouveau;
@@ -195,9 +199,10 @@ void PanneauOutils::nouveauFichier(){
     }
 
     // nouveau fichier
+    gestSimulation->getManager()->joinall();
     Graphe * graphe = Graphe::get();
     graphe->~Graphe();
-    simulaGui * gui = dynamic_cast <simulaGui * > (this->parentWidget());
+   simulaGui * gui = dynamic_cast <simulaGui * > (this->parentWidget());
 	if ( gui)	{
 		std::cout << "No segfault 1" << std::endl;
 		PanneauData * pData = dynamic_cast <PanneauData *> ( gui->getMainlayout()->itemAtPosition( 4, 0)->widget());
@@ -230,6 +235,10 @@ void PanneauOutils::ouvrirFichier(){
             break;
         }
     }
+    gestSimulation->getManager()->joinall();
+    Graphe * graphe = Graphe::get();
+    graphe->~Graphe();
+
     // lire le fichier
     QString fileName=QFileDialog::getOpenFileName(this,
                                                   tr("Ouvrir un fichier de configuration"), "",
@@ -239,6 +248,7 @@ void PanneauOutils::ouvrirFichier(){
         lireXml(fileName, espaceTravail, gestSimulation->getManager());
 
     }
+
 
 }
 void PanneauOutils::sauvegarderFichier(){
@@ -310,8 +320,8 @@ void PanneauOutils::changeMode(){
 }
 
 void PanneauOutils::timer(){
-    QTime *t = this->gestSimulation->getTime();
-    qDebug()<<t->toString("hh:mm:ss");
+   QTime *t = this->gestSimulation->getTime();
+    //qDebug()<<t->toString("hh:mm:ss");
     this->gestSimulation->demarrer();
     *t=t->addSecs(1);
     this->gestSimulation->getTimer()->setInterval(1000);

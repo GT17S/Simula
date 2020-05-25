@@ -4,7 +4,7 @@
 /*!
  * \file DialogCable.hh
  * \brief DialogCable
- * \author GT17S & Medish
+ * \author GT17S & Medish & nadjibian
  * \version 0.1
  */
 
@@ -66,7 +66,7 @@ public:
     */
     void createInputs(int _type, int _debit, int _mtu);
 
-    //not tested yet
+
     /*!
          * \brief showConfig
          * Methode qui affiche l'objet DialogCable dans ça fentre de logique vers graphique.
@@ -79,8 +79,8 @@ private:
     QLineEdit 	*debit;/*!< Ligne affichant le debit du cable*/
     QLineEdit   *mtu; /*!< Ligne affichant le MTU du cable*/
     QComboBox   *type; /*!< Une boite permettant de choisir le type de cable (CROISE ou bien DROIT)*/
-    Cable *cableMemebre;/*!<Le cable sélectionne */
-    QPushButton *appliquer;/*!<bouton pour appliquer les changements */
+    Cable *cableMemebre;/*!< Le cable sélectionne */
+    QPushButton *appliquer;/*!< bouton pour appliquer les changements */
 
 private slots:
     /*!
@@ -93,10 +93,7 @@ private slots:
      * \brief onApplique
      * Methode qui vas appliquer les changements sur le cable
      */
-
     void onApplique();
-
-
 
 };
 

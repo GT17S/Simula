@@ -2,6 +2,16 @@
 #include "DataOutils.hh"
 #include "QString"
 
+bool Station::getRun() const
+{
+    return run;
+}
+
+void Station::setRun(bool value)
+{
+    run = value;
+}
+
 Station::Station(StationG * parent) : Noeud(parent){
     // ID automatique
     // nb port =1
@@ -12,6 +22,7 @@ Station::Station(StationG * parent) : Noeud(parent){
     controleur = new Congestion();
     numSeq = 1;
     isPasserelle = false;
+    run = true;
     setParent(parent);
 
 }
@@ -113,8 +124,12 @@ void Station::envoyerMessage(int key, destination dest){
     this->mutexcabl->unlock();
     // prochaine destination
     extremite * extNext = path[size_p -1]->getInverseExt(this);
-   PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Enovyé donnée vers ")+QString::fromStdString(extNext->noeud->getNom()));
+/* std::cout << dest.data->getOriginialStringSize()*8 << std::endl;
+    std::cout << Graphe::getMatrice()[id_src][id_dest]->getDebitAcc() << std::endl;
+*/
 
+    std::this_thread::sleep_for(Graphe::getWaitTime());
+    PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Enovyé donnée vers ")+QString::fromStdString(extNext->noeud->getNom()));
     extNext->noeud->recevoirMessage(key, extNext->interface, dest);
 
 }
@@ -156,7 +171,7 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
         }
 
         if(ipSrc == ipDest){
-           // std::cout <<"Cest moi la destination" <<std::endl;
+            std::cout <<"Cest moi la destination" <<std::endl;
            PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Arrivé à destination"));
 
             // verifier fragmentation ?
@@ -187,7 +202,7 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
                 // syn = 1, doit repondre ack
                 if(flags == 18){
 
-                    //std::cout <<"J'ai bien recu un ack"<<std::endl;
+                    std::cout <<"J'ai bien recu un ack"<<std::endl;
                     int nAck = lire_bits ( *(dest.data)->getSeq(), 64, 32).to_ulong();
                     PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Ack recu ")+QString::number(nAck));
 
@@ -204,7 +219,7 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
                 desencapsule_segment(dest.data);
                 PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Message recu :")+QString::fromStdString(showMessage(dest.data)));
 
-                //std::cout <<"Jai recu le message :"<<std::endl<<showMessage(dest.data) <<std::endl;
+                std::cout <<"Jai recu le message :"<<std::endl<<showMessage(dest.data) <<std::endl;
                 delete dest.data;
 			    this->mutexcabl->lock();
                 //Libèration de la bande passante 
@@ -250,7 +265,7 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
         else {
             /// Station est une passerelle
             if(isPasserelle){
-                //std::cout <<"Je suis une passerelle"<<std::endl;
+                std::cout <<"Je suis une passerelle"<<std::endl;
 
                 // generer chemin complet, jusqua la destination
                 vector<Cable *> path;
@@ -283,7 +298,7 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
                 extremite* srcExt = new extremite;
                 srcExt->noeud = Graphe::getSommets()[mac_src];
                 srcExt->interface = dest.interface_src;
-
+                std::this_thread::sleep_for(Graphe::getWaitTime());
                 encapsule_paquet ( srcExt, destExt, dest.data);
                 envoyerMessage(key, dest);
 
@@ -326,7 +341,7 @@ void Station::mainlocal(std::mutex *m, gSimulation* g){
         std::cout << "Fonction principale du thread" << std::endl;
         std::chrono::seconds sec(1);
 
-       while (1){
+        while (run){
         if(g->getEtat() == DEMARRER){
            meo->lock();
 		   bool bok = this->getControleur()->getok();

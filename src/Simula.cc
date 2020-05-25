@@ -7,9 +7,7 @@
 #include "Graphe.hh"
 
 
-void cleanup(){
-    return;
-}
+
 
 int main ( int argc, char ** argv) {
 
@@ -31,6 +29,5 @@ int main ( int argc, char ** argv) {
     app.setStyleSheet(StyleSheet);
     g.show();
 
-    std::atexit(cleanup);
     return app.exec();
 }

@@ -1,5 +1,6 @@
 #include "InterfaceG.hh"
 #include "QDebug"
+#include "InterfaceFE.hh"
 
 InterfaceG::~InterfaceG()
 {
@@ -22,10 +23,17 @@ InterfaceG::InterfaceG(QString _AdresseIP,QString _AdresseMac,QString _AdresseRe
 void InterfaceG::createInputs(QString _AdresseIP, QString _AdresseMac, QString _AdresseRes, QString _mask,
                               QString _interfaceName, bool _liaison){
 
+    QRegExp rxIp(QString::fromStdString(IP_REGEX));
+    QValidator *ipValidator= new QRegExpValidator(rxIp,this);
     AdresseIP	 = new QLineEdit (_AdresseIP);
+    AdresseIP->setValidator(ipValidator);
     AdresseMac	 = new QLineEdit (_AdresseMac);
     AdresseRes	 = new QLineEdit (_AdresseRes);
+    AdresseRes->setValidator(ipValidator);
+
     mask = new QLineEdit (_mask);
+    mask->setValidator(ipValidator);
+
     interfaceName = new QLineEdit (_interfaceName);
     liaison = new QCheckBox("liaison", this);
     liaison->setEnabled(false);

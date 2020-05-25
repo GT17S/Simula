@@ -52,6 +52,7 @@ void NoeudG::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 this->~NoeudG();
         }
         //event->ignore();
+        emit espaceTravail->removeStation(this);
         break;
     }
     case ROUTEUR_MODE: { break;}
@@ -69,7 +70,7 @@ void NoeudG::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 break;
             }
 
-            CableG * cg = new CableG();
+            CableG * cg = new CableG(espaceTravail);
             addLine(cg, true);
             moveCable(event->scenePos() - boundingRect().center());
             espaceTravail->currentCable = cg;

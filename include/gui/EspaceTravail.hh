@@ -108,8 +108,6 @@ public:
     */
     void setVue(QGraphicsView *_vue){vue=_vue;}
 
-    void deleteScene();
-
     void addNoeud(NoeudG* noeud, QPointF p);
 
     void showDialogError(const char * error);
@@ -130,15 +128,16 @@ public:
     CableG * currentCable;
 
 protected:
-    void mouseDoubleClickEvent( QMouseEvent * e );
+    /*!
+        * \brief mousePressEvent
+        * \param *event: voir #QMouseEvent
+   */
     void mousePressEvent(QMouseEvent *event);
-    void mouseMoveEvent( QMouseEvent *e );
-    void mouseReleaseEvent( QMouseEvent *e );
 
 // Ajouté par Massi
 signals:
 		void createStation ( NoeudG * n);
-
+        void removeStation(NoeudG* n);
 
 };
 

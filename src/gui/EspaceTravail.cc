@@ -79,24 +79,14 @@ void EspaceTravail::createCursors(){
     MESSAGE_CURSOR = QCursor(QPixmap(":/ressources/cursors/messageCursor.png"));
 }
 
-void EspaceTravail::deleteScene()
-{
-    this->scene->~QGraphicsScene();
-}
-
-
-void EspaceTravail::mouseDoubleClickEvent(QMouseEvent *event)
-{
-    
-}
 
 void EspaceTravail::mousePressEvent(QMouseEvent *event)
 {   //qDebug() <<"mouse pressed";
     QPoint origin = vue->mapFromGlobal(QCursor::pos());
     QPointF p = vue->mapToScene(origin);
     switch(mode){
-    case SELECT_MODE:  { break;}
-    case DELETE_MODE:  { break;}
+    case SELECT_MODE:  {  break;}
+    case DELETE_MODE:  {  break;}
     case ROUTEUR_MODE: {
 
         RouteurG * r = new RouteurG(this);
@@ -132,16 +122,6 @@ void EspaceTravail::mousePressEvent(QMouseEvent *event)
     }
     default: return;
     }
-
-}
-
-void EspaceTravail::mouseMoveEvent(QMouseEvent *event)
-{
-
-}
-
-void EspaceTravail::mouseReleaseEvent(QMouseEvent *event)
-{
 
 }
 

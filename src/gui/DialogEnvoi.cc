@@ -80,7 +80,7 @@ void DialogEnvoi::preparenvoi(){
    //Vérifier que les info sont bonnes
     QString errorString;
     QTextStream stream(&errorString);
-    stream<< "<h5><b><font color='red'>Veuillez entrer les parameres suivants :</font></b></h5><ul>";
+    stream<< "<h5><b><font color='red'>Veuillez entrer les parametres suivants :</font></b></h5><ul>";
 
 
     bool ok = true;
@@ -110,13 +110,17 @@ void DialogEnvoi::preparenvoi(){
 
         //Récuperer les noeuds
         Station* s1 = dynamic_cast<Station*>(graphe->getSommets()[editNoeud1->toolTip().toInt()]);
-        Noeud* s2 = dynamic_cast<Station*>(graphe->getSommets()[editNoeud2->toolTip().toInt()]);
+        Station* s2 = dynamic_cast<Station*>(graphe->getSommets()[editNoeud2->toolTip().toInt()]);
         int portsrc =  editPortSrc->text().toInt();
         int portdest = editPortDest->text().toInt();
-
-
-        bool syn = true;
-        bool ack = checkAck->isChecked() ?  1 : 0;
+        bool syn, ack;
+        if(checkAck->isChecked()){
+            syn = true;
+            ack = false;
+        }else{
+            syn = false;
+            ack = false;
+        }
 
         int nseq = s1->getNextNumSeq();
         int nack = 0;

@@ -1,13 +1,16 @@
 #include "CableG.hh"
+#include <bits/stdc++.h>
+#include <iomanip>
 QPen CableG::DROIT_TYPE,
 CableG::CROISE_TYPE,
 CableG::DROIT_ERREUR_TYPE,
 CableG::CROISE_ERREUR_TYPE;
 
 
-CableG::CableG(qreal x1, qreal x2, qreal x3, qreal x4) 
+CableG::CableG(EspaceTravail * _espaceTravail,qreal x1, qreal x2, qreal x3, qreal x4)
     :   QGraphicsLineItem(x1,x2,x3,x4)
 {
+    espaceTravail = _espaceTravail;
     child = nullptr;
     extG1 = nullptr;
     extG2 = nullptr;
@@ -45,18 +48,20 @@ CableG::~CableG(){
 }
 void CableG::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
+    if(espaceTravail->getMode()==SELECT_MODE){
 
     configurationCable->showConfig(child);
-    configurationCable->show();
+    configurationCable->show();}
 }
 void CableG::updateaff(){
     QString s,equipementName;
     QTextStream stream(&s);
-    qreal bandPass= child->getDebitAcc();
-    QString::number(bandPass,'f', 3);
-
+    float bandPass= child->getDebitAcc();
+   //string texx=std::setprecision(3) << bandPass;
+    //double bb=std::setprecision(3) << bandPass;
     stream <<"Debit Max = "<<child->getDebitMax()<<"<br>"
-          <<"MTU = "<<child->getMTU()<<"<br>";
+          <<"MTU = "<<child->getMTU()<<"<br>"
+           <<"Bande passante = "<<fixed <<  qSetRealNumberPrecision(0)<<bandPass;
           /*  if(bandPass){
         stream <<"Bande passente = "<<QString::number(bandPass,'f', 3)<<"<br>";
             }else{

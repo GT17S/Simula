@@ -4,7 +4,7 @@
 /*!
  * \file Dialog.hh
  * \brief la fenetre de la configuration des equipements
- * \author GT17 & Nadjibian & medish
+ * \author GT17S & Nadjibian & medish
  * \version 0.1
  */
 
@@ -50,9 +50,6 @@ public:
          *  Initialise un la premiere page de la fenetre demandant la saisi de nom de l'équipement.
       */
     void generalWidget();
-    void configurationWidget();
-    void interfaceWidget(int nbPorts);
-    void routageWidget(int nbres);
 
     /*!
          * \brief showConfig
@@ -92,8 +89,6 @@ private:
      */
     void createSignals();
 
-    std::vector<QPushButton *> buttons;
-    std::vector<QWidget *> ports;
 private slots:
     /*!
          * \brief appliquerChangerNom

@@ -7,6 +7,8 @@ int Cable::nbCables = 0;
 int Cable::i = 1;
 
 
+
+
 Cable::Cable(CableG * _parent, cableT _type, int _debitMax, int _MTU){
     debitMax = _debitMax;
     MTU = _MTU;
@@ -66,6 +68,9 @@ parent->updateaff();
 void Cable::setExt1(extremite * _noeud1){ext1 = _noeud1;}
 
 void Cable::setExt2(extremite * _noeud2){ext2 = _noeud2;}
+
+void Cable::setEstBienConnecteCable(bool value){estBienConnecteCable = value;}
+
 
 void Cable::setParent(CableG * _parent){
     parent = _parent;

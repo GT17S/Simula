@@ -49,7 +49,7 @@ public:
     InterfaceG(QString _AdresseIP=QString(),QString _AdresseMac=QString(),QString _AdresseRes=QString(),QString _mask=QString(),QString _interfaceName=QString(),bool _liaison=false);
       /*!
          * \brief Destructeur
-         * Destructeur de la classe EspaceTravail
+         * Destructeur de la classe InterfaceG
      */
     ~InterfaceG();
 

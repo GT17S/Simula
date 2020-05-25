@@ -3,8 +3,8 @@
 simulaGui::simulaGui( gSimulation * g){
 
     //Initialisation de la fenetre principale
-	this->setWindowTitle("Simula");
-	this->setWindowIcon(QIcon("../../ressources/logo.png"));
+    this->setWindowTitle("Simula");
+    this->setWindowIcon(QIcon("../../ressources/logo.png"));
     this->setStyleSheet("background-color: #f5f2f2;");
     this->setMinimumSize(900,600);
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -16,10 +16,10 @@ simulaGui::simulaGui( gSimulation * g){
         widgets.append(new QLabel());
    }
 */
-	EspaceTravail * espaceTravail = new EspaceTravail;
+    EspaceTravail * espaceTravail = new EspaceTravail;
     PanneauEvents * panneauevents = new PanneauEvents;
-	PanneauOutils	* panneauoutils = new PanneauOutils(espaceTravail, g);
-	PanneauData		* panneaudata	= new PanneauData();
+    PanneauOutils	* panneauoutils = new PanneauOutils(espaceTravail, g);
+    PanneauData		* panneaudata	= new PanneauData();
     widgets.append( panneauoutils); //0
     widgets.append(espaceTravail);
 

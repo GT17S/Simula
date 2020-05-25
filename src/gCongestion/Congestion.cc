@@ -134,7 +134,7 @@ void Congestion::verifieNbrSegment(Noeud * src){
     }
 
     for(int i = 0; i< cwnd; i++){
-        if(i > mapFileEnvoyer.size()){
+        if(i > (int)mapFileEnvoyer.size()){
            // cout<<"fin de l'envoie 2"<<endl;
             PanneauEvents::addCh(src->getParent()->getTreeItem(),QString::fromStdString("Fin de l'envoie  "));
 
@@ -159,13 +159,14 @@ void Congestion::verifieNbrSegment(Noeud * src){
         }
 
         mapFileEnvoyer.erase (it);
-       src->envoyerMessage(key, ds);
+        src->envoyerMessage(key, ds);
+
     }
-/**		May be not here */    
-	this->mutexEnvoiOk->lock();
+/**		May be not here */
+    this->mutexEnvoiOk->lock();
     envoiok = false;
-	this->mutexEnvoiOk->lock();
-	this->mutexFileEnvoyer->lock();
+    this->mutexEnvoiOk->unlock();
+    this->mutexFileEnvoyer->unlock();
 }
 void Congestion::retrnasmission(int key){
 	bool locked = this->mutexFileACK->try_lock();
@@ -214,7 +215,7 @@ void Congestion::verifieNumAck(Noeud * n, int nAck){
 
         nbrAcksRecu=0;
         slowStart( n);
-        //verifieNbrSegment(st);
+       // verifieNbrSegment(st);
     	this->mutexEnvoiOk->lock();
         envoiok = true;
     	this->mutexEnvoiOk->unlock();

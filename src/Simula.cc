@@ -28,6 +28,5 @@ int main ( int argc, char ** argv) {
 
     app.setStyleSheet(StyleSheet);
     g.show();
-
     return app.exec();
 }

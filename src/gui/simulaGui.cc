@@ -20,6 +20,8 @@ simulaGui::simulaGui( gSimulation * g){
     PanneauEvents * panneauevents = new PanneauEvents;
     PanneauOutils	* panneauoutils = new PanneauOutils(espaceTravail, g);
     PanneauData		* panneaudata	= new PanneauData();
+    pan = panneauoutils;
+
     widgets.append( panneauoutils); //0
     widgets.append(espaceTravail);
 
@@ -61,3 +63,9 @@ simulaGui::simulaGui( gSimulation * g){
 simulaGui::~simulaGui(){
 
 }
+
+void simulaGui::closeEvent(QCloseEvent* ev){
+   assert(pan);
+   pan->getGestionnaire()->getManager()->joinall();
+}
+

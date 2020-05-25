@@ -123,6 +123,8 @@ bool Cable::connexionNoeuds(Noeud * N1, int interface1, Noeud * N2, int interfac
 
         Graphe::ajoutCableMatrice(this);
         estBienConnecte();
+        N1->getParent()->toolTipShow();
+        N2->getParent()->toolTipShow();
         return true;
 
     }

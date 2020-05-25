@@ -13,8 +13,7 @@ NoeudG::NoeudG(EspaceTravail * _espaceTravail) : QGraphicsPixmapItem()
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges);
 
     parent=new QTreeWidgetItem(PanneauEvents::getTreeview());
-    //PanneauEvents::addRoot(parent,"Noeud");
-    //PanneauEvents::addRoot(parent,QString::fromStdString());
+
 
 }
     void NoeudG::setChild(Noeud * _child){
@@ -22,6 +21,7 @@ NoeudG::NoeudG(EspaceTravail * _espaceTravail) : QGraphicsPixmapItem()
       configuration=new Dialog (_child);
       toolTipShow();
       }
+
 
 NoeudG::~NoeudG()
 {

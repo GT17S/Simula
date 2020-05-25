@@ -30,6 +30,7 @@ private:
   static QLCDNumber *timerSimulation;/*!< affichage de timer*/
   QVBoxLayout layout;/*!< alignment attributes de widget*/
   static QTreeWidget *treeview;/*!<affichage des tous les équipements */
+   QPushButton *clear;
 
 public:
   /*!
@@ -66,7 +67,7 @@ public:
        * \brief getTreeview
        * return treeview
   */
- static QTreeWidget *getTreeview(){return treeview;};
+ static QTreeWidget *getTreeview(){return treeview;}
   /*!
        * \brief setTreeview
        * \param treeview:le nouveau treeview
@@ -79,6 +80,11 @@ public slots:
         * afficher le timer sur un qcld number
    */
   static void afftime();
+  /*!
+       * \brief supItems
+       * supprime les items affiche dans panneauEvnts
+  */
+   void supItems();
 
 };
 #endif

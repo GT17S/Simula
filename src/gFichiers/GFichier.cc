@@ -1,7 +1,6 @@
 #include "GFichier.hh"
 
 bool verifier_schema(QFile *fichier_xml){
-
     return false;
 }
 

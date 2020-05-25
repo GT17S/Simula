@@ -1,8 +1,7 @@
 #include "DataG.hh"
 #include "PanneauData.hh"
-DataG::DataG  ( Data * d, int index, QWidget* parent) : QTabBar(parent), detail( QIcon("../../ressources/outilsBar/zoomInAction.png"), "",this), left (QIcon("../../ressources/outilsBar/left.jpg"), "",this), right( QIcon("../../ressources/outilsBar/right.jpg"), "",this)    {
+DataG::DataG  ( Data * d, QWidget* parent) : QTabBar(parent), detail( QIcon("../../ressources/outilsBar/zoomInAction.png"), "",this), left (QIcon("../../ressources/outilsBar/left.jpg"), "",this), right( QIcon("../../ressources/outilsBar/right.jpg"), "",this)    {
 	this->curent = 0;
-	this->index = index;
 	this->detail.setFixedSize( 30, 30);
 	this->left.setFixedSize( 30, 30);
 	this->right.setFixedSize( 30, 30);
@@ -19,10 +18,13 @@ DataG::DataG  ( Data * d, int index, QWidget* parent) : QTabBar(parent), detail(
 	this->grid->addWidget(&this->detail);
 	this->grid->addWidget(&this->left);
 	this->grid->addWidget(&this->right);
+
+    this->setTabsClosable(true);
 }
 
 DataG::~DataG()	{
 	this->send.clear();
+    qDebug()<<"Destruction DATAG";
 }
 
 void DataG::predicateData ()	{
@@ -32,6 +34,7 @@ void DataG::predicateData ()	{
 	vector<Cable *> path;
 	vector<int> id_path;
 	int ip_dest = id_dest;
+
     Graphe::genererChemin(id_src, id_src, ip_dest, path, true);
 
 	if ( path.empty())	{

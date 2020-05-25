@@ -7,7 +7,7 @@
 #include <vector>
 #include <mutex>
 #include <condition_variable>
-
+#include <QPointF>
 
 #include "Data.hh"
 #include "Graphe.hh"
@@ -36,11 +36,12 @@ public:
 	~ThreadManager();
 
 	void initStation();
-
 	
 	void joinall();
 public slots:
 	void createWorker ( NoeudG * n);
+    void removeStation(NoeudG* n);
+
 
 };
 

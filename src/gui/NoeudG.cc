@@ -52,6 +52,7 @@ void NoeudG::mousePressEvent(QGraphicsSceneMouseEvent *event)
                 this->~NoeudG();
         }
         //event->ignore();
+        emit espaceTravail->removeStation(this);
         break;
     }
     case ROUTEUR_MODE: { break;}

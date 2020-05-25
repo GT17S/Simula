@@ -45,6 +45,7 @@ class Station : public Noeud {
     Congestion * controleur;/*!< le contrôle de congestion qui gere l'envoie des messages et la recpetion des ACKS */
     int numSeq;
     bool isPasserelle;
+    bool run;
     multimap<int, Data*> fragments;
 
     //mutex sur cables
@@ -133,6 +134,8 @@ public:
     std::mutex* getMutexEnvoiOk(){  return mutexEnvoiOk;};
     void mainlocal(std::mutex* m, gSimulation* s);
 
+    bool getRun() const;
+    void setRun(bool value);
 };
 
 #endif

@@ -11,21 +11,39 @@
 #include "Graphe.hh"
 #include "QTreeWidgetItem"
 
+
+/*!
+ * \class PanneauData
+ * \brief La classe PanneauData représentant le panneau de la Donne traité sur l'interface graphique lors de la simulation du protocole TCP/IP.
+ */
 class PanneauData : public QTabWidget {
 Q_OBJECT
 public:
-	PanneauData( QWidget *parent = nullptr);
-	~PanneauData();
-	void clearPanneauData();
-	
+
+    /*!
+        * \brief Constructeur paramétré
+        * Constructeur qui prend un parent QWidget.
+        * \param *parent : voir #QWidget
+   */
+    PanneauData( QWidget *parent = nullptr);
+
+    /*!
+        * \brief Destructeur
+        * Destructeur de la classe PanneauData
+    */
+    ~PanneauData();
 public slots:
-	void addData ( Data * d);
-	void askRemoveTab( int index);
+    /*!
+        * \brief addData
+        * Ajout d'une donne sur le PanneauData
+         * \param *d: voir #Data
+*/
+    void addData ( Data * d);
+
 
 private:
-    QMap <Data *, DataG *> onglets;
-	int compt;
+    QMap <Data *, DataG *> onglets;/*!< Onglets d'affichage de la donne des sa construction a sa destruction*/
+
 };
 
 #endif // PANNEAU_DATA_HPP
-

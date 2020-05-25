@@ -80,7 +80,7 @@ void DialogEnvoi::preparenvoi(){
    //Vérifier que les info sont bonnes
     QString errorString;
     QTextStream stream(&errorString);
-    stream<< "<h5><b><font color='red'>Veuillez entrer les parameres suivants :</font></b></h5><ul>";
+    stream<< "<h5><b><font color='red'>Veuillez entrer les parametres suivants :</font></b></h5><ul>";
 
 
     bool ok = true;

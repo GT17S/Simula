@@ -52,19 +52,13 @@ void PanneauEvents::afftime(){
 PanneauEvents::~PanneauEvents(){
 
 }
-/*
-void PanneauEvents::affichage(QString text){
-    txt->append(gSimulation::getTime()->toString()+" "+text);
-
-}
-*/
 void PanneauEvents::setTreeview(QTreeWidget *value)
 {
     treeview = value;
 }
 
 void PanneauEvents::addRoot(QTreeWidgetItem *pf ,QString nom){
-    //QTreeWidgetItem *pf=new QTreeWidgetItem(treeview);
+   // QTreeWidgetItem *pff=new QTreeWidgetItem(pf);
     pf->setText(0,nom);
     treeview->addTopLevelItem(pf);
 }
@@ -72,9 +66,14 @@ void PanneauEvents::addRoot(QTreeWidgetItem *pf ,QString nom){
 
 
 void PanneauEvents::addCh(QTreeWidgetItem *parent, QString nom){
-    QTreeWidgetItem *item=new QTreeWidgetItem();
-    item->setText(0,gSimulation::getTime()->toString()+" "+nom);
-    parent->addChild(item);
+    parent->setExpanded( true );
+    qDebug()<<"le nom est "+nom;
+    QTreeWidgetItem *item1=new QTreeWidgetItem();
+    parent->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
+    item1->setText(0,gSimulation::getTime()->toString()+" "+nom);
+    parent->addChild(item1);
+
+
 }
 
 

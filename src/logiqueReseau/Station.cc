@@ -171,8 +171,9 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
         }
 
         if(ipSrc == ipDest){
+            PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Arrivé à destination"));
+
             std::cout <<"Cest moi la destination" <<std::endl;
-           PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Arrivé à destination"));
 
             // verifier fragmentation ?
             int ipid = checkFragment(dest.data);

@@ -1,5 +1,5 @@
 #include "DataG.hh"
-
+#include "PanneauData.hh"
 DataG::DataG  ( Data * d, QWidget* parent) : QTabBar(parent), detail( QIcon("../../ressources/outilsBar/zoomInAction.png"), "",this), left (QIcon("../../ressources/outilsBar/left.jpg"), "",this), right( QIcon("../../ressources/outilsBar/right.jpg"), "",this)    {
 	this->curent = 0;
 	this->detail.setFixedSize( 30, 30);
@@ -18,6 +18,13 @@ DataG::DataG  ( Data * d, QWidget* parent) : QTabBar(parent), detail( QIcon("../
 	this->grid->addWidget(&this->detail);
 	this->grid->addWidget(&this->left);
 	this->grid->addWidget(&this->right);
+
+    this->setTabsClosable(true);
+}
+
+DataG::~DataG()	{
+	this->send.clear();
+    qDebug()<<"Destruction DATAG";
 }
 
 void DataG::predicateData ()	{
@@ -27,8 +34,9 @@ void DataG::predicateData ()	{
 	vector<Cable *> path;
 	vector<int> id_path;
 	int ip_dest = id_dest;
-    Graphe::genererChemin(id_src, id_src, ip_dest, path, true);
-    if (path.empty())	{
+	Graphe::genererChemin(id_src, id_src, ip_dest, path, true);
+	if ( path.empty())	{
+
 		QMessageBox msgBox;
 		msgBox.setText("Pas de chemin!");
 		msgBox.exec();
@@ -44,28 +52,23 @@ void DataG::predicateData ()	{
 
 		n = destExt->noeud;
 		id_path.push_back (n->getIdNoeud());
-		std::cout << n->getIdNoeud() << " ";
 	}
 	std::cout << std::endl;
 	int i = 0;
 	while ( id_path[i] != id_dest)	{
-		std::cout << "Test  : " << i << " " << id_path[i] <<  std::endl;
 		 bool found = false;
 		Station * s_src = dynamic_cast <Station *> ( Graphe::get()->getSommets()[id_path[i]]);
 		Routeur * r_src = dynamic_cast <Routeur *> ( Graphe::get()->getSommets()[id_path[i]]);
 		if ( (s_src != nullptr) || (r_src != nullptr))	{
-			std::cout << id_path[i] << " est un routeur ou une station\n";
 			for (int j = i+1; j < id_path.size() && !found; j++)	{
 				Station * s_dest = dynamic_cast <Station *> ( Graphe::get()->getSommets()[id_path[j]]);
 				Routeur * r_dest = dynamic_cast <Routeur *> ( Graphe::get()->getSommets()[id_path[j]]);
 				if ( s_dest || r_dest)	{
-					std::cout << "\t" << id_path[j] << " est un routeur ou une station\n";
 					this->send.push_back ( new Data ( new boost::dynamic_bitset<> (*(send[0]->getSeq())), send[0]->getType()));
 					desencapsule_trame (send[send.size()-1]);
 					extremite e1; e1.noeud = Graphe::get()->getSommets()[id_path[i]]; e1.interface = 0;
 					extremite e2; e2.noeud = Graphe::get()->getSommets()[id_path[j]]; e2.interface = 0;
 					encapsule_paquet ( &e1, &e2, send[send.size()-1]);
-					std::cout << "De " << id_path[i] << " vers " << id_path[j] << std::endl;
 					i = j;
 					found = true;
 				}
@@ -283,3 +286,5 @@ void DataG::displayRight()	{
 		this->updatePanel();
 	}
 }
+
+

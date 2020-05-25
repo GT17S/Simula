@@ -32,6 +32,8 @@ public:
         * Destructeur de la classe PanneauData
     */
 	~PanneauData();
+	void clearPanneauData();
+	
 public slots:
     /*!
         * \brief addData
@@ -40,11 +42,10 @@ public slots:
 
 */
 	void addData ( Data * d);
-
+	void askRemoveTab( int index);
 
 private:
     QMap <Data *, DataG *> onglets;/*!< Onglets d'affichage de la donne des sa construction a sa destruction*/
-
 };
 
 #endif // PANNEAU_DATA_HPP

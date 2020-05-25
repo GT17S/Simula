@@ -51,12 +51,17 @@ public :
              * \param parent : voir #QWidget
         */
         DataG( Data *d, QWidget* parent = 0 );
+        ~DataG();
+        Data * getDataptr()	{ return d;};
 
+		
 private slots:
 //		void dataChanged();
         void detailPanel();
         void displayLeft();
         void displayRight();
+		
+
 };
 
 

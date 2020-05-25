@@ -40,7 +40,7 @@ public:
 	void joinall();
 public slots:
 	void createWorker ( NoeudG * n);
-    void removeStation(QPointF);
+    void removeStation(NoeudG* n);
 
 
 };

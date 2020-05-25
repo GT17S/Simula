@@ -138,7 +138,7 @@ protected:
 // Ajouté par Massi
 signals:
 		void createStation ( NoeudG * n);
-        void removeStation(QPointF point);
+        void removeStation(NoeudG* n);
 
 };
 

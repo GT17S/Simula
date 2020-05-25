@@ -19,7 +19,7 @@ PanneauOutils::PanneauOutils(EspaceTravail * _espaceTravail, gSimulation * g){
 // Ajouté par Massi
 //	Connexion signals/slots 
 	QObject::connect ( espaceTravail, SIGNAL(createStation(NoeudG*)), g->getManager(), SLOT(createWorker(NoeudG*)));
-    QObject::connect ( espaceTravail, SIGNAL(removeStation(QPointF)), g->getManager(), SLOT(removeStation(QPointF)));
+    QObject::connect ( espaceTravail, SIGNAL(removeStation(NoeudG*)), g->getManager(), SLOT(removeStation(NoeudG*)));
 
     this->setMinimumHeight(60);
     this->setMaximumHeight(70);

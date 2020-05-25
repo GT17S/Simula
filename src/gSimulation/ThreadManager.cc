@@ -37,17 +37,30 @@ void ThreadManager::joinall(){
 
     WorkingThreads.clear();
     workingStations.clear();
-    std::cout << "Destruction :" << WorkingThreads.size() << "    "  << workingStations.size() << std::endl;
+    std::cout <<  std::endl << "Destruction :" << WorkingThreads.size() <<  std::endl  << workingStations.size() << std::endl;
 }
 
-void ThreadManager::removeStation(QPointF pos){
+void ThreadManager::removeStation(NoeudG* n){
        std::cout << "Je retire une station" << std::endl;
+       Station * s = dynamic_cast <Station *> (n->getChild());
+       for (unsigned int i = 0; i < workingStations.size(); i++){
+               if ( workingStations[i] == s){
+                    workingStations[i]->setRun(false);
+                    if(WorkingThreads[i].joinable())
+                          WorkingThreads[i].join();
+
+                    WorkingThreads.erase(WorkingThreads.begin() +i);
+                    workingStations.erase(workingStations.begin()+i);
+              }
+               }
+       std::cout << "Destrcutio d'un seul thread: " <<WorkingThreads.size() << "    "  << workingStations.size() << std::endl;
+
 }
 
 
 // Ajouté par Massi
 bool ThreadManager::findWorker ( Station * s)	{
-	bool found = false;
+    bool found = false;
     for (unsigned int i = 0; i < workingStations.size() && !found; i++)
 		if ( workingStations[i] == s)
 			found = true;

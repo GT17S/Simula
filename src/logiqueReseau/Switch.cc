@@ -1,3 +1,5 @@
+#include "simulaGui.hh"
+#include "gSimulation.hh"
 #include "Switch.hh"
 #include <iostream>
 #include "DataOutils.hh"
@@ -42,14 +44,18 @@ void Switch::envoyerMessage(int key, destination dest){
     }
 
     extremite * extNext = path[size_p -1]->getInverseExt(this);
+
+	if ( this->checkSimulationStat( dest)) return;
     //std::cout <<"J'envoie le message à "<<ext->noeud->getIdNoeud()<< std::endl;
+    std::this_thread::sleep_for(Graphe::getWaitTime());
     PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Envoyer donnée vers :")+QString::fromStdString(extNext->noeud->getNom()));
     if(path[size_p -1]->estBienConnecte())
         extNext->noeud->recevoirMessage(key, extNext->interface, dest);
 }
 
 void Switch::recevoirMessage(int key, int dest_i, destination dest){
-    //std::cout <<"Je suis un switch"<< idNoeud<<std::endl;
+	if ( this->checkSimulationStat( dest)) return;
+    std::cout <<"Je suis un switch"<< idNoeud<<std::endl;
     if(dest.data->getType() < 3){
         std::cout <<"Data non encapsulée"<<std::endl;
         return;

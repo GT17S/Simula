@@ -1,3 +1,5 @@
+#include "simulaGui.hh"
+#include "gSimulation.hh"
 #include "Station.hh"
 #include "DataOutils.hh"
 #include "QString"
@@ -16,10 +18,11 @@ Station::Station(StationG * parent) : Noeud(parent){
     // ID automatique
     // nb port =1
     // filedattente vide
+    controleur = new Congestion();
+
     setNom( "Station"+std::to_string(idNoeud));
     adressePasserelle = DEFAULT_IP;
     type = STATION;
-    controleur = new Congestion();
     numSeq = 1;
     isPasserelle = false;
     run = true;
@@ -134,6 +137,8 @@ void Station::envoyerMessage(int key, destination dest){
     std::cout << Graphe::getMatrice()[id_src][id_dest]->getDebitAcc() << std::endl;
 */
 
+	if ( this->checkSimulationStat( dest)) return; 
+
     std::this_thread::sleep_for(Graphe::getWaitTime());
     PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Enovyé donnée vers ")+QString::fromStdString(extNext->noeud->getNom()));
 
@@ -143,6 +148,7 @@ void Station::envoyerMessage(int key, destination dest){
 }
 
 void Station::recevoirMessage(int key, int dest_i, destination dest){
+
     int id_src  = lireAdresseMac(dest.data, 0);
     int id_dest = lireAdresseMac(dest.data, 1);
     vector<Cable*> path;
@@ -155,6 +161,10 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
     int size_pc = pathcomplet.size();
 
     //Libèration de la bande passante dans les cas particuliers de reception
+
+	if ( this->checkSimulationStat( dest)) return;
+     //Libèration de la bande passante dans les cas particuliers de reception
+
     this->mutexcabl->lock();
     for (int i = 0; i < size_pc; ++i){
          float tmpcableBP = pathcomplet[i]->getDebitMax();
@@ -193,8 +203,9 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
         }
 
         if(ipSrc == ipDest){
+            PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Arrivé à destination"));
+
             std::cout <<"Cest moi la destination" <<std::endl;
-           PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Arrivé à destination"));
 
             // verifier fragmentation ?
             int ipid = checkFragment(dest.data);
@@ -362,25 +373,32 @@ void Station::mainlocal(std::mutex *m, gSimulation* g){
         
         std::cout << "Fonction principale du thread" << std::endl;
         std::chrono::seconds sec(1);
-
+		bool deb = true;
         while (run){
-        if(g->getEtat() == DEMARRER){
-           meo->lock();
-		   bool bok = this->getControleur()->getok();
-		   meo->unlock();
-           if(bok){
-                std::cout <<  getIdNoeud() << std::endl;
-                this->getControleur()->verifieNbrSegment(this);
+			if(g->getEtat() == DEMARRER){
+				deb = false;
+			   meo->lock();
+			   bool bok = this->getControleur()->getok();
+			   meo->unlock();
+			   if(bok){
+					std::cout <<  getIdNoeud() << std::endl;
+					this->getControleur()->verifieNbrSegment(this);
 
-            }
-        }
-
-        if(g->getEtat() == PAUSE || g->getEtat() == ARRET)
-            std::this_thread::sleep_for(sec);
+				}
+			}
+			if(g->getEtat() == PAUSE) 
+				std::this_thread::sleep_for(sec);
+			if (g->getEtat() == ARRET && !deb)	{
+				this->getControleur()->clearFiles();
+				this->getControleur()->setCwnd(1);
+				this->getControleur()->setSsthresh(32);
+				this->getControleur()->setCpt(0);
+				this->getControleur()->setNbrAcksDuplique(0);
+				this->getControleur()->setNbrAcksRecu(0);
+				this->getControleur()->setok( false);
+				deb = true;
+			}        
         }
 }
-
-
-
 
 

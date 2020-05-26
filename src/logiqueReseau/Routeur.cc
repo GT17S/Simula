@@ -1,3 +1,5 @@
+#include "simulaGui.hh"
+#include "gSimulation.hh"
 #include "Routeur.hh"
 #include "DataOutils.hh"
 
@@ -40,14 +42,19 @@ void Routeur::envoyerMessage(int key, destination dest){
 
     extremite * extNext = path[size_p -1]->getInverseExt(this);
 
+	if ( this->checkSimulationStat( dest)) return;
+
+	//if ( true) return;
     //std::cout <<"J'envoie le message à "<<ext->noeud->getIdNoeud()<< std::endl;
     //_message = std::to_string(id_next)+"_"+std::to_string(id_dest);
+    std::this_thread::sleep_for(Graphe::getWaitTime());
     PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Envoyer donnée vers :s")+QString::fromStdString(extNext->noeud->getNom()));
     if(path[size_p-1]->estBienConnecte())
         extNext->noeud->recevoirMessage(key, extNext->interface,  dest);
 }
 
 void Routeur::recevoirMessage(int key, int dest_i, destination dest){
+	if ( this->checkSimulationStat( dest)) return;
     std::cout <<"Je suis un routeur"<< idNoeud<<std::endl;
 
     if(dest.data->getType() < 3){

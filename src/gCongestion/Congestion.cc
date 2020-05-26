@@ -222,3 +222,8 @@ void Congestion::verifieNumAck(Noeud * n, int nAck){
     	this->mutexEnvoiOk->unlock();
     }
 }
+
+void Congestion::clearFiles()	{
+	this->mapFileACK.clear();
+	this->mapFileEnvoyer.clear();
+}

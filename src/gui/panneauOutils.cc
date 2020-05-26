@@ -201,15 +201,7 @@ void PanneauOutils::nouveauFichier(){
     gestSimulation->getManager()->joinall();
     Graphe * graphe = Graphe::get();
     graphe->~Graphe();
-   simulaGui * gui = dynamic_cast <simulaGui * > (this->parentWidget());
-	if ( gui)	{
-		std::cout << "No segfault 1" << std::endl;
-		PanneauData * pData = dynamic_cast <PanneauData *> ( gui->getMainlayout()->itemAtPosition( 4, 0)->widget());
-		if ( pData)	{ 
-			std::cout << "No segfault 2" << std::endl;
-			pData->clearPanneauData();
-		}    
-	}
+    this->clearPanneauData();
     curFile = "";
 }
 void PanneauOutils::ouvrirFichier(){
@@ -301,8 +293,11 @@ void PanneauOutils::demarrerPauseSimulation(){
 }
 void PanneauOutils::arreterSimulation(){
     this->gestSimulation->arreter();
+	this->clearPanneauData();
+	// Clear PanneauEvent
     simDemPause->setChecked(false);
 }
+
 void PanneauOutils::resetSimulation(){
     this->gestSimulation->reset();
 
@@ -361,3 +356,12 @@ void PanneauOutils::envoieD(){
     espaceTravail->setMode(MESSAGE_MODE);   
 }
 
+void PanneauOutils::clearPanneauData()	{
+   simulaGui * gui = dynamic_cast <simulaGui * > (this->parentWidget());
+	if ( gui)	{
+		PanneauData * pData = dynamic_cast <PanneauData *> ( gui->getMainlayout()->itemAtPosition( 4, 0)->widget());
+		if ( pData)	{ 
+			pData->clearPanneauData();
+		}    
+	}	
+}

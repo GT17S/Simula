@@ -26,22 +26,27 @@ PanneauEvents::PanneauEvents(){
     timerSimulation->setSegmentStyle(QLCDNumber::Flat);
     layout.addWidget(timerSimulation);
     timerSimulation->setMinimumHeight(30);
-    /*-
-    txt=new QTextEdit(this);
-    txt->setReadOnly(true);
-    //txt->setEnabled(false);
-    layout.addWidget(txt);
-    txt->setStyleSheet(QString::fromUtf8("background-color: rgb(122, 122, 122);"));
-    txt->setText(gSimulation::getTime()->toString("hh:mm:ss")+"  Debut de sumulation");
-*/
+
     layout.addWidget(treeview);
     treeview->setColumnCount(1);
     treeview->setColumnWidth(0, 500);
     QStringList ColumnNames;
     ColumnNames << "Équipements";
-
     treeview->setHeaderLabels(ColumnNames);
-    //treeview->setStyleSheet("background-color: red");//background
+
+    clear=new QPushButton("Effacer événements ");
+    layout.addWidget(clear);
+
+    connect(clear,SIGNAL(clicked()),this,SLOT(supItems()));
+}
+
+void PanneauEvents::supItems(){
+    for(Noeud *n: Graphe::getSommets()){
+       QTreeWidgetItem * tree=  n->getParent()->getTreeItem();
+
+               foreach(auto i, tree->takeChildren()) delete i;
+    }
+
 }
 void PanneauEvents::afftime(){
 
@@ -52,19 +57,13 @@ void PanneauEvents::afftime(){
 PanneauEvents::~PanneauEvents(){
 
 }
-/*
-void PanneauEvents::affichage(QString text){
-    txt->append(gSimulation::getTime()->toString()+" "+text);
-
-}
-*/
 void PanneauEvents::setTreeview(QTreeWidget *value)
 {
     treeview = value;
 }
 
 void PanneauEvents::addRoot(QTreeWidgetItem *pf ,QString nom){
-    //QTreeWidgetItem *pf=new QTreeWidgetItem(treeview);
+   // QTreeWidgetItem *pff=new QTreeWidgetItem(pf);
     pf->setText(0,nom);
     treeview->addTopLevelItem(pf);
 }
@@ -72,9 +71,13 @@ void PanneauEvents::addRoot(QTreeWidgetItem *pf ,QString nom){
 
 
 void PanneauEvents::addCh(QTreeWidgetItem *parent, QString nom){
-    QTreeWidgetItem *item=new QTreeWidgetItem();
-    item->setText(0,gSimulation::getTime()->toString()+" "+nom);
-    parent->addChild(item);
+    parent->setExpanded( true );
+    QTreeWidgetItem *item1=new QTreeWidgetItem();
+    parent->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
+    item1->setText(0,gSimulation::getTime()->toString()+" "+nom);
+    parent->addChild(item1);
+
+
 }
 
 

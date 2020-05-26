@@ -313,9 +313,7 @@ void Dialog::appliquerRoute(int i){
     Route *routeNew=new Route();
 
     if(InterfaceFE::checkAdresse(AdresseIPApp.toStdString(),IP_REGEX,DEFAULT_IP) != DEFAULT_IP
-            && InterfaceFE::checkAdresse(AdresseResApp.toStdString(),IP_REGEX,DEFAULT_IP) != DEFAULT_IP
-            && InterfaceFE::checkAdresse(mask.toStdString(),IP_REGEX,DEFAULT_IP) != DEFAULT_IP
-            ){
+           && !mask.isEmpty() && !AdresseIPApp.isEmpty() && !AdresseResApp.isEmpty()){
         qDebug()<<"adress rx"+AdresseResApp;
         qDebug()<<"adress nexthopp"+AdresseIPApp;
         qDebug()<<"adress masque"+mask;
@@ -338,16 +336,17 @@ void Dialog::appliquerRoute(int i){
     }else{
         if(InterfaceFE::checkAdresse(AdresseIPApp.toStdString(),IP_REGEX,DEFAULT_IP) == DEFAULT_IP
                 || AdresseIPApp.isEmpty() ){
-            ig->nextHope->setStyleSheet("color:red");
-            stream<<"<li>Adresse nextHope</li>";
+
+                 ig->nextHope->setStyleSheet("color:red");
+                 stream<<"<li>Adresse nextHope</li>";
+
         }else
         {
             ig->nextHope->setStyleSheet("color:black");
 
         }
 
-        if(InterfaceFE::checkAdresse(AdresseResApp.toStdString(),IP_REGEX,DEFAULT_IP) == DEFAULT_IP
-                 || AdresseResApp.isEmpty() ){
+        if( AdresseResApp.isEmpty() ){
             ig->AdresseRes->setStyleSheet("color:red");
             stream<<"<li>Adresse reseau</li>";
         }else
@@ -355,8 +354,7 @@ void Dialog::appliquerRoute(int i){
             ig->AdresseRes->setStyleSheet("color:black");
 
         }
-        if(InterfaceFE::checkAdresse(mask.toStdString(),IP_REGEX,DEFAULT_IP) == DEFAULT_IP
-                 || mask.isEmpty() ){
+        if( mask.isEmpty() ){
             ig->mask->setStyleSheet("color:red");
             stream<<"<li>Masque reseau</li>";
         }else

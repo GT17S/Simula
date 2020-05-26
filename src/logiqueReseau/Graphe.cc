@@ -6,7 +6,8 @@
 vector<Noeud*> Graphe::sommets;/*!< Liste des sommets du Graphe */
 vector<vector<Cable*>> Graphe::matrice; /*!< Matrice d'adjacences du Graphe */
 //vector<vector<extremite*>> Graphe::table;/*!< Table de chemins du Graphe */
-std::chrono::duration<float> Graphe::dur(5); /*! Durée d'attente des threads emetteurs */
+std::chrono::duration<float> Graphe::vitesseSimulation(3), /*!< Durée d'attente des threads emetteurs */
+                             Graphe::dureeAlert(2); /*!< Duree d'attente de l'alerte*/
 Graphe *Graphe::singlPtr = nullptr;
 
 

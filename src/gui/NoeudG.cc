@@ -19,7 +19,8 @@ NoeudG::NoeudG(EspaceTravail * _espaceTravail) : QGraphicsPixmapItem()
 
     notification = new NotificationRect(this);
 
-    showNotifcation("Test", NotificationRect::GREEN_NOTIFICATION_COLOR);
+    connect(this, SIGNAL(notificationSignal(QString,QColor)), this, SLOT(showNotifcation(QString,QColor)));
+   // showNotifcation("Test", NotificationRect::GREEN_NOTIFICATION_COLOR);
 
 }
 void NoeudG::setChild(Noeud * _child){
@@ -373,10 +374,13 @@ void NoeudG::interfaceAction(int i){
     espaceTravail->currentExtremite = ext;
 }
 
-void NoeudG::showNotifcation(const QString _notification, QColor _color){
+void NoeudG::showNotifcation(QString _notification, QColor _color){
    // notification = new NotificationRect(_notification, _color,this);
     if(! notification->toHtml().isEmpty())
         notification->clearNotification();
+    if(_notification.isEmpty())
+        return;
+
     notification->initNotification(_notification, _color);;
     notification->setPos(boundingRect().topRight()- QPointF(boundingRect().width()/5.0,notification->document()->size().height()/1.5));
 

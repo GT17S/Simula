@@ -128,7 +128,6 @@ public:
     void toolTipShow();
     EspaceTravail * getEspaceTravail ()	{ return espaceTravail;}
 
-    void showNotifcation(const QString notification, QColor color);
 
 protected:
     vector<cableG_extremite> extremiteG;/*!< Vecteur stockant les cablesG d'un NoeudG*/
@@ -149,6 +148,11 @@ protected:
 
  public slots :
     void interfaceAction(int i);
+    void showNotifcation(QString notification, QColor color);
+
+ signals:
+    void notificationSignal(QString, QColor);
+
 };
 
 #endif

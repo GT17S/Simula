@@ -8,7 +8,8 @@ QColor NotificationRect::RED_NOTIFICATION_COLOR = QColor(Qt::red),
 NotificationRect::NotificationRect(QGraphicsItem *_parent):
     QGraphicsTextItem(_parent)
 {
-    document()->setTextWidth(60);
+    //document()->setTextWidth(60);
+    //document()->setDefaultStyleSheet("body {color: white;}");
 }
 NotificationRect::NotificationRect(QString _notification,QColor _color, QGraphicsItem *_parent) :
     QGraphicsTextItem(_parent)
@@ -24,7 +25,7 @@ NotificationRect::~NotificationRect(){
 
 void NotificationRect::clearNotification(){
     color = QColor();
-    setHtml("");
+    this->setHtml("");
     //setBrush(color);
 
 }
@@ -33,7 +34,7 @@ void NotificationRect::initNotification(QString _notification, QColor _color){
 
     color = _color;
     notificationToHtml(_notification, _color);
-    setHtml(_notification);
+    this->setHtml(_notification);
     //setRect(text->boundingRect());
     //setBrush(_color);
 }
@@ -41,11 +42,9 @@ void NotificationRect::initNotification(QString _notification, QColor _color){
 void NotificationRect::notificationToHtml(QString &message, QColor _color){
     QString html;
     QTextStream stream(&html);
-    stream<<"<html>"
-            "<head></head><body>"
-            "<div style = 'padding: 40px;background-color:"+_color.name()+";color: white;border-radius: 10px;'>"
-              "<strong>"+message+"aaaaaaaaaaaaaaaaaaaaaaaaaaa</strong></div>"
-            "</body></html>";
+    stream<<"<body style='background-color:"+_color.name()+";'>"
+            "<strong>"+message+"</strong>"
+            "</body>";
     message = html;
 }
 

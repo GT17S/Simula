@@ -48,6 +48,8 @@ private :
     QAction     *exporterDot,/*!< Action de recupuration de l'espace de travail sous format dot*/
                 *exporterPng;/*!< Action de recupuration de l'espace de travail sous format png*/
 
+
+	void clearPanneauData();
     /*!
         * \brief createButtons
         * Construction et Initialisation  des differentes buttons de panneauoutils

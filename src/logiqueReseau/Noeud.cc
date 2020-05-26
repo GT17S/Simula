@@ -1,6 +1,7 @@
 #include "Noeud.hh"
 #include "Graphe.hh"
-
+#include "simulaGui.hh"
+#include "gSimulation.hh"
 #include <iostream>
 
 Noeud::Noeud(NoeudG *_parent) : nbPort(1){
@@ -280,4 +281,27 @@ bool Noeud::acceptCable(Cable * _cable, int _idInterface){
             return true;
         }
     return false;
+}
+
+bool Noeud::checkSimulationStat ( destination dest)	{
+	simulaGui * gui = dynamic_cast <simulaGui * > (this->parent->getEspaceTravail()->parent());
+	gSimulation * gSimul = nullptr;
+	if ( gui)    {
+		PanneauOutils * pOutils = dynamic_cast <PanneauOutils *> ( gui->getMainlayout()->itemAtPosition( 0, 0)->widget());
+		if ( pOutils)    { 
+			gSimul = pOutils->getGestionnaire();
+		}
+	}
+	std::chrono::seconds sec(1);
+	if ( gSimul != nullptr)	{
+		if ( gSimul->getEtat() == PAUSE)
+			while (gSimul->getEtat() == PAUSE)	{
+				std::this_thread::sleep_for(sec);
+			}
+		if ( gSimul->getEtat() == ARRET)	{
+			delete dest.data;
+			return true;
+		}
+	}
+	return false;	
 }

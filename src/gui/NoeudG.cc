@@ -19,7 +19,7 @@ NoeudG::NoeudG(EspaceTravail * _espaceTravail) : QGraphicsPixmapItem()
 
     notification = new NotificationRect(this);
 
-    showNotifcation("Test", QColor(Qt::red));
+    showNotifcation("Test", NotificationRect::GREEN_NOTIFICATION_COLOR);
 
 }
 void NoeudG::setChild(Noeud * _child){
@@ -159,7 +159,10 @@ QVariant NoeudG::itemChange(GraphicsItemChange change, const QVariant &value)
     //qDebug()<<"YES";
     if (change == ItemPositionChange) {
         // value is the new position.
-        nomNoeudG->setPos(0, boundingRect().height()/1.2);
+        QRectF rect = boundingRect();
+        nomNoeudG->setPos(0, rect.height()/1.25);
+        notification->setPos(rect.topRight()- QPointF(rect.width()/5.0,notification->document()->size().height()/1.5));
+        qDebug()<<rect;
         if(scene()){
             QPointF newPos = value.toPointF();
             moveCable(newPos);
@@ -372,8 +375,11 @@ void NoeudG::interfaceAction(int i){
 
 void NoeudG::showNotifcation(const QString _notification, QColor _color){
    // notification = new NotificationRect(_notification, _color,this);
-    if(! notification->text->toPlainText().isEmpty())
+    if(! notification->toHtml().isEmpty())
         notification->clearNotification();
-    notification->initNotification(_notification, _color);
+    notification->initNotification(_notification, _color);;
+    notification->setPos(boundingRect().topRight()- QPointF(boundingRect().width()/5.0,notification->document()->size().height()/1.5));
+
+
 }
 

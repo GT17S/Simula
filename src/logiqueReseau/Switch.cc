@@ -57,7 +57,8 @@ void Switch::recevoirMessage(int key, int dest_i, destination dest){
 	if ( this->checkSimulationStat( dest)) return;
     std::cout <<"Je suis un switch"<< idNoeud<<std::endl;
     if(dest.data->getType() < 3){
-        std::cout <<"Data non encapsulée"<<std::endl;
+        //std::cout <<"Data non encapsulée"<<std::endl;
+        //parent->showNotifcation(");
         return;
     }
 

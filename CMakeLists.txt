@@ -92,5 +92,5 @@ target_link_libraries(Simula ${Qt5Widgets_LIBRARIES} Qt5::Widgets Qt5::Xml ${Boo
 
 
 ADD_CUSTOM_TARGET(run COMMAND cd bin/Debug && ./Simula)
-ADD_CUSTOM_TARGET(doc COMMAND doxygen doc/Doxyfile.in)
+ADD_CUSTOM_TARGET(doc COMMAND doxygen doc/Doxyfile)
 ADD_CUSTOM_TARGET(sup COMMAND rm -rf bin/ doc/)

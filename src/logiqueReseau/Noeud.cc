@@ -99,6 +99,7 @@ void Noeud::setNom(string _nom){
     nom = _nom;
     PanneauEvents::addRoot(parent->getTreeItem(),QString::fromStdString(nom));
     parent->toolTipShow();
+    parent->setNomNoeudG(QString::fromStdString(nom));
 }
 
 void Noeud::setIdNoeud(int _idNoeud){

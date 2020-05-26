@@ -49,8 +49,8 @@ void Switch::envoyerMessage(int key, destination dest){
     //std::cout <<"J'envoie le message à "<<ext->noeud->getIdNoeud()<< std::endl;
     std::this_thread::sleep_for(Graphe::getWaitTime());
     PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Envoyer donnée vers :")+QString::fromStdString(extNext->noeud->getNom()));
-
-    extNext->noeud->recevoirMessage(key, extNext->interface, dest);
+    if(path[size_p -1]->estBienConnecte())
+        extNext->noeud->recevoirMessage(key, extNext->interface, dest);
 }
 
 void Switch::recevoirMessage(int key, int dest_i, destination dest){

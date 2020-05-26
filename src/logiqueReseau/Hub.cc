@@ -35,7 +35,7 @@ void Hub::envoyerMessage(int key,destination dest){
         if(ext && ext->noeud->getIdNoeud() != id_src){
             //std::cout <<"J'envoie le message à "<<ext->noeud->getIdNoeud()<< std::endl;
         PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Envoie de message vers  ")+QString::fromStdString(ext->noeud->getNom()));
-
+        if(cable->estBienConnecte())
             ext->noeud->recevoirMessage(key, ext->interface, dest);
         }
     }

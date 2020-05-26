@@ -159,6 +159,7 @@ void Congestion::verifieNbrSegment(Noeud * src){
         }
 
         mapFileEnvoyer.erase (it);
+
         src->envoyerMessage(key, ds);
 
     }
@@ -177,7 +178,7 @@ void Congestion::retrnasmission(int key){
 
 
 void Congestion::verifieNumSegment(Noeud * src,Noeud * dest, int nAck){//pc recepteur
-    Data* ndata = new Data("");
+    Data* ndata = new Data("ACK");
     Station * st = dynamic_cast<Station*>(src);
     if(!st ) return;
 

@@ -103,10 +103,13 @@ void Station::envoyerMessage(int key, destination dest){
     }
 
     vector<Cable*> path;
+    vector<Cable*> pathcomplet;
     Graphe::genererChemin(id_src, idNoeud, id_dest, path, false);
+    Graphe::genererChemin(id_src, idNoeud, id_dest, pathcomplet, true);
+
     this->lastpath = path;
     int size_p = path.size();
-
+    int size_pc = pathcomplet.size();
     if(!size_p){
         //std::cout << "Je connais pas le chemin vers "<<id_dest<<std::endl;
         PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Je connais pas le chemin vers "+ Graphe::getSommets()[id_dest]->getNom()));
@@ -117,17 +120,20 @@ void Station::envoyerMessage(int key, destination dest){
     this->mutexcabl->lock();
     //Une fois que le paquet est envoyé on met à jour le rtt
     controleur->setBaseRtt(CalculRTT(controleur));
-    //On calcule la latence de l'envoi dans le contrôleur
-    //controleur->setlatence(CalculLatenceDynamique(Graphe::get(), controleur, dest.data, id_src, id_dest));
     //Et on diminue la bande passante du cable à l'envoi pour chaque cable du chemin
-     for (int i = 0; i < path.size(); ++i){   
-            float tmpcableBP = path[i]->getDebitAcc();
-            path[i]->setDebitAcc(tmpcableBP - (float)dest.data->getOriginialStringSize()*8);
+    for (int i = 0; i < size_pc; ++i){
+         float tmpcableBP = pathcomplet[i]->getDebitMax();
+         if((float)dest.data->getOriginialStringSize()*8 > pathcomplet[i]->getMTU())
+             pathcomplet[i]->setDebitAcc(tmpcableBP -  pathcomplet[i]->getMTU());
+         pathcomplet[i]->setDebitAcc(tmpcableBP - (float)dest.data->getOriginialStringSize()*8);
+         pathcomplet[i]->setLatence((float)dest.data->getOriginialStringSize()*8 /  tmpcableBP);
     }    
     this->mutexcabl->unlock();
     // prochaine destination
     extremite * extNext = path[size_p -1]->getInverseExt(this);
-/* std::cout << dest.data->getOriginialStringSize()*8 << std::endl;
+
+/*
+    std::cout << dest.data->getOriginialStringSize()*8 << std::endl;
     std::cout << Graphe::getMatrice()[id_src][id_dest]->getDebitAcc() << std::endl;
 */
 
@@ -135,18 +141,38 @@ void Station::envoyerMessage(int key, destination dest){
 
     std::this_thread::sleep_for(Graphe::getWaitTime());
     PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Enovyé donnée vers ")+QString::fromStdString(extNext->noeud->getNom()));
-    extNext->noeud->recevoirMessage(key, extNext->interface, dest);
+
+    if(path[size_p-1]->estBienConnecte())
+        extNext->noeud->recevoirMessage(key, extNext->interface, dest);
 
 }
 
 void Station::recevoirMessage(int key, int dest_i, destination dest){
+
+    int id_src  = lireAdresseMac(dest.data, 0);
+    int id_dest = lireAdresseMac(dest.data, 1);
+    vector<Cable*> path;
+    vector<Cable*> pathcomplet;
+    Graphe::genererChemin(id_src, idNoeud, id_dest, path, false);
+    Graphe::genererChemin(id_src, idNoeud, id_dest, pathcomplet, true);
+
+    this->lastpath = path;
+    int size_p = path.size();
+    int size_pc = pathcomplet.size();
+
+    //Libèration de la bande passante dans les cas particuliers de reception
+
 	if ( this->checkSimulationStat( dest)) return;
      //Libèration de la bande passante dans les cas particuliers de reception
+
     this->mutexcabl->lock();
-    for (int i = 0; i < lastpath.size(); ++i){   
-        float tmpcableBP = lastpath[i]->getDebitAcc();
-        lastpath[i]->setDebitAcc(tmpcableBP + (float)dest.data->getOriginialStringSize()*8);
-    }    
+    for (int i = 0; i < size_pc; ++i){
+         float tmpcableBP = pathcomplet[i]->getDebitMax();
+         if((float)dest.data->getOriginialStringSize()*8 > pathcomplet[i]->getMTU())
+             pathcomplet[i]->setDebitAcc(tmpcableBP -  pathcomplet[i]->getMTU());
+         pathcomplet[i]->setDebitAcc(tmpcableBP - (float)dest.data->getOriginialStringSize()*8);
+         //pathcomplet[i]->setLatence((float)dest.data->getOriginialStringSize()*8 /  tmpcableBP);
+    }
     this->mutexcabl->unlock();
     //std::cout <<"Je suis une station "<< idNoeud<<std::endl;
     // std::cout <<"TYPE DATA = "<< dest.data->getType() << std::endl;

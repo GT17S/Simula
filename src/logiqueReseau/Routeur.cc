@@ -49,8 +49,8 @@ void Routeur::envoyerMessage(int key, destination dest){
     //_message = std::to_string(id_next)+"_"+std::to_string(id_dest);
     std::this_thread::sleep_for(Graphe::getWaitTime());
     PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Envoyer donnée vers :s")+QString::fromStdString(extNext->noeud->getNom()));
-
-    extNext->noeud->recevoirMessage(key, extNext->interface,  dest);
+    if(path[size_p-1]->estBienConnecte())
+        extNext->noeud->recevoirMessage(key, extNext->interface,  dest);
 }
 
 void Routeur::recevoirMessage(int key, int dest_i, destination dest){
@@ -120,7 +120,7 @@ void Routeur::recevoirMessage(int key, int dest_i, destination dest){
             int tp_initial = (int) lire_bits ( *(dest.data->getSeq()), 16, 16).to_ulong()-20;
             //std::cout << dest.data->getSeq()->size() << std::endl;
 
-            //std::cout <<"MTU = "<< mtu<<" TP  "<<tp_initial<< std::endl;
+            std::cout <<"MTU = "<< mtu<<" TP  "<<tp_initial<< std::endl;
             if(mtu < tp_initial){
                 //fragmenter
                PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Fragmentation de paquet"));

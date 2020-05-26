@@ -125,7 +125,7 @@ void DialogEnvoi::preparenvoi(){
         int nseq = s1->getNextNumSeq();
         int nack = 0;
         int ipid = nseq + 100;
-        bool df = checkFrag->isChecked() ?  1 : 0;
+        bool df = checkFrag->isChecked() ?  0 : 1;
 
         Data* sendData = new Data(editMessage->text().toStdString());
         //Préparer l'envoi

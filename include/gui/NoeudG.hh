@@ -12,6 +12,7 @@
 #include "CableG.hh"
 #include "EspaceTravail.hh"
 #include "Dialog.hh"
+#include "NotificationRect.hh"
 #include <QPixmap>
 #include <QGraphicsPixmapItem>
 #include <QDialog>
@@ -20,8 +21,10 @@
 #include <QMouseEvent>
 #include <QGraphicsScene>
 #include <QGraphicsItem>
-#include "QTreeWidgetItem"
+#include <QTreeWidgetItem>
+
 #include <vector>
+
 
 class Noeud;
 class EspaceTravail;
@@ -111,6 +114,9 @@ public:
 
     QGraphicsTextItem * getNomNoeudG(){return nomNoeudG;}
     void setNomNoeudG(const QString nom){nomNoeudG->setPlainText(nom);}
+
+    NotificationRect * getNotification(){return notification;}
+    //void setNotification(const QString _notification){notification->setPlainText(_notification);}
     void addLine(CableG * cable, bool isPoint1);
     void moveCable(QPointF newPos);
 
@@ -120,8 +126,9 @@ public:
         * Affichage en hover souris des donnees d'un equipement.
    */
     void toolTipShow();
-	//Ajouté par Massi
     EspaceTravail * getEspaceTravail ()	{ return espaceTravail;}
+
+    void showNotifcation(const QString notification, QColor color);
 
 protected:
     vector<cableG_extremite> extremiteG;/*!< Vecteur stockant les cablesG d'un NoeudG*/
@@ -131,6 +138,7 @@ protected:
     QTreeWidgetItem *parent;/*!< la section ou tous les traitement d'une station seront affiche dans PanneauEvent */
     Dialog * configuration;/*!< fenetre de configuration du NoeudG sur l'interface graphique*/
     QGraphicsTextItem * nomNoeudG;
+    NotificationRect * notification;
     //void mouseDoubleClickEvent( QMouseEvent * e );
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);

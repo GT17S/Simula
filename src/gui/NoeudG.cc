@@ -2,6 +2,7 @@
 #include <QMessageBox>
 #include "PanneauEvents.hh"
 #include "DialogEnvoi.hh"
+#include "NotificationRect.hh"
 
 
 NoeudG::NoeudG(EspaceTravail * _espaceTravail) : QGraphicsPixmapItem()
@@ -16,8 +17,9 @@ NoeudG::NoeudG(EspaceTravail * _espaceTravail) : QGraphicsPixmapItem()
 
     nomNoeudG = new QGraphicsTextItem(this);
 
+    notification = new NotificationRect(this);
 
-   // nomNoeudG->setPos(QPointF(0,boundingRect().));
+    showNotifcation("Test", QColor(Qt::red));
 
 }
 void NoeudG::setChild(Noeud * _child){
@@ -155,13 +157,15 @@ void NoeudG::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event){
 QVariant NoeudG::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     //qDebug()<<"YES";
-    if(change == ItemPositionChange)
-        nomNoeudG->setPos(0, boundingRect().height()/1.2);
-    if (change == ItemPositionChange && scene()) {
+    if (change == ItemPositionChange) {
         // value is the new position.
-        QPointF newPos = value.toPointF();
-        moveCable(newPos);
+        nomNoeudG->setPos(0, boundingRect().height()/1.2);
+        if(scene()){
+            QPointF newPos = value.toPointF();
+            moveCable(newPos);
+        }
     }
+
     return QGraphicsItem::itemChange(change, value);
 }
 
@@ -364,5 +368,13 @@ void NoeudG::interfaceAction(int i){
     ext->interface = i;
     //qDebug() << " Interface "<<ext->interface;
     espaceTravail->currentExtremite = ext;
+}
+
+void NoeudG::showNotifcation(const QString _notification, QColor _color){
+   // notification = new NotificationRect(_notification, _color,this);
+    notification->color = _color;
+    notification->text->setPlainText(_notification);
+    notification->setRect(notification->text->boundingRect());
+    notification->setBrush(_color);
 }
 

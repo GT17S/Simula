@@ -8,6 +8,7 @@ int Cable::i = 1;
 
 Cable::Cable(CableG * _parent, cableT _type, int _debitMax, int _MTU){
     debitMax = _debitMax;
+    debitAcc = _debitMax;
     MTU = _MTU;
 
     // ID cable

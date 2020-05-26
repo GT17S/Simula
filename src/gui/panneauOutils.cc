@@ -252,11 +252,14 @@ void PanneauOutils::ouvrirFichier(){
                                                   tr("Fichier xml (*.xml)"));
     if(!fileName.isEmpty()){
         curFile = fileName;
+        QMessageBox info;
+        info.setText(QString("Importation du fichier XML en cours !"));
+        info.setStandardButtons(0);
+        info.show();
+        //info.setText(QString("Importation du fichier XML en cours !"));
         lireXml(fileName, espaceTravail, gestSimulation->getManager());
-
-    }
-
-
+        info.hide();
+     }
 }
 void PanneauOutils::sauvegarderFichier(){
     // si pas de fichier , alors ouvrir sauvegarder
@@ -380,4 +383,9 @@ void PanneauOutils::clearPanneauData()	{
 			pData->clearPanneauData();
 		}    
 	}	
+}
+
+
+void MessageBoxShow(QMessageBox* info){
+
 }

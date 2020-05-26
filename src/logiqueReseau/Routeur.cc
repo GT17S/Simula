@@ -113,7 +113,7 @@ void Routeur::recevoirMessage(int key, int dest_i, destination dest){
             int tp_initial = (int) lire_bits ( *(dest.data->getSeq()), 16, 16).to_ulong()-20;
             //std::cout << dest.data->getSeq()->size() << std::endl;
 
-            //std::cout <<"MTU = "<< mtu<<" TP  "<<tp_initial<< std::endl;
+            std::cout <<"MTU = "<< mtu<<" TP  "<<tp_initial<< std::endl;
             if(mtu < tp_initial){
                 //fragmenter
                PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Fragmentation de paquet"));

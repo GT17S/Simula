@@ -42,8 +42,8 @@ void Switch::envoyerMessage(int key, destination dest){
         PanneauEvents::addCh(parent->getTreeItem(),error);
         // alert
         emit parent->notificationSignal(error, NotificationRect::RED_NOTIFICATION_COLOR);
-        std::this_thread::sleep_for(Graphe::getAlertTime());
-        emit parent->notificationSignal("", QColor());
+        //std::this_thread::sleep_for(Graphe::getAlertTime());
+        //emit parent->notificationSignal("", QColor());
         return;
     }
 
@@ -64,13 +64,13 @@ void Switch::envoyerMessage(int key, destination dest){
         extNext->noeud->recevoirMessage(key, extNext->interface, dest);
     }
     else {
-        QString error = "Verifier le type de cable";
+        QString error = "Verifier le type de cable vers "+QString::fromStdString(extNext->noeud->getNom());;
         // panneau events
         PanneauEvents::addCh(parent->getTreeItem(),error);
         // alert
         emit parent->notificationSignal(error, NotificationRect::RED_NOTIFICATION_COLOR);
-        std::this_thread::sleep_for(Graphe::getAlertTime());
-        emit parent->notificationSignal("", QColor());
+        //std::this_thread::sleep_for(Graphe::getAlertTime());
+        //emit parent->notificationSignal("", QColor());
 
     }
 }
@@ -78,14 +78,11 @@ void Switch::envoyerMessage(int key, destination dest){
 void Switch::recevoirMessage(int key, int dest_i, destination dest){
     if ( this->checkSimulationStat( dest)) return;
     if(dest.data->getType() < 3){
-        //std::cout <<"Data non encapsulée"<<std::endl;
         emit parent->notificationSignal("Probleme lecture message", NotificationRect::RED_NOTIFICATION_COLOR);
         std::this_thread::sleep_for(Graphe::getAlertTime());
         emit parent->notificationSignal("", QColor());
-        //  parent->showNotifcation("Probleme lecture Data", NotificationRect::RED_NOTIFICATION_COLOR);
         return;
     }
 
-    //int id_dest = lireAdresseMac(data, 1);
     envoyerMessage(key, dest);
 }

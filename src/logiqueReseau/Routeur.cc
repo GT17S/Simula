@@ -5,9 +5,7 @@
 
 
 Routeur::Routeur(RouteurG * parent) : Noeud(parent){
-    // ID automatique
-    // nb port = 1
-    // filedattente vide
+
     setNom("Routeur"+std::to_string(idNoeud));
     type = ROUTEUR;
     setParent(parent);
@@ -34,31 +32,53 @@ void Routeur::envoyerMessage(int key, destination dest){
     int size_p = path.size();
 
     if(!size_p){
-       // std::cout << "Je connais pas le chemin vers "<<id_dest<<std::endl;
-        PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Je connais pas le chemin vers ")+QString::fromStdString(Graphe::getSommets()[id_dest]->getNom()));
+        QString error = "Pas de chemin vers "+ QString::fromStdString(Graphe::getSommets()[id_dest]->getNom());
+        // panneau events
+        PanneauEvents::addCh(parent->getTreeItem(),error);
+        // alert
+        emit parent->notificationSignal(error, NotificationRect::RED_NOTIFICATION_COLOR);
+        //std::this_thread::sleep_for(Graphe::getAlertTime());
+        //emit parent->notificationSignal("", QColor());
 
         return;
     }
 
     extremite * extNext = path[size_p -1]->getInverseExt(this);
 
-	if ( this->checkSimulationStat( dest)) return;
+    if ( this->checkSimulationStat( dest)) return;
 
-	//if ( true) return;
-    //std::cout <<"J'envoie le message à "<<ext->noeud->getIdNoeud()<< std::endl;
-    //_message = std::to_string(id_next)+"_"+std::to_string(id_dest);
-    std::this_thread::sleep_for(Graphe::getWaitTime());
-    PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Envoyer donnée vers :s")+QString::fromStdString(extNext->noeud->getNom()));
-    if(path[size_p-1]->estBienConnecte())
+
+    if(path[size_p-1]->estBienConnecte()){
+        std::this_thread::sleep_for(Graphe::getWaitTime());
+        QString alert = QString::fromStdString("Envoyer message vers ")+QString::fromStdString(extNext->noeud->getNom());
+        // panneau events
+        PanneauEvents::addCh(parent->getTreeItem(),alert);
+        //alert
+        emit parent->notificationSignal(alert, NotificationRect::GREEN_NOTIFICATION_COLOR);
+        std::this_thread::sleep_for(Graphe::getAlertTime());
+        emit parent->notificationSignal("", QColor());
+
         extNext->noeud->recevoirMessage(key, extNext->interface,  dest);
+    }else {
+        QString error = "Verifier le type de cable vers "+QString::fromStdString(extNext->noeud->getNom());;
+        // panneau events
+        PanneauEvents::addCh(parent->getTreeItem(),error);
+        // alert
+        emit parent->notificationSignal(error, NotificationRect::RED_NOTIFICATION_COLOR);
+        //std::this_thread::sleep_for(Graphe::getAlertTime());
+        //emit parent->notificationSignal("", QColor());
+
+
+    }
 }
 
 void Routeur::recevoirMessage(int key, int dest_i, destination dest){
-	if ( this->checkSimulationStat( dest)) return;
-    std::cout <<"Je suis un routeur"<< idNoeud<<std::endl;
+    if ( this->checkSimulationStat( dest)) return;
 
     if(dest.data->getType() < 3){
-        std::cout <<"Data non encapsuler"<<std::endl;
+        emit parent->notificationSignal("Probleme lecture message", NotificationRect::RED_NOTIFICATION_COLOR);
+        std::this_thread::sleep_for(Graphe::getAlertTime());
+        emit parent->notificationSignal("", QColor());
         return;
     }
 
@@ -66,17 +86,39 @@ void Routeur::recevoirMessage(int key, int dest_i, destination dest){
     int id_dest = lireAdresseMac(dest.data, 1);
 
     if(idNoeud == id_dest){
-        std::cout <<"Cest moi la passerelle" <<std::endl;
+        QString alert = QString::fromStdString("Arrivé à la passerelle");
+        // panneau events
+        PanneauEvents::addCh(parent->getTreeItem(),alert);
+        //alert
+        emit parent->notificationSignal(alert, NotificationRect::GREEN_NOTIFICATION_COLOR);
+        std::this_thread::sleep_for(Graphe::getAlertTime());
+        emit parent->notificationSignal("", QColor());
+
+
+        //std::cout <<"Cest moi la passerelle" <<std::endl;
 
         desencapsule_trame(dest.data);
         string ipSrc = getInterface(dest_i)->getAdresseIP();
         if(ipSrc == lireAdresseIp(dest.data, 1)){
-           // std::cout <<"Cest moi la destination" <<std::endl;
-        PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Arrivé à destination "));
+            // std::cout <<"Cest moi la destination" <<std::endl;
+            std::this_thread::sleep_for(Graphe::getWaitTime());
+            QString alert = QString::fromStdString("Arrivé à destination");
+            // panneau events
+            PanneauEvents::addCh(parent->getTreeItem(),alert);
+            //alert
+            emit parent->notificationSignal(alert, NotificationRect::GREEN_NOTIFICATION_COLOR);
+            std::this_thread::sleep_for(Graphe::getAlertTime());
+            emit parent->notificationSignal("", QColor());
 
             desencapsule_paquet(dest.data);
             desencapsule_segment(dest.data);
-            std::cout <<showMessage(dest.data) <<std::endl;
+
+            //std::cout <<showMessage(dest.data) <<std::endl;
+            alert = QString("Message recu : "+QString::fromStdString(showMessage(dest.data)));
+            // panneau events
+            PanneauEvents::addCh(parent->getTreeItem(),alert);
+            //alert
+            emit parent->notificationSignal(alert, NotificationRect::GREEN_NOTIFICATION_COLOR);
             delete dest.data;
         }
         else {
@@ -85,15 +127,25 @@ void Routeur::recevoirMessage(int key, int dest_i, destination dest){
             vector<Cable *> path;
             string ip_dest_string = lireAdresseIp(dest.data, 1);
             int ip_dest = Graphe::noeudFromIp(ip_dest_string);
-            if(ip_dest < 0)
+            if(ip_dest < 0){
+                QString error = "Verifier l'adresse IP "+QString::fromStdString(ip_dest_string);
+                // panneau events
+                PanneauEvents::addCh(parent->getTreeItem(),error);
+                // alert
+                emit parent->notificationSignal(error, NotificationRect::RED_NOTIFICATION_COLOR);
+
                 return;
+            }
 
             Graphe::genererChemin(id_src, idNoeud, ip_dest, path, false);
             int size_p = path.size();
             // pas de chemin
             if(!size_p){
-                std::cout << "Je connais pas le chemin vers " <<ip_dest<<std::endl;
-                PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Je connais pas le chemin vers "+ Graphe::getSommets()[id_dest]->getNom()));
+                QString error = "Pas de chemin vers "+ QString::fromStdString(Graphe::getSommets()[id_dest]->getNom());
+                // panneau events
+                PanneauEvents::addCh(parent->getTreeItem(),error);
+                // alert
+                emit parent->notificationSignal(error, NotificationRect::RED_NOTIFICATION_COLOR);
 
                 return;
             }
@@ -118,15 +170,28 @@ void Routeur::recevoirMessage(int key, int dest_i, destination dest){
             //Cable * prec_cable = getInterface(dest_i)->getCable(); // cable precedent
             int mtu = next_cable->getMTU() / 8;
             int tp_initial = (int) lire_bits ( *(dest.data->getSeq()), 16, 16).to_ulong()-20;
-            //std::cout << dest.data->getSeq()->size() << std::endl;
 
-            std::cout <<"MTU = "<< mtu<<" TP  "<<tp_initial<< std::endl;
             if(mtu < tp_initial){
                 //fragmenter
-               PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Fragmentation de paquet"));
+                QString error = "Fragmentation de paquet...";
+                // panneau events
+                PanneauEvents::addCh(parent->getTreeItem(),error);
+                // alert
+                emit parent->notificationSignal(error, NotificationRect::RED_NOTIFICATION_COLOR);
+                std::this_thread::sleep_for(Graphe::getAlertTime());
+                emit parent->notificationSignal("", QColor());
+
 
                 unsigned int df = (unsigned int) lire_bits ( *(dest.data->getSeq()), 49, 1).to_ulong();
-                if(df) { delete dest.data; return;}
+                if(df) {
+                    QString error = "Fragmentation non autorisée";
+                    // panneau events
+                    PanneauEvents::addCh(parent->getTreeItem(),error);
+                    // alert
+                    emit parent->notificationSignal(error, NotificationRect::RED_NOTIFICATION_COLOR);
+                    delete dest.data;
+                    return;
+                }
                 vector<Data*> fragments = fragmentationPaquet(*(dest.data), mtu);
 
                 for(Data * d : fragments){
@@ -134,6 +199,7 @@ void Routeur::recevoirMessage(int key, int dest_i, destination dest){
                     destination t_dest;
                     t_dest.data = d;
                     t_dest.interface_src = dest.interface_src;
+
                     envoyerMessage(key, t_dest);
                 }
 

@@ -6,9 +6,6 @@
 int Cable::nbCables = 0;
 int Cable::i = 1;
 
-
-
-
 Cable::Cable(CableG * _parent, cableT _type, int _debitMax, int _MTU){
     debitMax = _debitMax;
     MTU = _MTU;

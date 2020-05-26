@@ -163,7 +163,7 @@ QVariant NoeudG::itemChange(GraphicsItemChange change, const QVariant &value)
         QRectF rect = boundingRect();
         nomNoeudG->setPos(0, rect.height()/1.25);
         notification->setPos(rect.topRight()- QPointF(rect.width()/5.0,notification->document()->size().height()/1.5));
-        qDebug()<<rect;
+       // qDebug()<<rect;
         if(scene()){
             QPointF newPos = value.toPointF();
             moveCable(newPos);

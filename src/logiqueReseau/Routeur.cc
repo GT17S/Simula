@@ -73,6 +73,13 @@ void Routeur::envoyerMessage(int key, destination dest){
 }
 
 void Routeur::recevoirMessage(int key, int dest_i, destination dest){
+    QString error = "Recevoir le message";
+    // panneau events
+    PanneauEvents::addCh(parent->getTreeItem(),error);
+    // alert
+    emit parent->notificationSignal(error, NotificationRect::GREEN_NOTIFICATION_COLOR);
+    //std::this_thread::sleep_for(Graphe::getAlertTime());
+
     if ( this->checkSimulationStat( dest)) return;
 
     if(dest.data->getType() < 3){
@@ -86,6 +93,7 @@ void Routeur::recevoirMessage(int key, int dest_i, destination dest){
     int id_dest = lireAdresseMac(dest.data, 1);
 
     if(idNoeud == id_dest){
+        /*
         QString alert = QString::fromStdString("Arrivé à la passerelle");
         // panneau events
         PanneauEvents::addCh(parent->getTreeItem(),alert);
@@ -93,16 +101,17 @@ void Routeur::recevoirMessage(int key, int dest_i, destination dest){
         emit parent->notificationSignal(alert, NotificationRect::GREEN_NOTIFICATION_COLOR);
         std::this_thread::sleep_for(Graphe::getAlertTime());
         emit parent->notificationSignal("", QColor());
-
+        */
 
         //std::cout <<"Cest moi la passerelle" <<std::endl;
-
+        std::cout <<" IP DEST ="<<lireAdresseIp(dest.data, 1)<<std::endl;
         desencapsule_trame(dest.data);
         string ipSrc = getInterface(dest_i)->getAdresseIP();
+        std::cout <<"IP SOURCE ="<<ipSrc<<" IP DEST ="<<lireAdresseIp(dest.data, 1)<<std::endl;
         if(ipSrc == lireAdresseIp(dest.data, 1)){
             // std::cout <<"Cest moi la destination" <<std::endl;
             std::this_thread::sleep_for(Graphe::getWaitTime());
-            QString alert = QString::fromStdString("Arrivé à destination");
+            QString alert = QString("Arrivé à destination");
             // panneau events
             PanneauEvents::addCh(parent->getTreeItem(),alert);
             //alert

@@ -570,8 +570,10 @@ void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, bool syn, bool ac
             if(n->getTypeNoeud() == ROUTEUR || n->getTypeNoeud() == STATION)
             { nextExt = destExt; check =true;}
     }
-
-
+    if(nextExt == destExt){
+        destExt->noeud = n2;
+        destExt->interface = 0;
+    }
     encapsuleAll(portSrc, portDest, ack, syn, nSeq, nAck, ipId, df, srcExt, destExt, nextExt, data);
 
     Station * st = dynamic_cast<Station*>(n1);

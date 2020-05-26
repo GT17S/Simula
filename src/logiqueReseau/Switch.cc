@@ -60,7 +60,6 @@ void Switch::envoyerMessage(int key, destination dest){
         emit parent->notificationSignal(alert, NotificationRect::GREEN_NOTIFICATION_COLOR);
         std::this_thread::sleep_for(Graphe::getAlertTime());
         emit parent->notificationSignal("", QColor());
-
         extNext->noeud->recevoirMessage(key, extNext->interface, dest);
     }
     else {
@@ -76,6 +75,13 @@ void Switch::envoyerMessage(int key, destination dest){
 }
 
 void Switch::recevoirMessage(int key, int dest_i, destination dest){
+    QString error = "Recevoir le message";
+    // panneau events
+    PanneauEvents::addCh(parent->getTreeItem(),error);
+    // alert
+    emit parent->notificationSignal(error, NotificationRect::GREEN_NOTIFICATION_COLOR);
+    //std::this_thread::sleep_for(Graphe::getAlertTime());
+
     if ( this->checkSimulationStat( dest)) return;
     if(dest.data->getType() < 3){
         emit parent->notificationSignal("Probleme lecture message", NotificationRect::RED_NOTIFICATION_COLOR);

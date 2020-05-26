@@ -56,6 +56,13 @@ void Hub::envoyerMessage(int key,destination dest){
 }
 
 void Hub::recevoirMessage(int key, int dest_i, destination dest){
+    QString error = "Recevoir le message";
+    // panneau events
+    PanneauEvents::addCh(parent->getTreeItem(),error);
+    // alert
+    emit parent->notificationSignal(error, NotificationRect::GREEN_NOTIFICATION_COLOR);
+   // std::this_thread::sleep_for(Graphe::getAlertTime());
+
 	if ( this->checkSimulationStat( dest)) return;
     if(dest.data->getType() < 3){
         emit parent->notificationSignal("Probleme lecture message", NotificationRect::RED_NOTIFICATION_COLOR);

@@ -6,6 +6,7 @@
 #include <QMessageBox>
 #include <QPixmap>
 #include <QStateMachine>
+#include <QObject>
 #include <cstring>
 
 #include "simulaGui.hh"
@@ -252,11 +253,14 @@ void PanneauOutils::ouvrirFichier(){
                                                   tr("Fichier xml (*.xml)"));
     if(!fileName.isEmpty()){
         curFile = fileName;
+        //QMainWindow* msg = new QMainWindow(espaceTravail);
+        //msg->setFixedSize(250  ,150);
+        //msg->setCentralWidget(new QLabel("test"));
+        //msg->setWindowFlag(Qt::WindowStaysOnTopHint);
+        // msg->show();
         lireXml(fileName, espaceTravail, gestSimulation->getManager());
-
-    }
-
-
+        //delete msg;
+   }
 }
 void PanneauOutils::sauvegarderFichier(){
     // si pas de fichier , alors ouvrir sauvegarder
@@ -374,4 +378,9 @@ void PanneauOutils::clearPanneauData()	{
 			pData->clearPanneauData();
 		}    
 	}	
+}
+
+
+void MessageBoxShow(QMessageBox* info){
+
 }

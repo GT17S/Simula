@@ -340,25 +340,19 @@ void PanneauOutils::timer(){
 
 void PanneauOutils::toPng(){
     QString fileName=QFileDialog::getSaveFileName(this,
-                                                  tr("Exporter le fichier en image"), "",
-                                                  tr("Image png (*.png)"));
+                                                     tr("Exporter le fichier en image"), "",
+                                                     tr("Image png (*.png)"));
 
-    if (fileName.isEmpty())
-        return;
-    else{
-        QPixmap pixMap = QPixmap::grabWidget(espaceTravail->getVue());
-        int a=espaceTravail->getVue()->verticalScrollBar()->width();
-        //int b=espaceTravail->getVue()->horizontalScrollBar()->width();
-        int c=espaceTravail->getVue()->rect().height();
-        int d=espaceTravail->getVue()->rect().width();
+       espaceTravail->getScene()->clearSelection();
+       espaceTravail->getScene()->setSceneRect(espaceTravail->getScene()->itemsBoundingRect());
+       QImage image(espaceTravail->getScene()->sceneRect().size().toSize(), QImage::Format_ARGB32);
+       image.fill(Qt::white);
 
-        QRect rect(0, 0, d-a,c-a);
-        QPixmap original(pixMap);
-        QPixmap cropped = original.copy(rect);
-        cropped.save(fileName+".png");
-        //PanneauEvents::addCh(parent,"Votre espace est exporte en png");
+       QPainter painter(&image);
+       espaceTravail->getScene()->render(&painter);
+       image.save(fileName+".png");
     }
-}
+
 
 void PanneauOutils::zoomer(){
     espaceTravail->getVue()->scale(1.2,1.2);

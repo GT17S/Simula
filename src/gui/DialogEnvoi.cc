@@ -143,7 +143,7 @@ void DialogEnvoi::preparenvoi(){
        stream<<"</ul>";
        errorbox.setText(errorString);
        errorbox.exec();
-       reject();
+       return;
     }
     accept();
 

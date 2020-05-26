@@ -24,6 +24,7 @@ void Hub::envoyerBroadCast(string message){
 }
 void Hub::envoyerMessage(int key,destination dest){
 
+	if ( this->checkSimulationStat( dest)) return;
     int id_src  = lireAdresseMac(dest.data, 0);
 
     std::cout <<"J'envoie le message à tous les membres"<< std::endl;
@@ -41,6 +42,7 @@ void Hub::envoyerMessage(int key,destination dest){
 }
 
 void Hub::recevoirMessage(int key, int dest_i, destination dest){
+	if ( this->checkSimulationStat( dest)) return;
     std::cout <<"Je suis un hub"<< idNoeud<<std::endl;
     if(dest.data->getType() < 3){
         std::cout <<"Data non encapsuler"<<std::endl;

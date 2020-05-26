@@ -77,7 +77,7 @@ protected:
   typeNoeud type; /*!< Le type du noeud #typeNoeud*/
   NoeudG * parent; /*!< Parent , composant graphique */
   int count=0; /*!<le nombre des interfaces */
-
+	bool checkSimulationStat ( destination dest);
 public:
     /*!
      * \brief Construceur

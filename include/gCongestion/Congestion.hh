@@ -286,6 +286,7 @@ public:
      */
    void setlatence(float f){ this->latenceLastSend = f;};
 
+	void clearFiles();
 
    bool getok(){return envoiok;};
    void setok(bool b){ this->envoiok = b;};

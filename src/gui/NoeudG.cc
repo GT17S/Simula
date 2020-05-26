@@ -372,9 +372,8 @@ void NoeudG::interfaceAction(int i){
 
 void NoeudG::showNotifcation(const QString _notification, QColor _color){
    // notification = new NotificationRect(_notification, _color,this);
-    notification->color = _color;
-    notification->text->setPlainText(_notification);
-    notification->setRect(notification->text->boundingRect());
-    notification->setBrush(_color);
+    if(! notification->text->toPlainText().isEmpty())
+        notification->clearNotification();
+    notification->initNotification(_notification, _color);
 }
 

@@ -15,6 +15,7 @@ public:
     ~NotificationRect();
 
     void clearNotification();
+    void initNotification(const QString _notification, QColor _color);
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     //void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *);

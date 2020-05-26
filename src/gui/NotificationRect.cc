@@ -12,12 +12,7 @@ NotificationRect::NotificationRect(QGraphicsItem *_parent):
 NotificationRect::NotificationRect(const QString _notification,QColor _color, QGraphicsItem *_parent) :
     QGraphicsRectItem(_parent)
 {
-    color = _color;
-    text = new QGraphicsTextItem(_notification, this);
-    setRect(text->boundingRect());
-    setBrush(color);
-    //setVisible(false);
-    //setVisible(false);
+    initNotification(_notification, _color);
 
 }
 
@@ -32,6 +27,14 @@ void NotificationRect::clearNotification(){
     setRect(QRect());
     setBrush(color);
 
+}
+
+void NotificationRect::initNotification(const QString _notification, QColor _color){
+
+    color = _color;
+    text->setPlainText(_notification);
+    setRect(text->boundingRect());
+    setBrush(_color);
 }
 
 void NotificationRect::mousePressEvent(QGraphicsSceneMouseEvent *event){

@@ -110,6 +110,7 @@ void PanneauOutils::createButtons(){
     relancer->setObjectName("relancerAction");
     relancer->setProperty("outilsBar", true);
     relancer->setToolTip("Relancer");
+    relancer->setVisible(false);
     addWidget(relancer);
 
     changerMode = new QPushButton(this);
@@ -117,6 +118,7 @@ void PanneauOutils::createButtons(){
     changerMode->setObjectName("changeAction");
     changerMode->setProperty("outilsBar", true);
     changerMode->setToolTip("Mode");
+    changerMode->setVisible(false);
     addWidget(changerMode);
 
     benvoyer = new QPushButton(this);
@@ -138,6 +140,20 @@ void PanneauOutils::createButtons(){
     zoomOut->setProperty("outilsBar", true);
     zoomOut->setToolTip("Dé-zoomer");
     addWidget(zoomOut);
+
+
+    QWidget* spacer = new QWidget();
+    spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    addWidget(spacer);
+
+
+
+
+    quitb = new QPushButton(this);
+    quitb->setObjectName("quitAction");
+    quitb->setProperty("outilsBar", true);
+    quitb->setToolTip("Quitter");
+    addWidget(quitb);
 
 //connect(exportButton, SIGNAL(triggered(QAction*)), exportButton, SLOT(setDefaultAction(QAction*)));
 }
@@ -162,7 +178,7 @@ void PanneauOutils::createSignals(){
     connect(zoomIn,SIGNAL(clicked()),this,SLOT(zoomer()));
     connect(zoomOut,SIGNAL(clicked()),this,SLOT(dezoomer()));
 
-
+    connect(quitb, SIGNAL(clicked()), qApp, SLOT(quit()));
 }
 void PanneauOutils::createShortCuts(){
 

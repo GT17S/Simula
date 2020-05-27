@@ -550,7 +550,7 @@ void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, bool syn, bool ac
     int size_p = path.size();
     // pas de chemin
     if(!size_p){
-        std::cout << "Pas de chemin vers "<<id_n2<<std::endl;
+        std::cout << "Pas de chemin vers AAAAAA"<<id_n2<<std::endl;
         extremite * destExt = new extremite, *srcExt = new extremite;
         destExt->noeud = n2;
         destExt->interface =0;

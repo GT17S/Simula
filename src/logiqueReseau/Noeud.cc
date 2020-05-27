@@ -193,6 +193,7 @@ bool Noeud::verifierPasserelle(string passerelle){
         string adresseRes = i->getAdresseRes();
         string masque     = i->getMasque();
         if(i->ipValide(passerelle, masque, adresseRes)){
+            std::cout << "IPVALID = "<<passerelle<<" "<<masque<<" "<<adresseRes<<std::endl;
             return true;
         }
     }

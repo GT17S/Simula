@@ -130,9 +130,11 @@ int Graphe::parcourirVoisins(int  id_src , int id_n, int id_dest, vector<Cable *
 }
 
 int Graphe::parcourirPasserelle(int id_src_src ,int id_src, int id_n , string adresse, int n2, vector<Cable *> &path, bool allPath){
+    std::cout <<id_src_src<<" "<<id_src<<" "<<id_n<<" "<<adresse<<" "<<n2<<std::endl;
 
-    if(!sommets[id_src]->verifierPasserelle(adresse)){
+    if(sommets[id_src]->getTypeNoeud() == ROUTEUR && !sommets[id_src]->verifierPasserelle(adresse)){
         // pas le meme reseau avec la passerelle
+        std::cout <<"CEST MOI LE DEGAT"<<std::endl;
         return -1;
     }
 
@@ -145,7 +147,9 @@ int Graphe::parcourirPasserelle(int id_src_src ,int id_src, int id_n , string ad
                 if(sommets[i]->getTypeNoeud() == SWITCH || sommets[i]->getTypeNoeud() == HUB){
                     int result = parcourirPasserelle(id_src_src, id_n, i, adresse, n2, path, allPath);
                     //
+                    std::cout << "RESULT ="<<result<<std::endl;
                     if(result > -1){
+
                         // adresse trouvée , retourner resultat
                         //path.push_back(getExtremite(id_n, i));
                         path.push_back(matrice[id_n][i]);
@@ -153,9 +157,9 @@ int Graphe::parcourirPasserelle(int id_src_src ,int id_src, int id_n , string ad
                         return result;
                     }
                 }
-                else{
-                    Station * st = dynamic_cast<Station*>(sommets[i]);
-                    if(sommets[i]->getTypeNoeud() == ROUTEUR || (st && st->getIsPasserelle()))
+                else if(sommets[i]->getTypeNoeud() == ROUTEUR){
+                   // Station * st = dynamic_cast<Station*>(sommets[i]);
+                  //  if(sommets[i]->getTypeNoeud() == ROUTEUR || (st && st->getIsPasserelle()))
 
                     for(InterfaceFE * fe : sommets[i]->getInterfaces()){
                         if(fe->getAdresseIP() == adresse){
@@ -208,6 +212,7 @@ int Graphe::genererChemin(int src, int n1, int n2, vector<Cable *> &path, bool a
         string adresse = verifierCoherence(sommets[n1], sommets[n2]);
         if(adresse != DEFAULT_IP){
             // redirection vers adresse passerelle
+
             int result = parcourirPasserelle(src ,n1, n1, adresse, n2, path, allPath);
             if(result > -1)
                 // n2 trouvée

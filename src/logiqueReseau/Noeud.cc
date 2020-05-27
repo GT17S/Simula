@@ -209,16 +209,19 @@ void Noeud::setTableRoutage(Route * route){
     n_Route->passerelle    = InterfaceFE::checkAdresse(route->passerelle   , IP_REGEX, DEFAULT_IP);
 
     // Interdiction d'ajout d'une ligne non valide
-//    if( n_Route->masque == DEFAULT_IP && n_Route->passerelle == DEFAULT_IP)
-//        return;
+    //if(n_Route->passerelle == DEFAULT_IP && tableRoutage.size()>0)
+      //  return;
     //
+
     for(Route *r : tableRoutage){
         // Sous réseau existe déja
-        if(r->adresseReseau == n_Route ->adresseReseau)
-            return;
+        if(r->adresseReseau == n_Route ->adresseReseau){
+            r->passerelle=n_Route->passerelle;
+            return;}
     }
 
     tableRoutage.push_back(n_Route);
+
     // Pour vérfier plustard que la route à été ajoutée,
     // il suffit juste de vérifier que la table de routage à un élement de plus.
     parent->toolTipShow();

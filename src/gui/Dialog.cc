@@ -196,8 +196,6 @@ void Dialog::showConfig(Noeud *src){
                     interfaceName=QString::fromStdString(i->getNomInterface());
             bool liaison= i->getCable() != nullptr ? true : false;
             InterfaceG *ig=new InterfaceG(AdresseIP,AdresseMac,AdresseRes,mask,interfaceName,liaison);
-            // mapperInterface->setMapping(supprimerInterface,toolInterface->count());
-            //  connect(supprimerInterface, SIGNAL(clicked()), mapperInterface, SLOT(map()));
 
             mapperInterfaceAp->setMapping(ig->appliquer,toolInterface->count());
             connect(ig->appliquer, SIGNAL(clicked()), mapperInterfaceAp, SLOT(map()));
@@ -250,7 +248,7 @@ void Dialog::appliquerInterface(int i){
         ig->mask->setStyleSheet("color:black");
         iF->setAdresseMac(AdresseMacApp.toStdString());
         ig->AdresseMac->setStyleSheet("color:black");
-        QMessageBox::warning(this, "Bien ",
+        QMessageBox::information(this, "Bien ",
                              "adresses Sauvgardé ",
                              QMessageBox::Ok);
         src->getParent()->toolTipShow();
@@ -314,21 +312,16 @@ void Dialog::appliquerRoute(int i){
 
     if(InterfaceFE::checkAdresse(AdresseIPApp.toStdString(),IP_REGEX,DEFAULT_IP) != DEFAULT_IP
            && !mask.isEmpty() && !AdresseIPApp.isEmpty() && !AdresseResApp.isEmpty()){
-        qDebug()<<"adress rx"+AdresseResApp;
-        qDebug()<<"adress nexthopp"+AdresseIPApp;
-        qDebug()<<"adress masque"+mask;
-
         routeNew->adresseReseau=AdresseResApp.toStdString();
-         qDebug()<<"apres ajout "+QString::fromStdString(routeNew->adresseReseau);
         ig->AdresseRes->setStyleSheet("color:black");
         routeNew->passerelle=AdresseIPApp.toStdString();
         ig->nextHope->setStyleSheet("color:black");
         routeNew->masque=mask.toStdString();
         ig->mask->setStyleSheet("color:black");
-        src->getParent()->toolTipShow();
         src->modifierRoute(i,routeNew);
+        src->getParent()->toolTipShow();
 
-        QMessageBox::warning(this, "Bien ",
+        QMessageBox::information(this, "Bien ",
                              "adresses Sauvgardé ",
                              QMessageBox::Ok);
         return;

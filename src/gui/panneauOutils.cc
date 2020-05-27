@@ -37,7 +37,6 @@ PanneauOutils::PanneauOutils(EspaceTravail * _espaceTravail, gSimulation * g){
 PanneauOutils::~PanneauOutils()
 {
 
-   // qDebug() << "Cleanup";
     delete gestSimulation;
 
 	/*
@@ -253,13 +252,20 @@ void PanneauOutils::ouvrirFichier(){
                                                   tr("Fichier xml (*.xml)"));
     if(!fileName.isEmpty()){
         curFile = fileName;
-        //QMainWindow* msg = new QMainWindow(espaceTravail);
-        //msg->setFixedSize(250  ,150);
-        //msg->setCentralWidget(new QLabel("test"));
-        //msg->setWindowFlag(Qt::WindowStaysOnTopHint);
-        // msg->show();
+      /*
+          QMessageBox *msgBox = new QMessageBox(this);
+           msgBox->setText("Test");
+           msgBox->setWindowModality(Qt::NonModal);
+           msgBox->setInformativeText("Do you want to save your changes?");
+           msgBox->setStandardButtons(QMessageBox::Save | QMessageBox::Discard |
+                                      QMessageBox::Cancel);
+           msgBox->setDefaultButton(QMessageBox::Save);
+          msgBox->accept();
+          */
         lireXml(fileName, espaceTravail, gestSimulation->getManager());
-        //delete msg;
+
+       // ret.accept();
+    }
    }
 }
 void PanneauOutils::sauvegarderFichier(){
@@ -335,7 +341,6 @@ void PanneauOutils::changeMode(){
 
 void PanneauOutils::timer(){
    QTime *t = this->gestSimulation->getTime();
-    //qDebug()<<t->toString("hh:mm:ss");
     this->gestSimulation->demarrer();
     *t=t->addSecs(1);
     this->gestSimulation->getTimer()->setInterval(1000);
@@ -377,7 +382,16 @@ void PanneauOutils::clearPanneauData()	{
 		if ( pData)	{ 
 			pData->clearPanneauData();
 		}    
-	}	
+    }
+    for(Noeud *n: Graphe::getSommets()){
+     Station *x=dynamic_cast<Station*>(n);
+     if(x){
+         if(x->getControleur()){
+        x->getControleur()->clearFiles();
+     }}
+
+    }
+
 }
 
 

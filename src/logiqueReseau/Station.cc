@@ -40,6 +40,9 @@ Station::Station(string _nom, int _idNoeud, int _nbPort, string _adressePasserel
 
 }
 
+Station::~Station()	{
+	delete controleur;
+}
 
 void Station::setPasserelle(string _adresse){
     adressePasserelle = InterfaceFE::checkAdresse(_adresse, IP_REGEX, DEFAULT_IP);
@@ -396,9 +399,14 @@ void Station::mainlocal(std::mutex *m, gSimulation* g){
 				this->getControleur()->setNbrAcksDuplique(0);
 				this->getControleur()->setNbrAcksRecu(0);
 				this->getControleur()->setok( false);
+				numSeq = 1;
+				numSegmentsEnvoye.clear();
 				deb = true;
 			}        
         }
+	delete mfe;
+	delete mfa;
+	delete meo;
 }
 
 

@@ -25,6 +25,11 @@ Congestion::Congestion(Congestion &c){
     nbrAcksDuplique=c.nbrAcksDuplique;
 
 }
+
+Congestion::~Congestion()	{
+	this->clearFiles();
+}
+
 void Congestion::setCwnd(int _cwnd){
     if(_cwnd >0)
         cwnd = _cwnd ;

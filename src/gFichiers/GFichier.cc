@@ -344,7 +344,7 @@ void ecrireDot(std::string filename){
         auto  mat = Graphe::getMatrice();
         for (auto i = 0; i < (mat.size()); ++i)
         {
-            for (auto j = 0; j < (mat[i].size()); ++j)
+            for (auto j = i; j < (mat[i].size()); ++j)
             {
                 if(mat[i][j]){
                     outfile << i << "--" << j << "[label =\" " << mat[i][j]->getLatence() <<"\" , weight ="  <<  mat[i][j]->getDebitAcc() << "  ,  color =\"green\" , style=dashed ] ;";

@@ -19,9 +19,9 @@ PanneauOutils::PanneauOutils(EspaceTravail * _espaceTravail, gSimulation * g){
     espaceTravail = _espaceTravail;
     this->gestSimulation = g;
 
-// Ajouté par Massi
-//	Connexion signals/slots 
-	QObject::connect ( espaceTravail, SIGNAL(createStation(NoeudG*)), g->getManager(), SLOT(createWorker(NoeudG*)));
+    // Ajouté par Massi
+    //	Connexion signals/slots
+    QObject::connect ( espaceTravail, SIGNAL(createStation(NoeudG*)), g->getManager(), SLOT(createWorker(NoeudG*)));
     QObject::connect ( espaceTravail, SIGNAL(removeStation(NoeudG*)), g->getManager(), SLOT(removeStation(NoeudG*)));
 
     this->setMinimumHeight(60);
@@ -39,7 +39,7 @@ PanneauOutils::~PanneauOutils()
 
     delete gestSimulation;
 
-	/*
+    /*
     delete formulaire;
     delete nouveau;
     delete ouvrir;
@@ -155,7 +155,7 @@ void PanneauOutils::createButtons(){
     quitb->setToolTip("Quitter");
     addWidget(quitb);
 
-//connect(exportButton, SIGNAL(triggered(QAction*)), exportButton, SLOT(setDefaultAction(QAction*)));
+    //connect(exportButton, SIGNAL(triggered(QAction*)), exportButton, SLOT(setDefaultAction(QAction*)));
 }
 void PanneauOutils::createSignals(){
 
@@ -273,21 +273,16 @@ void PanneauOutils::ouvrirFichier(){
                                                   tr("Fichier xml (*.xml)"));
     if(!fileName.isEmpty()){
         curFile = fileName;
-      /*
-          QMessageBox *msgBox = new QMessageBox(this);
-           msgBox->setText("Test");
-           msgBox->setWindowModality(Qt::NonModal);
-           msgBox->setInformativeText("Do you want to save your changes?");
-           msgBox->setStandardButtons(QMessageBox::Save | QMessageBox::Discard |
-                                      QMessageBox::Cancel);
-           msgBox->setDefaultButton(QMessageBox::Save);
-          msgBox->accept();
-          */
-        lireXml(fileName, espaceTravail, gestSimulation->getManager());
 
-       // ret.accept();
+        QMessageBox *msgBox = new QMessageBox;
+        msgBox->setWindowTitle("Importation en cours");
+        msgBox->setModal(true);
+        msgBox->show();
+        lireXml(fileName, espaceTravail, gestSimulation->getManager());
+        msgBox->accept();
+
+        // ret.accept();
     }
-   }
 }
 void PanneauOutils::sauvegarderFichier(){
     // si pas de fichier , alors ouvrir sauvegarder
@@ -306,19 +301,19 @@ void PanneauOutils::sauvegarderFichier(){
     }else ecrireXml(curFile);
 }
 void PanneauOutils::exportDot(){
-//   if(curFile.isEmpty()){
-             QString fileName=QFileDialog::getSaveFileName(this,
-                                                      tr("Sauvegarder le fichier de configuration"), "",
-                                                      tr("Fichier dot (*.dot)"));
+    //   if(curFile.isEmpty()){
+    QString fileName=QFileDialog::getSaveFileName(this,
+                                                  tr("Sauvegarder le fichier de configuration"), "",
+                                                  tr("Fichier dot (*.dot)"));
 
-        if(!fileName.isEmpty()){
-            curFile = fileName;
-            ecrireDot(curFile.toStdString());
-            curFile.clear();
-        }else{
-            QMessageBox::critical(this, "Export vers Dot", "Veuillez entrer des paramétres valides");
-        }     
-   //}
+    if(!fileName.isEmpty()){
+        curFile = fileName;
+        ecrireDot(curFile.toStdString());
+        curFile.clear();
+    }else{
+        QMessageBox::critical(this, "Export vers Dot", "Veuillez entrer des paramétres valides");
+    }
+    //}
 }
 
 void PanneauOutils::exportPng(){
@@ -340,8 +335,8 @@ void PanneauOutils::demarrerPauseSimulation(){
 }
 void PanneauOutils::arreterSimulation(){
     this->gestSimulation->arreter();
-	this->clearPanneauData();
-	// Clear PanneauEvent
+    this->clearPanneauData();
+    // Clear PanneauEvent
     simDemPause->setChecked(false);
 }
 
@@ -361,7 +356,7 @@ void PanneauOutils::changeMode(){
 }
 
 void PanneauOutils::timer(){
-   QTime *t = this->gestSimulation->getTime();
+    QTime *t = this->gestSimulation->getTime();
     this->gestSimulation->demarrer();
     *t=t->addSecs(1);
     this->gestSimulation->getTimer()->setInterval(1000);
@@ -370,18 +365,18 @@ void PanneauOutils::timer(){
 
 void PanneauOutils::toPng(){
     QString fileName=QFileDialog::getSaveFileName(this,
-                                                     tr("Exporter le fichier en image"), "",
-                                                     tr("Image png (*.png)"));
+                                                  tr("Exporter le fichier en image"), "",
+                                                  tr("Image png (*.png)"));
 
-       espaceTravail->getScene()->clearSelection();
-       espaceTravail->getScene()->setSceneRect(espaceTravail->getScene()->itemsBoundingRect());
-       QImage image(espaceTravail->getScene()->sceneRect().size().toSize(), QImage::Format_ARGB32);
-       image.fill(Qt::white);
+    espaceTravail->getScene()->clearSelection();
+    espaceTravail->getScene()->setSceneRect(espaceTravail->getScene()->itemsBoundingRect());
+    QImage image(espaceTravail->getScene()->sceneRect().size().toSize(), QImage::Format_ARGB32);
+    image.fill(Qt::white);
 
-       QPainter painter(&image);
-       espaceTravail->getScene()->render(&painter);
-       image.save(fileName+".png");
-    }
+    QPainter painter(&image);
+    espaceTravail->getScene()->render(&painter);
+    image.save(fileName+".png");
+}
 
 
 void PanneauOutils::zoomer(){
@@ -389,27 +384,27 @@ void PanneauOutils::zoomer(){
 }
 
 void PanneauOutils::dezoomer(){
-     espaceTravail->getVue()->scale(1/1.2,1/1.2);
+    espaceTravail->getVue()->scale(1/1.2,1/1.2);
 }
 
 void PanneauOutils::envoieD(){
-    espaceTravail->setMode(MESSAGE_MODE);   
+    espaceTravail->setMode(MESSAGE_MODE);
 }
 
 void PanneauOutils::clearPanneauData()	{
-   simulaGui * gui = dynamic_cast <simulaGui * > (this->parentWidget());
-	if ( gui)	{
-		PanneauData * pData = dynamic_cast <PanneauData *> ( gui->getMainlayout()->itemAtPosition( 4, 0)->widget());
-		if ( pData)	{ 
-			pData->clearPanneauData();
-		}    
+    simulaGui * gui = dynamic_cast <simulaGui * > (this->parentWidget());
+    if ( gui)	{
+        PanneauData * pData = dynamic_cast <PanneauData *> ( gui->getMainlayout()->itemAtPosition( 4, 0)->widget());
+        if ( pData)	{
+            pData->clearPanneauData();
+        }
     }
     for(Noeud *n: Graphe::getSommets()){
-     Station *x=dynamic_cast<Station*>(n);
-     if(x){
-         if(x->getControleur()){
-        x->getControleur()->clearFiles();
-     }}
+        Station *x=dynamic_cast<Station*>(n);
+        if(x){
+            if(x->getControleur()){
+                x->getControleur()->clearFiles();
+            }}
 
     }
 

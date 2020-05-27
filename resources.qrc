@@ -21,7 +21,6 @@
 		<file>ressources/outilsBar/envoyerAction.png</file>
 		<file>ressources/outilsBar/exportAction.png</file>
 		<file>ressources/outilsBar/exportImage.png</file>
-		<file>ressources/outilsBar/icons8-dézoomer-50-2.png</file>
 		<file>ressources/outilsBar/nvAction.png</file>
 		<file>ressources/outilsBar/ouvrirAction.png</file>
 		<file>ressources/outilsBar/relancerAction.png</file>
@@ -30,6 +29,7 @@
 		<file>ressources/outilsBar/svgdAction.png</file>
 		<file>ressources/outilsBar/zoomInAction.png</file>
 		<file>ressources/outilsBar/zoomOutAction.png</file>
+		<file>ressources/outilsBar/logout.png</file>
 		<file>ressources/equipements/cross.png</file>
 		<file>ressources/equipements/cursorCable.png</file>
 		<file>ressources/equipements/hub2.png</file>

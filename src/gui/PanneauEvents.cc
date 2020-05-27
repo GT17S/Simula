@@ -19,13 +19,15 @@ PanneauEvents::PanneauEvents(){
     evenements->setText("Evenements");
     layout.addWidget(evenements);
     evenements->setAlignment(Qt::AlignHCenter);
-    evenements->setStyleSheet("font-weight: bold; color: red;font: 15pt");
+    evenements->setStyleSheet("border-radius : 10px;background :#f0c4c2;font-weight: bold; color: red;font: 18pt");
 
     timerSimulation=new QLCDNumber(this);
     timerSimulation->setDigitCount(8);
     timerSimulation->setSegmentStyle(QLCDNumber::Flat);
-    layout.addWidget(timerSimulation);
+    timerSimulation->setStyleSheet("border :none;");
     timerSimulation->setMinimumHeight(30);
+    timerSimulation->display(QTime(0,0).toString("hh:mm:ss"));
+    layout.addWidget(timerSimulation);
 
     layout.addWidget(treeview);
     treeview->setColumnCount(1);

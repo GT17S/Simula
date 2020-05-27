@@ -24,7 +24,7 @@ void PanneauData::addData ( Data * d)	{
 }
 
 void PanneauData::askRemoveTab( int index)	{
-   std::cout << "Index : " << index << std::endl;
+   //std::cout << "Index : " << index << std::endl;
 
    delete widget(index);
 }

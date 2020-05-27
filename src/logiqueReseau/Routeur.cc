@@ -93,7 +93,7 @@ void Routeur::recevoirMessage(int key, int dest_i, destination dest){
     int id_dest = lireAdresseMac(dest.data, 1);
 
 
-    std::cout << "ROUTEUR "<<id_src<<" "<<id_dest<<std::endl;
+    //std::cout << "ROUTEUR "<<id_src<<" "<<id_dest<<std::endl;
     if(idNoeud == id_dest){
         /*
         QString alert = QString::fromStdString("Arrivé à la passerelle");
@@ -105,13 +105,13 @@ void Routeur::recevoirMessage(int key, int dest_i, destination dest){
         emit parent->notificationSignal("", QColor());
         */
 
-        //std::cout <<"Cest moi la passerelle" <<std::endl;
-        //std::cout <<" IP DEST ="<<lireAdresseIp(dest.data, 1)<<std::endl;
+        ////std::cout <<"Cest moi la passerelle" <<std::endl;
+        ////std::cout <<" IP DEST ="<<lireAdresseIp(dest.data, 1)<<std::endl;
         desencapsule_trame(dest.data);
         string ipSrc = getInterface(dest_i)->getAdresseIP();
-        //std::cout <<"IP SOURCE ="<<ipSrc<<" IP DEST ="<<lireAdresseIp(dest.data, 1)<<std::endl;
+        ////std::cout <<"IP SOURCE ="<<ipSrc<<" IP DEST ="<<lireAdresseIp(dest.data, 1)<<std::endl;
         if(ipSrc == lireAdresseIp(dest.data, 1)){
-            // std::cout <<"Cest moi la destination" <<std::endl;
+            // //std::cout <<"Cest moi la destination" <<std::endl;
             std::this_thread::sleep_for(Graphe::getWaitTime());
             QString alert = QString("Arrivé à destination");
             // panneau events
@@ -124,7 +124,7 @@ void Routeur::recevoirMessage(int key, int dest_i, destination dest){
             desencapsule_paquet(dest.data);
             desencapsule_segment(dest.data);
 
-            //std::cout <<showMessage(dest.data) <<std::endl;
+            ////std::cout <<showMessage(dest.data) <<std::endl;
             alert = QString("Message recu : "+QString::fromStdString(showMessage(dest.data)));
             // panneau events
             PanneauEvents::addCh(parent->getTreeItem(),alert);
@@ -223,7 +223,7 @@ void Routeur::recevoirMessage(int key, int dest_i, destination dest){
         }
     }
     else {
-        //std::cout <<"Mauvaise destination" <<std::endl;
+        ////std::cout <<"Mauvaise destination" <<std::endl;
         PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Mauvaise destination"));
 
         return;

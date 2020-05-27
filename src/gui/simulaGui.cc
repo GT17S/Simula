@@ -66,6 +66,7 @@ simulaGui::~simulaGui(){
 
 void simulaGui::closeEvent(QCloseEvent* ev){
    assert(pan);
+   pan->nouveauFichier();
    pan->getGestionnaire()->getManager()->joinall();
 }
 

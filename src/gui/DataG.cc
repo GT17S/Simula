@@ -24,7 +24,7 @@ DataG::DataG  ( Data * d, QWidget* parent) : QTabBar(parent), detail( QIcon("../
 
 DataG::~DataG()	{
 	this->send.clear();
-    qDebug()<<"Destruction DATAG";
+    //qDebug()<<"Destruction DATAG";
 }
 
 void DataG::predicateData ()	{
@@ -50,7 +50,7 @@ void DataG::predicateData ()	{
 		n = destExt->noeud;
 		id_path.push_back (n->getIdNoeud());
 	}
-	std::cout << std::endl;
+    //std::cout << std::endl;
 	int i = 0;
 	while ( id_path[i] != id_dest)	{
 		 bool found = false;
@@ -92,7 +92,7 @@ std::string readMessage(Data * d){
 		deb = 464;
 		fin = 32;
 	}
-    // std::cout << tmp << std::endl;
+    // //std::cout << tmp << std::endl;
     std::string res = "";
     for (int i = deb; i < (int)tmp.size() - fin; i+=8)    {
         char c = (char)0;

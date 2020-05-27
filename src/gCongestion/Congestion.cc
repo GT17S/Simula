@@ -136,7 +136,7 @@ cwnd=cwnd+1;
 
 void Congestion::verifieNbrSegment(Noeud * src){
     PanneauEvents::addCh(src->getParent()->getTreeItem(),QString::fromStdString("Vérification de la file d'attente"));
-    std::cout << "Je suis parralélisé " << std::endl;
+    //std::cout << "Je suis parralélisé " << std::endl;
 /**		May be here */
 //    this->mutexEnvoiOk->lock();
 	this->mutexFileEnvoyer->lock();

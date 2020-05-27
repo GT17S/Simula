@@ -99,7 +99,7 @@ void Station::envoyerMessage(int key, destination dest){
     int id_src  = lireAdresseMac(dest.data, 0);
     int id_dest = lireAdresseMac(dest.data, 1);
 
-    std::cout << "STATION ENVOYER"<<id_src<<" "<<id_dest<<std::endl;
+    //std::cout << "STATION ENVOYER"<<id_src<<" "<<id_dest<<std::endl;
 
     if(id_src < 0 || id_dest < 0){
         emit parent->notificationSignal("Probleme lecture adresses MAC", NotificationRect::RED_NOTIFICATION_COLOR);
@@ -141,8 +141,8 @@ void Station::envoyerMessage(int key, destination dest){
     extremite * extNext = path[size_p -1]->getInverseExt(this);
 
     /*
-    std::cout << dest.data->getOriginialStringSize()*8 << std::endl;
-    std::cout << Graphe::getMatrice()[id_src][id_dest]->getDebitAcc() << std::endl;
+    //std::cout << dest.data->getOriginialStringSize()*8 << std::endl;
+    //std::cout << Graphe::getMatrice()[id_src][id_dest]->getDebitAcc() << std::endl;
 */
 
     if ( this->checkSimulationStat( dest)) return;
@@ -180,7 +180,7 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
     int id_src  = lireAdresseMac(dest.data, 0);
     int id_dest = lireAdresseMac(dest.data, 1);
 
-    std::cout << "STATION "<<id_src<<" "<<id_dest<<std::endl;
+    //std::cout << "STATION "<<id_src<<" "<<id_dest<<std::endl;
     vector<Cable*> path;
     vector<Cable*> pathcomplet;
     Graphe::genererChemin(id_src, idNoeud, id_dest, path, false);
@@ -204,8 +204,8 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
         //pathcomplet[i]->setLatence((float)dest.data->getOriginialStringSize()*8 /  tmpcableBP);
     }
     this->mutexcabl->unlock();
-    //std::cout <<"Je suis une station "<< idNoeud<<std::endl;
-    // std::cout <<"TYPE DATA = "<< dest.data->getType() << std::endl;
+    ////std::cout <<"Je suis une station "<< idNoeud<<std::endl;
+    // //std::cout <<"TYPE DATA = "<< dest.data->getType() << std::endl;
     if(dest.data->getType() < 3){
         emit parent->notificationSignal("Probleme lecture message", NotificationRect::RED_NOTIFICATION_COLOR);
         std::this_thread::sleep_for(Graphe::getAlertTime());
@@ -294,7 +294,7 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
                 if(nSeq < 0) return;
 
                 desencapsule_segment(dest.data);
-                //std::cout <<showMessage(dest.data) <<std::endl;
+                ////std::cout <<showMessage(dest.data) <<std::endl;
                 alert = QString("Message recu : "+QString::fromStdString(showMessage(dest.data)));
                 // panneau events
                 PanneauEvents::addCh(parent->getTreeItem(),alert);
@@ -355,7 +355,7 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
         else {
             /// Station est une passerelle
             if(isPasserelle){
-                std::cout <<"Je suis une passerelle"<<std::endl;
+                //std::cout <<"Je suis une passerelle"<<std::endl;
 
                 // generer chemin complet, jusqua la destination
                 vector<Cable *> path;
@@ -368,7 +368,7 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
                 int size_p = path.size();
                 // pas de chemin
                 if(!size_p){
-                    // std::cout << "Je connais pas le chemin vers " <<Graphe::getSommets()[ip_dest]->getNom()<<std::endl;
+                    // //std::cout << "Je connais pas le chemin vers " <<Graphe::getSommets()[ip_dest]->getNom()<<std::endl;
                     PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Je connais pas le chemin vers "+ Graphe::getSommets()[ip_dest]->getNom()));
 
                     return;
@@ -408,7 +408,7 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
         }
     }
     else {
-        // std::cout <<"Mauvaise destination" <<std::endl;
+        // //std::cout <<"Mauvaise destination" <<std::endl;
         QString error = "Mauvaise destination";
         // panneau events
         PanneauEvents::addCh(parent->getTreeItem(),error);
@@ -433,7 +433,7 @@ void Station::mainlocal(std::mutex *m, gSimulation* g){
         controleur->setMutexFileACK ( mfa);
         controleur->setMutexEnvoiOk ( meo);
         
-        std::cout << "Fonction principale du thread" << std::endl;
+        //std::cout << "Fonction principale du thread" << std::endl;
         std::chrono::seconds sec(1);
 		bool deb = true;
         while (run){
@@ -443,7 +443,7 @@ void Station::mainlocal(std::mutex *m, gSimulation* g){
 			   bool bok = this->getControleur()->getok();
 			   meo->unlock();
 			   if(bok){
-					std::cout <<  getIdNoeud() << std::endl;
+                    //std::cout <<  getIdNoeud() << std::endl;
 					this->getControleur()->verifieNbrSegment(this);
 
 				}

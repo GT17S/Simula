@@ -14,7 +14,7 @@ DataG::DataG  ( Data * d, QWidget* parent) : QTabBar(parent), detail( QIcon("../
 
 	this->grid = new QHBoxLayout (this);
 	this->addTrame();
-	this->predicateData();
+    //this->predicateData();
 	this->grid->addWidget(&this->detail);
 	this->grid->addWidget(&this->left);
 	this->grid->addWidget(&this->right);
@@ -36,10 +36,10 @@ void DataG::predicateData ()	{
 	int ip_dest = id_dest;
 
 	Graphe::genererChemin(id_src, id_src, ip_dest, path, true);
-	if ( path.empty())	{
+    int size_p = path.size();
+    if (!size_p){
       return;
 	}
-	int size_p = path.size();
 	extremite * destExt;
 	Cable * cable;
 	Noeud * n = Graphe::get()->getSommets()[id_src];

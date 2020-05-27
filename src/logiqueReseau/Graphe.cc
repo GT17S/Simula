@@ -76,7 +76,7 @@ bool Graphe::verifierReseau(int n1, int n2){
             InterfaceFE * interface2 = sommets[n2]->getInterfaces()[j];
             if(interface1->getAdresseRes() != DEFAULT_IP && interface2->getAdresseRes() != DEFAULT_IP
                     && interface1->getAdresseRes() == interface2->getAdresseRes()){
-                std::cout << "MEME RESEAU"<<std::endl;
+                //std::cout << "MEME RESEAU"<<std::endl;
                 return true;
             }
         }
@@ -130,11 +130,11 @@ int Graphe::parcourirVoisins(int  id_src , int id_n, int id_dest, vector<Cable *
 }
 
 int Graphe::parcourirPasserelle(int id_src_src ,int id_src, int id_n , string adresse, int n2, vector<Cable *> &path, bool allPath){
-    std::cout <<id_src_src<<" "<<id_src<<" "<<id_n<<" "<<adresse<<" "<<n2<<std::endl;
+   // std::cout <<id_src_src<<" "<<id_src<<" "<<id_n<<" "<<adresse<<" "<<n2<<std::endl;
 
     if(sommets[id_src]->getTypeNoeud() == ROUTEUR && !sommets[id_src]->verifierPasserelle(adresse)){
         // pas le meme reseau avec la passerelle
-        std::cout <<"CEST MOI LE DEGAT"<<std::endl;
+        //std::cout <<"CEST MOI LE DEGAT"<<std::endl;
         return -1;
     }
 
@@ -147,7 +147,7 @@ int Graphe::parcourirPasserelle(int id_src_src ,int id_src, int id_n , string ad
                 if(sommets[i]->getTypeNoeud() == SWITCH || sommets[i]->getTypeNoeud() == HUB){
                     int result = parcourirPasserelle(id_src_src, id_n, i, adresse, n2, path, allPath);
                     //
-                    std::cout << "RESULT ="<<result<<std::endl;
+                    //std::cout << "RESULT ="<<result<<std::endl;
                     if(result > -1){
 
                         // adresse trouvée , retourner resultat
@@ -200,7 +200,7 @@ int Graphe::genererChemin(int src, int n1, int n2, vector<Cable *> &path, bool a
        sommets[n2]->getTypeNoeud() == SWITCH || sommets[n2]->getTypeNoeud() == HUB ||
        verifierReseau(n1, n2)){
         // meme reseau
-        std::cout << "Je suis dans le même réseaux" << std::endl;
+        //std::cout << "Je suis dans le même réseaux" << std::endl;
         if(parcourirVoisins(n1, n1, n2, path))
             // trouvée
             return 1;

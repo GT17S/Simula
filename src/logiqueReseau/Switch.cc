@@ -31,7 +31,7 @@ void Switch::envoyerMessage(int key, destination dest){
     int id_src  = lireAdresseMac(dest.data, 0);
     int id_dest = lireAdresseMac(dest.data, 1);
 
-
+    std::cout << "SWITCH "<<id_src<<" "<<id_dest<<std::endl;
     vector<Cable*> path;
     Graphe::genererChemin(id_src, idNoeud, id_dest, path, false);
     int size_p = path.size();

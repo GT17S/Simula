@@ -32,12 +32,12 @@ void Routeur::envoyerMessage(int key, destination dest){
     int size_p = path.size();
 
     if(!size_p){
+        std::this_thread::sleep_for(Graphe::getAlertTime());
         QString error = "Pas de chemin vers "+ QString::fromStdString(Graphe::getSommets()[id_dest]->getNom());
         // panneau events
         PanneauEvents::addCh(parent->getTreeItem(),error);
         // alert
         emit parent->notificationSignal(error, NotificationRect::RED_NOTIFICATION_COLOR);
-        //std::this_thread::sleep_for(Graphe::getAlertTime());
         //emit parent->notificationSignal("", QColor());
 
         return;
@@ -78,7 +78,7 @@ void Routeur::recevoirMessage(int key, int dest_i, destination dest){
     PanneauEvents::addCh(parent->getTreeItem(),error);
     // alert
     emit parent->notificationSignal(error, NotificationRect::GREEN_NOTIFICATION_COLOR);
-    //std::this_thread::sleep_for(Graphe::getAlertTime());
+    std::this_thread::sleep_for(Graphe::getAlertTime());
 
     if ( this->checkSimulationStat( dest)) return;
 
@@ -92,6 +92,8 @@ void Routeur::recevoirMessage(int key, int dest_i, destination dest){
     int id_src  = lireAdresseMac(dest.data, 0);
     int id_dest = lireAdresseMac(dest.data, 1);
 
+
+    std::cout << "ROUTEUR "<<id_src<<" "<<id_dest<<std::endl;
     if(idNoeud == id_dest){
         /*
         QString alert = QString::fromStdString("Arrivé à la passerelle");
@@ -104,10 +106,10 @@ void Routeur::recevoirMessage(int key, int dest_i, destination dest){
         */
 
         //std::cout <<"Cest moi la passerelle" <<std::endl;
-        std::cout <<" IP DEST ="<<lireAdresseIp(dest.data, 1)<<std::endl;
+        //std::cout <<" IP DEST ="<<lireAdresseIp(dest.data, 1)<<std::endl;
         desencapsule_trame(dest.data);
         string ipSrc = getInterface(dest_i)->getAdresseIP();
-        std::cout <<"IP SOURCE ="<<ipSrc<<" IP DEST ="<<lireAdresseIp(dest.data, 1)<<std::endl;
+        //std::cout <<"IP SOURCE ="<<ipSrc<<" IP DEST ="<<lireAdresseIp(dest.data, 1)<<std::endl;
         if(ipSrc == lireAdresseIp(dest.data, 1)){
             // std::cout <<"Cest moi la destination" <<std::endl;
             std::this_thread::sleep_for(Graphe::getWaitTime());
@@ -150,7 +152,7 @@ void Routeur::recevoirMessage(int key, int dest_i, destination dest){
             int size_p = path.size();
             // pas de chemin
             if(!size_p){
-                QString error = "Pas de chemin vers "+ QString::fromStdString(Graphe::getSommets()[id_dest]->getNom());
+                QString error = "Pas de chemin vers "+ QString::fromStdString(Graphe::getSommets()[ip_dest]->getNom());
                 // panneau events
                 PanneauEvents::addCh(parent->getTreeItem(),error);
                 // alert
@@ -188,7 +190,7 @@ void Routeur::recevoirMessage(int key, int dest_i, destination dest){
                 // alert
                 emit parent->notificationSignal(error, NotificationRect::RED_NOTIFICATION_COLOR);
                 std::this_thread::sleep_for(Graphe::getAlertTime());
-                emit parent->notificationSignal("", QColor());
+                //emit parent->notificationSignal("", QColor());
 
 
                 unsigned int df = (unsigned int) lire_bits ( *(dest.data->getSeq()), 49, 1).to_ulong();

@@ -95,6 +95,9 @@ void Station::envoyerMessage(int key, destination dest){
     // passerelle
     int id_src  = lireAdresseMac(dest.data, 0);
     int id_dest = lireAdresseMac(dest.data, 1);
+
+    std::cout << "STATION ENVOYER"<<id_src<<" "<<id_dest<<std::endl;
+
     if(id_src < 0 || id_dest < 0){
         emit parent->notificationSignal("Probleme lecture adresses MAC", NotificationRect::RED_NOTIFICATION_COLOR);
         std::this_thread::sleep_for(Graphe::getAlertTime());
@@ -173,6 +176,8 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
 
     int id_src  = lireAdresseMac(dest.data, 0);
     int id_dest = lireAdresseMac(dest.data, 1);
+
+    std::cout << "STATION "<<id_src<<" "<<id_dest<<std::endl;
     vector<Cable*> path;
     vector<Cable*> pathcomplet;
     Graphe::genererChemin(id_src, idNoeud, id_dest, path, false);
@@ -252,8 +257,8 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
                 // panneau events
                 PanneauEvents::addCh(parent->getTreeItem(),alert);
                 emit parent->notificationSignal(alert, NotificationRect::GREEN_NOTIFICATION_COLOR);
-
                 dest.data = reassemblagepaquet(res);
+                std::this_thread::sleep_for(Graphe::getWaitTime());
 
             }
 
@@ -429,7 +434,7 @@ void Station::mainlocal(std::mutex *m, gSimulation* g){
     controleur->setMutexFileACK ( mfa);
     controleur->setMutexEnvoiOk ( meo);
 
-    std::cout << "Fonction principale du thread" << std::endl;
+    //std::cout << "Fonction principale du thread" << std::endl;
     std::chrono::seconds sec(1);
     bool deb = true;
     while (run){
@@ -439,7 +444,7 @@ void Station::mainlocal(std::mutex *m, gSimulation* g){
             bool bok = this->getControleur()->getok();
             meo->unlock();
             if(bok){
-                std::cout <<  getIdNoeud() << std::endl;
+                //std::cout <<  getIdNoeud() << std::endl;
                 this->getControleur()->verifieNbrSegment(this);
 
             }

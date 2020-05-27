@@ -28,7 +28,7 @@ boost::dynamic_bitset<> lire_bits (boost::dynamic_bitset<> sbe, int pos, int tai
 std::string showMessage(Data * d){
     boost::dynamic_bitset<> tmp = *d->getSeq();
 
-    // std::cout << tmp << std::endl;
+    // //std::cout << tmp << std::endl;
     std::string res = "";
     for (int i = 0; i < (int)tmp.size(); i+=8)    {
         char c = (char)0;
@@ -189,7 +189,7 @@ unsigned int ipNoeud ( extremite * n)	{
     if ( n != nullptr)	{
         if ( (int) n->noeud->getInterfaces().size() > n->interface)	{
             ip = ipToNumber ( n->noeud->getInterface(n->interface)->getAdresseIP());
-            //std::cout << "In encaps : " << n->noeud->getInterface(n->interface)->getAdresseIP() << " " << ip << std::endl;
+            ////std::cout << "In encaps : " << n->noeud->getInterface(n->interface)->getAdresseIP() << " " << ip << std::endl;
         }
     }
     return ip;
@@ -266,9 +266,7 @@ void encapsule_paquet ( extremite * src, extremite * dest, Data * d)	{
 
 void encapsuleAll(int portSrc, int portDest, bool ack, bool syn, int nSeq, int nAck, int ipId, bool df,
                   extremite * n1, extremite * n2, extremite * nextMac, Data * data)	{
-    std::cout <<n1->noeud->getNom() <<" "
-              <<n2->noeud->getNom() <<" "
-              <<nextMac->noeud->getNom()<<std::endl;
+
     if(data->getType() > 0) return;
 
     int flag = 0,
@@ -341,7 +339,7 @@ void desencapsule_segment ( Data * d)	{
 }
 
 std::vector<Data *> fragmentationPaquet (Data &d, int mtu)	{
-    std::cout <<"FRAGMENTATION "<< std::endl;
+    //std::cout <<"FRAGMENTATION "<< std::endl;
     std::vector<Data*> pi;
     if ( d.getType() != DATA_PAQUET) return pi;
     boost::dynamic_bitset<> s = *d.getSeq(),
@@ -353,7 +351,7 @@ std::vector<Data *> fragmentationPaquet (Data &d, int mtu)	{
     int tp_initial = (int) lire_bits ( s, 16, 16).to_ulong()-20,
             tp = 0,
             offset = (int) lire_bits ( s, 51, 13).to_ulong();
-    std::cout << "TP INITIAL = "<<tp_initial<< std::endl;
+    //std::cout << "TP INITIAL = "<<tp_initial<< std::endl;
     desencapsule_paquet (&d);
     s = *d.getSeq();
 
@@ -541,7 +539,7 @@ void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, bool syn, bool ac
     // switch ou hub , ne peuvent ni envoyer ni recevoir
     if(n1->getTypeNoeud() == SWITCH || n2->getTypeNoeud() == SWITCH
             ||n1->getTypeNoeud() == HUB || n2->getTypeNoeud() == HUB){
-        std::cout <<"SWITCH OU HUB INTERDIT"<<std::endl;
+        //std::cout <<"SWITCH OU HUB INTERDIT"<<std::endl;
         return;
     }
     int id_n1 = n1->getIdNoeud(),
@@ -553,7 +551,7 @@ void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, bool syn, bool ac
     int size_p = path.size();
     // pas de chemin
     if(!size_p){
-        std::cout << "Pas de chemin vers AAAAAA"<<id_n2<<std::endl;
+        //std::cout << "Pas de chemin vers AAAAAA"<<id_n2<<std::endl;
         extremite * destExt = new extremite, *srcExt = new extremite;
         destExt->noeud = n2;
         destExt->interface =0;
@@ -594,7 +592,7 @@ void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, bool syn, bool ac
         destExt = new extremite;
         destExt->noeud = n2;
         destExt->interface = 0;
-       // std::cout <<" HEEEERE"<<std::endl;
+       // //std::cout <<" HEEEERE"<<std::endl;
     }
     encapsuleAll(portSrc, portDest, ack, syn, nSeq, nAck, ipId, df, srcExt, destExt, nextExt, data);
 

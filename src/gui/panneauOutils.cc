@@ -288,7 +288,6 @@ void PanneauOutils::ouvrirFichier(){
        // ret.accept();
     }
    }
-}
 void PanneauOutils::sauvegarderFichier(){
     // si pas de fichier , alors ouvrir sauvegarder
     // sinon ya fichier ,sauvegarder sans permission

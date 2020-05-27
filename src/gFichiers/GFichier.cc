@@ -21,7 +21,7 @@ void lireXml(QString nomFichier, EspaceTravail * espaceTravail, ThreadManager * 
     if(!fichier){
         // erreur
 
-        //std::cout << "erreur lecture "<<std::endl;
+        ////std::cout << "erreur lecture "<<std::endl;
         espaceTravail->showDialogError("Erreur de lecture du fichier!");
         return;
     }
@@ -33,7 +33,7 @@ void lireXml(QString nomFichier, EspaceTravail * espaceTravail, ThreadManager * 
     if(!document.setContent(fichier)){
         // erreur parser
 
-        //std::cout << "erreur parser "<<std::endl;
+        ////std::cout << "erreur parser "<<std::endl;
         espaceTravail->showDialogError("Erreur parser fichier");
         return;
     }
@@ -141,7 +141,7 @@ void lireXml(QString nomFichier, EspaceTravail * espaceTravail, ThreadManager * 
         noeudBG->moveCable(noeudBG->pos());
         cG->setZValue(-1);
         espaceTravail->getScene()->addItem(cG);
-        //std::cout << noeudB->getNom()<<" "<<interface1<<" "<<noeudB->getNom()<<" "<<interface2<<std::endl;
+        ////std::cout << noeudB->getNom()<<" "<<interface1<<" "<<noeudB->getNom()<<" "<<interface2<<std::endl;
         c->connexionNoeuds(noeudA, interface1, noeudB, interface2);
 
         cable = cable.nextSibling();

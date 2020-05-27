@@ -24,7 +24,7 @@ Cable::Cable(CableG * _parent, cableT _type, int _debitMax, int _MTU){
 }
 
 Cable::~Cable(){
-   // std::cout << "Desutruction cable "<<id <<std::endl;
+   // //std::cout << "Desutruction cable "<<id <<std::endl;
     if(ext1->noeud&& ext2->noeud){
         Graphe::supprimerCableMatrice(this);
 
@@ -32,9 +32,9 @@ Cable::~Cable(){
     ext2->noeud->getInterface(ext2->interface)->setCable(nullptr);
 
     }
-    //std::cout << "Desutruction ext1 "<<id <<std::endl;
+    ////std::cout << "Desutruction ext1 "<<id <<std::endl;
     delete ext1;
-    //std::cout << "Desutruction ext2 "<<id <<std::endl;
+    ////std::cout << "Desutruction ext2 "<<id <<std::endl;
     delete ext2;
     nbCables = nbCables-1;
 

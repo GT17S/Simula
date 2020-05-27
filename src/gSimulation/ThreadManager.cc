@@ -21,7 +21,7 @@ void ThreadManager::initStation(){
 	for(auto item : Graphe::get()->getSommets()){
 		Station* tmp = dynamic_cast<Station*>(item);
 		if(tmp){
-			std::cout << "Initialisation du thread de la station "<< item->getIdNoeud() << std::endl;
+			//std::cout << "Initialisation du thread de la station "<< item->getIdNoeud() << std::endl;
 			//auto controleur = tmp->getControleur();
 			WorkingThreads.push_back(std::thread(&Station::mainlocal,tmp, mutexmap["Cable"], gestionnaire));
 		}
@@ -38,11 +38,11 @@ void ThreadManager::joinall(){
 
     WorkingThreads.clear();
     workingStations.clear();
-    std::cout <<  std::endl << "Destruction :" << WorkingThreads.size() <<  std::endl  << workingStations.size() << std::endl;
+    //std::cout <<  std::endl << "Destruction :" << WorkingThreads.size() <<  std::endl  << workingStations.size() << std::endl;
 }
 
 void ThreadManager::removeStation(NoeudG* n){
-       std::cout << "Je retire une station" << std::endl;
+       //std::cout << "Je retire une station" << std::endl;
        auto tmp = n->getChild();
 
        for (unsigned int i = 0; i < workingStations.size(); i++){
@@ -55,7 +55,7 @@ void ThreadManager::removeStation(NoeudG* n){
                     workingStations.erase(workingStations.begin()+i);
               }
                }
-       std::cout << "Destrcutio d'un seul thread: " <<WorkingThreads.size() << "    "  << workingStations.size() << std::endl;
+       //std::cout << "Destrcutio d'un seul thread: " <<WorkingThreads.size() << "    "  << workingStations.size() << std::endl;
 
 }
 
@@ -78,6 +78,6 @@ void ThreadManager::createWorker ( NoeudG * n)	{
 	WorkingThreads.push_back(std::thread(&Station::mainlocal, s, mutexmap["Cable"], gestionnaire));	
 	workingStations.push_back(s);
 
-    std::cout << "Création: " <<WorkingThreads.size() << "    "  << workingStations.size() << std::endl;
+    //std::cout << "Création: " <<WorkingThreads.size() << "    "  << workingStations.size() << std::endl;
 
 }

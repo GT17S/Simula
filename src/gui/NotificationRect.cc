@@ -55,7 +55,7 @@ void NotificationRect::mousePressEvent(QGraphicsSceneMouseEvent *event){
 /*
 void NotificationRect::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
-    qDebug()<<"Hello";
+    //qDebug()<<"Hello";
   painter->setBrush(color);
   painter->drawRoundedRect(this->rect(),10,10);
 }*/

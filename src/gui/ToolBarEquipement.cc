@@ -98,7 +98,7 @@ void ToolBarEquipement::selectItem(){
 }
 
 void ToolBarEquipement::ajouterCable(){
-  //  qDebug()<< "cable clicked "<<n;
+  //  //qDebug()<< "cable clicked "<<n;
     espaceTravail->setMode(CABLE_MODE);
 }
 

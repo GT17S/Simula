@@ -81,7 +81,7 @@ void EspaceTravail::createCursors(){
 
 
 void EspaceTravail::mousePressEvent(QMouseEvent *event)
-{   //qDebug() <<"mouse pressed";
+{   ////qDebug() <<"mouse pressed";
     QPoint origin = vue->mapFromGlobal(QCursor::pos());
     QPointF p = vue->mapToScene(origin);
     switch(mode){

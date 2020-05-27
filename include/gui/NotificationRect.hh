@@ -19,7 +19,8 @@ public:
     void notificationToHtml(QString &message, QColor _color);
 
     static QColor RED_NOTIFICATION_COLOR,
-                  GREEN_NOTIFICATION_COLOR;
+                  GREEN_NOTIFICATION_COLOR,
+                  BLUE_NOTIFICATION_COLOR;
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     //void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *);

@@ -3,7 +3,8 @@
 #include <QTextDocument>
 
 QColor NotificationRect::RED_NOTIFICATION_COLOR = QColor(Qt::red),
-       NotificationRect::GREEN_NOTIFICATION_COLOR = QColor(Qt::green);
+       NotificationRect::GREEN_NOTIFICATION_COLOR = QColor(Qt::green),
+       NotificationRect::BLUE_NOTIFICATION_COLOR = QColor(Qt::blue);
 
 NotificationRect::NotificationRect(QGraphicsItem *_parent):
     QGraphicsTextItem(_parent)

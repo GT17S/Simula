@@ -88,7 +88,13 @@ void Congestion::slowStart(Noeud *src){
     }else{
         congestionAvoidance(src);
     }
-    PanneauEvents::addCh(src->getParent()->getTreeItem(),QString::fromStdString("slowStart: CWND = ")+QString::number(cwnd));
+    //PanneauEvents::addCh(src->getParent()->getTreeItem(),QString::fromStdString("slowStart: CWND = ")+QString::number(cwnd));
+    QString alert = QString("slowStart : Augmentation CWND ="+QString::number(cwnd));
+    // panneau events
+    PanneauEvents::addCh(src->getParent()->getTreeItem(),alert);
+    emit src->getParent()->notificationSignal(src->getParent()->getNotification()->toHtml()+alert, NotificationRect::BLUE_NOTIFICATION_COLOR);
+    std::this_thread::sleep_for(Graphe::getAlertTime());
+
 
 
 }
@@ -97,9 +103,21 @@ void Congestion::fastRecovery(Noeud *src){
     cwnd= ssthresh+3;
     cpt++;
     //PanneauEvents::affichage("fastRecovery est lance");
-    PanneauEvents::addCh(src->getParent()->getTreeItem(),QString::fromStdString("fastRecovery: CWND = ")+QString::number(cwnd));
+    //PanneauEvents::addCh(src->getParent()->getTreeItem(),);
+    QString alert = QString("fastRecovery: CWND = ")+QString::number(cwnd);
+    // panneau events
+    PanneauEvents::addCh(src->getParent()->getTreeItem(),alert);
+    emit src->getParent()->notificationSignal(src->getParent()->getNotification()->toHtml()+alert, NotificationRect::BLUE_NOTIFICATION_COLOR);
+    std::this_thread::sleep_for(Graphe::getAlertTime());
 
-    PanneauEvents::addCh(src->getParent()->getTreeItem(),QString::fromStdString("fastRecovery:le ssthresh :  ")+QString::number(ssthresh));
+
+    //PanneauEvents::addCh(src->getParent()->getTreeItem(),QString::fromStdString("fastRecovery:le ssthresh :  ")+QString::number(ssthresh));
+    alert = QString("fastRecovery: ssthres = ")+QString::number(ssthresh);
+    // panneau events
+    PanneauEvents::addCh(src->getParent()->getTreeItem(),alert);
+    emit src->getParent()->notificationSignal(src->getParent()->getNotification()->toHtml()+alert, NotificationRect::BLUE_NOTIFICATION_COLOR);
+    std::this_thread::sleep_for(Graphe::getAlertTime());
+
 
 }
 
@@ -120,7 +138,14 @@ void Congestion::verifieNbrSegment(Noeud * src){
     if(mapFileEnvoyer.empty()){
 
       //  cout<<"fin de l'envoie " <<endl;
-    PanneauEvents::addCh(src->getParent()->getTreeItem(),QString::fromStdString("File d'attente vide"));
+    //PanneauEvents::addCh(src->getParent()->getTreeItem(),QString::fromStdString("File d'attente vide"));
+
+    QString alert = QString("File d'attente vide");
+    // panneau events
+    PanneauEvents::addCh(src->getParent()->getTreeItem(),alert);
+    emit src->getParent()->notificationSignal(src->getParent()->getNotification()->toHtml()+alert, NotificationRect::BLUE_NOTIFICATION_COLOR);
+    std::this_thread::sleep_for(Graphe::getAlertTime());
+    //emit src->getParent()->notificationSignal("", QColor());
 
         //PanneauEvents::affichage("fin de l'envoie 1 ");
 /**		May be not here */
@@ -213,6 +238,7 @@ void Congestion::verifieNumAck(Noeud * n, int nAck){
 
     if(cwnd==nbrAcksRecu){
     PanneauEvents::addCh(n->getParent()->getTreeItem(),QString::fromStdString("CWND = NombreAckRecu "));
+
 
         nbrAcksRecu=0;
         slowStart( n);

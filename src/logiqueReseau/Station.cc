@@ -257,8 +257,8 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
                 // panneau events
                 PanneauEvents::addCh(parent->getTreeItem(),alert);
                 emit parent->notificationSignal(alert, NotificationRect::GREEN_NOTIFICATION_COLOR);
+                std::this_thread::sleep_for(Graphe::getWaitTime()+Graphe::getAlertTime());
                 dest.data = reassemblagepaquet(res);
-                std::this_thread::sleep_for(Graphe::getWaitTime());
 
             }
 

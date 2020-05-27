@@ -187,7 +187,8 @@ void Noeud::setInterfaces(InterfaceFE * _interface){
 }
 
 bool Noeud::verifierPasserelle(string passerelle){
-
+    if(passerelle == DEFAULT_IP)
+        return false;
     for(InterfaceFE* i : interfaces){
         string adresseRes = i->getAdresseRes();
         string masque     = i->getMasque();

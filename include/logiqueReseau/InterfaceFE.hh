@@ -185,7 +185,7 @@ public :
      * \see #adresseIP #adresseRes #masque
      * \return vrai si adresse IP est configuré, faux sinon.
      */
-    bool ipValide(string adresseIP, string masque, string adresseRes);
+    static bool ipValide(string adresseIP, string masque, string adresseRes);
 };
 
 #endif

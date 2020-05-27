@@ -74,8 +74,9 @@ bool Graphe::verifierReseau(int n1, int n2){
         InterfaceFE * interface1 = sommets[n1]->getInterfaces()[i];
         for (int j = 0; j < size_i2; j++) {
             InterfaceFE * interface2 = sommets[n2]->getInterfaces()[j];
-            if(interface1->getAdresseRes() != DEFAULT_IP && interface2->getAdresseRes() != DEFAULT_IP && interface1->getAdresseRes() == interface2->getAdresseRes()){
-                //std::cout << "Meme reseau "<<n1 <<" "<<n2<<std::endl;
+            if(interface1->getAdresseRes() != DEFAULT_IP && interface2->getAdresseRes() != DEFAULT_IP
+                    && interface1->getAdresseRes() == interface2->getAdresseRes()){
+                std::cout << "MEME RESEAU"<<std::endl;
                 return true;
             }
         }

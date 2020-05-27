@@ -73,6 +73,9 @@ string InterfaceFE::checkAdresse(std::string _adresse, std::string _regex, std::
 }
 
 bool InterfaceFE::ipValide(string _adresseIP, string _masque, string _adresseRes){
+    if(_adresseRes == DEFAULT_IP || _masque == DEFAULT_IP || _adresseIP == DEFAULT_IP)
+        return false;
+
     vector<string> vip, vmasque, vres;
 
     boost::algorithm::split(vip    , _adresseIP , boost::is_any_of("."));

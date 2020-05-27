@@ -6,6 +6,7 @@
 #include <QMessageBox>
 #include <QPixmap>
 #include <QStateMachine>
+#include <QObject>
 #include <cstring>
 
 #include "simulaGui.hh"
@@ -251,8 +252,8 @@ void PanneauOutils::ouvrirFichier(){
                                                   tr("Fichier xml (*.xml)"));
     if(!fileName.isEmpty()){
         curFile = fileName;
-
-        QMessageBox *msgBox = new QMessageBox(this);
+      /*
+          QMessageBox *msgBox = new QMessageBox(this);
            msgBox->setText("Test");
            msgBox->setWindowModality(Qt::NonModal);
            msgBox->setInformativeText("Do you want to save your changes?");
@@ -260,12 +261,12 @@ void PanneauOutils::ouvrirFichier(){
                                       QMessageBox::Cancel);
            msgBox->setDefaultButton(QMessageBox::Save);
           msgBox->accept();
+          */
         lireXml(fileName, espaceTravail, gestSimulation->getManager());
 
        // ret.accept();
     }
-
-
+   }
 }
 void PanneauOutils::sauvegarderFichier(){
     // si pas de fichier , alors ouvrir sauvegarder
@@ -390,5 +391,10 @@ void PanneauOutils::clearPanneauData()	{
      }}
 
     }
+
+}
+
+
+void MessageBoxShow(QMessageBox* info){
 
 }

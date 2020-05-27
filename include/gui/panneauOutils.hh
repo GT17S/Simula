@@ -70,6 +70,14 @@ void createSignals();
     * Initialisation  des differentes raccourcis de panneauoutils
 */
 void createShortCuts();
+
+/*!
+    * \brief MessageBoxShow
+    * Affiche un message d'attendre lors du chargement du fichier
+*/
+
+void MessageBoxShow(QMessageBox*);
+
 public:
 
 /*!

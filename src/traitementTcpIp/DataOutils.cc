@@ -266,6 +266,9 @@ void encapsule_paquet ( extremite * src, extremite * dest, Data * d)	{
 
 void encapsuleAll(int portSrc, int portDest, bool ack, bool syn, int nSeq, int nAck, int ipId, bool df,
                   extremite * n1, extremite * n2, extremite * nextMac, Data * data)	{
+    std::cout <<n1->noeud->getNom() <<" "
+              <<n2->noeud->getNom() <<" "
+              <<nextMac->noeud->getNom()<<std::endl;
     if(data->getType() > 0) return;
 
     int flag = 0,
@@ -550,8 +553,24 @@ void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, bool syn, bool ac
     int size_p = path.size();
     // pas de chemin
     if(!size_p){
-        std::cout << "Pas de chemin vers "<<id_n2<<std::endl;
-        return;
+        std::cout << "Pas de chemin vers AAAAAA"<<id_n2<<std::endl;
+        extremite * destExt = new extremite, *srcExt = new extremite;
+        destExt->noeud = n2;
+        destExt->interface =0;
+        srcExt->noeud = n1;
+        srcExt->interface =0;
+        encapsuleAll(portSrc, portDest, ack, syn, nSeq, nAck, ipId, df, srcExt, destExt, destExt, data);
+        Station * st = dynamic_cast<Station*>(n1);
+        if(st){
+
+            destination dest;
+            dest.data = data;
+            dest.interface_src = srcExt->interface;
+            st->getControleur()->mutexFileEnvoyer->lock();
+            st->getControleur()->mapFileEnvoyer.insert({nSeq,dest});  // inserer dans la file d'attente
+            st->getControleur()->mutexFileEnvoyer->unlock();
+            return;
+        }else return;
     }
 
     // get next
@@ -571,7 +590,12 @@ void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, bool syn, bool ac
             { nextExt = destExt; check =true;}
     }
 
-
+    if(nextExt == destExt){
+        destExt = new extremite;
+        destExt->noeud = n2;
+        destExt->interface = 0;
+       // std::cout <<" HEEEERE"<<std::endl;
+    }
     encapsuleAll(portSrc, portDest, ack, syn, nSeq, nAck, ipId, df, srcExt, destExt, nextExt, data);
 
     Station * st = dynamic_cast<Station*>(n1);

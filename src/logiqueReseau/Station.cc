@@ -98,10 +98,13 @@ void Station::envoyerMessage(int key, destination dest){
     // passerelle
     int id_src  = lireAdresseMac(dest.data, 0);
     int id_dest = lireAdresseMac(dest.data, 1);
-    if(id_src < 0 || id_dest < 0){
-        //std::cout <<"Lecture @mac probleme "<<id_src<<" "<<id_dest<< std::endl;
-        //PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Je connais pas le chemin vers ")+QString::number(ext->noeud->getNom()));
 
+    std::cout << "STATION ENVOYER"<<id_src<<" "<<id_dest<<std::endl;
+
+    if(id_src < 0 || id_dest < 0){
+        emit parent->notificationSignal("Probleme lecture adresses MAC", NotificationRect::RED_NOTIFICATION_COLOR);
+        std::this_thread::sleep_for(Graphe::getAlertTime());
+        emit parent->notificationSignal("", QColor());
         return;
     }
 
@@ -114,9 +117,11 @@ void Station::envoyerMessage(int key, destination dest){
     int size_p = path.size();
     int size_pc = pathcomplet.size();
     if(!size_p){
-        //std::cout << "Je connais pas le chemin vers "<<id_dest<<std::endl;
-        PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Je connais pas le chemin vers "+ Graphe::getSommets()[id_dest]->getNom()));
-
+        QString error = "Pas de chemin vers "+ QString::fromStdString(Graphe::getSommets()[id_dest]->getNom());
+        // panneau events
+        PanneauEvents::addCh(parent->getTreeItem(),error);
+        // alert
+        emit parent->notificationSignal(error, NotificationRect::RED_NOTIFICATION_COLOR);
         return;
     }
 
@@ -125,35 +130,57 @@ void Station::envoyerMessage(int key, destination dest){
     controleur->setBaseRtt(CalculRTT(controleur));
     //Et on diminue la bande passante du cable à l'envoi pour chaque cable du chemin
     for (int i = 0; i < size_pc; ++i){
-         float tmpcableBP = pathcomplet[i]->getDebitMax();
-         if((float)dest.data->getOriginialStringSize()*8 > pathcomplet[i]->getMTU())
-             pathcomplet[i]->setDebitAcc(tmpcableBP -  pathcomplet[i]->getMTU());
-         pathcomplet[i]->setDebitAcc(tmpcableBP - (float)dest.data->getOriginialStringSize()*8);
-         pathcomplet[i]->setLatence((float)dest.data->getOriginialStringSize()*8 /  tmpcableBP);
-    }    
+        float tmpcableBP = pathcomplet[i]->getDebitMax();
+        if((float)dest.data->getOriginialStringSize()*8 > pathcomplet[i]->getMTU())
+            pathcomplet[i]->setDebitAcc(tmpcableBP -  pathcomplet[i]->getMTU());
+        pathcomplet[i]->setDebitAcc(tmpcableBP - (float)dest.data->getOriginialStringSize()*8);
+        pathcomplet[i]->setLatence((float)dest.data->getOriginialStringSize()*8 /  tmpcableBP);
+    }
     this->mutexcabl->unlock();
     // prochaine destination
     extremite * extNext = path[size_p -1]->getInverseExt(this);
 
-/*
+    /*
     std::cout << dest.data->getOriginialStringSize()*8 << std::endl;
     std::cout << Graphe::getMatrice()[id_src][id_dest]->getDebitAcc() << std::endl;
 */
 
-	if ( this->checkSimulationStat( dest)) return; 
+    if ( this->checkSimulationStat( dest)) return;
 
-    std::this_thread::sleep_for(Graphe::getWaitTime());
-    PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Enovyé donnée vers ")+QString::fromStdString(extNext->noeud->getNom()));
-
-    if(path[size_p-1]->estBienConnecte())
+    if(path[size_p-1]->estBienConnecte()){
+        std::this_thread::sleep_for(Graphe::getWaitTime());
+        QString alert = QString::fromStdString("Envoyer message vers ")+QString::fromStdString(extNext->noeud->getNom());
+        // panneau events
+        PanneauEvents::addCh(parent->getTreeItem(),alert);
+        //alert
+        emit parent->notificationSignal(alert, NotificationRect::GREEN_NOTIFICATION_COLOR);
+        std::this_thread::sleep_for(Graphe::getAlertTime());
+        emit parent->notificationSignal("", QColor());
         extNext->noeud->recevoirMessage(key, extNext->interface, dest);
+    }else{
+        QString error = "Verifier le type de cable vers "+QString::fromStdString(extNext->noeud->getNom());;
+        // panneau events
+        PanneauEvents::addCh(parent->getTreeItem(),error);
+        // alert
+        emit parent->notificationSignal(error, NotificationRect::RED_NOTIFICATION_COLOR);
+    }
 
 }
 
 void Station::recevoirMessage(int key, int dest_i, destination dest){
+    QString error = "Recevoir le message";
+    // panneau events
+    PanneauEvents::addCh(parent->getTreeItem(),error);
+    // alert
+    emit parent->notificationSignal(error, NotificationRect::GREEN_NOTIFICATION_COLOR);
+    //std::this_thread::sleep_for(Graphe::getAlertTime());
+
+
 
     int id_src  = lireAdresseMac(dest.data, 0);
     int id_dest = lireAdresseMac(dest.data, 1);
+
+    std::cout << "STATION "<<id_src<<" "<<id_dest<<std::endl;
     vector<Cable*> path;
     vector<Cable*> pathcomplet;
     Graphe::genererChemin(id_src, idNoeud, id_dest, path, false);
@@ -165,23 +192,24 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
 
     //Libèration de la bande passante dans les cas particuliers de reception
 
-	if ( this->checkSimulationStat( dest)) return;
-     //Libèration de la bande passante dans les cas particuliers de reception
+    if ( this->checkSimulationStat( dest)) return;
+    //Libèration de la bande passante dans les cas particuliers de reception
 
     this->mutexcabl->lock();
     for (int i = 0; i < size_pc; ++i){
-         float tmpcableBP = pathcomplet[i]->getDebitMax();
-         if((float)dest.data->getOriginialStringSize()*8 > pathcomplet[i]->getMTU())
-             pathcomplet[i]->setDebitAcc(tmpcableBP -  pathcomplet[i]->getMTU());
-         pathcomplet[i]->setDebitAcc(tmpcableBP - (float)dest.data->getOriginialStringSize()*8);
-         //pathcomplet[i]->setLatence((float)dest.data->getOriginialStringSize()*8 /  tmpcableBP);
+        float tmpcableBP = pathcomplet[i]->getDebitMax();
+        if((float)dest.data->getOriginialStringSize()*8 > pathcomplet[i]->getMTU())
+            pathcomplet[i]->setDebitAcc(tmpcableBP -  pathcomplet[i]->getMTU());
+        pathcomplet[i]->setDebitAcc(tmpcableBP - (float)dest.data->getOriginialStringSize()*8);
+        //pathcomplet[i]->setLatence((float)dest.data->getOriginialStringSize()*8 /  tmpcableBP);
     }
     this->mutexcabl->unlock();
     //std::cout <<"Je suis une station "<< idNoeud<<std::endl;
     // std::cout <<"TYPE DATA = "<< dest.data->getType() << std::endl;
     if(dest.data->getType() < 3){
-        std::cout <<"Data non encapsuler"<<std::endl;
-
+        emit parent->notificationSignal("Probleme lecture message", NotificationRect::RED_NOTIFICATION_COLOR);
+        std::this_thread::sleep_for(Graphe::getAlertTime());
+        emit parent->notificationSignal("", QColor());
         return;
     }
 
@@ -189,8 +217,9 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
     int mac_src = lireAdresseMac(dest.data, 0);
 
     if(mac_dest < 0 || mac_src < 0){
-        std::cout << "Lecture @mac probleme "<<mac_src<<" "<<mac_dest<< std::endl;
-        PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Erreur de lecture de l'adresse mac"));
+        emit parent->notificationSignal("Probleme lecture adresses MAC", NotificationRect::RED_NOTIFICATION_COLOR);
+        std::this_thread::sleep_for(Graphe::getAlertTime());
+        emit parent->notificationSignal("", QColor());
 
         return;
     }
@@ -199,16 +228,21 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
         string ipSrc = getInterface(dest_i)->getAdresseIP();
         string ipDest= lireAdresseIp(dest.data, 1);
         if(ipSrc == DEFAULT_IP || ipDest == DEFAULT_IP){
-            //std::cout<< "Probleme lecture @ip" <<std::endl;
-           PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Erreur de lecture de l'adresse IP"));
-
+            emit parent->notificationSignal("Probleme lecture adresse IP", NotificationRect::RED_NOTIFICATION_COLOR);
+            std::this_thread::sleep_for(Graphe::getAlertTime());
+            emit parent->notificationSignal("", QColor());
             return;
         }
 
         if(ipSrc == ipDest){
-            PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Arrivé à destination"));
-
-            std::cout <<"Cest moi la destination" <<std::endl;
+            std::this_thread::sleep_for(Graphe::getWaitTime());
+            QString alert = QString("Arrivé à destination");
+            // panneau events
+            PanneauEvents::addCh(parent->getTreeItem(),alert);
+            //alert
+            emit parent->notificationSignal(alert, NotificationRect::GREEN_NOTIFICATION_COLOR);
+            std::this_thread::sleep_for(Graphe::getAlertTime());
+            emit parent->notificationSignal("", QColor());
 
             // verifier fragmentation ?
             int ipid = checkFragment(dest.data);
@@ -222,11 +256,14 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
                     }else it++;
                 }
                 // reassemblage
-               PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Reassemblage de paquets"));
-
+                QString alert = QString("Reassemblage de paquets...");
+                // panneau events
+                PanneauEvents::addCh(parent->getTreeItem(),alert);
+                emit parent->notificationSignal(alert, NotificationRect::GREEN_NOTIFICATION_COLOR);
+                std::this_thread::sleep_for(Graphe::getWaitTime()+Graphe::getAlertTime());
                 dest.data = reassemblagepaquet(res);
 
-                }
+            }
 
 
             PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Desencapsulation de paquet"));
@@ -238,11 +275,16 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
                 // syn = 1, doit repondre ack
                 if(flags == 18){
 
-                    std::cout <<"J'ai bien recu un ack"<<std::endl;
                     int nAck = lire_bits ( *(dest.data)->getSeq(), 64, 32).to_ulong();
-                    PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Ack recu ")+QString::number(nAck));
+                    QString alert = QString("ACK numero : "+QString::number(nAck)+" bien recu");
+                    // panneau events
+                    PanneauEvents::addCh(parent->getTreeItem(),alert);
+                    emit parent->notificationSignal(alert, NotificationRect::GREEN_NOTIFICATION_COLOR);
+                    std::this_thread::sleep_for(Graphe::getAlertTime());
 
-                    if(nAck < 0) return;
+                    if(nAck < 0){
+                        return;
+                    }
                     // supprimer de la file d'attente
                     controleur->verifieNumAck(this, nAck);
                 }
@@ -251,37 +293,46 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
                 int nSeq = lire_bits ( *(dest.data)->getSeq(), 32, 32).to_ulong();
                 if(nSeq < 0) return;
 
-                PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Desencapsulation de segment"));
                 desencapsule_segment(dest.data);
-                PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Message recu :")+QString::fromStdString(showMessage(dest.data)));
+                //std::cout <<showMessage(dest.data) <<std::endl;
+                alert = QString("Message recu : "+QString::fromStdString(showMessage(dest.data)));
+                // panneau events
+                PanneauEvents::addCh(parent->getTreeItem(),alert);
+                //alert
+                emit parent->notificationSignal(alert, NotificationRect::GREEN_NOTIFICATION_COLOR);
 
-                std::cout <<"Jai recu le message :"<<std::endl<<showMessage(dest.data) <<std::endl;
                 delete dest.data;
-			    this->mutexcabl->lock();
-                //Libèration de la bande passante 
-                for (int i = 0; i < lastpath.size(); ++i){   
+                this->mutexcabl->lock();
+                //Libèration de la bande passante
+                for (int i = 0; i < lastpath.size(); ++i){
                     float tmpcableBP = lastpath[i]->getDebitAcc();
                     lastpath[i]->setDebitAcc(tmpcableBP + (float)dest.data->getOriginialStringSize()*8);
-                }    
-			    this->mutexcabl->unlock();
+                }
+                this->mutexcabl->unlock();
                 // envoi nouveau ack
-                PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Envoie d'Ack ")+QString::number(nSeq+1)+" vers "+QString::fromStdString(n2->getNom()));
+                std::this_thread::sleep_for(Graphe::getAlertTime());
+                alert = QString("Envoyer ACK numero  ")+QString::number(nSeq+1)+" vers "+QString::fromStdString(n2->getNom());
+                // panneau events
+                PanneauEvents::addCh(parent->getTreeItem(),alert);
+                //alert
+                emit parent->notificationSignal(alert, NotificationRect::GREEN_NOTIFICATION_COLOR);
 
                 controleur->verifieNumSegment(this, n2, nSeq+1);
 
             }
             else if(flags == 16){
                 // ack = 1, accusé ack
-                std::cout <<"J'ai bien recu un ack"<<std::endl;
 
                 int nAck = lire_bits ( *(dest.data)->getSeq(), 64, 32).to_ulong();
-                PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Ack recu  ")+QString::number(nAck));
+                //PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Ack recu  ")+QString::number(nAck));
 
                 if(nAck < 0) return;
 
+                QString alert = QString("ACK numero : "+QString::number(nAck)+" bien recu");
+                // panneau events
+                PanneauEvents::addCh(parent->getTreeItem(),alert);
+                emit parent->notificationSignal(alert, NotificationRect::GREEN_NOTIFICATION_COLOR);
                 desencapsule_segment(dest.data);
-                std::cout <<"Jai recu le message :"<<std::endl<<showMessage(dest.data) <<std::endl;
-          PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Message recu  ")+QString::fromStdString(showMessage(dest.data)));
 
                 delete dest.data;
 
@@ -291,8 +342,11 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
 
                 desencapsule_segment(dest.data);
 
-                std::cout <<"Jai recu le message :"<<std::endl<<showMessage(dest.data) <<std::endl;
-                PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Message recu  ")+QString::fromStdString(showMessage(dest.data)));
+                QString alert = QString("Message recu : "+QString::fromStdString(showMessage(dest.data)));
+                // panneau events
+                PanneauEvents::addCh(parent->getTreeItem(),alert);
+                //alert
+                emit parent->notificationSignal(alert, NotificationRect::GREEN_NOTIFICATION_COLOR);
 
                 delete dest.data;
                 return;
@@ -314,8 +368,8 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
                 int size_p = path.size();
                 // pas de chemin
                 if(!size_p){
-                   // std::cout << "Je connais pas le chemin vers " <<Graphe::getSommets()[ip_dest]->getNom()<<std::endl;
-                PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Je connais pas le chemin vers "+ Graphe::getSommets()[ip_dest]->getNom()));
+                    // std::cout << "Je connais pas le chemin vers " <<Graphe::getSommets()[ip_dest]->getNom()<<std::endl;
+                    PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Je connais pas le chemin vers "+ Graphe::getSommets()[ip_dest]->getNom()));
 
                     return;
                 }
@@ -340,25 +394,30 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
 
             }
 
-            else
-                std::cout <<"Je ne suis pas une passerelle"<<std::endl;
+            else{
+                QString error = "Je ne suis pas un Routeur, Vérifier la passerelle";
+                // panneau events
+                PanneauEvents::addCh(parent->getTreeItem(),error);
+                // alert
+                emit parent->notificationSignal(error, NotificationRect::RED_NOTIFICATION_COLOR);
+            }
+
 
 
             return;
         }
     }
     else {
-       // std::cout <<"Mauvaise destination" <<std::endl;
-        PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Mauvaise destination"));
-
+        // std::cout <<"Mauvaise destination" <<std::endl;
+        QString error = "Mauvaise destination";
+        // panneau events
+        PanneauEvents::addCh(parent->getTreeItem(),error);
+        // alert
+        emit parent->notificationSignal(error, NotificationRect::RED_NOTIFICATION_COLOR);
         return;
     }
 
 }
-
-
-
-
 
 void Station::mainlocal(std::mutex *m, gSimulation* g){
         this->mutexcabl = m;
@@ -392,7 +451,8 @@ void Station::mainlocal(std::mutex *m, gSimulation* g){
 			if(g->getEtat() == PAUSE) 
 				std::this_thread::sleep_for(sec);
 			if (g->getEtat() == ARRET && !deb)	{
-				this->getControleur()->clearFiles();
+		
+		this->getControleur()->clearFiles();
 				this->getControleur()->setCwnd(1);
 				this->getControleur()->setSsthresh(32);
 				this->getControleur()->setCpt(0);

@@ -31,36 +31,64 @@ void Switch::envoyerMessage(int key, destination dest){
     int id_src  = lireAdresseMac(dest.data, 0);
     int id_dest = lireAdresseMac(dest.data, 1);
 
-
+    std::cout << "SWITCH "<<id_src<<" "<<id_dest<<std::endl;
     vector<Cable*> path;
     Graphe::genererChemin(id_src, idNoeud, id_dest, path, false);
     int size_p = path.size();
 
     if(!size_p){
-       // std::cout<<"Je connais pas le chemin vers "<<id_dest<<std::endl;
-        PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Je connais pas le chemin vers "+ Graphe::getSommets()[id_dest]->getNom()));
-
+        QString error = "Pas de chemin vers "+ QString::fromStdString(Graphe::getSommets()[id_dest]->getNom());
+        // panneau events
+        PanneauEvents::addCh(parent->getTreeItem(),error);
+        // alert
+        emit parent->notificationSignal(error, NotificationRect::RED_NOTIFICATION_COLOR);
+        //std::this_thread::sleep_for(Graphe::getAlertTime());
+        //emit parent->notificationSignal("", QColor());
         return;
     }
 
     extremite * extNext = path[size_p -1]->getInverseExt(this);
 
-	if ( this->checkSimulationStat( dest)) return;
-    //std::cout <<"J'envoie le message à "<<ext->noeud->getIdNoeud()<< std::endl;
-    std::this_thread::sleep_for(Graphe::getWaitTime());
-    PanneauEvents::addCh(parent->getTreeItem(),QString::fromStdString("Envoyer donnée vers :")+QString::fromStdString(extNext->noeud->getNom()));
-    if(path[size_p -1]->estBienConnecte())
+    if ( this->checkSimulationStat( dest)) return;
+
+    if(path[size_p -1]->estBienConnecte()){
+        std::this_thread::sleep_for(Graphe::getWaitTime());
+        QString alert = QString::fromStdString("Envoyer message vers ")+QString::fromStdString(extNext->noeud->getNom());
+        // panneau events
+        PanneauEvents::addCh(parent->getTreeItem(),alert);
+        //alert
+        emit parent->notificationSignal(alert, NotificationRect::GREEN_NOTIFICATION_COLOR);
+        std::this_thread::sleep_for(Graphe::getAlertTime());
+        emit parent->notificationSignal("", QColor());
         extNext->noeud->recevoirMessage(key, extNext->interface, dest);
+    }
+    else {
+        QString error = "Verifier le type de cable vers "+QString::fromStdString(extNext->noeud->getNom());;
+        // panneau events
+        PanneauEvents::addCh(parent->getTreeItem(),error);
+        // alert
+        emit parent->notificationSignal(error, NotificationRect::RED_NOTIFICATION_COLOR);
+        //std::this_thread::sleep_for(Graphe::getAlertTime());
+        //emit parent->notificationSignal("", QColor());
+
+    }
 }
 
 void Switch::recevoirMessage(int key, int dest_i, destination dest){
-	if ( this->checkSimulationStat( dest)) return;
-    std::cout <<"Je suis un switch"<< idNoeud<<std::endl;
+    QString error = "Recevoir le message";
+    // panneau events
+    PanneauEvents::addCh(parent->getTreeItem(),error);
+    // alert
+    emit parent->notificationSignal(error, NotificationRect::GREEN_NOTIFICATION_COLOR);
+    //std::this_thread::sleep_for(Graphe::getAlertTime());
+
+    if ( this->checkSimulationStat( dest)) return;
     if(dest.data->getType() < 3){
-        std::cout <<"Data non encapsulée"<<std::endl;
+        emit parent->notificationSignal("Probleme lecture message", NotificationRect::RED_NOTIFICATION_COLOR);
+        std::this_thread::sleep_for(Graphe::getAlertTime());
+        emit parent->notificationSignal("", QColor());
         return;
     }
 
-    //int id_dest = lireAdresseMac(data, 1);
     envoyerMessage(key, dest);
 }

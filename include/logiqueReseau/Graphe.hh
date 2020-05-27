@@ -54,7 +54,8 @@ class Graphe{
 private:
 
     static Graphe* singlPtr; //Pointeur unique
-    static std::chrono::duration<float> dur;
+    static std::chrono::duration<float> vitesseSimulation, dureeAlert;
+
     static vector<Noeud*> sommets;/*!< Liste des sommets du Graphe */
     static vector<vector<Cable*>> matrice; /*!< Matrice d'adjacences du Graphe */
     //static vector<vector<extremite*>> table;/*!< Table de chemins du Graphe */
@@ -104,7 +105,9 @@ public:
       * \return un floatant correspondant au temps d'attente de chaque thread
      */
 
-    static std::chrono::duration<float> getWaitTime(){return dur;}
+    static std::chrono::duration<float> getWaitTime(){return vitesseSimulation;}
+    static std::chrono::duration<float> getAlertTime(){return dureeAlert;}
+
 
     /*!
          * \brief getSommets

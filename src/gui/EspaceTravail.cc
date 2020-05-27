@@ -129,6 +129,7 @@ void EspaceTravail::addNoeud(NoeudG* noeud, QPointF p){
     assert(noeud && "Pointeur null");
     noeud->setPos(p);
     scene->addItem(noeud);
+
 }
 
 void EspaceTravail::showDialogError(const char * error){

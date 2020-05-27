@@ -99,6 +99,7 @@ void Noeud::setNom(string _nom){
     nom = _nom;
     PanneauEvents::addRoot(parent->getTreeItem(),QString::fromStdString(nom));
     parent->toolTipShow();
+    parent->setNomNoeudG(QString::fromStdString(nom));
 }
 
 void Noeud::setIdNoeud(int _idNoeud){
@@ -186,7 +187,8 @@ void Noeud::setInterfaces(InterfaceFE * _interface){
 }
 
 bool Noeud::verifierPasserelle(string passerelle){
-
+    if(passerelle == DEFAULT_IP)
+        return false;
     for(InterfaceFE* i : interfaces){
         string adresseRes = i->getAdresseRes();
         string masque     = i->getMasque();

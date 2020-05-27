@@ -100,6 +100,10 @@ QPushButton#zoomOutAction{
 image : url(:/ressources/outilsBar/zoomOutAction.png);
 }
 
+QPushButton#quitAction{
+image : url(:/ressources/outilsBar/logout.png);
+}
+
 QPushButton#selectAction{
 image : url(:/ressources/equiBar/selectAction.png);
 }

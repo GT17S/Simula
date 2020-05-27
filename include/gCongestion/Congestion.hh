@@ -260,7 +260,7 @@ public:
      * \brief getMapFileEnvoyer
      * \return liste des datas a envoyer avec num de segments
      */
-   std::map<int, destination> getMapFileEnvoyer(){    return mapFileACK;;}
+   std::map<int, destination> getMapFileEnvoyer(){    return mapFileEnvoyer;}
 
    /*!
      * \brief getMapFileACK

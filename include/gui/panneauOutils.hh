@@ -43,7 +43,8 @@ private :
                 *changerMode,/*!< Bouton de changement de mode d'envoi*/
                 *benvoyer,/*!< Bouton d'e demarrer et pause de la simulation d'envoi de message*/
                 *zoomIn,/*!< Bouton de zoomer de l'espace de taravail*/
-                *zoomOut/*!< Bouton de DE-zoomer  de l'espace de taravail*/,
+                *zoomOut,/*!< Bouton de DE-zoomer  de l'espace de taravail*/
+                *quitb, /*!< Bouton pour quitter la simulation */
                 *exportButton;/*!< Bouton d'importation de l'éspace de travail*/
     QAction     *exporterDot,/*!< Action de recupuration de l'espace de travail sous format dot*/
                 *exporterPng;/*!< Action de recupuration de l'espace de travail sous format png*/
@@ -69,6 +70,14 @@ void createSignals();
     * Initialisation  des differentes raccourcis de panneauoutils
 */
 void createShortCuts();
+
+/*!
+    * \brief MessageBoxShow
+    * Affiche un message d'attendre lors du chargement du fichier
+*/
+
+void MessageBoxShow(QMessageBox*);
+
 public:
 
 /*!

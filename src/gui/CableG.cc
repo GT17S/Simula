@@ -74,17 +74,12 @@ void CableG::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 void CableG::updateaff(){
     QString s,equipementName;
     QTextStream stream(&s);
-    float bandPass= child->getDebitAcc();
-   //string texx=std::setprecision(3) << bandPass;
-    //double bb=std::setprecision(3) << bandPass;
+
     stream <<"Debit Max = "<<child->getDebitMax()<<"<br>"
           <<"MTU = "<<child->getMTU()<<"<br>"
-           <<"Bande passante = "<<fixed <<  qSetRealNumberPrecision(0)<<bandPass;
-          /*  if(bandPass){
-        stream <<"Bande passente = "<<QString::number(bandPass,'f', 3)<<"<br>";
-            }else{
-              stream<<"Bande passente N/A "<<"<br>";
-            }*/
+           <<"Bande passante = "<<fixed <<  qSetRealNumberPrecision(0)<<child->getDebitAcc()
+          <<"<br>Latence = "<<fixed <<  qSetRealNumberPrecision(0)<<child->getLatence();
+
 
     setToolTip(s);
 

@@ -6,6 +6,7 @@
 #include <QMessageBox>
 #include <QPixmap>
 #include <QStateMachine>
+#include <QObject>
 #include <cstring>
 
 #include "simulaGui.hh"
@@ -36,7 +37,6 @@ PanneauOutils::PanneauOutils(EspaceTravail * _espaceTravail, gSimulation * g){
 PanneauOutils::~PanneauOutils()
 {
 
-   // qDebug() << "Cleanup";
     delete gestSimulation;
 
 	/*
@@ -110,6 +110,7 @@ void PanneauOutils::createButtons(){
     relancer->setObjectName("relancerAction");
     relancer->setProperty("outilsBar", true);
     relancer->setToolTip("Relancer");
+    relancer->setVisible(false);
     addWidget(relancer);
 
     changerMode = new QPushButton(this);
@@ -117,6 +118,7 @@ void PanneauOutils::createButtons(){
     changerMode->setObjectName("changeAction");
     changerMode->setProperty("outilsBar", true);
     changerMode->setToolTip("Mode");
+    changerMode->setVisible(false);
     addWidget(changerMode);
 
     benvoyer = new QPushButton(this);
@@ -138,6 +140,20 @@ void PanneauOutils::createButtons(){
     zoomOut->setProperty("outilsBar", true);
     zoomOut->setToolTip("Dé-zoomer");
     addWidget(zoomOut);
+
+
+    QWidget* spacer = new QWidget();
+    spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    addWidget(spacer);
+
+
+
+
+    quitb = new QPushButton(this);
+    quitb->setObjectName("quitAction");
+    quitb->setProperty("outilsBar", true);
+    quitb->setToolTip("Quitter");
+    addWidget(quitb);
 
 //connect(exportButton, SIGNAL(triggered(QAction*)), exportButton, SLOT(setDefaultAction(QAction*)));
 }
@@ -162,7 +178,7 @@ void PanneauOutils::createSignals(){
     connect(zoomIn,SIGNAL(clicked()),this,SLOT(zoomer()));
     connect(zoomOut,SIGNAL(clicked()),this,SLOT(dezoomer()));
 
-
+    connect(quitb, SIGNAL(clicked()), qApp, SLOT(quit()));
 }
 void PanneauOutils::createShortCuts(){
 
@@ -196,6 +212,27 @@ void PanneauOutils::nouveauFichier(){
             break;
         }
     }
+    if(curFile.isEmpty()){
+        const QMessageBox::StandardButton ret
+                = QMessageBox::warning(this, tr("Travail non enregistrées"),
+                                       tr("Voulez-vous créer une sauvegarde ?"),
+                                       QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel );
+        switch (ret) {
+        case QMessageBox::Yes : {
+            sauvegarderFichier();
+            break;
+        }
+        case QMessageBox::No : {
+            break;
+        }
+        case QMessageBox::Cancel : {
+            return;
+        }
+        default:
+            break;
+        }
+    }
+
 
     // nouveau fichier
     gestSimulation->getManager()->joinall();
@@ -236,11 +273,21 @@ void PanneauOutils::ouvrirFichier(){
                                                   tr("Fichier xml (*.xml)"));
     if(!fileName.isEmpty()){
         curFile = fileName;
+      /*
+          QMessageBox *msgBox = new QMessageBox(this);
+           msgBox->setText("Test");
+           msgBox->setWindowModality(Qt::NonModal);
+           msgBox->setInformativeText("Do you want to save your changes?");
+           msgBox->setStandardButtons(QMessageBox::Save | QMessageBox::Discard |
+                                      QMessageBox::Cancel);
+           msgBox->setDefaultButton(QMessageBox::Save);
+          msgBox->accept();
+          */
         lireXml(fileName, espaceTravail, gestSimulation->getManager());
 
+       // ret.accept();
     }
-
-
+   }
 }
 void PanneauOutils::sauvegarderFichier(){
     // si pas de fichier , alors ouvrir sauvegarder
@@ -252,14 +299,14 @@ void PanneauOutils::sauvegarderFichier(){
                                                       tr("Sauvegarder le fichier de configuration"), "",
                                                       tr("Fichier xml (*.xml)"));
         if(!fileName.isEmpty()){
-            curFile = fileName+".xml";
-            ecrireXml(fileName);
+            curFile = fileName;
+            ecrireXml(fileName+".xml");
         }
 
     }else ecrireXml(curFile);
 }
 void PanneauOutils::exportDot(){
-   if(curFile.isEmpty()){
+//   if(curFile.isEmpty()){
              QString fileName=QFileDialog::getSaveFileName(this,
                                                       tr("Sauvegarder le fichier de configuration"), "",
                                                       tr("Fichier dot (*.dot)"));
@@ -271,7 +318,7 @@ void PanneauOutils::exportDot(){
         }else{
             QMessageBox::critical(this, "Export vers Dot", "Veuillez entrer des paramétres valides");
         }     
-   }
+   //}
 }
 
 void PanneauOutils::exportPng(){
@@ -315,7 +362,6 @@ void PanneauOutils::changeMode(){
 
 void PanneauOutils::timer(){
    QTime *t = this->gestSimulation->getTime();
-    //qDebug()<<t->toString("hh:mm:ss");
     this->gestSimulation->demarrer();
     *t=t->addSecs(1);
     this->gestSimulation->getTimer()->setInterval(1000);
@@ -324,25 +370,19 @@ void PanneauOutils::timer(){
 
 void PanneauOutils::toPng(){
     QString fileName=QFileDialog::getSaveFileName(this,
-                                                  tr("Exporter le fichier en image"), "",
-                                                  tr("Image png (*.png)"));
+                                                     tr("Exporter le fichier en image"), "",
+                                                     tr("Image png (*.png)"));
 
-    if (fileName.isEmpty())
-        return;
-    else{
-        QPixmap pixMap = QPixmap::grabWidget(espaceTravail->getVue());
-        int a=espaceTravail->getVue()->verticalScrollBar()->width();
-        //int b=espaceTravail->getVue()->horizontalScrollBar()->width();
-        int c=espaceTravail->getVue()->rect().height();
-        int d=espaceTravail->getVue()->rect().width();
+       espaceTravail->getScene()->clearSelection();
+       espaceTravail->getScene()->setSceneRect(espaceTravail->getScene()->itemsBoundingRect());
+       QImage image(espaceTravail->getScene()->sceneRect().size().toSize(), QImage::Format_ARGB32);
+       image.fill(Qt::white);
 
-        QRect rect(0, 0, d-a,c-a);
-        QPixmap original(pixMap);
-        QPixmap cropped = original.copy(rect);
-        cropped.save(fileName+".png");
-        //PanneauEvents::addCh(parent,"Votre espace est exporte en png");
+       QPainter painter(&image);
+       espaceTravail->getScene()->render(&painter);
+       image.save(fileName+".png");
     }
-}
+
 
 void PanneauOutils::zoomer(){
     espaceTravail->getVue()->scale(1.2,1.2);
@@ -363,5 +403,19 @@ void PanneauOutils::clearPanneauData()	{
 		if ( pData)	{ 
 			pData->clearPanneauData();
 		}    
-	}	
+    }
+    for(Noeud *n: Graphe::getSommets()){
+     Station *x=dynamic_cast<Station*>(n);
+     if(x){
+         if(x->getControleur()){
+        x->getControleur()->clearFiles();
+     }}
+
+    }
+
+}
+
+
+void MessageBoxShow(QMessageBox* info){
+
 }

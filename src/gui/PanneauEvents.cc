@@ -62,10 +62,9 @@ void PanneauEvents::setTreeview(QTreeWidget *value)
     treeview = value;
 }
 
-void PanneauEvents::addRoot(QTreeWidgetItem *pf ,QString nom){
-   // QTreeWidgetItem *pff=new QTreeWidgetItem(pf);
-    pf->setText(0,nom);
-    treeview->addTopLevelItem(pf);
+void PanneauEvents::addRoot(QTreeWidgetItem *treeIte ,QString nom){
+    treeIte->setText(0,nom);
+    treeview->addTopLevelItem(treeIte);
 }
 
 

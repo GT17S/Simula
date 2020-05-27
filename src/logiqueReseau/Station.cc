@@ -40,6 +40,9 @@ Station::Station(string _nom, int _idNoeud, int _nbPort, string _adressePasserel
 
 }
 
+Station::~Station()	{
+	delete controleur;
+}
 
 void Station::setPasserelle(string _adresse){
     adressePasserelle = InterfaceFE::checkAdresse(_adresse, IP_REGEX, DEFAULT_IP);
@@ -416,52 +419,54 @@ void Station::recevoirMessage(int key, int dest_i, destination dest){
 
 }
 
-
-
-
-
 void Station::mainlocal(std::mutex *m, gSimulation* g){
-    this->mutexcabl = m;
-    controleur->setMutex(m);
-    std::mutex * mfe = new std::mutex();
-    std::mutex * mfa = new std::mutex();
-    std::mutex * meo = new std::mutex();
+        this->mutexcabl = m;
+        controleur->setMutex(m);
+        std::mutex * mfe = new std::mutex();
+        std::mutex * mfa = new std::mutex();
+        std::mutex * meo = new std::mutex();
+        
 
+        this->mutexEnvoiOk = meo;
+        this->mutexFileEnvoyer = mfe;
+        controleur->setMutexFileEnvoyer ( mfe);
+        controleur->setMutexFileACK ( mfa);
+        controleur->setMutexEnvoiOk ( meo);
+        
+        std::cout << "Fonction principale du thread" << std::endl;
+        std::chrono::seconds sec(1);
+		bool deb = true;
+        while (run){
+			if(g->getEtat() == DEMARRER){
+				deb = false;
+			   meo->lock();
+			   bool bok = this->getControleur()->getok();
+			   meo->unlock();
+			   if(bok){
+					std::cout <<  getIdNoeud() << std::endl;
+					this->getControleur()->verifieNbrSegment(this);
 
-    this->mutexEnvoiOk = meo;
-    this->mutexFileEnvoyer = mfe;
-    controleur->setMutexFileEnvoyer ( mfe);
-    controleur->setMutexFileACK ( mfa);
-    controleur->setMutexEnvoiOk ( meo);
-
-    //std::cout << "Fonction principale du thread" << std::endl;
-    std::chrono::seconds sec(1);
-    bool deb = true;
-    while (run){
-        if(g->getEtat() == DEMARRER){
-            deb = false;
-            meo->lock();
-            bool bok = this->getControleur()->getok();
-            meo->unlock();
-            if(bok){
-                //std::cout <<  getIdNoeud() << std::endl;
-                this->getControleur()->verifieNbrSegment(this);
-
-            }
+				}
+			}
+			if(g->getEtat() == PAUSE) 
+				std::this_thread::sleep_for(sec);
+			if (g->getEtat() == ARRET && !deb)	{
+		
+		this->getControleur()->clearFiles();
+				this->getControleur()->setCwnd(1);
+				this->getControleur()->setSsthresh(32);
+				this->getControleur()->setCpt(0);
+				this->getControleur()->setNbrAcksDuplique(0);
+				this->getControleur()->setNbrAcksRecu(0);
+				this->getControleur()->setok( false);
+				numSeq = 1;
+				numSegmentsEnvoye.clear();
+				deb = true;
+			}        
         }
-        if(g->getEtat() == PAUSE)
-            std::this_thread::sleep_for(sec);
-        if (g->getEtat() == ARRET && !deb)	{
-            this->getControleur()->clearFiles();
-            this->getControleur()->setCwnd(1);
-            this->getControleur()->setSsthresh(32);
-            this->getControleur()->setCpt(0);
-            this->getControleur()->setNbrAcksDuplique(0);
-            this->getControleur()->setNbrAcksRecu(0);
-            this->getControleur()->setok( false);
-            deb = true;
-        }
-    }
+	delete mfe;
+	delete mfa;
+	delete meo;
 }
 
 

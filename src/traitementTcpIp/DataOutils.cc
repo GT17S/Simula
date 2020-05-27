@@ -551,7 +551,23 @@ void envoyer(Noeud * n1, Noeud *n2, int portSrc, int portDest, bool syn, bool ac
     // pas de chemin
     if(!size_p){
         std::cout << "Pas de chemin vers "<<id_n2<<std::endl;
-        return;
+        extremite * destExt = new extremite, *srcExt = new extremite;
+        destExt->noeud = n2;
+        destExt->interface =0;
+        srcExt->noeud = n1;
+        srcExt->interface =0;
+        encapsuleAll(portSrc, portDest, ack, syn, nSeq, nAck, ipId, df, srcExt, destExt, destExt, data);
+        Station * st = dynamic_cast<Station*>(n1);
+        if(st){
+
+            destination dest;
+            dest.data = data;
+            dest.interface_src = srcExt->interface;
+            st->getControleur()->mutexFileEnvoyer->lock();
+            st->getControleur()->mapFileEnvoyer.insert({nSeq,dest});  // inserer dans la file d'attente
+            st->getControleur()->mutexFileEnvoyer->unlock();
+            return;
+        }else return;
     }
 
     // get next

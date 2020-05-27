@@ -11,7 +11,8 @@ ThreadManager::~ThreadManager(){
 	joinall();
 	MovingData.clear();
 	WorkingThreads.clear();
-
+	delete mutexmap["Cable"];
+	mutexmap.clear();
 
 }
 

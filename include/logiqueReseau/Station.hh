@@ -80,7 +80,7 @@ public:
       * \brief Destructeur
       * Destructeur de la classe Station
       */
-    ~Station(){}
+    ~Station();
     /*!
      * \brief getParent
      * \return la section ou tous les traitement d'une station seront affiche dans PanneauEvents

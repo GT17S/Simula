@@ -212,6 +212,27 @@ void PanneauOutils::nouveauFichier(){
             break;
         }
     }
+    if(curFile.isEmpty()){
+        const QMessageBox::StandardButton ret
+                = QMessageBox::warning(this, tr("Travail non enregistrées"),
+                                       tr("Voulez-vous créer une sauvegarde ?"),
+                                       QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel );
+        switch (ret) {
+        case QMessageBox::Yes : {
+            sauvegarderFichier();
+            break;
+        }
+        case QMessageBox::No : {
+            break;
+        }
+        case QMessageBox::Cancel : {
+            return;
+        }
+        default:
+            break;
+        }
+    }
+
 
     // nouveau fichier
     gestSimulation->getManager()->joinall();
@@ -268,14 +289,14 @@ void PanneauOutils::sauvegarderFichier(){
                                                       tr("Sauvegarder le fichier de configuration"), "",
                                                       tr("Fichier xml (*.xml)"));
         if(!fileName.isEmpty()){
-            curFile = fileName+".xml";
-            ecrireXml(fileName);
+            curFile = fileName;
+            ecrireXml(fileName+".xml");
         }
 
     }else ecrireXml(curFile);
 }
 void PanneauOutils::exportDot(){
-   if(curFile.isEmpty()){
+//   if(curFile.isEmpty()){
              QString fileName=QFileDialog::getSaveFileName(this,
                                                       tr("Sauvegarder le fichier de configuration"), "",
                                                       tr("Fichier dot (*.dot)"));
@@ -287,7 +308,7 @@ void PanneauOutils::exportDot(){
         }else{
             QMessageBox::critical(this, "Export vers Dot", "Veuillez entrer des paramétres valides");
         }     
-   }
+   //}
 }
 
 void PanneauOutils::exportPng(){
